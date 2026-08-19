@@ -14,19 +14,22 @@ from app.config.settings import Settings
 
 
 def test_brightdata_is_configured_flag():
-    unconfigured = BrightDataClient(Settings(BRIGHTDATA_API_KEY=None, BRIGHTDATA_COLLECTOR_ID=None))
+    unconfigured = BrightDataClient(Settings(BRIGHTDATA=False, BRIGHTDATA_API_KEY=None, BRIGHTDATA_COLLECTOR_ID=None))
     assert unconfigured.is_configured is False
 
-    partial_key = BrightDataClient(Settings(BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID=None))
+    disabled_even_with_keys = BrightDataClient(Settings(BRIGHTDATA=False, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    assert disabled_even_with_keys.is_configured is False
+
+    partial_key = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID=None))
     assert partial_key.is_configured is False
 
-    configured = BrightDataClient(Settings(BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    configured = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
     assert configured.is_configured is True
 
 
 @pytest.mark.asyncio
 async def test_brightdata_unconfigured_raises():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY=None))
+    client = BrightDataClient(Settings(BRIGHTDATA=False, BRIGHTDATA_API_KEY=None))
     with pytest.raises(BrightDataConfigError) as exc:
         await client.trigger_scraper(collector_id="col_123", inputs=[])
     assert "credentials are not configured" in str(exc.value)
@@ -34,7 +37,7 @@ async def test_brightdata_unconfigured_raises():
 
 @pytest.mark.asyncio
 async def test_brightdata_trigger_scraper_success():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
 
     mock_response = httpx.Response(
         status_code=200,

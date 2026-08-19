@@ -42,8 +42,8 @@ class BrightDataClient:
 
     @property
     def is_configured(self) -> bool:
-        """Return True if Bright Data credentials are configured."""
-        return bool(self.api_key and self.collector_id)
+        """Return True if Bright Data is enabled in settings and credentials are configured."""
+        return bool(self._settings.BRIGHTDATA and self.api_key and self.collector_id)
 
     def _ensure_configured(self, collector_id: Optional[str] = None) -> tuple[str, str]:
         """Validate credentials and return (api_key, effective_collector_id)."""
