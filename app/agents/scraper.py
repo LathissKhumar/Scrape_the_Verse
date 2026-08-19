@@ -5,47 +5,51 @@ from app.agents.base import BaseAgent
 from app.brightdata.adapter import build_collector_inputs
 from app.brightdata.client import BrightDataClient
 from app.config.settings import get_settings
+from app.crawler.browser_executor import BrowserExecutor
+from app.crawler.result_models import BlockType, CrawlResult
 from app.models.schemas import ScrapingTask
 
 
 class ScraperAgent(BaseAgent):
-    """Scraper Agent: Executes collection via Bright Data Scraper Studio or native HTTP transport fallback."""
+    """Scraper Agent: Executes collection via Bright Data Scraper Studio or native Playwright/HTTP transport."""
 
-    def __init__(self, brightdata_client: Optional[BrightDataClient] = None):
+    def __init__(
+        self,
+        brightdata_client: Optional[BrightDataClient] = None,
+        browser_executor: Optional[BrowserExecutor] = None,
+    ):
         super().__init__(name="SCRAPER")
         self.client = brightdata_client or BrightDataClient()
+        self.browser_executor = browser_executor or BrowserExecutor()
+
+    async def _execute_browser_scrape(self, urls: list[str]) -> list[dict[str, Any]]:
+        """Execute robust browser scraping using Playwright Chromium with SSRF and block detection."""
+        self.logger.info(f"Executing Playwright Chromium browser scrape for {len(urls)} target URL(s).")
+        results: list[dict[str, Any]] = []
+
+        for u in urls:
+            crawl_res: CrawlResult = await self.browser_executor.crawl(url=u)
+            record: dict[str, Any] = {
+                "url": crawl_res.url,
+                "final_url": crawl_res.final_url,
+                "html": crawl_res.html,
+                "status_code": crawl_res.status_code,
+                "blocked": crawl_res.blocked,
+                "block_type": crawl_res.block_type.value,
+                "diagnostics": crawl_res.diagnostics,
+                "timing_ms": crawl_res.timing_ms,
+            }
+            if crawl_res.error:
+                record["error"] = crawl_res.error
+            if crawl_res.extracted_data:
+                record["extracted_data"] = crawl_res.extracted_data
+            results.append(record)
+
+        return results
 
     async def _execute_native_scrape(self, urls: list[str]) -> list[dict[str, Any]]:
         """Fallback native HTTP scraping when Bright Data API key is unconfigured."""
-        self.logger.info(f"Bright Data unconfigured. Executing native HTTP scrape for {len(urls)} target URL(s).")
-        results: list[dict[str, Any]] = []
-
-        headers = {
-            "User-Agent": (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-            )
-        }
-
-        async with httpx.AsyncClient(timeout=30.0, follow_redirects=True, headers=headers) as client:
-            for u in urls:
-                try:
-                    resp = await client.get(u)
-                    results.append({
-                        "url": u,
-                        "html": resp.text,
-                        "status_code": resp.status_code,
-                        "headers": dict(resp.headers),
-                    })
-                except Exception as e:
-                    self.logger.warning(f"Native fetch failed for {u}: {e}")
-                    results.append({
-                        "url": u,
-                        "html": "",
-                        "error": str(e),
-                    })
-
-        return results
+        return await self._execute_browser_scrape(urls)
 
     async def execute(self, task: ScrapingTask) -> list[dict[str, Any]]:
         """Collect raw web content for the given task target URLs."""
@@ -57,21 +61,21 @@ class ScraperAgent(BaseAgent):
             f"task_id={task.task_id} Received {len(task.target_urls)} target URL(s). Initiating collection."
         )
 
-        # Check if Bright Data credentials are configured
+        settings = get_settings()
+        provider = (task.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto").lower()
+
+        # Check if Bright Data credentials are configured and provider is auto/brightdata
         is_configured = getattr(self.client, "is_configured", False)
-        if is_configured:
+        if is_configured and provider in ("auto", "brightdata"):
             inputs = build_collector_inputs(task=task)
-            self.logger.info(f"task_id={task.task_id} Dispatched to Bright Data Scraper Studio.")
-            collector_id = "c_default"
-            if hasattr(self.client, "settings") and hasattr(self.client.settings, "brightdata_collector_id"):
-                collector_id = self.client.settings.brightdata_collector_id
+            self.logger.info(f"task_id={task.task_id} Dispatched to Bright Data Scraper Studio (Collector: {self.client.collector_id}).")
             results = await self.client.scrape_and_collect(
-                collector_id=collector_id,
+                collector_id=self.client.collector_id,
                 inputs=inputs,
             )
         else:
-            # Native fallback
-            results = await self._execute_native_scrape(task.target_urls)
+            # Native Playwright Browser execution
+            results = await self._execute_browser_scrape(task.target_urls)
 
         self.logger.info(
             f"task_id={task.task_id} Successfully retrieved {len(results)} raw record(s)/page(s)."

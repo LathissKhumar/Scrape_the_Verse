@@ -77,6 +77,10 @@ class ScrapingTask(BaseModel):
         default_factory=list,
         description="Explicit source or data requirements (e.g. JavaScript rendering needed, headers).",
     )
+    metadata: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Arbitrary task metadata and execution configuration.",
+    )
 
 
 class ScrapingResult(BaseModel):

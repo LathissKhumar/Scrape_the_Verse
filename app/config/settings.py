@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     BRIGHTDATA_API_KEY: Optional[str] = None
     BRIGHTDATA_COLLECTOR_ID: Optional[str] = None
 
+    # Crawler & Browser Automation Settings
+    SCRAPER_PROVIDER: str = "auto"  # "auto", "browser", "local", "brightdata"
+    CRAWLER_HEADLESS: bool = True
+    CRAWLER_TIMEOUT_MS: int = 30000
+
     # Application Settings
     APP_ENV: str = "development"
     LOG_LEVEL: str = "INFO"

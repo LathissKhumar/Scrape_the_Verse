@@ -153,31 +153,59 @@ class BrightDataClient:
 
         if response.status_code in (401, 403):
             raise BrightDataAuthError(f"Bright Data auth failure during status check ({response.status_code}).")
-        elif response.status_code != 200:
+        elif response.status_code not in (200, 202):
             raise BrightDataJobError(f"Status check failed ({response.status_code}): {response.text}")
 
+        # If status_code is 200, parse dataset results (supports JSON, JSONL, array, or single dict)
+        if response.status_code == 200:
+            content_type = response.headers.get("content-type", "").lower()
+            raw_text = response.text.strip()
+            
+            # Check if JSONL / newline-delimited JSON
+            records: list[dict[str, Any]] = []
+            if "\n" in raw_text or "jsonl" in content_type or "ndjson" in content_type:
+                for line in raw_text.splitlines():
+                    line = line.strip()
+                    if line:
+                        try:
+                            records.append(json.loads(line))
+                        except Exception:
+                            pass
+                if records:
+                    return {"status": "completed", "data": records, "count": len(records)}
+
+            try:
+                data = response.json()
+            except Exception as e:
+                raise BrightDataJobError(f"Malformed response when checking status for job {job_id}: {response.text}") from e
+
+            if isinstance(data, list):
+                return {"status": "completed", "data": data, "count": len(data)}
+
+            if isinstance(data, dict):
+                # If dict is a status descriptor with status="ready"/"done"/"completed"
+                status_str = str(data.get("status", "")).lower()
+                if status_str in ("ready", "done", "completed"):
+                    res_data = data.get("records") or data.get("data") or [data]
+                    return {"status": "completed", "data": res_data, "count": len(res_data)}
+                elif status_str in ("building", "running", "collecting", "pending"):
+                    return {"status": "running", "message": data.get("message", "Job in progress")}
+                elif status_str in ("failed", "error"):
+                    error_msg = data.get("error") or data.get("message") or "Unknown remote error"
+                    return {"status": "failed", "error": error_msg}
+                else:
+                    # Single scraped record dict (e.g. {"url": "...", "title": "..."})
+                    return {"status": "completed", "data": [data], "count": 1}
+
+        # For HTTP 202 (Accepted / Still collecting)
         try:
             data = response.json()
-        except Exception as e:
-            raise BrightDataJobError(f"Malformed response when checking status for job {job_id}: {response.text}") from e
+            if isinstance(data, dict) and str(data.get("status", "")).lower() in ("failed", "error"):
+                return {"status": "failed", "error": data.get("error") or data.get("message")}
+        except Exception:
+            pass
 
-        if isinstance(data, list):
-            # When the dataset is ready, Bright Data returns a JSON array of items
-            return {"status": "completed", "data": data, "count": len(data)}
-
-        if isinstance(data, dict):
-            status_str = str(data.get("status", "")).lower()
-            if status_str in ("building", "running", "collecting", "pending"):
-                return {"status": "running", "message": data.get("message", "Job in progress")}
-            elif status_str in ("failed", "error"):
-                error_msg = data.get("error") or data.get("message") or "Unknown remote error"
-                return {"status": "failed", "error": error_msg}
-            elif status_str in ("ready", "done", "completed"):
-                records = data.get("records") or data.get("data") or []
-                return {"status": "completed", "data": records, "count": len(records)}
-
-        # Default fallback
-        return {"status": "running", "raw": data}
+        return {"status": "running", "message": "Job in progress"}
 
     async def fetch_results(self, job_id: str) -> list[dict[str, Any]]:
         """Fetch the completed records for a given job_id."""

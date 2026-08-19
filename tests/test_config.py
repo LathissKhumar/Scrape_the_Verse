@@ -5,7 +5,7 @@ from app.config.logging import get_logger, setup_logging, LOG_FORMAT
 
 
 def test_default_settings():
-    settings = Settings()
+    settings = Settings(_env_file=None)
     assert settings.OLLAMA_BASE_URL == "http://localhost:11434"
     assert settings.OLLAMA_MODEL == "qwen3:8b"
     assert settings.OLLAMA_TIMEOUT_SECONDS == 60.0
