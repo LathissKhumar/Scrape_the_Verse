@@ -31,9 +31,15 @@ from app.agents.validation import ValidationAgent
 from app.agents.diagnosis import DiagnosisAgent
 from app.agents.healing import HealingAgent
 from app.config.settings import get_settings
+from app.export.exporter import DataExporter
 
 
-async def execute_query(query: str, target_urls: Optional[list[str]] = None):
+async def execute_query(
+    query: str,
+    target_urls: Optional[list[str]] = None,
+    output_path: Optional[str] = None,
+    output_format: Optional[str] = None,
+):
     """Execute scraping workflow directly from CLI."""
     settings = get_settings()
     llm = OllamaClient(settings=settings)
@@ -101,6 +107,21 @@ async def execute_query(query: str, target_urls: Optional[list[str]] = None):
                 "anomalies": output.metadata.get("anomalies", []),
             }
             print(json.dumps(meta, indent=2))
+
+            if output_path and output:
+                fmt = (output_format or "json").lower()
+                content = ""
+                if fmt == "csv" or output_path.endswith(".csv"):
+                    content = DataExporter.to_csv(output.records)
+                elif fmt == "ndjson" or output_path.endswith(".ndjson"):
+                    content = DataExporter.to_ndjson(output.records)
+                else:
+                    content = DataExporter.to_json(output.records)
+
+                with open(output_path, "w", encoding="utf-8") as f:
+                    f.write(content)
+                print(f"\n[EXPORT] Saved {len(output.records)} records to {output_path}")
+
         else:
             print("No output produced.")
 
@@ -124,6 +145,19 @@ def main():
         default=None,
         help="One or more target URLs (separated by spaces or commas)",
     )
+    parser.add_argument(
+        "-o", "--output",
+        type=str,
+        default=None,
+        help="Output file path to save results (e.g. results.csv or results.json)",
+    )
+    parser.add_argument(
+        "-f", "--format",
+        type=str,
+        default="json",
+        choices=["json", "csv", "ndjson"],
+        help="Export format (default: json)",
+    )
 
     args = parser.parse_args()
 
@@ -137,7 +171,14 @@ def main():
                     target_urls.append(clean)
 
     if args.query:
-        asyncio.run(execute_query(query=args.query, target_urls=target_urls))
+        asyncio.run(
+            execute_query(
+                query=args.query,
+                target_urls=target_urls,
+                output_path=args.output,
+                output_format=args.format,
+            )
+        )
     else:
         # Interactive mode
         print("\n" + "=" * 60)
@@ -149,7 +190,14 @@ def main():
             sys.exit(0)
         raw_urls = input("Enter target URLs (separated by commas, or press Enter to skip): ").strip()
         interactive_urls = [u.strip() for u in raw_urls.split(",") if u.strip()]
-        asyncio.run(execute_query(query=user_query, target_urls=interactive_urls))
+        asyncio.run(
+            execute_query(
+                query=user_query,
+                target_urls=interactive_urls,
+                output_path=args.output,
+                output_format=args.format,
+            )
+        )
 
 
 if __name__ == "__main__":
