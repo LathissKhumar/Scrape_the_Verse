@@ -4,10 +4,12 @@ from unittest.mock import AsyncMock
 from app.agents.extraction import ExtractionAgent
 from app.agents.planner import ScrapingPlannerAgent
 from app.agents.scraper import ScraperAgent
+from app.agents.validation import ValidationAgent
 from app.extraction.schema import ExtractionResult
 from app.graph.state import ScrapingGraphState
 from app.graph.workflow import create_scraping_workflow
 from app.models.schemas import ScrapingTask
+from app.validation.schemas import ValidationResult
 
 
 @pytest.mark.asyncio
@@ -36,10 +38,19 @@ async def test_workflow_execution_success():
         fallback_used=False,
     )
 
+    mock_validator = AsyncMock(spec=ValidationAgent)
+    mock_validator.validate.return_value = ValidationResult(
+        status="healthy",
+        health_score=0.95,
+        quality_score=0.92,
+        record_count=2,
+    )
+
     workflow = create_scraping_workflow(
         planner_agent=mock_planner,
         scraper_agent=mock_scraper,
         extraction_agent=mock_extractor,
+        validation_agent=mock_validator,
     )
 
     initial_state: ScrapingGraphState = {
@@ -92,7 +103,7 @@ async def test_workflow_execution_empty_results():
     final_state = await workflow.ainvoke(initial_state)
 
     assert final_state["final_output"] is not None
-    assert final_state["final_output"].status == "partial"
+    assert final_state["final_output"].status == "failed"
 
 
 @pytest.mark.asyncio

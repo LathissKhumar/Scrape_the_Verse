@@ -1,6 +1,6 @@
 # Self-Healing Multi-Agent Web Scraping System
 
-A plain-language, multi-agent, self-healing web scraping framework powered by **LangGraph**, **Ollama**, local **Qwen3:8b**, **Bright Data Scraper Studio**, and an in-house modular **Extraction Engine**.
+A plain-language, multi-agent, self-healing web scraping framework powered by **LangGraph**, **Ollama**, local **Qwen3:8b**, **Bright Data Scraper Studio**, a modular **Extraction Engine**, and a deterministic **Validation Engine**.
 
 ---
 
@@ -9,7 +9,7 @@ A plain-language, multi-agent, self-healing web scraping framework powered by **
 Traditional web scraping pipelines frequently break due to dynamic DOM structures, anti-bot protections, pagination changes, and selector drift. This project implements an autonomous, self-healing scraping system where:
 1. Users submit web scraping objectives in **plain, natural language** along with target URLs (either supplied in structured lists or referenced within the prompt).
 2. A **Scraping Planner Agent** interprets the human objective into a deterministic scraping task specification.
-3. Sub-agents coordinate across the lifecycle: dispatching crawl jobs to **Bright Data**, extracting structured records via our modular extraction engine, validating quality against schemas, diagnosing runtime failures, and executing LLM-guided self-healing code repairs.
+3. Sub-agents coordinate across the lifecycle: dispatching crawl jobs to **Bright Data**, extracting structured records via our modular extraction engine, validating quality against schemas and historical baselines, diagnosing runtime failures, and executing LLM-guided self-healing code repairs.
 
 > [!IMPORTANT]
 > **No URL Discovery / Search Engine Agent**: The system operates exclusively on URLs provided explicitly by the user or identified in the user's natural language request. The system never invents URLs or uses external search engines.
@@ -33,12 +33,12 @@ Plain-Language User Request + URLs
                  │
                  ▼
       ┌──────────────────────┐
-      │   Extraction Agent   │ ── Modular Extraction Engine (CSS / XPath / Regex / Table / Semantic / LLM)
+      │   Extraction Agent   │ ── Modular Extraction Engine (CSS/XPath/Regex/Table/LLM)
       └──────────┬───────────┘
                  │
                  ▼
       ┌──────────────────────┐
-      │   Validation Agent   │ ── Validates schema, completeness & constraints (Phase 4)
+      │   Validation Agent   │ ── Deterministic Validation & Health Scoring (Phase 3)
       └──────────┬───────────┘
                  │
            ┌─────┴─────┐
@@ -47,7 +47,7 @@ Plain-Language User Request + URLs
           YES │     │ NO
               │     ▼
               │ ┌──────────────────────┐
-              │ │   Diagnosis Agent    │ ── Classifies error & identifies root cause (Phase 5)
+              │ │   Diagnosis Agent    │ ── Classifies error & identifies root cause (Phase 4)
               │ └──────────┬───────────┘
               │            │
               │            ▼
@@ -64,114 +64,109 @@ Plain-Language User Request + URLs
 
 ---
 
-## 3. LangGraph Workflow (Phase 2)
+## 3. LangGraph Workflow (Phase 3)
 
-Phase 2 executes a 3-node compiled state graph workflow using **LangGraph**:
+Phase 3 executes a compiled 4-node state graph workflow using **LangGraph**:
 
 ```
-START ──► [planner_node] ──► [scraper_node] ──► [extraction_node] ──► END
+START ──► [planner_node] ──► [scraper_node] ──► [extraction_node] ──► [validation_node] ──► END
 ```
 
 1. **`planner_node`**: Converts `original_user_query` + `target_urls` into a validated `ScrapingTask` using `ScrapingPlannerAgent` (backed by local `qwen3:8b`).
 2. **`scraper_node`**: Formats inputs via the Bright Data adapter, dispatches to `BrightDataClient`, polls for completion, and sets `raw_results`.
-3. **`extraction_node`**: Executes `ExtractionAgent` and `ExtractionEngine` to convert raw HTML/text into structured records conforming to task schema, setting `final_output: ScrapingResult`.
+3. **`extraction_node`**: Executes `ExtractionAgent` and `ExtractionEngine` to convert raw HTML/text into structured records.
+4. **`validation_node`**: Executes `ValidationAgent` and `ValidationEngine` to evaluate data completeness, schema conformance, URL/type validity, duplicate rates, anomalies, and mathematical health/quality scores.
 
 ---
 
-## 4. Modular Extraction Engine (`app/extraction/`)
+## 4. Deterministic Validation Subsystem (`app/validation/`)
 
-The proprietary extraction engine provides comprehensive extraction capabilities without third-party web scraper framework lock-in:
+The validation subsystem performs 100% deterministic, non-LLM evaluations:
 
-- **CSS Extraction** (`css.py`): Deterministic element and attribute extraction via BeautifulSoup.
-- **XPath Extraction** (`xpath.py`): Relative and container XPath extraction via `lxml.html`.
-- **Regex Extraction** (`regex.py`): Pattern-based extraction for emails, phone numbers, prices, URLs, dates, and custom patterns.
-- **HTML Table Extraction** (`tables.py`): Heuristic data table detection, scoring, header alignment, and structured row extraction.
-- **Content Chunking** (`chunking.py`): Sentence and paragraph-boundary chunking with configurable overlap and context preservation.
-- **Semantic Filtering** (`semantic.py`): Cosine-similarity ranking of chunks against task objectives using TF-IDF / vector embeddings to send only relevant content to the LLM.
-- **LLM Extraction** (`llm.py`): Schema-constrained structured extraction and table fallback using local `qwen3:8b`.
-- **Record Deduplication** (`dedup.py`): URL and composite-hash deduplication.
-- **Strategy Selector & Cascade** (`engine.py`): Prioritizes deterministic strategies (CSS/XPath/Regex/Table) before falling back to Qwen3:8b to conserve compute.
+### Health Score Formula:
+$$\text{Health Score} = 0.20 \times \text{Schema} + 0.20 \times \text{Completeness} + 0.15 \times \text{Count} + 0.10 \times \text{Type} + 0.10 \times \text{URL} + 0.10 \times \text{Dup} + 0.15 \times \text{Consistency}$$
 
----
+### Health Categories:
+- **`healthy`** (`0.85 - 1.00`): Pipeline operating cleanly.
+- **`degraded`** (`0.65 - 0.849`): Minor coverage drops or mild duplicate issues.
+- **`unstable`** (`0.40 - 0.649`): Moderate failure, high duplicate spike, or significant field loss.
+- **`broken`** (`0.00 - 0.399`): Zero records, total schema mismatch, or structural collapse.
 
-## 5. Configuration
-
-Create `.env` from `.env.example`:
-```env
-# Ollama Local LLM Settings
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=qwen3:8b
-OLLAMA_TIMEOUT_SECONDS=60.0
-
-# Bright Data Configuration
-BRIGHTDATA_API_KEY=your_api_key_here
-BRIGHTDATA_COLLECTOR_ID=c_xxxxxxxxxxxxxxxx
-
-# Application Settings
-APP_ENV=development
-LOG_LEVEL=INFO
-```
+### Failure Taxonomy:
+`EMPTY_RESULTS`, `SCRAPER_OUTPUT_MISSING`, `EXTRACTION_DEGRADATION`, `SCHEMA_MISMATCH`, `LOW_FIELD_COVERAGE`, `HIGH_DUPLICATE_RATE`, `INVALID_URLS`, `INVALID_FIELD_TYPES`, `LOW_RECORD_COUNT`, `UNEXPECTED_STRUCTURE`.
 
 ---
 
-## 6. Running the Application
+## 5. API Reference
 
-```powershell
-python run.py
-```
-Or with uvicorn:
-```powershell
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-```
-
----
-
-## 7. API Reference
-
-### 1. `POST /scrape` (Execute End-to-End Pipeline)
+### `POST /scrape` (Execute Full Pipeline)
 
 **Request:**
 ```json
 {
-  "query": "Scrape product names, prices and ratings from the provided website",
+  "query": "Scrape company name, website, and employee count from the provided website",
   "target_urls": [
-    "https://example.com/products"
+    "https://example.com/directory"
   ],
-  "max_records": 20
+  "max_records": 50
 }
 ```
 
-**Response (Success):**
+**Healthy Response:**
 ```json
 {
   "task_id": "8f0be24c-b4db-4b68-80f4-5f54316d6342",
   "status": "success",
   "records": [
     {
-      "product_name": "Product Alpha",
-      "price": "$19.99",
-      "rating": 4.8
+      "name": "Acme Corp",
+      "website": "https://acme.example.com",
+      "employees": 150
     }
   ],
   "metadata": {
     "task_id": "8f0be24c-b4db-4b68-80f4-5f54316d6342",
     "record_count": 1,
-    "extraction_strategy": "css",
-    "fallback_used": false
+    "health_score": 0.96,
+    "quality_score": 0.94,
+    "validation_status": "healthy",
+    "anomalies": [],
+    "validation": {
+      "field_coverage": {
+        "name": 1.0,
+        "website": 1.0,
+        "employees": 1.0
+      },
+      "duplicate_rate": 0.0,
+      "url_valid_rate": 1.0,
+      "schema_valid_rate": 1.0
+    }
   },
   "error": null
 }
 ```
 
-### 2. `POST /parse-task` (Planner Parser Only)
-Converts human natural language requests into structured `ScrapingTask` without triggering scraping.
-
-### 3. `GET /health` & `GET /health/llm`
-Inspect service health and local Ollama model availability.
+**Degraded/Broken Response:**
+```json
+{
+  "task_id": "8f0be24c-b4db-4b68-80f4-5f54316d6342",
+  "status": "partial",
+  "records": [...],
+  "metadata": {
+    "health_score": 0.52,
+    "quality_score": 0.58,
+    "validation_status": "unstable",
+    "anomalies": [
+      "Critical coverage collapse for field 'employees' (15.0%)."
+    ]
+  },
+  "error": "Validation detected quality degradation: health_score=0.52"
+}
+```
 
 ---
 
-## 8. Running Tests
+## 6. Running Tests
 
 Run full test suite:
 ```powershell

@@ -4,14 +4,15 @@ from langgraph.graph import END, START, StateGraph
 from app.agents.extraction import ExtractionAgent
 from app.agents.planner import ScrapingPlannerAgent
 from app.agents.scraper import ScraperAgent
+from app.agents.validation import ValidationAgent
 from app.brightdata.client import BrightDataClient
 from app.config.logging import get_logger
 from app.config.settings import get_settings
-from app.extraction.engine import ExtractionEngine
 from app.extraction.schema import ExtractionResult
 from app.graph.state import ScrapingGraphState
 from app.llm.ollama_client import OllamaClient
 from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from app.validation.schemas import ValidationResult
 
 logger = get_logger("GRAPH")
 
@@ -20,16 +21,18 @@ def create_scraping_workflow(
     planner_agent: Optional[ScrapingPlannerAgent] = None,
     scraper_agent: Optional[ScraperAgent] = None,
     extraction_agent: Optional[ExtractionAgent] = None,
+    validation_agent: Optional[ValidationAgent] = None,
 ):
-    """Build and compile the Phase 2 LangGraph scraping state machine:
+    """Build and compile the Phase 3 LangGraph scraping state machine:
 
-    START -> planner -> scraper -> extraction -> END
+    START -> planner -> scraper -> extraction -> validation -> END
     """
     settings = get_settings()
     llm = OllamaClient(settings=settings)
     planner = planner_agent or ScrapingPlannerAgent(llm_client=llm)
     scraper = scraper_agent or ScraperAgent(brightdata_client=BrightDataClient(settings=settings))
     extractor = extraction_agent or ExtractionAgent(llm_client=llm)
+    validator = validation_agent or ValidationAgent()
 
     async def planner_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
@@ -101,7 +104,6 @@ def create_scraping_workflow(
         task: Optional[ScrapingTask] = state.get("scraping_task")
         raw_results = state.get("raw_results")
 
-        # If previous step already produced a failure final_output, keep it
         if state.get("final_output") and state["final_output"].status == "failed":
             return {}
 
@@ -110,16 +112,8 @@ def create_scraping_workflow(
         if not raw_results:
             empty_msg = "No raw content retrieved for extraction."
             logger.warning(f"task_id={task_id} {empty_msg}")
-            final_res = ScrapingResult(
-                task_id=task_id,
-                status="partial",
-                records=[],
-                metadata={"task_id": task_id, "record_count": 0},
-                error=empty_msg,
-            )
             return {
                 "extracted_results": [],
-                "final_output": final_res,
             }
 
         try:
@@ -127,26 +121,8 @@ def create_scraping_workflow(
                 raw_results=raw_results,
                 task=task,
             )
-
-            records = extraction_result.records
-            status = "success" if records else "partial"
-            final_res = ScrapingResult(
-                task_id=task_id,
-                status=status,
-                records=records,
-                metadata={
-                    "task_id": task_id,
-                    "record_count": len(records),
-                    "extraction_strategy": extraction_result.strategy_used,
-                    "fallback_used": extraction_result.fallback_used,
-                    **extraction_result.metadata,
-                },
-                error=None if records else "No structured records extracted",
-            )
-
             return {
-                "extracted_results": records,
-                "final_output": final_res,
+                "extracted_results": extraction_result.records,
             }
         except Exception as e:
             logger.error(f"task_id={task_id} Extraction failure: {e}")
@@ -154,27 +130,82 @@ def create_scraping_workflow(
                 "failure_type": "EXTRACTION_FAILURE",
                 "message": str(e),
             }
-            final_res = ScrapingResult(
-                task_id=task_id,
-                status="failed",
-                records=[],
-                metadata={"task_id": task_id, "record_count": 0},
-                error=str(e),
-            )
             return {
+                "extracted_results": [],
                 "failure": failure_info,
-                "final_output": final_res,
             }
+
+    async def validation_node(state: ScrapingGraphState) -> dict[str, Any]:
+        task_id = state.get("task_id", "unknown-task")
+        task: Optional[ScrapingTask] = state.get("scraping_task")
+        raw_results = state.get("raw_results")
+        extracted_results = state.get("extracted_results") or []
+
+        if state.get("final_output") and state["final_output"].status == "failed":
+            return {}
+
+        logger.info(f"task_id={task_id} [GRAPH:validation_node] Running validation agent")
+
+        validation_result: ValidationResult = await validator.validate(
+            extracted_results=extracted_results,
+            task=task or ScrapingTask(task_id=task_id, objective="", target_urls=[]),
+            raw_results=raw_results,
+        )
+
+        # Derive final status
+        if validation_result.status == "healthy":
+            final_status = "success"
+            err_str = None
+        elif validation_result.status in ("degraded", "unstable"):
+            final_status = "partial" if extracted_results else "failed"
+            err_str = (
+                f"Validation detected quality degradation: health_score={validation_result.health_score}"
+            )
+        else:  # broken
+            final_status = "failed" if not extracted_results else "partial"
+            err_str = "Validation detected severe extraction degradation or broken output"
+
+        # Build final ScrapingResult
+        final_res = ScrapingResult(
+            task_id=task_id,
+            status=final_status,
+            records=extracted_results,
+            metadata={
+                "task_id": task_id,
+                "record_count": len(extracted_results),
+                "health_score": validation_result.health_score,
+                "quality_score": validation_result.quality_score,
+                "validation_status": validation_result.status,
+                "anomalies": validation_result.anomalies,
+                "validation": {
+                    "field_coverage": {
+                        k: v.coverage for k, v in validation_result.field_metrics.items()
+                    },
+                    "duplicate_rate": validation_result.duplicate_metrics.duplicate_rate,
+                    "url_valid_rate": validation_result.url_metrics.valid_rate,
+                    "schema_valid_rate": validation_result.schema_metrics.valid_rate,
+                },
+            },
+            error=err_str,
+        )
+
+        return {
+            "validation_result": validation_result.model_dump(),
+            "failure": [f.model_dump() for f in validation_result.failures] if validation_result.failures else state.get("failure"),
+            "final_output": final_res,
+        }
 
     graph = StateGraph(ScrapingGraphState)
 
     graph.add_node("planner", planner_node)
     graph.add_node("scraper", scraper_node)
     graph.add_node("extraction", extraction_node)
+    graph.add_node("validation", validation_node)
 
     graph.add_edge(START, "planner")
     graph.add_edge("planner", "scraper")
     graph.add_edge("scraper", "extraction")
-    graph.add_edge("extraction", END)
+    graph.add_edge("extraction", "validation")
+    graph.add_edge("validation", END)
 
     return graph.compile()
