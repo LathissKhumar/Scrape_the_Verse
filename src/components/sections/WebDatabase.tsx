@@ -8,7 +8,7 @@ const STORY = [
 ]
 
 const WEB_NODES = ['Business Listing', 'Website Status', 'Review Sentiment', 'Competitor Gap', 'Social Signals', 'Location Data', 'Product Offering', 'Pricing Signals']
-const NODE_COLORS = ['#38BDF8', '#8B5CF6', '#34D399', '#38BDF8', '#8B5CF6', '#34D399', '#38BDF8', '#8B5CF6']
+const NODE_COLORS = ['#38BDF8', '#60A5FA', '#34D399', '#818CF8', '#38BDF8', '#60A5FA', '#34D399', '#818CF8']
 
 export function WebDatabase() {
   const ref = useRef(null)
@@ -46,7 +46,7 @@ export function WebDatabase() {
           animate={inView ? { opacity: 1, rotateX: 0, y: 0 } : {}}
           transition={{ delay: 0.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="text-center text-xs font-mono tracking-widest text-muted uppercase">
+          <p className="text-center text-xs font-mono tracking-widest text-slate-300 font-semibold uppercase drop-shadow-md">
             INTELLIGENCE LAYER SYNTHESIZES UNSTRUCTURED WEB SIGNALS
           </p>
 
@@ -54,38 +54,40 @@ export function WebDatabase() {
             {WEB_NODES.map((node, i) => (
               <motion.div
                 key={node}
-                className="px-4 py-2.5 rounded-xl text-xs font-mono font-medium border backdrop-blur-md glass-card"
+                className="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold border backdrop-blur-md shadow-md shadow-black/20"
                 style={{
                   color: NODE_COLORS[i],
-                  borderColor: `${NODE_COLORS[i]}35`,
+                  backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                  borderColor: `${NODE_COLORS[i]}65`,
+                  boxShadow: `0 8px 24px rgba(0, 0, 0, 0.18), inset 0 1px 0.5px rgba(255, 255, 255, 0.4), 0 0 12px ${NODE_COLORS[i]}25`,
                 }}
                 initial={{ scale: 0.85, opacity: 0, y: 20 }}
                 animate={inView ? { scale: 1, opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.6 + i * 0.08, type: 'spring', stiffness: 120, damping: 15 }}
-                whileHover={{ scale: 1.05, y: -4 }}
+                whileHover={{ scale: 1.05, y: -4, backgroundColor: 'rgba(255, 255, 255, 0.2)', borderColor: NODE_COLORS[i] }}
               >
-                <span className="w-1.5 h-1.5 rounded-full inline-block mr-2" style={{ backgroundColor: NODE_COLORS[i] }} />
+                <span className="w-2 h-2 rounded-full inline-block mr-2 shadow-sm" style={{ backgroundColor: NODE_COLORS[i] }} />
                 {node}
               </motion.div>
             ))}
           </div>
 
           <div className="flex flex-col items-center gap-4">
-            <div className="w-px h-12 bg-gradient-to-b from-transparent to-violet-accent" />
+            <div className="w-0.5 h-12 bg-gradient-to-b from-transparent via-sky-400 to-indigo-400 opacity-90" />
             <motion.div
               whileHover={{ scale: 1.03 }}
-              className="glass-level-2 px-8 py-4 text-center border-violet-accent/30 shadow-lg"
+              className="glass-level-2 px-8 py-4 text-center border-sky-400/60 bg-white/10 backdrop-blur-lg shadow-lg shadow-sky-500/15"
             >
-              <span className="font-mono text-sm font-semibold text-violet-accent tracking-wider">
+              <span className="font-mono text-sm font-bold text-sky-400 tracking-wider">
                 ⚡ BRIGHT DATA SCRAPER STUDIO
               </span>
             </motion.div>
-            <div className="w-px h-12 bg-gradient-to-b from-violet-accent to-blue-accent" />
+            <div className="w-0.5 h-12 bg-gradient-to-b from-sky-400 via-indigo-400 to-transparent opacity-90" />
             <motion.div
               whileHover={{ scale: 1.03 }}
-              className="glass-level-2 px-8 py-4 text-center border-blue-accent/30 shadow-lg"
+              className="glass-level-2 px-8 py-4 text-center border-indigo-400/60 bg-white/10 backdrop-blur-lg shadow-lg shadow-indigo-500/15"
             >
-              <span className="font-mono text-sm font-semibold text-blue-accent tracking-wider">
+              <span className="font-mono text-sm font-bold text-indigo-300 tracking-wider">
                 🧠 GEMINI STRUCTURED INTELLIGENCE LAYER
               </span>
             </motion.div>

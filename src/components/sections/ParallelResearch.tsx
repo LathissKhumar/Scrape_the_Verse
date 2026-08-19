@@ -38,15 +38,15 @@ export function ParallelResearch() {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <div className="glass-level-2 px-8 py-4 text-center border-violet-accent/30 shadow-lg">
-            <div className="font-bold font-mono text-base text-violet-accent flex items-center justify-center gap-2">
-              <Zap className="w-4 h-4 text-violet-accent" />
+          <div className="glass-level-2 px-8 py-4 text-center border-sky-400/60 bg-white/10 backdrop-blur-md shadow-lg">
+            <div className="font-bold font-mono text-base text-sky-400 flex items-center justify-center gap-2">
+              <Zap className="w-4 h-4 text-sky-400" />
               <span>PROSPECT IDENTIFIED</span>
             </div>
-            <div className="text-xs font-mono text-muted mt-1">Urban Brew Café · Chennai, India</div>
+            <div className="text-xs font-mono text-slate-200 font-semibold mt-1">Urban Brew Café · Chennai, India</div>
           </div>
-          <div className="w-px h-10 bg-gradient-to-b from-violet-accent to-transparent" />
-          <span className="text-xs font-mono tracking-widest text-muted uppercase">
+          <div className="w-0.5 h-10 bg-gradient-to-b from-sky-400 via-indigo-400 to-transparent opacity-90" />
+          <span className="text-xs font-mono tracking-widest text-slate-200 font-semibold uppercase">
             CONCURRENT COLLECTOR EXECUTION
           </span>
         </motion.div>
@@ -66,7 +66,7 @@ export function ParallelResearch() {
             >
               <motion.div
                 whileHover={{ y: -6, scale: 1.02 }}
-                className="glass-card p-6 h-full space-y-4 flex flex-col justify-between hover:border-blue-accent/50 shadow-xl"
+                className="glass-card p-6 h-full space-y-4 flex flex-col justify-between hover:border-sky-400/60 shadow-xl"
               >
                 <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
                   <span className="font-bold text-base font-display text-text-primary">
@@ -77,8 +77,8 @@ export function ParallelResearch() {
                 <div className="space-y-2.5 font-mono text-xs">
                   {collector.metrics.map((m) => (
                     <div key={m.label} className="flex items-center justify-between">
-                      <span className="text-muted">{m.label}</span>
-                      <span className="text-blue-accent font-semibold">{m.value}</span>
+                      <span className="text-slate-200 font-semibold">{m.label}</span>
+                      <span className="text-sky-400 font-bold">{m.value}</span>
                     </div>
                   ))}
                 </div>
@@ -95,13 +95,13 @@ export function ParallelResearch() {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ delay: 0.6, duration: 0.7 }}
         >
-          <div className="w-px h-12 bg-gradient-to-b from-transparent to-blue-accent" />
-          <div className="glass-level-2 px-10 py-5 text-center border-blue-accent/40 shadow-xl flex flex-col items-center gap-1.5">
-            <div className="font-bold tracking-wider font-mono text-blue-accent flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-success" />
+          <div className="w-0.5 h-12 bg-gradient-to-b from-transparent via-indigo-400 to-sky-400 opacity-90" />
+          <div className="glass-level-2 px-10 py-5 text-center border-sky-400/60 bg-white/10 backdrop-blur-md shadow-xl flex flex-col items-center gap-1.5">
+            <div className="font-bold tracking-wider font-mono text-sky-400 flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
               <span>UNIFIED BUSINESS INTELLIGENCE PROFILE</span>
             </div>
-            <div className="text-xs font-mono text-muted">
+            <div className="text-xs font-mono text-slate-200 font-semibold">
               Lead Score: 92/100 · Opportunity: High Priority
             </div>
           </div>

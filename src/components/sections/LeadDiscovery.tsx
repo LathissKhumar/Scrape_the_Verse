@@ -61,13 +61,13 @@ export function LeadDiscovery() {
         >
           {/* Glass Search Console */}
           <div className="glass-level-2 p-8 space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <span className="font-mono text-xs text-muted uppercase flex items-center gap-2">
-                <Filter className="w-3.5 h-3.5 text-violet-accent" />
+            <div className="flex items-center justify-between border-b border-white/15 pb-4">
+              <span className="font-mono text-xs text-slate-100 font-bold uppercase flex items-center gap-2">
+                <Filter className="w-3.5 h-3.5 text-sky-400" />
                 <span>DISCOVERY FILTER SPECS</span>
               </span>
-              <span className="text-xs font-mono text-blue-accent font-semibold flex items-center gap-1">
-                <Database className="w-3.5 h-3.5 text-blue-accent" />
+              <span className="text-xs font-mono text-sky-400 font-bold flex items-center gap-1">
+                <Database className="w-3.5 h-3.5 text-sky-400" />
                 <span>Bright Data Studio</span>
               </span>
             </div>
@@ -82,8 +82,8 @@ export function LeadDiscovery() {
                 { label: 'Discovery Engine', value: 'Bright Data Studio' },
               ].map((field) => (
                 <div key={field.label} className="space-y-1.5">
-                  <label className="text-muted">{field.label}</label>
-                  <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-text-primary font-medium">
+                  <label className="text-slate-200 font-bold">{field.label}</label>
+                  <div className="px-4 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/30 text-white font-bold shadow-md">
                     {field.value}
                   </div>
                 </div>
@@ -94,7 +94,7 @@ export function LeadDiscovery() {
               id="start-discovery-btn"
               variant="primary"
               onClick={handleDiscover}
-              className="w-full justify-center !py-3.5 shadow-xl shadow-violet-accent/20 flex items-center gap-2"
+              className="w-full justify-center !py-3.5 shadow-xl shadow-sky-500/25 flex items-center gap-2"
             >
               <Search className="w-4 h-4" />
               <span>

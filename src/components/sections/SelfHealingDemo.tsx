@@ -8,10 +8,10 @@ import { Button } from '@/components/ui/Button'
 import { useSelfHealingSequence } from '@/hooks/useSelfHealingSequence'
 
 const PHASE_COLORS = {
-  idle: '#A7AFBD',
-  running: '#38BDF8',
-  failure: '#FB7185',
-  healing: '#8B5CF6',
+  idle: '#CBD5E1',
+  running: '#60A5FA',
+  failure: '#F43F5E',
+  healing: '#38BDF8',
   recovered: '#34D399',
 }
 
@@ -24,10 +24,10 @@ const PHASE_LABELS = {
 }
 
 const EVENT_COLORS: Record<string, string> = {
-  info: '#A7AFBD',
-  warning: '#FBBF24',
-  error: '#FB7185',
-  healing: '#8B5CF6',
+  info: '#E2E8F0',
+  warning: '#F59E0B',
+  error: '#F43F5E',
+  healing: '#38BDF8',
   success: '#34D399',
 }
 
@@ -56,7 +56,7 @@ export function SelfHealingDemo() {
           <SectionLabel stage="03" label="Self-Healing Engine" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             The web changes.{' '}
-            <GradientText gradient="violet">Your scraper shouldn&apos;t stop.</GradientText>
+            <GradientText gradient="signature">Your scraper shouldn&apos;t stop.</GradientText>
           </h2>
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             When target sites change their DOM layout or CSS selectors, Scrape-Verse detects structural failure and automatically generates new extraction rules.
@@ -74,7 +74,7 @@ export function SelfHealingDemo() {
           >
             <div className="glass-level-2 p-6 space-y-4">
               <h3 className="text-xl font-bold font-display text-text-primary flex items-center gap-2">
-                <Cpu className="w-5 h-5 text-violet-accent" />
+                <Cpu className="w-5 h-5 text-sky-400" />
                 <span>Automated DOM Repair Workflow</span>
               </h3>
               <div className="space-y-3 font-mono text-xs">
@@ -84,9 +84,9 @@ export function SelfHealingDemo() {
                   { step: '3. LLM Re-Analysis', desc: 'Gemini re-evaluates page layout to locate fields.' },
                   { step: '4. Validation & Recovery', desc: 'Executes test extraction and updates rule schema.' },
                 ].map((item) => (
-                  <div key={item.step} className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-0.5">
-                    <div className="font-semibold text-blue-accent">{item.step}</div>
-                    <div className="text-muted">{item.desc}</div>
+                  <div key={item.step} className="p-3 rounded-xl bg-white/10 border border-white/15 space-y-0.5">
+                    <div className="font-bold text-sky-400">{item.step}</div>
+                    <div className="text-slate-200">{item.desc}</div>
                   </div>
                 ))}
               </div>
@@ -102,7 +102,7 @@ export function SelfHealingDemo() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className={`glass-level-3 overflow-hidden transition-all duration-500 ${
-              phase === 'failure' ? 'border-rose-error/40 shadow-rose-error/10' : phase === 'healing' ? 'border-violet-accent/40 shadow-violet-accent/10' : 'border-white/15'
+              phase === 'failure' ? 'border-rose-error/40 shadow-rose-error/10' : phase === 'healing' ? 'border-sky-400/60 shadow-sky-500/15' : 'border-white/20'
             }`}>
               {/* Browser Window Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5 font-mono text-xs">
@@ -110,7 +110,7 @@ export function SelfHealingDemo() {
                   <div className="w-3 h-3 rounded-full bg-rose-error/60" />
                   <div className="w-3 h-3 rounded-full bg-amber-warning/60" />
                   <div className="w-3 h-3 rounded-full bg-emerald-success/60" />
-                  <span className="text-muted ml-3 hidden sm:inline">https://target-site.com/listing/482</span>
+                  <span className="text-slate-300 ml-3 hidden sm:inline">https://target-site.com/listing/482</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: phaseColor }} />
@@ -121,10 +121,10 @@ export function SelfHealingDemo() {
               </div>
 
               {/* Console Log Stream */}
-              <div className="h-80 overflow-y-auto p-6 space-y-2.5 font-mono text-xs bg-[#07090D]/85">
+              <div className="h-80 overflow-y-auto p-6 space-y-2.5 font-mono text-xs bg-white/10 backdrop-blur-md">
                 {eventLog.length === 0 ? (
-                  <div className="h-full flex items-center justify-center text-muted gap-2">
-                    <ShieldAlert className="w-4 h-4 text-violet-accent" />
+                  <div className="h-full flex items-center justify-center text-slate-300 gap-2">
+                    <ShieldAlert className="w-4 h-4 text-sky-400" />
                     <span>Click &quot;Run Self-Healing Sequence&quot; to test layout break…</span>
                   </div>
                 ) : (

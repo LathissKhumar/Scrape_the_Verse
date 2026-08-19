@@ -22,10 +22,10 @@ export function Button({
 
   const styles = {
     primary: {
-      background: 'linear-gradient(135deg, #6D28D9 0%, #8B5CF6 50%, #38BDF8 100%)',
+      background: 'linear-gradient(135deg, #0284C7 0%, #38BDF8 50%, #60A5FA 100%)',
       color: '#FFFFFF',
-      boxShadow: '0 8px 25px rgba(139, 92, 246, 0.25)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
+      boxShadow: '0 8px 25px rgba(56, 189, 248, 0.35)',
+      border: '1px solid rgba(255, 255, 255, 0.25)',
     },
     secondary: {
       background: 'rgba(255, 255, 255, 0.05)',

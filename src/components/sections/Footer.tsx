@@ -10,7 +10,7 @@ export function Footer() {
           <div
             className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-md shadow-violet-accent/20"
             style={{
-              background: 'linear-gradient(135deg, #6D28D9 0%, #8B5CF6 50%, #38BDF8 100%)',
+              background: 'linear-gradient(135deg, #0284C7 0%, #38BDF8 50%, #60A5FA 100%)',
             }}
           >
             <Layers className="w-4 h-4 text-white" />

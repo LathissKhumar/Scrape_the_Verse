@@ -9,15 +9,15 @@ export function SectionLabel({
     <div className="flex items-center justify-center gap-3 mb-4">
       {stage && (
         <span
-          className="text-xs font-mono tracking-widest border px-2 py-0.5 rounded"
-          style={{ color: '#EC0AFF', borderColor: 'rgba(236,10,255,0.4)' }}
+          className="text-xs font-mono font-bold tracking-widest border px-2.5 py-0.5 rounded-md shadow-sm"
+          style={{ color: '#38BDF8', borderColor: 'rgba(56, 189, 248, 0.5)', backgroundColor: 'rgba(56, 189, 248, 0.1)' }}
         >
           STAGE {stage}
         </span>
       )}
       <span
-        className="text-xs font-mono tracking-widest uppercase"
-        style={{ color: '#A1A1B5' }}
+        className="text-xs font-mono font-semibold tracking-widest uppercase"
+        style={{ color: '#CBD5E1' }}
       >
         {label}
       </span>
