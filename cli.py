@@ -4,7 +4,10 @@ import argparse
 import asyncio
 import json
 import sys
+import warnings
 from typing import Optional
+
+warnings.filterwarnings("ignore")
 
 from app.graph.state import ScrapingGraphState
 from app.graph.workflow import create_scraping_workflow

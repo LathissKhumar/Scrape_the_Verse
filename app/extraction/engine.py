@@ -171,15 +171,23 @@ class ExtractionEngine:
         # 4. Try Regex Extraction for pattern fields
         regex_records = self.regex_extractor.extract(page, effective_schema)
         if regex_records:
-            logger.info(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
-            deduped = self.deduplicator.deduplicate(regex_records)
-            conformed = self._enforce_task_schema(deduped, task)
-            return ExtractionResult(
-                records=conformed,
-                strategy_used=ExtractionStrategyEnum.REGEX.value,
-                fallback_used=False,
-                metadata={"record_count": len(conformed)},
+            # Check if all requested fields have at least one extracted value
+            has_coverage = all(
+                any(r.get(f) is not None for r in regex_records)
+                for f in task.fields
             )
+            if has_coverage or not self.llm_extractor:
+                logger.info(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
+                deduped = self.deduplicator.deduplicate(regex_records)
+                conformed = self._enforce_task_schema(deduped, task)
+                return ExtractionResult(
+                    records=conformed,
+                    strategy_used=ExtractionStrategyEnum.REGEX.value,
+                    fallback_used=False,
+                    metadata={"record_count": len(conformed)},
+                )
+            else:
+                logger.info("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
 
         # 5. LLM Extraction Fallback with Qwen3:8b
         if self.llm_extractor:
