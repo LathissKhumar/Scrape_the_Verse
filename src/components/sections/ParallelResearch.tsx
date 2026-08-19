@@ -13,13 +13,13 @@ export function ParallelResearch() {
   return (
     <section id="parallel-research" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden" aria-label="Parallel Research">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Header - Slide in from Right */}
+        {/* Header with Blur Text Reveal */}
         <motion.div
           className="text-center mb-16 space-y-4"
-          initial={{ opacity: 0, x: 60 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionLabel stage="02" label="Parallel Web Research" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
@@ -33,10 +33,10 @@ export function ParallelResearch() {
         {/* Fan-out Header Node */}
         <motion.div
           className="flex flex-col items-center gap-4 mb-14"
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.85 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
         >
           <div className="glass-level-2 px-8 py-4 text-center border-violet-accent/30 shadow-lg">
             <div className="font-bold font-mono text-base text-violet-accent flex items-center justify-center gap-2">
@@ -51,17 +51,23 @@ export function ParallelResearch() {
           </span>
         </motion.div>
 
-        {/* 4 Collector Cards - Staggered Slide from Right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {/* 4 Collector Cards — 3D Perspective Staggered Slide (Matching Scroll_UI.mp4) */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+          style={{ perspective: '1200px' }}
+        >
           {RESEARCH_COLLECTORS.map((collector, i) => (
             <motion.div
               key={collector.id}
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: 80, rotateY: -15, scale: 0.9 }}
+              whileInView={{ opacity: 1, x: 0, rotateY: 0, scale: 1 }}
               viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: i * 0.14, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="glass-card p-6 h-full space-y-4 flex flex-col justify-between hover:border-blue-accent/40">
+              <motion.div
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="glass-card p-6 h-full space-y-4 flex flex-col justify-between hover:border-blue-accent/50 shadow-xl"
+              >
                 <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
                   <span className="font-bold text-base font-display text-text-primary">
                     {collector.title}
@@ -76,7 +82,7 @@ export function ParallelResearch() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
@@ -84,10 +90,10 @@ export function ParallelResearch() {
         {/* Converge Node */}
         <motion.div
           className="flex flex-col items-center gap-4 mt-14"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
-          transition={{ delay: 0.6, duration: 0.6 }}
+          transition={{ delay: 0.6, duration: 0.7 }}
         >
           <div className="w-px h-12 bg-gradient-to-b from-transparent to-blue-accent" />
           <div className="glass-level-2 px-10 py-5 text-center border-blue-accent/40 shadow-xl flex flex-col items-center gap-1.5">

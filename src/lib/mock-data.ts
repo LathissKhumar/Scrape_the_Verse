@@ -225,6 +225,33 @@ export const RESEARCH_COLLECTORS: ResearchCollector[] = [
   },
 ]
 
+export const AI_AGENTS = [
+  {
+    id: 'landing-page',
+    name: 'Landing Page Agent',
+    agentRole: 'Automated Micro-site Builder',
+    icon: 'file-text',
+    outputTitle: 'Tailored Mobile Micro-Site',
+    outputSnippet: `Headline: "Fresh Coffee & Online Ordering for Urban Brew Café"\nFeatures: Mobile Menu · Instant WhatsApp Booking · Google Maps Route Integration`,
+  },
+  {
+    id: 'email-outreach',
+    name: 'Email Outreach Agent',
+    agentRole: 'Hyper-Personalized Sales Copywriter',
+    icon: 'mail',
+    outputTitle: 'Personalized Executive Email',
+    outputSnippet: `Subject: "Quick thought on Urban Brew Café's digital presence"\nBody: "Hi Urban Brew Team, noticed your 4.7★ rating with 280 reviews on Maps..."`,
+  },
+  {
+    id: 'voice-script',
+    name: 'Voice Script Agent',
+    agentRole: 'AI Phone Pitch Generator',
+    icon: 'mic',
+    outputTitle: 'AI Voice Call Briefing',
+    outputSnippet: `Opening: "Hello! Calling regarding Urban Brew Café's online reservation system setup..."`,
+  },
+]
+
 export const MONITORING_PROSPECTS: MonitoringProspect[] = [
   {
     id: '1',
