@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand colours */
+  --color-void: #05050A;
+  --color-bg-black: #080810;
+  --color-deep-violet: #240044;
+  --color-purple-brand: #6D28D9;
+  --color-magenta: #EC0AFF;
+  --color-neon-pink: #FF2BD6;
+  --color-red-brand: #FF1744;
+  --color-cyan: #00E5FF;
+  --color-blue-brand: #2563EB;
+  --color-off-white: #F8FAFC;
+  --color-muted: #A1A1B5;
+
+  /* Brand gradients */
+  --background-brand-gradient: linear-gradient(135deg, #240044 0%, #6D28D9 22%, #EC0AFF 45%, #FF1744 68%, #00E5FF 100%);
+  --background-failure-gradient: linear-gradient(135deg, #FF1744, #EC0AFF);
+  --background-healing-gradient: linear-gradient(135deg, #EC0AFF, #6D28D9);
+  --background-recovery-gradient: linear-gradient(135deg, #6D28D9, #00E5FF);
+
+  /* Fonts */
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), Consolas, monospace;
+
+  /* Animations */
+  --animate-pulse-glow: pulseGlow 2s ease-in-out infinite;
+  --animate-glitch: glitch 0.3s steps(2) infinite;
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.7; filter: brightness(1.5); }
+  }
+
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    33% { transform: translate(-2px, 1px); }
+    66% { transform: translate(2px, -1px); }
+    100% { transform: translate(0); }
+  }
+}
+
+/* Base resets */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background-color: #05050A;
+  color: #F8FAFC;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background-color: #EC0AFF; color: #05050A; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #05050A; }
+::-webkit-scrollbar-thumb { background: #6D28D9; border-radius: 3px; }
+
+/* Utility classes */
+.halftone {
+  background-image: radial-gradient(circle, rgba(236,10,255,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.comic-panel {
+  border: 2px solid rgba(236,10,255,0.3);
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 rgba(236,10,255,0.2), 0 0 40px rgba(109,40,217,0.15);
+}
+
+.glow-cyan { box-shadow: 0 0 20px rgba(0,229,255,0.5), 0 0 40px rgba(0,229,255,0.2); }
+.glow-magenta { box-shadow: 0 0 20px rgba(236,10,255,0.5), 0 0 40px rgba(236,10,255,0.2); }
+.glow-red { box-shadow: 0 0 20px rgba(255,23,68,0.5), 0 0 40px rgba(255,23,68,0.2); }
+
+.brand-gradient-text {
+  background: linear-gradient(135deg, #240044 0%, #6D28D9 22%, #EC0AFF 45%, #FF1744 68%, #00E5FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
