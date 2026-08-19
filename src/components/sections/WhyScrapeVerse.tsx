@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { ShieldCheck, Zap, BrainCircuit, Radio } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
@@ -42,12 +42,18 @@ const DIFFERENTIATORS = [
 
 export function WhyScrapeVerse() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="why-scrape-verse" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="Why Scrape-Verse">
+    <section id="why-scrape-verse" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Why Scrape-Verse">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Scale from Depth */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, scale: 0.92, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel label="Platform Value" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             Built for enterprise.{' '}
@@ -56,15 +62,17 @@ export function WhyScrapeVerse() {
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             Why traditional web scrapers break and Scrape-Verse delivers persistent competitive advantage.
           </p>
-        </div>
+        </motion.div>
 
+        {/* 2x2 Grid - Alternating Left and Right Slide */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {DIFFERENTIATORS.map((d, i) => (
             <motion.div
               key={d.title}
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -60 : 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{
                 y: -5,
                 scale: 1.01,

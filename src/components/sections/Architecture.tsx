@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
@@ -33,12 +33,18 @@ const LAYERS = [
 
 export function Architecture() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="architecture" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="System Architecture">
+    <section id="architecture" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="System Architecture">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Scale from Depth */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, scale: 0.92, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel label="System Architecture" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             Built for developers.{' '}
@@ -47,37 +53,50 @@ export function Architecture() {
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             Decoupled infrastructure combining Bright Data extraction, self-healing runtime, Gemini AI reasoning, and sales agents.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Business vs Developer Split */}
+        {/* Business vs Developer Split - Slide from Left and Right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
-          <div className="glass-level-2 p-8 space-y-3">
+          <motion.div
+            className="glass-level-2 p-8 space-y-3"
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="font-mono text-xs font-bold text-blue-accent uppercase">BUSINESS VIEW</div>
             <h3 className="text-xl font-bold font-display text-text-primary">Discover & Convert Prospects</h3>
             <p className="text-xs font-body text-text-secondary leading-relaxed">
               Identify high-opportunity leads, generate customized proposals, and trigger outreach automatically without manual research.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="glass-level-2 p-8 space-y-3 border-violet-accent/30">
+          <motion.div
+            className="glass-level-2 p-8 space-y-3 border-violet-accent/30"
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="font-mono text-xs font-bold text-violet-accent uppercase">DEVELOPER VIEW</div>
             <h3 className="text-xl font-bold font-display text-text-primary">Resilient Scraping Infrastructure</h3>
             <p className="text-xs font-body text-text-secondary leading-relaxed">
               Deploy Studio collectors with built-in DOM diffing, LLM selector auto-healing, and event webhooks for continuous operations.
             </p>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Architecture Stack */}
+        {/* Architecture Stack - Alternating Left & Right Slide */}
         <div className="max-w-3xl mx-auto space-y-6">
           {LAYERS.map((layer, i) => (
             <motion.div
               key={layer.title}
               className="glass-level-2 p-8 space-y-4"
               style={{ borderColor: `${layer.color}40` }}
-              initial={{ opacity: 0, x: -30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: i * 0.15, duration: 0.5 }}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -60 : 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="flex items-start gap-5">
                 <div

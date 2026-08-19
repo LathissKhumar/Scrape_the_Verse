@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { ArrowRight, Calendar, Sparkles } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/Button'
 
 export function FinalCTA() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <section
@@ -16,19 +15,25 @@ export function FinalCTA() {
       className="py-36 md:py-48 relative overflow-hidden bg-void border-b border-white/5 font-body"
       aria-label="Final Call to Action"
     >
-      {/* Ambient Lighting */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-20 blur-[150px]"
+      {/* Ambient Radial Lighting */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none opacity-25 blur-[150px]"
         style={{
           background: 'radial-gradient(circle at center, #6D28D9 0%, #8B5CF6 40%, #38BDF8 80%, transparent 100%)',
         }}
+        animate={{
+          scale: [1, 1.12, 1],
+          opacity: [0.2, 0.3, 0.2],
+        }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <div className="relative max-w-4xl mx-auto px-6 text-center z-10">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, scale: 0.88, y: 45 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-8"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-accent/30 bg-violet-accent/10 text-xs font-mono font-medium text-violet-accent backdrop-blur-md">

@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { Play, RotateCcw, ShieldAlert, Cpu } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
@@ -33,7 +33,6 @@ const EVENT_COLORS: Record<string, string> = {
 
 export function SelfHealingDemo() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
   const { phase, eventLog, start, reset } = useSelfHealingSequence()
 
   const phaseColor = PHASE_COLORS[phase]
@@ -42,11 +41,18 @@ export function SelfHealingDemo() {
     <section
       id="self-healing"
       ref={ref}
-      className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body"
+      className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden"
       aria-label="Self-Healing Engine"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Scale from Depth */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, scale: 0.92, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel stage="03" label="Self-Healing Engine" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             The web changes.{' '}
@@ -55,11 +61,17 @@ export function SelfHealingDemo() {
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             When target sites change their DOM layout or CSS selectors, Scrape-Verse detects structural failure and automatically generates new extraction rules.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-6xl mx-auto">
-          {/* Left Explanation */}
-          <div className="lg:col-span-5 space-y-6">
+          {/* Left Explanation - Slide in from Left */}
+          <motion.div
+            className="lg:col-span-5 space-y-6"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className="glass-level-2 p-6 space-y-4">
               <h3 className="text-xl font-bold font-display text-text-primary flex items-center gap-2">
                 <Cpu className="w-5 h-5 text-violet-accent" />
@@ -79,10 +91,16 @@ export function SelfHealingDemo() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Interactive Glass Browser */}
-          <div className="lg:col-span-7 space-y-6">
+          {/* Right Interactive Glass Browser - Scale up from Depth */}
+          <motion.div
+            className="lg:col-span-7 space-y-6"
+            initial={{ opacity: 0, scale: 0.94, y: 40 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
             <div className={`glass-level-3 overflow-hidden transition-all duration-500 ${
               phase === 'failure' ? 'border-rose-error/40 shadow-rose-error/10' : phase === 'healing' ? 'border-violet-accent/40 shadow-violet-accent/10' : 'border-white/15'
             }`}>
@@ -157,7 +175,7 @@ export function SelfHealingDemo() {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

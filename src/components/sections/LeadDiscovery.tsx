@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
+import { Search, Filter, Database, CheckCircle2, ArrowRight } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
@@ -30,21 +31,46 @@ export function LeadDiscovery() {
   ]
 
   return (
-    <section id="lead-discovery" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="Lead Discovery">
+    <section id="lead-discovery" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Lead Discovery">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Slide in from Left */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel stage="01" label="Lead Discovery" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             Tell us <GradientText>who you&apos;re looking for.</GradientText>
           </h2>
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
-            Target high-intent prospects across maps and business registries with custom filters.
+            Target high-intent prospects across maps and business registries with custom enterprise filters.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-2xl mx-auto space-y-8">
+        {/* Content Container - Slide in from Left with Scale */}
+        <motion.div
+          className="max-w-2xl mx-auto space-y-8"
+          initial={{ opacity: 0, x: -50, scale: 0.98 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
           {/* Glass Search Console */}
           <div className="glass-level-2 p-8 space-y-6">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <span className="font-mono text-xs text-muted uppercase flex items-center gap-2">
+                <Filter className="w-3.5 h-3.5 text-violet-accent" />
+                <span>DISCOVERY FILTER SPECS</span>
+              </span>
+              <span className="text-xs font-mono text-blue-accent font-semibold flex items-center gap-1">
+                <Database className="w-3.5 h-3.5 text-blue-accent" />
+                <span>Bright Data Studio</span>
+              </span>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
               {[
                 { label: 'Industry', value: 'Restaurants' },
@@ -67,13 +93,17 @@ export function LeadDiscovery() {
               id="start-discovery-btn"
               variant="primary"
               onClick={handleDiscover}
-              className="w-full justify-center !py-3.5 shadow-xl shadow-violet-accent/20"
+              className="w-full justify-center !py-3.5 shadow-xl shadow-violet-accent/20 flex items-center gap-2"
             >
-              {phase === 'idle'
-                ? 'Discover Leads'
-                : phase === 'done'
-                ? '✓ Discovery Complete'
-                : 'Executing Lead Sweep…'}
+              <Search className="w-4 h-4" />
+              <span>
+                {phase === 'idle'
+                  ? 'Discover Leads'
+                  : phase === 'done'
+                  ? 'Discovery Complete'
+                  : 'Executing Lead Sweep…'}
+              </span>
+              <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
 
@@ -135,7 +165,7 @@ export function LeadDiscovery() {
               )}
             </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

@@ -45,9 +45,16 @@ export function SelfHealingCI() {
   }[state]
 
   return (
-    <section id="self-healing-ci" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="Self-Healing CI">
+    <section id="self-healing-ci" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Self-Healing CI">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Slide from Left */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel label="Self-Healing CI Pipeline" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             <GradientText gradient="violet">Continuous Scraping.</GradientText> Zero Downtime.
@@ -55,9 +62,16 @@ export function SelfHealingCI() {
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             Automated test runner catches website schema changes during CI runs, triggers LLM repair agents, and resumes pipeline operations automatically.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-2xl mx-auto">
+        {/* Panel Container - Slide from Left */}
+        <motion.div
+          className="max-w-2xl mx-auto"
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="glass-level-2 overflow-hidden border-white/10 shadow-2xl">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5 font-mono text-xs">
@@ -110,7 +124,7 @@ export function SelfHealingCI() {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

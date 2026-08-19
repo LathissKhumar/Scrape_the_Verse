@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
@@ -8,7 +8,6 @@ import { ACTIVE_COLLECTORS, SELF_HEAL_EVENTS } from '@/lib/mock-data'
 
 export function ScraperControlCenter() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
 
   const summaryMetrics = [
     { label: 'Active Collectors', value: '24', color: '#F5F7FA' },
@@ -21,11 +20,18 @@ export function ScraperControlCenter() {
     <section
       id="scraper-control"
       ref={ref}
-      className="py-32 md:py-40 relative border-b border-white/5 bg-void"
+      className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden"
       aria-label="Scraper Control Center"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Slide from Bottom */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel label="Platform Operations" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             Scraper <GradientText>Control Center.</GradientText>
@@ -33,40 +39,49 @@ export function ScraperControlCenter() {
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             Real-time operations dashboard across all active Bright Data collectors — tracking records throughput, runtime health, and healing events.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Top Summary Metrics */}
+        {/* Top Summary Metrics - Scale up from Depth */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {summaryMetrics.map((m) => (
-            <div key={m.label} className="glass-card p-6 text-center">
+          {summaryMetrics.map((m, i) => (
+            <motion.div
+              key={m.label}
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="glass-card p-6 text-center"
+            >
               <div className="text-3xl font-bold font-display tabular-nums" style={{ color: m.color }}>
                 {m.value}
               </div>
               <div className="text-xs font-mono text-muted mt-2 uppercase">{m.label}</div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Collector Cards Grid */}
+        {/* Collector Cards Grid - Staggered Slide from Bottom */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {ACTIVE_COLLECTORS.map((collector, i) => (
             <motion.div
               key={collector.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.08, duration: 0.4 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <CollectorCard collector={collector} />
             </motion.div>
           ))}
         </div>
 
-        {/* Live System Event Stream */}
+        {/* Live System Event Stream - Slide from Bottom */}
         <motion.div
           className="max-w-4xl mx-auto space-y-4"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.4 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ delay: 0.3, duration: 0.6 }}
         >
           <div className="text-xs font-mono tracking-widest text-muted uppercase">
             LIVE SYSTEM EVENT LOG

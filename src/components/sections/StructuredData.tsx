@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
@@ -26,22 +26,35 @@ const STRUCTURED_OUTPUT = `{
 
 export function StructuredData() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="structured-data" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="Structured Data Intelligence">
+    <section id="structured-data" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Structured Data Intelligence">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Slide from Right */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, x: 60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel stage="04" label="Structured Intelligence" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             From raw web data <GradientText gradient="blue">to business intelligence.</GradientText>
           </h2>
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
-            Raw payload payload normalizes directly into structured JSON and passes into Gemini AI models for scoring.
+            Raw web payload normalizes directly into structured JSON and passes into Gemini AI models for scoring.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        {/* Code Comparison Grid - Slide from Right */}
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
           {/* Raw Scrape Data */}
           <div className="lg:col-span-5 glass-level-2 overflow-hidden">
             <div className="px-6 py-3.5 border-b border-white/10 text-xs font-mono font-bold text-muted bg-white/5">
@@ -70,14 +83,15 @@ export function StructuredData() {
               {STRUCTURED_OUTPUT}
             </pre>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Intelligence Score Card */}
+        {/* Intelligence Score Card - Scale up from Depth */}
         <motion.div
           className="mt-12 glass-level-3 p-8 max-w-xl mx-auto space-y-6 border-blue-accent/30 shadow-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.4 }}
+          initial={{ opacity: 0, scale: 0.94, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7, delay: 0.3 }}
         >
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div>

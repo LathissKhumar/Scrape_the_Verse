@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { FileText, Mail, Mic, RefreshCw, CheckCircle2 } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
@@ -42,13 +42,19 @@ const AGENTS = [
 
 export function SalesAutomation() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
   const [activeId, setActiveId] = useState<string>('proposal')
 
   return (
-    <section id="sales-automation" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="AI Sales Action">
+    <section id="sales-automation" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="AI Sales Action">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Scale from Depth */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, scale: 0.92, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel stage="05" label="Autonomous Action" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             Intelligence <GradientText>becomes action.</GradientText>
@@ -56,18 +62,19 @@ export function SalesAutomation() {
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             Four specialized AI agents convert structured intelligence into outreach, proposals, voice calls, and follow-ups.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Action Pipeline Steps */}
+        {/* Action Pipeline Steps - Staggered Scale from Depth */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {AGENTS.map((agent, i) => {
             const isActive = activeId === agent.id
             return (
               <motion.div
                 key={agent.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
+                initial={{ opacity: 0, scale: 0.93, y: 35 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setActiveId(agent.id)}
                 className="cursor-pointer"
               >
@@ -110,8 +117,9 @@ export function SalesAutomation() {
         {/* Conversion Banner */}
         <motion.div
           className="mt-14 glass-level-2 p-8 max-w-2xl mx-auto text-center border-blue-accent/30 shadow-xl flex items-center justify-center gap-3"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
           transition={{ delay: 0.5 }}
         >
           <CheckCircle2 className="w-5 h-5 text-emerald-success shrink-0" />

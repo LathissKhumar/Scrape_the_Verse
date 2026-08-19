@@ -13,16 +13,23 @@ export function Monitoring() {
 
   useEffect(() => {
     if (!inView) return
-    const t = setTimeout(() => setAlertVisible(true), 3000)
+    const t = setTimeout(() => setAlertVisible(true), 2500)
     return () => clearTimeout(t)
   }, [inView])
 
   const flowNodes = ['WEB SIGNAL', 'MONITOR AGENT', 'EVENT TRIGGER', 'AI ANALYSIS', 'FOLLOW-UP ACTION']
 
   return (
-    <section id="monitoring" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="Post-Outreach Monitoring">
+    <section id="monitoring" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Post-Outreach Monitoring">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 space-y-4">
+        {/* Header - Slide from Bottom */}
+        <motion.div
+          className="text-center mb-16 space-y-4"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
           <SectionLabel label="Continuous Monitoring" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
             Don&apos;t stop watching <GradientText gradient="emerald">when the message is sent.</GradientText>
@@ -30,10 +37,16 @@ export function Monitoring() {
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             Persistent monitoring checks prospects continuously. The instant a business launches a website or acquires new reviews, agents re-engage automatically.
           </p>
-        </div>
+        </motion.div>
 
         {/* Animated Event Travel Path */}
-        <div className="max-w-4xl mx-auto mb-14">
+        <motion.div
+          className="max-w-4xl mx-auto mb-14"
+          initial={{ opacity: 0, scale: 0.96, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="glass-level-2 p-6 overflow-x-auto">
             <div className="flex items-center justify-between min-w-[650px]">
               {flowNodes.map((node, i) => (
@@ -51,10 +64,16 @@ export function Monitoring() {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Prospect Watch List */}
-        <div className="max-w-3xl mx-auto space-y-6">
+        <motion.div
+          className="max-w-3xl mx-auto space-y-6"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7, delay: 0.25 }}
+        >
           <div className="glass-level-2 p-8 space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
@@ -96,7 +115,7 @@ export function Monitoring() {
               </div>
             </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
