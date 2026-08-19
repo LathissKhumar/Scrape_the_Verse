@@ -33,7 +33,7 @@ from app.agents.healing import HealingAgent
 from app.config.settings import get_settings
 
 
-async def execute_query(query: str, target_url: Optional[str] = None):
+async def execute_query(query: str, target_urls: Optional[list[str]] = None):
     """Execute scraping workflow directly from CLI."""
     settings = get_settings()
     llm = OllamaClient(settings=settings)
@@ -53,15 +53,17 @@ async def execute_query(query: str, target_url: Optional[str] = None):
         healing_agent=healing,
     )
 
-    urls = [target_url] if target_url else []
+    urls = target_urls or []
 
     print("\n" + "=" * 60)
     print("  SCRAPE THE VERSE - CLI QUERY EXECUTOR")
     print("=" * 60)
     print(f"Query:        {query}")
-    if target_url:
-        print(f"Target URL:   {target_url}")
-    print(f"Engine Mode:  {'Bright Data' if settings.BRIGHTDATA else 'Native Playwright Engine'}")
+    if urls:
+        print(f"Target URLs ({len(urls)}):")
+        for u in urls:
+            print(f"  - {u}")
+    print(f"Engine Mode:  {'Bright Data' if settings.BRIGHTDATA else 'Native Playwright Engine (Parallel)'}")
     print("-" * 60)
     print("Executing pipeline (Planner -> Scraper -> Extractor -> Validator)...")
 
@@ -114,19 +116,28 @@ def main():
         "query",
         nargs="?",
         type=str,
-        help="Plain language query (e.g. 'Extract title and price from https://example.com')",
+        help="Plain language query (e.g. 'Compare prices of iPhone 15')",
     )
     parser.add_argument(
-        "-u", "--url",
-        type=str,
+        "-u", "--urls",
+        nargs="+",
         default=None,
-        help="Optional explicit target URL",
+        help="One or more target URLs (separated by spaces or commas)",
     )
 
     args = parser.parse_args()
 
+    # Normalize URLs from args
+    target_urls: list[str] = []
+    if args.urls:
+        for u in args.urls:
+            for piece in u.split(","):
+                clean = piece.strip()
+                if clean:
+                    target_urls.append(clean)
+
     if args.query:
-        asyncio.run(execute_query(query=args.query, target_url=args.url))
+        asyncio.run(execute_query(query=args.query, target_urls=target_urls))
     else:
         # Interactive mode
         print("\n" + "=" * 60)
@@ -136,8 +147,9 @@ def main():
         if not user_query:
             print("No query provided. Exiting.")
             sys.exit(0)
-        user_url = input("Enter target URL (optional, press Enter to skip): ").strip() or None
-        asyncio.run(execute_query(query=user_query, target_url=user_url))
+        raw_urls = input("Enter target URLs (separated by commas, or press Enter to skip): ").strip()
+        interactive_urls = [u.strip() for u in raw_urls.split(",") if u.strip()]
+        asyncio.run(execute_query(query=user_query, target_urls=interactive_urls))
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
+import asyncio
 from typing import Any, Optional
 import httpx
 
@@ -23,11 +24,10 @@ class ScraperAgent(BaseAgent):
         self.browser_executor = browser_executor or BrowserExecutor()
 
     async def _execute_browser_scrape(self, urls: list[str]) -> list[dict[str, Any]]:
-        """Execute robust browser scraping using Playwright Chromium with SSRF and block detection."""
-        self.logger.info(f"Executing Playwright Chromium browser scrape for {len(urls)} target URL(s).")
-        results: list[dict[str, Any]] = []
-
-        for u in urls:
+        """Execute robust parallel browser scraping using Playwright Chromium with SSRF and block detection."""
+        self.logger.info(f"Executing parallel Playwright Chromium browser scrape for {len(urls)} target URL(s).")
+        
+        async def _crawl_single(u: str) -> dict[str, Any]:
             crawl_res: CrawlResult = await self.browser_executor.crawl(url=u)
             record: dict[str, Any] = {
                 "url": crawl_res.url,
@@ -43,9 +43,10 @@ class ScraperAgent(BaseAgent):
                 record["error"] = crawl_res.error
             if crawl_res.extracted_data:
                 record["extracted_data"] = crawl_res.extracted_data
-            results.append(record)
+            return record
 
-        return results
+        results = await asyncio.gather(*[_crawl_single(u) for u in urls])
+        return list(results)
 
     async def _execute_native_scrape(self, urls: list[str]) -> list[dict[str, Any]]:
         """Fallback native HTTP scraping when Bright Data API key is unconfigured."""

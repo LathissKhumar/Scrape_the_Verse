@@ -112,100 +112,108 @@ class ExtractionEngine:
                     metadata={"record_count": len(conformed)},
                 )
 
-        # Normalize content to RawPage or string
-        if isinstance(raw_content, list) and raw_content:
-            first_item = raw_content[0]
-            page = first_item if isinstance(first_item, RawPage) else RawPage(
-                url=first_item.get("url") if isinstance(first_item, dict) else None,
-                html=first_item.get("html") if isinstance(first_item, dict) else (str(first_item) if isinstance(first_item, str) else None),
-                text=first_item.get("text") if isinstance(first_item, dict) else None,
-                raw_payload=first_item,
-            )
-        else:
-            page = raw_content if isinstance(raw_content, RawPage) else RawPage(
-                html=raw_content.get("html") if isinstance(raw_content, dict) else (str(raw_content) if isinstance(raw_content, str) else None),
+        # 2. Normalize content to list of RawPage instances
+        pages: list[RawPage] = []
+        if isinstance(raw_content, list):
+            for item in raw_content:
+                if isinstance(item, RawPage):
+                    pages.append(item)
+                elif isinstance(item, dict):
+                    pages.append(RawPage(
+                        url=item.get("url"),
+                        html=item.get("html") or (str(item) if not isinstance(item, dict) else None),
+                        text=item.get("text"),
+                        raw_payload=item,
+                    ))
+                elif item:
+                    pages.append(RawPage(html=str(item), raw_payload=item))
+        elif isinstance(raw_content, RawPage):
+            pages.append(raw_content)
+        elif raw_content:
+            pages.append(RawPage(
+                html=raw_content.get("html") if isinstance(raw_content, dict) else str(raw_content),
                 text=raw_content.get("text") if isinstance(raw_content, dict) else None,
                 raw_payload=raw_content,
-            )
+            ))
 
-        # 2. Try CSS / XPath if base selector exists
-        if effective_schema.base_selector:
-            if effective_schema.base_selector.startswith("/") or effective_schema.base_selector.startswith(".//"):
-                logger.info("Attempting deterministic XPath extraction")
-                records = self.xpath_extractor.extract(page, effective_schema)
-                if records:
-                    deduped = self.deduplicator.deduplicate(records)
-                    conformed = self._enforce_task_schema(deduped, task)
-                    return ExtractionResult(
-                        records=conformed,
-                        strategy_used=ExtractionStrategyEnum.XPATH.value,
-                        fallback_used=False,
-                        metadata={"record_count": len(conformed)},
+        if not pages:
+            return ExtractionResult(records=[], strategy_used="none", fallback_used=False, metadata={"record_count": 0})
+
+        all_extracted_records: list[dict[str, Any]] = []
+        dominant_strategy = "unknown"
+        any_fallback = False
+
+        for page in pages:
+            page_records: list[dict[str, Any]] = []
+            page_strategy = "none"
+            page_fallback = False
+
+            # Strategy A: CSS / XPath if base selector exists
+            if effective_schema.base_selector:
+                if effective_schema.base_selector.startswith("/") or effective_schema.base_selector.startswith(".//"):
+                    logger.info("Attempting deterministic XPath extraction")
+                    records = self.xpath_extractor.extract(page, effective_schema)
+                    if records:
+                        page_records = records
+                        page_strategy = ExtractionStrategyEnum.XPATH.value
+                else:
+                    logger.info("Attempting deterministic CSS extraction")
+                    records = self.css_extractor.extract(page, effective_schema)
+                    if records:
+                        page_records = records
+                        page_strategy = ExtractionStrategyEnum.CSS.value
+
+            # Strategy B: HTML Table Extraction (if table contains requested fields)
+            if not page_records:
+                table_records = self.table_extractor.extract(page, effective_schema)
+                if table_records:
+                    has_table_coverage = all(
+                        any(r.get(f) is not None for r in table_records)
+                        for f in task.fields
                     )
-            else:
-                logger.info("Attempting deterministic CSS extraction")
-                records = self.css_extractor.extract(page, effective_schema)
-                if records:
-                    deduped = self.deduplicator.deduplicate(records)
-                    conformed = self._enforce_task_schema(deduped, task)
-                    return ExtractionResult(
-                        records=conformed,
-                        strategy_used=ExtractionStrategyEnum.CSS.value,
-                        fallback_used=False,
-                        metadata={"record_count": len(conformed)},
+                    if has_table_coverage or not self.llm_extractor:
+                        logger.info(f"Deterministic Table extractor extracted {len(table_records)} record(s)")
+                        page_records = table_records
+                        page_strategy = ExtractionStrategyEnum.TABLE.value
+                    else:
+                        logger.info("Table extraction returned incomplete field coverage; cascading to next strategy")
+
+            # Strategy C: Regex Extraction for pattern fields
+            if not page_records:
+                regex_records = self.regex_extractor.extract(page, effective_schema)
+                if regex_records:
+                    has_coverage = all(
+                        any(r.get(f) is not None for r in regex_records)
+                        for f in task.fields
                     )
+                    if has_coverage or not self.llm_extractor:
+                        logger.info(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
+                        page_records = regex_records
+                        page_strategy = ExtractionStrategyEnum.REGEX.value
+                    else:
+                        logger.info("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
 
-        # 3. Check for HTML Table Extraction
-        table_records = self.table_extractor.extract(page, effective_schema)
-        if table_records:
-            logger.info(f"Deterministic Table extractor extracted {len(table_records)} record(s)")
-            deduped = self.deduplicator.deduplicate(table_records)
-            conformed = self._enforce_task_schema(deduped, task)
-            return ExtractionResult(
-                records=conformed,
-                strategy_used=ExtractionStrategyEnum.TABLE.value,
-                fallback_used=False,
-                metadata={"record_count": len(conformed)},
-            )
+            # Strategy D: LLM Extraction Fallback with Qwen3:8b
+            if not page_records and self.llm_extractor:
+                logger.info("Cascading to LLM extraction strategy (Qwen3:8b)")
+                llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
+                if llm_records:
+                    page_records = llm_records
+                    page_strategy = ExtractionStrategyEnum.LLM.value
+                    page_fallback = True
 
-        # 4. Try Regex Extraction for pattern fields
-        regex_records = self.regex_extractor.extract(page, effective_schema)
-        if regex_records:
-            # Check if all requested fields have at least one extracted value
-            has_coverage = all(
-                any(r.get(f) is not None for r in regex_records)
-                for f in task.fields
-            )
-            if has_coverage or not self.llm_extractor:
-                logger.info(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
-                deduped = self.deduplicator.deduplicate(regex_records)
-                conformed = self._enforce_task_schema(deduped, task)
-                return ExtractionResult(
-                    records=conformed,
-                    strategy_used=ExtractionStrategyEnum.REGEX.value,
-                    fallback_used=False,
-                    metadata={"record_count": len(conformed)},
-                )
-            else:
-                logger.info("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
+            all_extracted_records.extend(page_records)
+            if page_strategy != "none":
+                dominant_strategy = page_strategy
+            if page_fallback:
+                any_fallback = True
 
-        # 5. LLM Extraction Fallback with Qwen3:8b
-        if self.llm_extractor:
-            logger.info("Cascading to LLM extraction strategy (Qwen3:8b)")
-            llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
-            deduped = self.deduplicator.deduplicate(llm_records)
-            conformed = self._enforce_task_schema(deduped, task)
-            return ExtractionResult(
-                records=conformed,
-                strategy_used=ExtractionStrategyEnum.LLM.value,
-                fallback_used=True,
-                metadata={"record_count": len(conformed)},
-            )
+        deduped = self.deduplicator.deduplicate(all_extracted_records)
+        conformed = self._enforce_task_schema(deduped, task)
 
-        # Default empty result
         return ExtractionResult(
-            records=[],
-            strategy_used="none",
-            fallback_used=False,
-            metadata={"record_count": 0},
+            records=conformed,
+            strategy_used=dominant_strategy,
+            fallback_used=any_fallback,
+            metadata={"record_count": len(conformed)},
         )
