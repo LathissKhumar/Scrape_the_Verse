@@ -30,14 +30,18 @@ class RepairEvidenceCollector:
             return []
 
         logger.info(f"Fetching fresh page evidence for task_id={task.task_id} from {task.target_urls}")
-        raw_dicts = await self.scraper_agent.execute(task=task)
-        raw_pages: list[RawPage] = []
-        for r in raw_dicts:
-            if isinstance(r, dict):
-                raw_pages.append(RawPage(**r))
-            elif isinstance(r, RawPage):
-                raw_pages.append(r)
-        return raw_pages
+        try:
+            raw_dicts = await self.scraper_agent.execute(task=task)
+            raw_pages: list[RawPage] = []
+            for r in raw_dicts:
+                if isinstance(r, dict):
+                    raw_pages.append(RawPage(**r))
+                elif isinstance(r, RawPage):
+                    raw_pages.append(r)
+            return raw_pages
+        except Exception as e:
+            logger.warning(f"Failed to fetch fresh page evidence for task {task.task_id}: {e}")
+            return []
 
     async def check_transient_recovery(
         self,
@@ -55,15 +59,17 @@ class RepairEvidenceCollector:
         try:
             # Attempt extraction on fresh page with current schema
             raw_dicts = [p.model_dump() for p in raw_pages]
-            ext_result = await self.extraction_engine.extract(raw_results=raw_dicts, task=task, schema=schema)
+            ext_call = self.extraction_engine.extract(raw_results=raw_dicts, task=task, schema=schema)
+            ext_result = await ext_call if hasattr(ext_call, "__await__") else ext_call
             records = ext_result.records
 
             # Validate extraction
-            val_res = await self.validation_engine.validate(
+            val_call = self.validation_engine.validate(
                 extracted_results=records,
                 task=task,
                 raw_results=raw_dicts,
             )
+            val_res = await val_call if hasattr(val_call, "__await__") else val_call
 
             if val_res.status == "healthy" and val_res.health_score >= 0.80:
                 logger.info(

@@ -91,11 +91,12 @@ class HealingEngine:
             eval_res.accepted = True
 
             # Extract records for returned output
-            ext_res = await self.extraction_engine.extract(
+            ext_call = self.extraction_engine.extract(
                 raw_results=[p.model_dump() for p in raw_pages],
                 task=task,
                 schema=current_schema,
             )
+            ext_res = await ext_call if hasattr(ext_call, "__await__") else ext_call
 
             repair_history.append({
                 "attempt": 1,
@@ -154,18 +155,20 @@ class HealingEngine:
 
             # Canary execution: extract with candidate schema
             raw_dicts = [p.model_dump() for p in raw_pages]
-            canary_extraction = await self.extraction_engine.extract(
+            ext_call = self.extraction_engine.extract(
                 raw_results=raw_dicts,
                 task=task,
                 schema=candidate_schema,
             )
+            canary_extraction = await ext_call if hasattr(ext_call, "__await__") else ext_call
 
             # Canary validation: validate extracted records
-            canary_validation = await self.validation_engine.validate(
+            val_call = self.validation_engine.validate(
                 extracted_results=canary_extraction.records,
                 task=task,
                 raw_results=raw_dicts,
             )
+            canary_validation = await val_call if hasattr(val_call, "__await__") else val_call
 
             # Deterministic repair evaluation
             evaluation = self.evaluator.evaluate(

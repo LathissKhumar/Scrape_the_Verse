@@ -77,6 +77,15 @@ class ExtractionEngine:
 
         return conformed
 
+    async def extract(
+        self,
+        raw_results: Any,
+        task: ScrapingTask,
+        schema: Optional[ExtractionSchema] = None,
+    ) -> ExtractionResult:
+        """Alias for extract_async to maintain consistent interface across agent layers."""
+        return await self.extract_async(raw_content=raw_results, task=task, schema=schema)
+
     async def extract_async(
         self,
         raw_content: Any,
