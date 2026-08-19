@@ -97,9 +97,11 @@ class ExtractionEngine:
 
         # 1. Check if raw_content is already a list of structured records (from Bright Data direct collector)
         if isinstance(raw_content, list) and raw_content and isinstance(raw_content[0], dict):
-            # Verify if raw_content has more than just raw HTML strings
             first_item = raw_content[0]
-            if not ("html" in first_item and len(first_item) == 1):
+            raw_keys = {"url", "html", "markdown", "text", "metadata", "raw_payload"}
+            # If the item contains html or matches raw page fields, it is a raw page, not structured records
+            is_raw_page = bool("html" in first_item or "markdown" in first_item or set(first_item.keys()).issubset(raw_keys))
+            if not is_raw_page:
                 logger.info("Raw content is already structured records. Applying passthrough normalization.")
                 deduped = self.deduplicator.deduplicate(raw_content)
                 conformed = self._enforce_task_schema(deduped, task)
@@ -111,11 +113,20 @@ class ExtractionEngine:
                 )
 
         # Normalize content to RawPage or string
-        page = raw_content if isinstance(raw_content, RawPage) else RawPage(
-            html=raw_content.get("html") if isinstance(raw_content, dict) else (str(raw_content) if isinstance(raw_content, str) else None),
-            text=raw_content.get("text") if isinstance(raw_content, dict) else None,
-            raw_payload=raw_content,
-        )
+        if isinstance(raw_content, list) and raw_content:
+            first_item = raw_content[0]
+            page = first_item if isinstance(first_item, RawPage) else RawPage(
+                url=first_item.get("url") if isinstance(first_item, dict) else None,
+                html=first_item.get("html") if isinstance(first_item, dict) else (str(first_item) if isinstance(first_item, str) else None),
+                text=first_item.get("text") if isinstance(first_item, dict) else None,
+                raw_payload=first_item,
+            )
+        else:
+            page = raw_content if isinstance(raw_content, RawPage) else RawPage(
+                html=raw_content.get("html") if isinstance(raw_content, dict) else (str(raw_content) if isinstance(raw_content, str) else None),
+                text=raw_content.get("text") if isinstance(raw_content, dict) else None,
+                raw_payload=raw_content,
+            )
 
         # 2. Try CSS / XPath if base selector exists
         if effective_schema.base_selector:
