@@ -61,22 +61,27 @@ export function WhyScrapeVerse() {
           {DIFFERENTIATORS.map((d, i) => (
             <motion.div
               key={d.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.12, duration: 0.5 }}
+              transition={{ delay: i * 0.12, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{
+                y: -5,
+                scale: 1.01,
+              }}
             >
               <div
-                className="glass-card p-8 h-full space-y-5 flex flex-col justify-between"
+                className="glass-card p-8 h-full space-y-5 flex flex-col justify-between transition-all duration-300 hover:border-violet-accent/40"
                 style={{ borderColor: `${d.color}25` }}
               >
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
-                    <div
+                    <motion.div
+                      whileHover={{ rotate: 10, scale: 1.1 }}
                       className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 backdrop-blur-md"
                       style={{ backgroundColor: `${d.color}15`, border: `1px solid ${d.color}30` }}
                     >
                       {d.icon}
-                    </div>
+                    </motion.div>
                     <h3 className="font-bold text-xl font-display text-text-primary" style={{ color: d.color }}>
                       {d.title}
                     </h3>
@@ -87,7 +92,8 @@ export function WhyScrapeVerse() {
                   </p>
                 </div>
 
-                <div className="text-xs font-mono font-semibold pt-2" style={{ color: d.color }}>
+                <div className="text-xs font-mono font-semibold pt-2 flex items-center gap-2" style={{ color: d.color }}>
+                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: d.color }} />
                   {d.highlight}
                 </div>
               </div>

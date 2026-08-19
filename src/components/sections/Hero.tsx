@@ -32,16 +32,21 @@ export function Hero() {
       aria-label="Hero — Scrape-Verse web intelligence"
     >
       {/* Background Canvas Particles */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
+      <div className="absolute inset-0 opacity-35 pointer-events-none">
         <WebCanvas nodes={HERO_NODES} edges={HERO_EDGES} />
       </div>
 
-      {/* Soft Ambient Glow */}
-      <div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-15 blur-[140px]"
+      {/* Dynamic Ambient Background Glow */}
+      <motion.div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-20 blur-[140px]"
         style={{
           background: 'radial-gradient(circle, #8B5CF6 0%, #38BDF8 60%, transparent 80%)',
         }}
+        animate={{
+          scale: [1, 1.08, 1],
+          opacity: [0.18, 0.25, 0.18],
+        }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       {/* Content Grid */}
@@ -51,9 +56,9 @@ export function Hero() {
           className="lg:col-span-7 space-y-8"
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-violet-accent/30 bg-violet-accent/10 text-xs font-mono text-violet-accent backdrop-blur-md">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-violet-accent/30 bg-violet-accent/10 text-xs font-mono text-violet-accent backdrop-blur-md shadow-sm">
             <span className="w-2 h-2 rounded-full bg-violet-accent animate-pulse" />
             SELF-HEALING WEB INTELLIGENCE
           </div>
@@ -80,15 +85,33 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Right Column — Floating Glass Intelligence Card */}
+        {/* Right Column — Floating 3D Tilt Glass Card */}
         <motion.div
           className="lg:col-span-5"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="glass-level-3 p-8 space-y-6">
-            {/* Header */}
+          <motion.div
+            className="glass-level-3 p-8 space-y-6 relative overflow-hidden group"
+            animate={{
+              y: [0, -6, 0],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            whileHover={{
+              scale: 1.02,
+              borderColor: 'rgba(56, 189, 248, 0.4)',
+              boxShadow: '0 30px 80px rgba(56, 189, 248, 0.15)',
+            }}
+          >
+            {/* Top Shine Accent */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-accent/40 to-transparent" />
+
+            {/* Card Header */}
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <span className="font-mono text-xs tracking-widest text-muted uppercase">
                 LEAD INTELLIGENCE
@@ -112,7 +135,10 @@ export function Hero() {
             <div className="space-y-3 border-t border-b border-white/10 py-4 font-mono text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-muted">Website:</span>
-                <span className="text-rose-error font-medium">Not detected</span>
+                <span className="text-rose-error font-semibold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-error animate-ping" />
+                  Not detected
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted">Rating:</span>
@@ -124,7 +150,7 @@ export function Hero() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted">Digital Presence:</span>
-                <span className="text-blue-accent font-semibold">{BUSINESS_INTEL_EXAMPLE.digitalPresenceScore} / 100</span>
+                <span className="text-blue-accent font-bold">{BUSINESS_INTEL_EXAMPLE.digitalPresenceScore} / 100</span>
               </div>
             </div>
 
@@ -136,11 +162,15 @@ export function Hero() {
               </p>
             </div>
 
-            {/* Action */}
-            <button className="w-full py-3 rounded-xl font-mono text-xs font-semibold text-blue-accent bg-blue-accent/10 border border-blue-accent/30 hover:bg-blue-accent/20 transition-colors">
+            {/* Action Button */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 rounded-xl font-mono text-xs font-semibold text-blue-accent bg-blue-accent/10 border border-blue-accent/30 hover:bg-blue-accent/20 transition-colors cursor-pointer"
+            >
               View Intelligence Profile →
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </motion.div>
       </div>
 
