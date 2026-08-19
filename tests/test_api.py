@@ -11,7 +11,7 @@ def test_get_root(api_client):
     data = response.json()
     assert data["service"] == "self-healing-scraper"
     assert data["status"] == "running"
-    assert data["phase"] == 2
+    assert data["phase"] == 5
 
 
 def test_get_health(api_client):
