@@ -1,5 +1,6 @@
 from typing import Any, Optional
 from app.agents.base import BaseAgent
+from app.crawler.browser_executor import BrowserExecutor
 from app.extraction.engine import ExtractionEngine
 from app.extraction.schema import ExtractionResult, ExtractionSchema, RawPage
 from app.llm.base import LLMClient
@@ -13,9 +14,13 @@ class ExtractionAgent(BaseAgent):
         self,
         llm_client: Optional[LLMClient] = None,
         engine: Optional[ExtractionEngine] = None,
+        browser_executor: Optional[BrowserExecutor] = None,
     ):
         super().__init__(name="EXTRACTION")
-        self.engine = engine or ExtractionEngine(llm_client=llm_client)
+        self.engine = engine or ExtractionEngine(
+            llm_client=llm_client,
+            browser_executor=browser_executor or BrowserExecutor(),
+        )
 
     async def extract(
         self,

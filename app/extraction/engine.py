@@ -1,5 +1,7 @@
+import asyncio
 from typing import Any, Optional
 from app.config.logging import get_logger
+from app.crawler.link_discovery import LinkDiscoveryEngine
 from app.extraction.css import CSSExtractor
 from app.extraction.dedup import RecordDeduplicator
 from app.extraction.llm import LLMExtractor
@@ -31,12 +33,16 @@ class ExtractionEngine:
         table_extractor: Optional[TableExtractor] = None,
         llm_extractor: Optional[LLMExtractor] = None,
         deduplicator: Optional[RecordDeduplicator] = None,
+        browser_executor: Optional[Any] = None,
+        link_discovery: Optional[LinkDiscoveryEngine] = None,
     ):
         self.css_extractor = css_extractor or CSSExtractor()
         self.xpath_extractor = xpath_extractor or XPathExtractor()
         self.regex_extractor = regex_extractor or RegexExtractor()
         self.table_extractor = table_extractor or TableExtractor()
         self.deduplicator = deduplicator or RecordDeduplicator()
+        self.browser_executor = browser_executor
+        self.link_discovery = link_discovery or LinkDiscoveryEngine()
         self.llm_extractor = llm_extractor
         if not self.llm_extractor and llm_client:
             self.llm_extractor = LLMExtractor(llm_client=llm_client)
@@ -210,6 +216,74 @@ class ExtractionEngine:
 
         deduped = self.deduplicator.deduplicate(all_extracted_records)
         conformed = self._enforce_task_schema(deduped, task)
+
+        # Conditional Fallback: If requested fields are missing, discover and crawl child links
+        missing_fields = [
+            f for f in task.fields
+            if not any(r.get(f) is not None for r in conformed)
+        ]
+
+        if (missing_fields or not conformed) and self.browser_executor and pages:
+            logger.info(
+                f"Primary extraction incomplete (missing fields: {missing_fields}). "
+                "Initiating conditional fallback child link discovery..."
+            )
+            discovered_child_urls: list[str] = []
+            for p in pages:
+                if p.html and p.url:
+                    links = self.link_discovery.extract_candidate_links(
+                        html=p.html,
+                        base_url=p.url,
+                        query_keywords=task.fields + ([task.objective] if task.objective else []),
+                        max_links=3,
+                    )
+                    for link in links:
+                        if link not in discovered_child_urls:
+                            discovered_child_urls.append(link)
+
+            if discovered_child_urls:
+                logger.info(
+                    f"Discovered {len(discovered_child_urls)} candidate child URL(s). "
+                    f"Crawling child pages in parallel: {discovered_child_urls}"
+                )
+                child_crawl_tasks = [self.browser_executor.crawl(url=u) for u in discovered_child_urls]
+                child_results = await asyncio.gather(*child_crawl_tasks)
+                child_pages = [
+                    RawPage(url=cr.url, html=cr.html, text=getattr(cr, "text", None), raw_payload=getattr(cr, "extracted_data", None))
+                    for cr in child_results if cr and getattr(cr, "html", None)
+                ]
+
+                if child_pages:
+                    child_extracted_records: list[dict[str, Any]] = []
+                    for cp in child_pages:
+                        c_records: list[dict[str, Any]] = []
+                        # Strategy 1: Table
+                        t_records = self.table_extractor.extract(cp, effective_schema)
+                        if t_records and any(any(r.get(f) is not None for r in t_records) for f in missing_fields):
+                            c_records = t_records
+                        # Strategy 2: Regex
+                        if not c_records:
+                            r_records = self.regex_extractor.extract(cp, effective_schema)
+                            if r_records and any(any(r.get(f) is not None for r in r_records) for f in missing_fields):
+                                c_records = r_records
+                        # Strategy 3: LLM
+                        if not c_records and self.llm_extractor:
+                            llm_recs = await self.llm_extractor.extract_async(cp, task, effective_schema)
+                            if llm_recs:
+                                c_records = llm_recs
+                        child_extracted_records.extend(c_records)
+
+                    # Fuse child records into conformed records
+                    if conformed and child_extracted_records:
+                        for conf_rec in conformed:
+                            for ch_rec in child_extracted_records:
+                                for mf in missing_fields:
+                                    if conf_rec.get(mf) is None and ch_rec.get(mf) is not None:
+                                        conf_rec[mf] = ch_rec[mf]
+                    elif child_extracted_records:
+                        conformed = self._enforce_task_schema(
+                            self.deduplicator.deduplicate(child_extracted_records), task
+                        )
 
         return ExtractionResult(
             records=conformed,

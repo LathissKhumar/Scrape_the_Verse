@@ -65,3 +65,11 @@ class UrlSecurityValidator:
             pass
 
         return url_str
+
+    def is_safe_url(self, url: str) -> bool:
+        """Check if a URL is safe and valid without raising an exception."""
+        try:
+            self.validate_url(url)
+            return True
+        except (SSRFSecurityError, ValueError):
+            return False
