@@ -41,7 +41,7 @@ export function SelfHealingDemo() {
     <section
       id="self-healing"
       ref={ref}
-      className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden"
+      className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden"
       aria-label="Self-Healing Engine"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -121,7 +121,7 @@ export function SelfHealingDemo() {
               </div>
 
               {/* Console Log Stream */}
-              <div className="h-80 overflow-y-auto p-6 space-y-2.5 font-mono text-xs bg-[#07090D]/95">
+              <div className="h-80 overflow-y-auto p-6 space-y-2.5 font-mono text-xs bg-[#07090D]/85">
                 {eventLog.length === 0 ? (
                   <div className="h-full flex items-center justify-center text-muted gap-2">
                     <ShieldAlert className="w-4 h-4 text-violet-accent" />

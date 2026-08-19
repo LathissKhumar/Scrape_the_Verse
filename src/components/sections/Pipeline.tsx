@@ -19,7 +19,7 @@ export function Pipeline() {
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="pipeline" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="5-stage core pipeline">
+    <section id="pipeline" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body" aria-label="5-stage core pipeline">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-20 space-y-4">
           <SectionLabel label="Pipeline Architecture" />

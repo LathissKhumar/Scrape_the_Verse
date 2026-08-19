@@ -1,7 +1,6 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { GradientText } from '@/components/ui/GradientText'
 
 const STORY = [
   { text: '"The web is where your next opportunity is hiding."', color: '#F5F7FA', size: 'text-4xl md:text-6xl', weight: 'font-bold', delay: 0 },
@@ -19,7 +18,7 @@ export function WebDatabase() {
     <section
       id="web-database"
       ref={ref}
-      className="relative py-32 md:py-40 overflow-hidden border-b border-white/5 bg-void"
+      className="relative py-32 md:py-40 overflow-hidden border-b border-white/5 bg-transparent font-body"
       aria-label="Web Intelligence Graph"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">

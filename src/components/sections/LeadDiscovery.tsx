@@ -32,7 +32,7 @@ export function LeadDiscovery() {
   ]
 
   return (
-    <section id="lead-discovery" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Lead Discovery">
+    <section id="lead-discovery" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden" aria-label="Lead Discovery">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header - Slide in from Left */}
         <motion.div

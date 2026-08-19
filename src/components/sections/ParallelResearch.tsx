@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
-import { Zap, Layers, CheckCircle2 } from 'lucide-react'
+import { Zap, CheckCircle2 } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { NeonBadge } from '@/components/ui/NeonBadge'
@@ -11,7 +11,7 @@ export function ParallelResearch() {
   const ref = useRef(null)
 
   return (
-    <section id="parallel-research" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Parallel Research">
+    <section id="parallel-research" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden" aria-label="Parallel Research">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header - Slide in from Right */}
         <motion.div

@@ -29,7 +29,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center pt-32 pb-24 overflow-hidden border-b border-white/5 bg-void font-body"
+      className="relative min-h-screen flex items-center justify-center pt-32 pb-24 overflow-hidden border-b border-white/10 bg-transparent font-body"
       aria-label="Hero — Scrape-Verse web intelligence"
     >
       {/* Background Canvas Particles */}
