@@ -282,15 +282,20 @@ class ExtractionEngine:
             deduped, task, base_url=pages[0].url if pages else None
         )
 
-        # Conditional Fallback: If requested fields are missing, discover and crawl child links
+        # Conditional Fallback: If requested fields are missing or record count is insufficient for a listing request
         missing_fields = [
             f for f in task.fields
             if not any(r.get(f) is not None for r in conformed)
         ]
+        is_insufficient_records = (
+            (getattr(task, "is_list", False) or (getattr(task, "min_records", None) and task.min_records > 1))
+            and len(conformed) < (getattr(task, "min_records", None) or 2)
+        )
 
-        if (missing_fields or not conformed) and self.browser_executor and pages:
+        if (missing_fields or not conformed or is_insufficient_records) and self.browser_executor and pages:
+            reason = f"missing fields: {missing_fields}" if missing_fields else f"insufficient records ({len(conformed)} extracted for listing request)"
             logger.info(
-                f"Primary extraction incomplete (missing fields: {missing_fields}). "
+                f"Primary extraction incomplete ({reason}). "
                 "Initiating conditional fallback child link discovery..."
             )
             discovered_child_urls: list[str] = []
@@ -340,11 +345,19 @@ class ExtractionEngine:
 
                     # Fuse child records into conformed records
                     if conformed and child_extracted_records:
-                        for conf_rec in conformed:
-                            for ch_rec in child_extracted_records:
-                                for mf in missing_fields:
-                                    if conf_rec.get(mf) is None and ch_rec.get(mf) is not None:
-                                        conf_rec[mf] = ch_rec[mf]
+                        if is_insufficient_records:
+                            combined = conformed + child_extracted_records
+                            conformed = self._enforce_task_schema(
+                                self.deduplicator.deduplicate(combined),
+                                task,
+                                base_url=pages[0].url if pages else None,
+                            )
+                        else:
+                            for conf_rec in conformed:
+                                for ch_rec in child_extracted_records:
+                                    for mf in missing_fields:
+                                        if conf_rec.get(mf) is None and ch_rec.get(mf) is not None:
+                                            conf_rec[mf] = ch_rec[mf]
                     elif child_extracted_records:
                         conformed = self._enforce_task_schema(
                             self.deduplicator.deduplicate(child_extracted_records),

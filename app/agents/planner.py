@@ -194,6 +194,18 @@ class ScrapingPlannerAgent(BaseAgent):
         constraints = sanitize_constraints(raw_constraints, request.query)
         source_requirements = sanitize_constraints(raw_source_reqs, request.query)
 
+        query_lower = request.query.lower()
+        is_list = any(w in query_lower for w in ["list", "products", "items", "all", "each", "catalog", "books", "quotes", "articles"])
+        min_records = None
+        num_match = re.search(r"\b(\d+)\b", request.query)
+        if num_match:
+            num_val = int(num_match.group(1))
+            if 1 < num_val <= 1000:
+                min_records = num_val
+                max_records = max_records or num_val
+        elif is_list:
+            min_records = 5
+
         task = ScrapingTask(
             task_id=effective_task_id,
             objective=objective,
@@ -201,12 +213,14 @@ class ScrapingPlannerAgent(BaseAgent):
             fields=fields,
             output_schema=output_schema,
             max_records=max_records,
+            min_records=min_records,
+            is_list=is_list,
             constraints=constraints,
             source_requirements=source_requirements,
         )
 
         self.logger.info(
-            f"Successfully generated ScrapingTask {task.task_id} with {len(task.target_urls)} URLs and {len(task.fields)} fields"
+            f"Successfully generated ScrapingTask {task.task_id} with {len(task.target_urls)} URLs and {len(task.fields)} fields (is_list={task.is_list}, min_records={task.min_records})"
         )
         return task
 
@@ -256,6 +270,18 @@ class ScrapingPlannerAgent(BaseAgent):
         constraints = sanitize_constraints(raw_constraints, request.query)
         source_requirements = sanitize_constraints(raw_source_reqs, request.query)
 
+        query_lower = request.query.lower()
+        is_list = any(w in query_lower for w in ["list", "products", "items", "all", "each", "catalog", "books", "quotes", "articles"])
+        min_records = None
+        num_match = re.search(r"\b(\d+)\b", request.query)
+        if num_match:
+            num_val = int(num_match.group(1))
+            if 1 < num_val <= 1000:
+                min_records = num_val
+                max_records = max_records or num_val
+        elif is_list:
+            min_records = 5
+
         task = ScrapingTask(
             task_id=effective_task_id,
             objective=objective,
@@ -263,11 +289,13 @@ class ScrapingPlannerAgent(BaseAgent):
             fields=fields,
             output_schema=output_schema,
             max_records=max_records,
+            min_records=min_records,
+            is_list=is_list,
             constraints=constraints,
             source_requirements=source_requirements,
         )
 
         self.logger.info(
-            f"Successfully generated ScrapingTask {task.task_id} with {len(task.target_urls)} URLs and {len(task.fields)} fields"
+            f"Successfully generated ScrapingTask {task.task_id} with {len(task.target_urls)} URLs and {len(task.fields)} fields (is_list={task.is_list}, min_records={task.min_records})"
         )
         return task

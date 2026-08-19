@@ -69,6 +69,14 @@ class ScrapingTask(BaseModel):
         default=None,
         description="Limit on records to scrape if specified.",
     )
+    min_records: Optional[int] = Field(
+        default=None,
+        description="Minimum expected records for bulk/listing requests.",
+    )
+    is_list: bool = Field(
+        default=False,
+        description="Whether the user requested a list/collection of items.",
+    )
     constraints: list[str] = Field(
         default_factory=list,
         description="Explicit constraints mentioned by the user (e.g. pagination limits, exclusions).",
