@@ -1,5 +1,5 @@
 'use client'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { type ReactNode } from 'react'
 
 interface ButtonProps {
@@ -17,26 +17,26 @@ export function Button({
   className = '',
   id,
 }: ButtonProps) {
-  const prefersReduced = useReducedMotion()
-
   const base =
-    'relative inline-flex items-center gap-2 px-6 py-3 rounded font-mono font-semibold text-sm tracking-wide transition-all duration-200 cursor-pointer overflow-hidden border-0 outline-none'
+    'relative inline-flex items-center gap-2.5 px-6 py-3 rounded-xl font-body font-medium text-sm transition-all duration-200 cursor-pointer overflow-hidden outline-none'
 
   const styles = {
     primary: {
-      background:
-        'linear-gradient(135deg, #240044 0%, #6D28D9 22%, #EC0AFF 45%, #FF1744 68%, #00E5FF 100%)',
-      color: '#05050A',
+      background: 'linear-gradient(135deg, #6D28D9 0%, #8B5CF6 50%, #38BDF8 100%)',
+      color: '#FFFFFF',
+      boxShadow: '0 8px 25px rgba(139, 92, 246, 0.25)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
     },
     secondary: {
-      background: 'transparent',
-      color: '#F8FAFC',
-      border: '1px solid rgba(236,10,255,0.5)',
+      background: 'rgba(255, 255, 255, 0.05)',
+      color: '#F5F7FA',
+      border: '1px solid rgba(255, 255, 255, 0.12)',
+      backdropFilter: 'blur(12px)',
     },
     ghost: {
       background: 'transparent',
-      color: '#A1A1B5',
-      border: '1px solid rgba(161,161,181,0.2)',
+      color: '#A7AFBD',
+      border: '1px solid rgba(255, 255, 255, 0.07)',
     },
   }
 
@@ -46,12 +46,8 @@ export function Button({
       className={`${base} ${className}`}
       style={styles[variant]}
       onClick={onClick}
-      whileHover={
-        !prefersReduced
-          ? { scale: 1.03, y: -1, boxShadow: '0 0 20px rgba(236,10,255,0.3)' }
-          : {}
-      }
-      whileTap={!prefersReduced ? { scale: 0.97 } : {}}
+      whileHover={{ scale: 1.02, y: -1 }}
+      whileTap={{ scale: 0.98 }}
     >
       {children}
     </motion.button>

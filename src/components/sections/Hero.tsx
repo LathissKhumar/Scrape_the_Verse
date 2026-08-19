@@ -1,200 +1,157 @@
 'use client'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
 import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
 import { WebCanvas } from '@/components/ui/WebCanvas'
-import { DISCOVERY_SOURCES } from '@/lib/mock-data'
+import { BUSINESS_INTEL_EXAMPLE } from '@/lib/mock-data'
 
 const HERO_NODES = [
-  { x: 0.5, y: 0.5, color: '#EC0AFF', radius: 10 },
-  { x: 0.15, y: 0.2, label: 'Google Maps', color: '#00E5FF', radius: 6 },
-  { x: 0.8, y: 0.15, label: 'Yelp', color: '#EC0AFF', radius: 5 },
-  { x: 0.1, y: 0.7, label: 'Directories', color: '#6D28D9', radius: 5 },
-  { x: 0.85, y: 0.75, label: 'Social', color: '#FF1744', radius: 5 },
-  { x: 0.6, y: 0.08, label: 'Reviews', color: '#00E5FF', radius: 4 },
-  { x: 0.25, y: 0.88, label: 'Competitors', color: '#EC0AFF', radius: 4 },
-  { x: 0.92, y: 0.42, label: 'Websites', color: '#6D28D9', radius: 4 },
+  { x: 0.5, y: 0.5, color: '#8B5CF6', radius: 8 },
+  { x: 0.18, y: 0.22, label: 'Google Maps', color: '#38BDF8', radius: 5 },
+  { x: 0.78, y: 0.18, label: 'Directories', color: '#8B5CF6', radius: 5 },
+  { x: 0.12, y: 0.72, label: 'Reviews', color: '#34D399', radius: 5 },
+  { x: 0.82, y: 0.78, label: 'Social Signals', color: '#38BDF8', radius: 5 },
+  { x: 0.62, y: 0.1, label: 'Competitors', color: '#8B5CF6', radius: 4 },
+  { x: 0.28, y: 0.85, label: 'Websites', color: '#38BDF8', radius: 4 },
 ]
 
 const HERO_EDGES = [
-  { from: 0, to: 1, color: '#00E5FF', animated: true },
-  { from: 0, to: 2, color: '#EC0AFF', animated: true },
-  { from: 0, to: 3, color: '#6D28D9', animated: true },
-  { from: 0, to: 4, color: '#FF1744', animated: true },
-  { from: 0, to: 5, color: '#00E5FF', animated: true },
-  { from: 0, to: 6, color: '#EC0AFF', animated: true },
-  { from: 0, to: 7, color: '#6D28D9', animated: true },
-  { from: 1, to: 5, color: 'rgba(109,40,217,0.2)', animated: false },
-  { from: 2, to: 4, color: 'rgba(109,40,217,0.2)', animated: false },
+  { from: 0, to: 1, color: '#38BDF8', animated: true },
+  { from: 0, to: 2, color: '#8B5CF6', animated: true },
+  { from: 0, to: 3, color: '#34D399', animated: true },
+  { from: 0, to: 4, color: '#38BDF8', animated: true },
+  { from: 0, to: 5, color: '#8B5CF6', animated: true },
+  { from: 0, to: 6, color: '#38BDF8', animated: true },
 ]
 
-const TOTAL = DISCOVERY_SOURCES.reduce((s, d) => s + d.records, 0)
-
 export function Hero() {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    let current = 0
-    const step = Math.ceil(TOTAL / 60)
-    const id = setInterval(() => {
-      current = Math.min(current + step, TOTAL)
-      setCount(current)
-      if (current >= TOTAL) clearInterval(id)
-    }, 20)
-    return () => clearInterval(id)
-  }, [])
-
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center pt-28 pb-20 overflow-hidden border-b border-white/5"
-      aria-label="Hero — Scrape-Verse self-healing web intelligence"
+      className="relative min-h-screen flex items-center justify-center pt-32 pb-24 overflow-hidden border-b border-white/5 bg-void"
+      aria-label="Hero — Scrape-Verse web intelligence"
     >
-      {/* Canvas background */}
-      <div className="absolute inset-0 opacity-40">
+      {/* Background Canvas Particles */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
         <WebCanvas nodes={HERO_NODES} edges={HERO_EDGES} />
       </div>
 
-      {/* Halftone */}
-      <div className="absolute inset-0 halftone opacity-30 pointer-events-none" />
-
-      {/* Radial Glow */}
+      {/* Soft Ambient Glow */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none opacity-20 blur-[120px]"
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none opacity-15 blur-[140px]"
         style={{
-          background: 'radial-gradient(circle, #EC0AFF 0%, #6D28D9 50%, transparent 80%)',
+          background: 'radial-gradient(circle, #8B5CF6 0%, #38BDF8 60%, transparent 80%)',
         }}
       />
 
-      {/* Content Container */}
+      {/* Content Grid */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
-        {/* Left column */}
+        {/* Left Column */}
         <motion.div
           className="lg:col-span-7 space-y-8"
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <div
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border text-xs font-mono tracking-wider backdrop-blur-md"
-            style={{
-              color: '#EC0AFF',
-              borderColor: 'rgba(236,10,255,0.35)',
-              backgroundColor: 'rgba(236,10,255,0.08)',
-            }}
-          >
-            <span
-              className="w-2 h-2 rounded-full animate-ping"
-              style={{ backgroundColor: '#EC0AFF' }}
-            />
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-violet-accent/30 bg-violet-accent/10 text-xs font-mono text-violet-accent backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-violet-accent animate-pulse" />
             SELF-HEALING WEB INTELLIGENCE
           </div>
 
-          <h1
-            className="text-5xl sm:text-6xl lg:text-7xl font-black font-display leading-[1.08] tracking-tight"
-          >
-            The Web Changes.
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-display leading-[1.08] tracking-tight text-text-primary">
+            The web changes.
             <br />
             <GradientText className="py-1">
-              Your Scrapers Adapt.
+              Your intelligence adapts.
             </GradientText>
           </h1>
 
-          <p className="text-lg sm:text-xl font-body leading-relaxed text-muted max-w-xl">
-            Autonomous web intelligence platform that discovers leads, self-heals when target sites change structure, and delivers AI-driven sales automation.
+          <p className="text-lg sm:text-xl font-body leading-relaxed text-text-secondary max-w-xl">
+            Scrape-Verse continuously discovers, researches and monitors businesses across the web — while self-healing when websites change.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-2">
-            <Button id="hero-cta-primary" variant="primary" className="!text-sm !px-7 !py-3.5 shadow-xl shadow-magenta/25">
-              Explore Scraping Engine
+            <Button id="hero-cta-primary" variant="primary" className="!text-sm !px-7 !py-3.5 shadow-xl shadow-violet-accent/20">
+              Explore the Intelligence Engine
             </Button>
-            <Button id="hero-cta-secondary" variant="secondary" className="!text-sm !px-7 !py-3.5 backdrop-blur-md">
-              See Self-Healing in Action
+            <Button id="hero-cta-secondary" variant="secondary" className="!text-sm !px-7 !py-3.5">
+              See How It Works
             </Button>
           </div>
         </motion.div>
 
-        {/* Right column — Live Glass Card */}
+        {/* Right Column — Floating Glass Intelligence Card */}
         <motion.div
           className="lg:col-span-5"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
         >
-          <div className="glass-panel p-8 space-y-6">
+          <div className="glass-level-3 p-8 space-y-6">
+            {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <span className="font-mono text-xs tracking-widest text-muted">
-                SCRAPE-VERSE MONITOR
+              <span className="font-mono text-xs tracking-widest text-muted uppercase">
+                LEAD INTELLIGENCE
               </span>
-              <span className="flex items-center gap-2 text-xs font-mono text-cyan">
-                <span className="w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                LIVE STREAM
+              <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-success/10 text-emerald-success border border-emerald-success/20">
+                HIGH OPPORTUNITY
               </span>
             </div>
 
-            <div className="space-y-2 font-mono text-xs">
-              {[
-                ['Target Industry', 'Restaurants & Dining'],
-                ['Location Filter', 'Austin, Texas'],
-                ['Discovery Criteria', 'High Rating / Missing Website'],
-              ].map(([label, value]) => (
-                <div key={label} className="flex justify-between items-center py-1">
-                  <span className="text-muted">{label}:</span>
-                  <span className="text-off-white font-medium">{value}</span>
-                </div>
-              ))}
+            {/* Business Info */}
+            <div className="space-y-1">
+              <h3 className="font-bold font-display text-2xl text-text-primary">
+                {BUSINESS_INTEL_EXAMPLE.businessName}
+              </h3>
+              <p className="text-xs font-mono text-muted">
+                {BUSINESS_INTEL_EXAMPLE.location}
+              </p>
             </div>
 
-            <div className="space-y-3 border-t border-white/10 pt-5">
-              {DISCOVERY_SOURCES.map((source, i) => (
-                <motion.div
-                  key={source.name}
-                  className="flex items-center justify-between font-mono text-sm"
-                  initial={{ opacity: 0, x: 15 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + i * 0.15 }}
-                >
-                  <span className="flex items-center gap-2 text-muted">
-                    <span
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: source.color }}
-                    />
-                    {source.name}
-                  </span>
-                  <span className="font-semibold tabular-nums" style={{ color: source.color }}>
-                    {source.records.toLocaleString()} leads
-                  </span>
-                </motion.div>
-              ))}
+            {/* Metrics Breakdown */}
+            <div className="space-y-3 border-t border-b border-white/10 py-4 font-mono text-xs">
+              <div className="flex justify-between items-center">
+                <span className="text-muted">Website:</span>
+                <span className="text-rose-error font-medium">Not detected</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted">Rating:</span>
+                <span className="text-text-primary font-semibold">{BUSINESS_INTEL_EXAMPLE.rating} ★</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted">Reviews:</span>
+                <span className="text-text-primary font-semibold">{BUSINESS_INTEL_EXAMPLE.reviews} verified</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-muted">Digital Presence:</span>
+                <span className="text-blue-accent font-semibold">{BUSINESS_INTEL_EXAMPLE.digitalPresenceScore} / 100</span>
+              </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5 flex items-center justify-between">
-              <span className="text-xs font-mono tracking-wider text-muted">TOTAL OPPORTUNITIES</span>
-              <span
-                className="text-3xl font-black font-display tabular-nums"
-                style={{
-                  background: 'linear-gradient(135deg, #EC0AFF, #00E5FF)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                {count.toLocaleString()}
-              </span>
+            {/* AI Recommendation */}
+            <div className="space-y-2">
+              <span className="text-xs font-mono text-muted uppercase">AI Recommendation</span>
+              <p className="text-xs font-body text-text-secondary leading-relaxed bg-white/5 p-3.5 rounded-xl border border-white/5">
+                &quot;{BUSINESS_INTEL_EXAMPLE.recommendation}&quot;
+              </p>
             </div>
+
+            {/* Action */}
+            <button className="w-full py-3 rounded-xl font-mono text-xs font-semibold text-blue-accent bg-blue-accent/10 border border-blue-accent/30 hover:bg-blue-accent/20 transition-colors">
+              View Intelligence Profile →
+            </button>
           </div>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Subtle Scroll Indicator */}
       <motion.div
         className="absolute bottom-6 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 8, 0] }}
+        animate={{ y: [0, 6, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <div className="w-6 h-10 rounded-full border border-white/20 flex justify-center pt-2 backdrop-blur-sm">
-          <div className="w-1.5 h-2.5 rounded-full bg-magenta" />
+        <div className="w-5 h-9 rounded-full border border-white/15 flex justify-center pt-2 backdrop-blur-sm">
+          <div className="w-1 h-2 rounded-full bg-violet-accent" />
         </div>
       </motion.div>
     </section>

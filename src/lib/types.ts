@@ -23,7 +23,7 @@ export interface Lead {
   socialPresence: boolean
   competitorCount: number
   leadScore: number
-  opportunity: 'High' | 'Medium' | 'Low'
+  opportunity: 'HIGH' | 'MEDIUM' | 'LOW'
   aiRecommendation: string
   source: string
 }
@@ -44,20 +44,22 @@ export interface PipelineStage {
 
 export interface BusinessIntelligence {
   businessName: string
+  location: string
   website: string | null
   rating: number
   reviews: number
   competitors: number
-  websiteQuality: number
+  digitalPresenceScore: number
   leadScore: number
-  opportunity: 'High' | 'Medium' | 'Low'
+  opportunity: 'HIGH' | 'MEDIUM' | 'LOW'
   recommendation: string
 }
 
 export interface MonitoringProspect {
   id: string
   name: string
-  website: 'found' | 'not-found'
+  location: string
+  website: 'detected' | 'not-detected'
   monitoring: boolean
   socialMonitoring: boolean
   competitorMonitoring: boolean

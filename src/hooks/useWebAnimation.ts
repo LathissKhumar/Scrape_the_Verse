@@ -32,7 +32,6 @@ export function useWebAnimation(
     }
     setSize()
 
-    // One particle per animated edge
     const particles = options.edges
       .filter((e) => e.animated)
       .map((edge) => ({ edge, offset: Math.random() }))
@@ -45,7 +44,7 @@ export function useWebAnimation(
 
       ctx.clearRect(0, 0, width, height)
 
-      // Draw static edges first
+      // Draw subtle connecting edges
       options.edges.forEach((edge) => {
         const from = options.nodes[edge.from]
         const to = options.nodes[edge.to]
@@ -53,14 +52,14 @@ export function useWebAnimation(
         ctx.beginPath()
         ctx.moveTo(from.x * width, from.y * height)
         ctx.lineTo(to.x * width, to.y * height)
-        ctx.strokeStyle = edge.color ?? 'rgba(109,40,217,0.25)'
+        ctx.strokeStyle = edge.color ?? 'rgba(139, 92, 246, 0.2)'
         ctx.lineWidth = 1
         ctx.stroke()
       })
 
-      // Animate particles along edges
+      // Animate subtle data light pulses
       particles.forEach((p) => {
-        p.offset = (p.offset + dt * 0.25) % 1
+        p.offset = (p.offset + dt * 0.2) % 1
         const from = options.nodes[p.edge.from]
         const to = options.nodes[p.edge.to]
         if (!from || !to) return
@@ -68,31 +67,31 @@ export function useWebAnimation(
         const py = from.y * height + (to.y - from.y) * height * p.offset
         ctx.beginPath()
         ctx.arc(px, py, 2.5, 0, Math.PI * 2)
-        ctx.fillStyle = p.edge.color ?? '#EC0AFF'
-        ctx.shadowBlur = 10
-        ctx.shadowColor = p.edge.color ?? '#EC0AFF'
+        ctx.fillStyle = p.edge.color ?? '#38BDF8'
+        ctx.shadowBlur = 8
+        ctx.shadowColor = p.edge.color ?? '#38BDF8'
         ctx.fill()
         ctx.shadowBlur = 0
       })
 
-      // Draw nodes on top
+      // Draw node points
       options.nodes.forEach((node) => {
         const nx = node.x * width
         const ny = node.y * height
-        const r = node.radius ?? 5
+        const r = node.radius ?? 4
         ctx.beginPath()
         ctx.arc(nx, ny, r, 0, Math.PI * 2)
-        ctx.fillStyle = node.color ?? '#6D28D9'
-        ctx.shadowBlur = 12
-        ctx.shadowColor = node.color ?? '#6D28D9'
+        ctx.fillStyle = node.color ?? '#8B5CF6'
+        ctx.shadowBlur = 10
+        ctx.shadowColor = node.color ?? '#8B5CF6'
         ctx.fill()
         ctx.shadowBlur = 0
 
         if (node.label) {
-          ctx.font = `10px Consolas, monospace`
-          ctx.fillStyle = '#A1A1B5'
+          ctx.font = `11px Inter, sans-serif`
+          ctx.fillStyle = '#6F7887'
           ctx.textAlign = 'center'
-          ctx.fillText(node.label, nx, ny + r + 13)
+          ctx.fillText(node.label, nx, ny + r + 14)
         }
       })
 

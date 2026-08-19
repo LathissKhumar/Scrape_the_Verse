@@ -15,14 +15,13 @@ export function FinalCTA() {
       className="py-36 md:py-48 relative overflow-hidden bg-void border-b border-white/5"
       aria-label="Final Call to Action"
     >
-      {/* Radial Glow */}
+      {/* Ambient Lighting */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-30 blur-[140px]"
+        className="absolute inset-0 pointer-events-none opacity-20 blur-[150px]"
         style={{
-          background: 'radial-gradient(circle at center, #240044 0%, #EC0AFF 40%, transparent 75%)',
+          background: 'radial-gradient(circle at center, #6D28D9 0%, #8B5CF6 40%, #38BDF8 80%, transparent 100%)',
         }}
       />
-      <div className="absolute inset-0 halftone opacity-20 pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto px-6 text-center z-10">
         <motion.div
@@ -31,35 +30,27 @@ export function FinalCTA() {
           transition={{ duration: 0.7 }}
           className="space-y-8"
         >
-          <div
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border text-xs font-mono tracking-wider backdrop-blur-md"
-            style={{ color: '#EC0AFF', borderColor: 'rgba(236,10,255,0.3)', backgroundColor: 'rgba(236,10,255,0.08)' }}
-          >
-            <span
-              className="w-2 h-2 rounded-full animate-ping"
-              style={{ backgroundColor: '#EC0AFF' }}
-            />
-            HACKATHON SUBMISSION 2026
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-violet-accent/30 bg-violet-accent/10 text-xs font-mono text-violet-accent backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-violet-accent animate-pulse" />
+            ENTERPRISE WEB INTELLIGENCE
           </div>
 
-          <h2
-            className="text-5xl sm:text-6xl lg:text-7xl font-black font-display leading-[1.1] tracking-tight"
-          >
-            The Web Is Your <GradientText>Database.</GradientText>
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-display leading-[1.1] tracking-tight text-text-primary">
+            The web changes.
             <br />
-            We Make It <GradientText gradient="healing">Unbreakable.</GradientText>
+            <GradientText>Your intelligence adapts.</GradientText>
           </h2>
 
-          <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto font-body leading-relaxed">
-            Self-healing web intelligence that discovers, understands, and converts business opportunities — completely autonomously.
+          <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
+            Scrape-Verse continuously discovers, researches and monitors businesses across the web — while self-healing when websites change.
           </p>
 
           <div className="flex flex-wrap justify-center gap-5 pt-4">
-            <Button id="final-cta-primary" variant="primary" className="!text-base !px-9 !py-4 shadow-xl shadow-magenta/25">
-              Explore Scrape-Verse
+            <Button id="final-cta-primary" variant="primary" className="!text-base !px-9 !py-4 shadow-xl shadow-violet-accent/25">
+              Explore the Intelligence Engine
             </Button>
-            <Button id="final-cta-secondary" variant="secondary" className="!text-base !px-9 !py-4 backdrop-blur-md">
-              View Architecture Specs
+            <Button id="final-cta-secondary" variant="secondary" className="!text-base !px-9 !py-4">
+              Schedule Architecture Demo
             </Button>
           </div>
         </motion.div>

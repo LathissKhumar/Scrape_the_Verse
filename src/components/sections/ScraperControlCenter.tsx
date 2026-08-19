@@ -10,6 +10,13 @@ export function ScraperControlCenter() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
+  const summaryMetrics = [
+    { label: 'Active Collectors', value: '24', color: '#F5F7FA' },
+    { label: 'Healthy Status', value: '21', color: '#34D399' },
+    { label: 'Auto-Healing', value: '1', color: '#8B5CF6' },
+    { label: 'Records Processed Today', value: '184,200', color: '#38BDF8' },
+  ]
+
   return (
     <section
       id="scraper-control"
@@ -19,14 +26,25 @@ export function ScraperControlCenter() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
-          <SectionLabel label="Scraper Control Center" />
-          <h2 className="text-4xl md:text-5xl font-black font-display tracking-tight">
-            Six Collectors.{' '}
-            <GradientText>Always Active.</GradientText>
+          <SectionLabel label="Platform Operations" />
+          <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
+            Scraper <GradientText>Control Center.</GradientText>
           </h2>
-          <p className="text-base text-muted max-w-xl mx-auto font-body">
-            Real-time status monitor across all Bright Data Studio collectors — tracking extraction rate, status, and self-healing triggers.
+          <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
+            Real-time operations dashboard across all active Bright Data collectors — tracking records throughput, runtime health, and healing events.
           </p>
+        </div>
+
+        {/* Top Summary Metrics */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {summaryMetrics.map((m) => (
+            <div key={m.label} className="glass-card p-6 text-center">
+              <div className="text-3xl font-bold font-display tabular-nums" style={{ color: m.color }}>
+                {m.value}
+              </div>
+              <div className="text-xs font-mono text-muted mt-2 uppercase">{m.label}</div>
+            </div>
+          ))}
         </div>
 
         {/* Collector Cards Grid */}
@@ -36,14 +54,14 @@ export function ScraperControlCenter() {
               key={collector.id}
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.1, duration: 0.4 }}
+              transition={{ delay: i * 0.08, duration: 0.4 }}
             >
               <CollectorCard collector={collector} />
             </motion.div>
           ))}
         </div>
 
-        {/* Live Stream Console */}
+        {/* Live System Event Stream */}
         <motion.div
           className="max-w-4xl mx-auto space-y-4"
           initial={{ opacity: 0 }}
@@ -51,37 +69,34 @@ export function ScraperControlCenter() {
           transition={{ delay: 0.4 }}
         >
           <div className="text-xs font-mono tracking-widest text-muted uppercase">
-            LIVE SYSTEM EVENT STREAM
+            LIVE SYSTEM EVENT LOG
           </div>
-          <div className="glass-panel overflow-hidden border-white/10 shadow-2xl">
-            <div className="p-6 space-y-3 font-mono text-xs max-h-72 overflow-y-auto bg-[#05050A]/90">
+          <div className="glass-level-2 overflow-hidden">
+            <div className="p-6 space-y-3 font-mono text-xs max-h-72 overflow-y-auto bg-[#07090D]/95">
               {SELF_HEAL_EVENTS.map((evt, i) => (
-                <motion.div
+                <div
                   key={i}
                   className="flex items-start gap-4 py-1 border-b border-white/[0.03]"
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.5 + i * 0.08 }}
                 >
-                  <span className="text-muted shrink-0 font-medium">{evt.time}</span>
+                  <span className="text-muted shrink-0">{evt.time}</span>
                   <span
                     style={{
                       color:
                         evt.type === 'error'
-                          ? '#FF1744'
+                          ? '#FB7185'
                           : evt.type === 'warning'
-                          ? '#FF9800'
+                          ? '#FBBF24'
                           : evt.type === 'healing'
-                          ? '#EC0AFF'
+                          ? '#8B5CF6'
                           : evt.type === 'success'
-                          ? '#00E5FF'
-                          : '#A1A1B5',
+                          ? '#34D399'
+                          : '#A7AFBD',
                       fontWeight: evt.type === 'healing' || evt.type === 'success' ? 600 : 400,
                     }}
                   >
                     {evt.message}
                   </span>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

@@ -11,8 +11,8 @@ export function ComicPanel({
 }) {
   return (
     <div
-      className={`relative comic-panel bg-[#080810]/60 backdrop-blur-sm ${
-        glowing ? 'glow-magenta' : ''
+      className={`glass-level-2 p-6 md:p-8 transition-all duration-300 ${
+        glowing ? 'border-violet-accent/40 shadow-violet-accent/10 shadow-2xl' : ''
       } ${className}`}
     >
       {children}
