@@ -1,10 +1,10 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
+import { Bell, ArrowRight } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { NeonBadge } from '@/components/ui/NeonBadge'
-import { CLIENT_METRICS } from '@/lib/mock-data'
 
 export function Monitoring() {
   const ref = useRef(null)
@@ -20,7 +20,7 @@ export function Monitoring() {
   const flowNodes = ['WEB SIGNAL', 'MONITOR AGENT', 'EVENT TRIGGER', 'AI ANALYSIS', 'FOLLOW-UP ACTION']
 
   return (
-    <section id="monitoring" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="Post-Outreach Monitoring">
+    <section id="monitoring" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="Post-Outreach Monitoring">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
           <SectionLabel label="Continuous Monitoring" />
@@ -42,7 +42,10 @@ export function Monitoring() {
                     {node}
                   </div>
                   {i < flowNodes.length - 1 && (
-                    <div className="w-8 md:w-12 h-0.5 bg-gradient-to-r from-blue-accent to-emerald-success opacity-60 mx-2" />
+                    <div className="flex items-center px-2">
+                      <div className="w-6 md:w-8 h-0.5 bg-gradient-to-r from-blue-accent to-emerald-success opacity-60" />
+                      <ArrowRight className="w-3.5 h-3.5 text-emerald-success/60 -ml-1" />
+                    </div>
                   )}
                 </div>
               ))}
@@ -78,7 +81,9 @@ export function Monitoring() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <div className="flex items-center gap-4 flex-wrap">
-                <span className="text-2xl">🚨</span>
+                <div className="w-10 h-10 rounded-xl bg-emerald-success/15 border border-emerald-success/30 flex items-center justify-center text-emerald-success shrink-0">
+                  <Bell className="w-5 h-5 text-emerald-success" />
+                </div>
                 <div className="flex-1 font-mono text-xs">
                   <div className="font-bold text-emerald-success text-sm">
                     Website Launch Detected — urbanbrewchennai.com

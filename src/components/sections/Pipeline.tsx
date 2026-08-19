@@ -1,16 +1,25 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { Search, Zap, ShieldCheck, BrainCircuit, Rocket } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { PIPELINE_STAGES } from '@/lib/mock-data'
+
+const STAGE_ICONS: Record<string, React.ReactNode> = {
+  search: <Search className="w-5 h-5 text-violet-accent" />,
+  zap: <Zap className="w-5 h-5 text-blue-accent" />,
+  'shield-check': <ShieldCheck className="w-5 h-5 text-emerald-success" />,
+  'brain-circuit': <BrainCircuit className="w-5 h-5 text-violet-accent" />,
+  rocket: <Rocket className="w-5 h-5 text-blue-accent" />,
+}
 
 export function Pipeline() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="pipeline" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="5-stage core pipeline">
+    <section id="pipeline" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="5-stage core pipeline">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-20 space-y-4">
           <SectionLabel label="Pipeline Architecture" />
@@ -51,7 +60,7 @@ export function Pipeline() {
                       <span className="text-xs font-mono font-bold tracking-widest text-violet-accent">
                         STAGE {stage.stage}
                       </span>
-                      <span className="text-xl lg:hidden">{stage.icon}</span>
+                      <span className="lg:hidden">{STAGE_ICONS[stage.icon]}</span>
                     </div>
                     <h3 className="text-2xl font-bold font-display text-text-primary">
                       {stage.title}
@@ -68,7 +77,7 @@ export function Pipeline() {
                   className="hidden lg:flex w-14 h-14 rounded-2xl border-2 items-center justify-center text-2xl shrink-0 z-10 shadow-xl shadow-violet-accent/15 backdrop-blur-md cursor-pointer"
                   style={{ borderColor: '#8B5CF6', backgroundColor: 'rgba(13, 17, 23, 0.9)' }}
                 >
-                  {stage.icon}
+                  {STAGE_ICONS[stage.icon]}
                 </motion.div>
 
                 <div className="flex-1 hidden lg:block" />

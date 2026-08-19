@@ -1,13 +1,14 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
+import { FileText, Mail, Mic, RefreshCw, CheckCircle2 } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 
 const AGENTS = [
   {
     id: 'proposal',
-    icon: '📄',
+    icon: <FileText className="w-5 h-5 text-violet-accent" />,
     name: 'Proposal Agent',
     description: 'Generates tailored sales proposals from structured intelligence and competitor gap analysis.',
     output: 'Custom PDF proposal + Tiered Pricing Specs',
@@ -15,7 +16,7 @@ const AGENTS = [
   },
   {
     id: 'email',
-    icon: '✉️',
+    icon: <Mail className="w-5 h-5 text-blue-accent" />,
     name: 'Outreach Agent',
     description: 'Drafts personalized outreach sequences referencing specific opportunity signals (rating, missing site).',
     output: 'Subject line + 3-stage email sequence',
@@ -23,7 +24,7 @@ const AGENTS = [
   },
   {
     id: 'voice',
-    icon: '🎙️',
+    icon: <Mic className="w-5 h-5 text-emerald-success" />,
     name: 'Voice Agent',
     description: 'Conducts discovery calls, reads business intelligence on-the-fly, and logs owner feedback.',
     output: 'Call transcript + Qualification score',
@@ -31,7 +32,7 @@ const AGENTS = [
   },
   {
     id: 'followup',
-    icon: '🔄',
+    icon: <RefreshCw className="w-5 h-5 text-blue-accent" />,
     name: 'Follow-Up Agent',
     description: 'Monitors prospect website and review updates, auto-triggering re-engagement sequences.',
     output: 'Trigger events + Automated re-engagement',
@@ -45,7 +46,7 @@ export function SalesAutomation() {
   const [activeId, setActiveId] = useState<string>('proposal')
 
   return (
-    <section id="sales-automation" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="AI Sales Action">
+    <section id="sales-automation" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="AI Sales Action">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
           <SectionLabel stage="05" label="Autonomous Action" />
@@ -80,7 +81,7 @@ export function SalesAutomation() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 backdrop-blur-md"
+                        className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-md"
                         style={{ backgroundColor: `${agent.color}15`, border: `1px solid ${agent.color}30` }}
                       >
                         {agent.icon}
@@ -98,7 +99,7 @@ export function SalesAutomation() {
                   </div>
 
                   <div className="text-xs font-mono px-3.5 py-2.5 rounded-lg bg-white/5 border border-white/5 text-blue-accent">
-                    <span className="text-muted font-bold">OUTPUT:</span> {agent.output}
+                    <span className="text-muted font-semibold">OUTPUT:</span> {agent.output}
                   </div>
                 </div>
               </motion.div>
@@ -106,13 +107,14 @@ export function SalesAutomation() {
           })}
         </div>
 
-        {/* Conversion Guarantee Banner */}
+        {/* Conversion Banner */}
         <motion.div
-          className="mt-14 glass-level-2 p-8 max-w-2xl mx-auto text-center border-blue-accent/30 shadow-xl"
+          className="mt-14 glass-level-2 p-8 max-w-2xl mx-auto text-center border-blue-accent/30 shadow-xl flex items-center justify-center gap-3"
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.5 }}
         >
+          <CheckCircle2 className="w-5 h-5 text-emerald-success shrink-0" />
           <p className="text-sm font-mono text-text-secondary">
             From raw web listing to a delivered proposal:{' '}
             <span className="text-blue-accent font-bold">Under 90 Seconds.</span>

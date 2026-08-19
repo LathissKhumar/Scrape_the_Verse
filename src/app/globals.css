@@ -17,13 +17,13 @@
   --color-amber-warning: #FBBF24;
   --color-rose-error: #FB7185;
 
-  /* Restrained Signature Gradient */
+  /* Signature Gradient */
   --background-signature-gradient: linear-gradient(135deg, #6D28D9 0%, #8B5CF6 45%, #38BDF8 100%);
   --background-glass-glow: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
 
-  /* Fonts */
-  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
-  --font-body: var(--font-inter), system-ui, sans-serif;
+  /* Inter Typography */
+  --font-display: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains-mono), Consolas, monospace;
 }
 
@@ -36,7 +36,9 @@ body {
   background-color: #07090D;
   color: #F5F7FA;
   font-family: var(--font-body);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
@@ -77,7 +79,6 @@ body {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
 
-/* Glass Card with Smooth Hover Elevation */
 .glass-card {
   background: rgba(13, 17, 23, 0.7);
   backdrop-filter: blur(16px);

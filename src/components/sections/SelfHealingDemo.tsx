@@ -1,6 +1,7 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { Play, RotateCcw, ShieldAlert, Cpu } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
@@ -41,7 +42,7 @@ export function SelfHealingDemo() {
     <section
       id="self-healing"
       ref={ref}
-      className="py-32 md:py-40 relative border-b border-white/5 bg-void"
+      className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body"
       aria-label="Self-Healing Engine"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -60,8 +61,9 @@ export function SelfHealingDemo() {
           {/* Left Explanation */}
           <div className="lg:col-span-5 space-y-6">
             <div className="glass-level-2 p-6 space-y-4">
-              <h3 className="text-xl font-bold font-display text-text-primary">
-                Automated DOM Repair Workflow
+              <h3 className="text-xl font-bold font-display text-text-primary flex items-center gap-2">
+                <Cpu className="w-5 h-5 text-violet-accent" />
+                <span>Automated DOM Repair Workflow</span>
               </h3>
               <div className="space-y-3 font-mono text-xs">
                 {[
@@ -70,7 +72,7 @@ export function SelfHealingDemo() {
                   { step: '3. LLM Re-Analysis', desc: 'Gemini re-evaluates page layout to locate fields.' },
                   { step: '4. Validation & Recovery', desc: 'Executes test extraction and updates rule schema.' },
                 ].map((item) => (
-                  <div key={item.step} className="p-3 rounded-lg bg-white/5 border border-white/5 space-y-0.5">
+                  <div key={item.step} className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-0.5">
                     <div className="font-semibold text-blue-accent">{item.step}</div>
                     <div className="text-muted">{item.desc}</div>
                   </div>
@@ -103,8 +105,9 @@ export function SelfHealingDemo() {
               {/* Console Log Stream */}
               <div className="h-80 overflow-y-auto p-6 space-y-2.5 font-mono text-xs bg-[#07090D]/95">
                 {eventLog.length === 0 ? (
-                  <div className="h-full flex items-center justify-center text-muted">
-                    Click &quot;▶ Run Self-Healing Sequence&quot; to test layout break…
+                  <div className="h-full flex items-center justify-center text-muted gap-2">
+                    <ShieldAlert className="w-4 h-4 text-violet-accent" />
+                    <span>Click &quot;Run Self-Healing Sequence&quot; to test layout break…</span>
                   </div>
                 ) : (
                   eventLog.map((entry, i) => (
@@ -135,13 +138,21 @@ export function SelfHealingDemo() {
                   id="run-healing-demo-btn"
                   variant={phase === 'recovered' ? 'ghost' : 'primary'}
                   onClick={start}
-                  className="flex-1 justify-center !py-3 shadow-lg"
+                  className="flex-1 justify-center !py-3 shadow-lg flex items-center gap-2"
                 >
-                  {phase === 'idle' ? '▶ Run Self-Healing Sequence' : phase === 'recovered' ? '✓ Recovery Verified' : 'Executing Recovery Sequence…'}
+                  <Play className="w-3.5 h-3.5" />
+                  <span>
+                    {phase === 'idle'
+                      ? 'Run Self-Healing Sequence'
+                      : phase === 'recovered'
+                      ? 'Recovery Verified'
+                      : 'Executing Recovery Sequence…'}
+                  </span>
                 </Button>
                 {phase !== 'idle' && (
-                  <Button id="reset-healing-demo-btn" variant="ghost" onClick={reset} className="!px-6">
-                    Reset
+                  <Button id="reset-healing-demo-btn" variant="ghost" onClick={reset} className="!px-6 flex items-center gap-2">
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Reset</span>
                   </Button>
                 )}
               </div>

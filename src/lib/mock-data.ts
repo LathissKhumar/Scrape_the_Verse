@@ -13,35 +13,35 @@ export const PIPELINE_STAGES: PipelineStage[] = [
     title: 'Lead Discovery',
     description:
       'Sweeps maps, business directories, and review sites to identify targeted prospects.',
-    icon: '🔍',
+    icon: 'search',
   },
   {
     stage: '02',
     title: 'Parallel Research',
     description:
       'Four concurrent collectors evaluate website quality, customer sentiment, competitors, and social footprint.',
-    icon: '⚡',
+    icon: 'zap',
   },
   {
     stage: '03',
     title: 'Self-Healing Engine',
     description:
       'When target site layouts change, AI agents automatically regenerate extraction rules in real time.',
-    icon: '🛡️',
+    icon: 'shield-check',
   },
   {
     stage: '04',
     title: 'Structured Intelligence',
     description:
       'Raw web payload normalizes into structured JSON and feeds directly into Gemini AI models.',
-    icon: '🧠',
+    icon: 'brain-circuit',
   },
   {
     stage: '05',
     title: 'Autonomous Sales Action',
     description:
       'Proposals, outreach emails, voice calls, and re-engagement triggers execute automatically.',
-    icon: '🚀',
+    icon: 'rocket',
   },
 ]
 
@@ -112,13 +112,13 @@ export const SELF_HEAL_EVENTS: SelfHealEvent[] = [
   {
     time: '11:38:04',
     type: 'warning',
-    message: '⚠ Target DOM layout changed — selector mismatch',
+    message: 'Target DOM layout changed — selector mismatch',
     collectorId: 'competitor-sites',
   },
   {
     time: '11:38:05',
     type: 'error',
-    message: '⚠ Extraction return empty — triggering repair workflow',
+    message: 'Extraction return empty — triggering repair workflow',
     collectorId: 'competitor-sites',
   },
   {
@@ -148,13 +148,13 @@ export const SELF_HEAL_EVENTS: SelfHealEvent[] = [
   {
     time: '11:38:13',
     type: 'success',
-    message: '✓ Extraction path verified — schema intact',
+    message: 'Extraction path verified — schema intact',
     collectorId: 'competitor-sites',
   },
   {
     time: '11:38:14',
     type: 'success',
-    message: '✓ Collector restored — 145 records extracted',
+    message: 'Collector restored — 145 records extracted',
     collectorId: 'competitor-sites',
   },
 ]
@@ -194,10 +194,10 @@ export const RESEARCH_COLLECTORS: ResearchCollector[] = [
     id: 'reviews',
     title: 'Customer Reviews',
     metrics: [
-      { label: 'Rating', value: '4.7 ★' },
+      { label: 'Rating', value: '4.7' },
       { label: 'Review Count', value: '280' },
       { label: 'Customer Sentiment', value: 'Very Positive' },
-      { label: 'Growth Trend', value: '↑ High Intent' },
+      { label: 'Growth Trend', value: 'High Intent' },
     ],
     status: 'complete',
   },
@@ -206,7 +206,7 @@ export const RESEARCH_COLLECTORS: ResearchCollector[] = [
     title: 'Competitor Intel',
     metrics: [
       { label: 'Direct Rivals', value: '5 Identified' },
-      { label: 'Rival Avg Rating', value: '4.1 ★' },
+      { label: 'Rival Avg Rating', value: '4.1' },
       { label: 'With Active Site', value: '5 / 5' },
       { label: 'Competitive Gap', value: 'High' },
     ],

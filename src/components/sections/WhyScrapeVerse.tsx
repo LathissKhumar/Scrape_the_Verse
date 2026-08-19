@@ -1,12 +1,13 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { ShieldCheck, Zap, BrainCircuit, Radio } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 
 const DIFFERENTIATORS = [
   {
-    icon: '🛡️',
+    icon: <ShieldCheck className="w-6 h-6 text-rose-error" />,
     title: 'Self-Healing Runtime',
     description:
       'Target website layout changes are detected within seconds. Extraction paths are auto-repaired via LLM reasoning — zero downtime, zero manual maintenance.',
@@ -14,7 +15,7 @@ const DIFFERENTIATORS = [
     color: '#FB7185',
   },
   {
-    icon: '⚡',
+    icon: <Zap className="w-6 h-6 text-violet-accent" />,
     title: 'Parallel Intelligence Stream',
     description:
       'Four concurrent collectors execute per prospect — site quality, customer sentiment, competitor gaps, and social footprint in under 15 seconds.',
@@ -22,7 +23,7 @@ const DIFFERENTIATORS = [
     color: '#8B5CF6',
   },
   {
-    icon: '🧠',
+    icon: <BrainCircuit className="w-6 h-6 text-blue-accent" />,
     title: 'Native Gemini AI Reasoning',
     description:
       'Scraped payloads stream directly into Gemini models. Raw data converts into structured lead scores and opportunity recommendations in a single pass.',
@@ -30,7 +31,7 @@ const DIFFERENTIATORS = [
     color: '#38BDF8',
   },
   {
-    icon: '📡',
+    icon: <Radio className="w-6 h-6 text-emerald-success" />,
     title: 'Persistent Prospect Monitoring',
     description:
       'Target businesses are continuously monitored. The instant a business launches a website or acquires reviews, follow-up agents trigger automatically.',
@@ -44,7 +45,7 @@ export function WhyScrapeVerse() {
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="why-scrape-verse" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="Why Scrape-Verse">
+    <section id="why-scrape-verse" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body" aria-label="Why Scrape-Verse">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
           <SectionLabel label="Platform Value" />
@@ -77,7 +78,7 @@ export function WhyScrapeVerse() {
                   <div className="flex items-center gap-4">
                     <motion.div
                       whileHover={{ rotate: 10, scale: 1.1 }}
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 backdrop-blur-md"
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 backdrop-blur-md"
                       style={{ backgroundColor: `${d.color}15`, border: `1px solid ${d.color}30` }}
                     >
                       {d.icon}

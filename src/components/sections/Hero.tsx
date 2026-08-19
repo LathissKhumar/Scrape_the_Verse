@@ -1,5 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
+import { Star, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
 import { WebCanvas } from '@/components/ui/WebCanvas'
@@ -28,7 +29,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center pt-32 pb-24 overflow-hidden border-b border-white/5 bg-void"
+      className="relative min-h-screen flex items-center justify-center pt-32 pb-24 overflow-hidden border-b border-white/5 bg-void font-body"
       aria-label="Hero — Scrape-Verse web intelligence"
     >
       {/* Background Canvas Particles */}
@@ -58,9 +59,9 @@ export function Hero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-violet-accent/30 bg-violet-accent/10 text-xs font-mono text-violet-accent backdrop-blur-md shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-violet-accent animate-pulse" />
-            SELF-HEALING WEB INTELLIGENCE
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-accent/30 bg-violet-accent/10 text-xs font-mono font-medium text-violet-accent backdrop-blur-md shadow-sm">
+            <ShieldCheck className="w-3.5 h-3.5 text-violet-accent" />
+            <span>SELF-HEALING WEB INTELLIGENCE</span>
           </div>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-display leading-[1.08] tracking-tight text-text-primary">
@@ -76,8 +77,9 @@ export function Hero() {
           </p>
 
           <div className="flex flex-wrap gap-4 pt-2">
-            <Button id="hero-cta-primary" variant="primary" className="!text-sm !px-7 !py-3.5 shadow-xl shadow-violet-accent/20">
-              Explore the Intelligence Engine
+            <Button id="hero-cta-primary" variant="primary" className="!text-sm !px-7 !py-3.5 shadow-xl shadow-violet-accent/20 flex items-center gap-2">
+              <span>Explore the Intelligence Engine</span>
+              <ArrowRight className="w-4 h-4" />
             </Button>
             <Button id="hero-cta-secondary" variant="secondary" className="!text-sm !px-7 !py-3.5">
               See How It Works
@@ -85,7 +87,7 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Right Column — Floating 3D Tilt Glass Card */}
+        {/* Right Column — Floating Glass Card */}
         <motion.div
           className="lg:col-span-5"
           initial={{ opacity: 0, y: 30 }}
@@ -113,10 +115,11 @@ export function Hero() {
 
             {/* Card Header */}
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <span className="font-mono text-xs tracking-widest text-muted uppercase">
-                LEAD INTELLIGENCE
+              <span className="font-mono text-xs tracking-widest text-muted uppercase flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-blue-accent" />
+                <span>LEAD INTELLIGENCE</span>
               </span>
-              <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-success/10 text-emerald-success border border-emerald-success/20">
+              <span className="px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-success/10 text-emerald-success border border-emerald-success/20">
                 HIGH OPPORTUNITY
               </span>
             </div>
@@ -135,14 +138,17 @@ export function Hero() {
             <div className="space-y-3 border-t border-b border-white/10 py-4 font-mono text-xs">
               <div className="flex justify-between items-center">
                 <span className="text-muted">Website:</span>
-                <span className="text-rose-error font-semibold flex items-center gap-1.5">
+                <span className="text-rose-error font-medium flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-error animate-ping" />
                   Not detected
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted">Rating:</span>
-                <span className="text-text-primary font-semibold">{BUSINESS_INTEL_EXAMPLE.rating} ★</span>
+                <span className="text-text-primary font-semibold flex items-center gap-1">
+                  <span>{BUSINESS_INTEL_EXAMPLE.rating}</span>
+                  <Star className="w-3.5 h-3.5 text-amber-warning fill-amber-warning inline" />
+                </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted">Reviews:</span>
@@ -166,15 +172,16 @@ export function Hero() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full py-3 rounded-xl font-mono text-xs font-semibold text-blue-accent bg-blue-accent/10 border border-blue-accent/30 hover:bg-blue-accent/20 transition-colors cursor-pointer"
+              className="w-full py-3 rounded-xl font-mono text-xs font-semibold text-blue-accent bg-blue-accent/10 border border-blue-accent/30 hover:bg-blue-accent/20 transition-colors cursor-pointer flex items-center justify-center gap-2"
             >
-              View Intelligence Profile →
+              <span>View Intelligence Profile</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </motion.button>
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Subtle Scroll Indicator */}
+      {/* Scroll Indicator */}
       <motion.div
         className="absolute bottom-6 left-1/2 -translate-x-1/2"
         animate={{ y: [0, 6, 0] }}
