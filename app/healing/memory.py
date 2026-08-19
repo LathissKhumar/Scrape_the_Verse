@@ -3,6 +3,7 @@ from typing import Optional
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from app.config.logging import get_logger
+from app.healing.persistent_memory import PersistentRepairMemory
 from app.healing.schemas import RepairMemoryRecord
 
 logger = get_logger("REPAIR_MEMORY")
@@ -11,8 +12,9 @@ logger = get_logger("REPAIR_MEMORY")
 class RepairMemory:
     """Stores and retrieves proven successful repair patterns indexed by domain and DOM signatures."""
 
-    def __init__(self):
+    def __init__(self, persistent_db_path: str = ".repair_memory.sqlite"):
         self._records: list[RepairMemoryRecord] = []
+        self.persistent_storage = PersistentRepairMemory(db_path=persistent_db_path)
 
     def generate_signature(self, url: str, html: str, fields: list[str]) -> str:
         """Derive a stable, deterministic structural signature representing the target extraction environment."""
@@ -43,12 +45,13 @@ class RepairMemory:
         return f"sig_{sig_hash}"
 
     def record_success(self, record: RepairMemoryRecord) -> None:
-        """Save an accepted repair record to memory."""
+        """Save an accepted repair record to memory and persistent SQLite store."""
         logger.info(
             f"Recording successful repair in memory for domain={record.domain} "
             f"sig={record.signature} type={record.repair_type.value}"
         )
         self._records.append(record)
+        self.persistent_storage.record_success(record)
 
     def find_similar_repairs(
         self,
@@ -61,6 +64,7 @@ class RepairMemory:
         exact_matches: list[RepairMemoryRecord] = []
         domain_matches: list[RepairMemoryRecord] = []
 
+        # Check in-memory records first
         for rec in self._records:
             if rec.domain.lower() == clean_domain:
                 if signature and rec.signature == signature:
@@ -69,6 +73,13 @@ class RepairMemory:
                 else:
                     if root_cause is None or rec.root_cause == root_cause:
                         domain_matches.append(rec)
+
+        # Fallback to persistent SQLite storage if not found in RAM
+        if not exact_matches and signature:
+            persisted = self.persistent_storage.lookup(clean_domain, signature)
+            if persisted:
+                exact_matches.append(persisted)
+                self._records.append(persisted)
 
         if exact_matches:
             return exact_matches
