@@ -1,126 +1,122 @@
 'use client'
-import { motion, useInView } from 'framer-motion'
-import { useRef, useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { Play, RotateCcw, ShieldCheck, CheckCircle2, AlertTriangle, Cpu } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
+import { Button } from '@/components/ui/Button'
 import { CI_COLLECTORS } from '@/lib/mock-data'
-
-type CiState = 'pending' | 'running' | 'failing' | 'healing' | 'passing'
 
 export function SelfHealingCI() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
-  const [state, setState] = useState<CiState>('pending')
+  const [ciState, setCiState] = useState<'idle' | 'running' | 'repairing' | 'passed'>('idle')
 
-  useEffect(() => {
-    if (!inView) return
-    const t1 = setTimeout(() => setState('running'), 800)
-    const t2 = setTimeout(() => setState('failing'), 2200)
-    const t3 = setTimeout(() => setState('healing'), 3200)
-    const t4 = setTimeout(() => setState('passing'), 5000)
-    return () => { [t1, t2, t3, t4].forEach(clearTimeout) }
-  }, [inView])
-
-  const getCollectorStatus = (index: number, original: 'pass' | 'fail') => {
-    if (state === 'pending') return 'pending'
-    if (state === 'running') return index < 2 ? 'pass' : index === 2 ? 'running' : 'pending'
-    if (state === 'failing') return original === 'pass' ? 'pass' : 'fail'
-    if (state === 'healing') return original === 'pass' ? 'pass' : 'healing'
-    return 'pass'
+  const handleRunCI = () => {
+    setCiState('running')
+    setTimeout(() => setCiState('repairing'), 1200)
+    setTimeout(() => setCiState('passed'), 2600)
   }
 
-  const STATUS_COLORS: Record<string, string> = {
-    pass: '#34D399', fail: '#FB7185', running: '#38BDF8', healing: '#8B5CF6', pending: '#6F7887',
+  const handleResetCI = () => {
+    setCiState('idle')
   }
-  const STATUS_LABELS: Record<string, string> = {
-    pass: '✓ PASS', fail: '✗ FAIL', running: '◌ RUNNING', healing: '⚙ HEALING', pending: '— PENDING',
-  }
-
-  const ciStatusColor = {
-    pending: '#6F7887', running: '#38BDF8', failing: '#FB7185', healing: '#8B5CF6', passing: '#34D399',
-  }[state]
-
-  const ciStatusLabel = {
-    pending: 'WAITING', running: 'RUNNING PIPELINE', failing: 'TEST FAILURE DETECTED', healing: 'SELF-HEALING AGENT ACTIVE', passing: 'ALL COLLECTORS PASSING',
-  }[state]
 
   return (
-    <section id="self-healing-ci" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void font-body overflow-hidden" aria-label="Self-Healing CI">
+    <section id="self-healing-ci" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden" aria-label="Self-Healing CI">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Header - Slide from Left */}
+        {/* Header */}
         <motion.div
           className="text-center mb-16 space-y-4"
-          initial={{ opacity: 0, x: -60 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -60, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <SectionLabel label="Self-Healing CI Pipeline" />
+          <SectionLabel stage="03b" label="Self-Healing CI Pipeline" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
-            <GradientText gradient="violet">Continuous Scraping.</GradientText> Zero Downtime.
+            <GradientText>Continuous Scraping.</GradientText> Zero Downtime.
           </h2>
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
             Automated test runner catches website schema changes during CI runs, triggers LLM repair agents, and resumes pipeline operations automatically.
           </p>
         </motion.div>
 
-        {/* Panel Container - Slide from Left */}
+        {/* Console Container */}
         <motion.div
-          className="max-w-2xl mx-auto"
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          className="max-w-3xl mx-auto space-y-6"
+          initial={{ opacity: 0, x: -50, scale: 0.96 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="glass-level-2 overflow-hidden border-white/10 shadow-2xl">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5 font-mono text-xs">
+          <div className="glass-level-3 overflow-hidden border-white/20 shadow-2xl">
+            {/* Header bar */}
+            <div className="px-6 py-4 border-b border-white/10 bg-white/5 font-mono text-xs flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ backgroundColor: ciStatusColor, boxShadow: `0 0 10px ${ciStatusColor}` }}
-                />
-                <span className="font-bold tracking-wider" style={{ color: ciStatusColor }}>
-                  {ciStatusLabel}
-                </span>
+                <ShieldCheck className="w-4 h-4 text-violet-accent" />
+                <span className="text-text-primary font-bold">scrape-verse-ci-runner.yml</span>
               </div>
-              <span className="text-xs text-muted">pipeline #47 · branch: main</span>
+              <span className="text-muted">Branch: main</span>
             </div>
 
-            {/* List */}
-            <div className="p-6 space-y-3 font-mono text-xs bg-[#07090D]/95">
-              {CI_COLLECTORS.map((c, i) => {
-                const colState = getCollectorStatus(i, c.status)
+            {/* Test Run Log Stream */}
+            <div className="p-6 space-y-3 font-mono text-xs bg-black/40">
+              {CI_COLLECTORS.map((collector) => {
+                const isFailing = collector.status === 'fail' && ciState !== 'passed'
+                const isRepaired = collector.status === 'fail' && ciState === 'passed'
+
                 return (
-                  <div
-                    key={c.name}
-                    className="flex items-center justify-between gap-4 py-3 px-4 rounded-xl border border-white/5 bg-white/[0.02]"
-                  >
-                    <span className="text-muted">{c.name}</span>
-                    <span className="font-semibold shrink-0" style={{ color: STATUS_COLORS[colState] }}>
-                      {STATUS_LABELS[colState]}
+                  <div key={collector.name} className="flex items-center justify-between p-3.5 rounded-xl bg-white/5 border border-white/5">
+                    <div className="flex items-center gap-3">
+                      {isFailing ? (
+                        <AlertTriangle className="w-4 h-4 text-rose-error animate-bounce" />
+                      ) : isRepaired ? (
+                        <Cpu className="w-4 h-4 text-violet-accent" />
+                      ) : (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-success" />
+                      )}
+                      <span className="text-text-primary font-medium">{collector.name}</span>
+                    </div>
+
+                    <span
+                      className={`px-3 py-1 rounded-full text-[11px] font-bold ${
+                        isFailing
+                          ? 'bg-rose-error/20 text-rose-error border border-rose-error/30'
+                          : isRepaired
+                          ? 'bg-violet-accent/20 text-violet-accent border border-violet-accent/30'
+                          : 'bg-emerald-success/20 text-emerald-success border border-emerald-success/30'
+                      }`}
+                    >
+                      {isFailing ? 'DOM CHANGED' : isRepaired ? 'AUTO-HEALED' : 'PASSED'}
                     </span>
                   </div>
                 )
               })}
             </div>
 
-            {/* Footer message */}
-            <div className="px-6 py-4 border-t border-white/10 bg-white/5 font-mono text-xs">
-              {state === 'healing' && (
-                <p className="text-violet-accent font-semibold animate-pulse">
-                  ⚙ Self-healing agent re-generating DOM extraction paths for Collector C…
-                </p>
-              )}
-              {state === 'passing' && (
-                <p className="text-emerald-success font-semibold">
-                  ✓ All collector tests restored — pipeline auto-merged and resumed.
-                </p>
-              )}
-              {(state === 'pending' || state === 'running' || state === 'failing') && (
-                <p className="text-muted">
-                  {state === 'failing' ? '✗ Schema failure caught in unit test stage' : 'Executing collector health checks…'}
-                </p>
+            {/* Action footer */}
+            <div className="p-4 border-t border-white/10 bg-white/5 flex gap-4">
+              <Button
+                id="run-ci-pipeline-btn"
+                variant={ciState === 'passed' ? 'ghost' : 'primary'}
+                onClick={handleRunCI}
+                className="flex-1 justify-center !py-3 shadow-lg flex items-center gap-2"
+              >
+                <Play className="w-3.5 h-3.5" />
+                <span>
+                  {ciState === 'idle'
+                    ? 'Simulate CI Pipeline Run'
+                    : ciState === 'passed'
+                    ? 'CI Test Passed ✓'
+                    : 'Running CI Self-Healing…'}
+                </span>
+              </Button>
+
+              {ciState !== 'idle' && (
+                <Button id="reset-ci-pipeline-btn" variant="ghost" onClick={handleResetCI} className="!px-6 flex items-center gap-2">
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset</span>
+                </Button>
               )}
             </div>
           </div>
