@@ -61,7 +61,7 @@ export function WhyScrapeVerse() {
               key={d.title}
               className="comic-panel p-6 space-y-3"
               style={{ borderColor: `${d.color}40`, backgroundColor: 'rgba(8,8,16,0.7)' }}
-              initial={!prefersReduced ? { opacity: 0, y: 20 } : false}
+              initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.12, duration: 0.5 }}
             >

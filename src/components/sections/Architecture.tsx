@@ -53,7 +53,7 @@ export function Architecture() {
               key={layer.title}
               className="comic-panel p-5"
               style={{ borderColor: `${layer.color}50`, backgroundColor: `${layer.color}08` }}
-              initial={!prefersReduced ? { opacity: 0, x: -30 } : false}
+              initial={{ opacity: 0, x: -30 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ delay: i * 0.15, duration: 0.5 }}
             >

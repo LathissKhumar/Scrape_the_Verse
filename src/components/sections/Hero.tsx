@@ -74,7 +74,7 @@ export function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 grid lg:grid-cols-2 gap-16 items-center w-full">
         {/* Left */}
         <motion.div
-          initial={!prefersReduced ? { opacity: 0, x: -30 } : false}
+          initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
@@ -127,7 +127,7 @@ export function Hero() {
 
         {/* Right — live collector card */}
         <motion.div
-          initial={!prefersReduced ? { opacity: 0, y: 30 } : false}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
           className="comic-panel p-6 space-y-4"
@@ -167,7 +167,7 @@ export function Hero() {
               <motion.div
                 key={source.name}
                 className="flex items-center justify-between"
-                initial={!prefersReduced ? { opacity: 0, x: 20 } : false}
+                initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 + i * 0.2 }}
               >
@@ -212,7 +212,7 @@ export function Hero() {
       {/* Scroll indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={!prefersReduced ? { y: [0, 8, 0] } : {}}
+        animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
         <div

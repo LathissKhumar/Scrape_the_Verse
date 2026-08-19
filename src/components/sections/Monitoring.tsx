@@ -48,7 +48,7 @@ export function Monitoring() {
               key={m.label}
               className="comic-panel p-4 text-center"
               style={{ backgroundColor: 'rgba(8,8,16,0.7)' }}
-              initial={!prefersReduced ? { opacity: 0, y: 20 } : false}
+              initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.08 }}
             >
@@ -71,7 +71,7 @@ export function Monitoring() {
               key={p.id}
               className="comic-panel p-4"
               style={{ backgroundColor: 'rgba(8,8,16,0.8)' }}
-              initial={!prefersReduced ? { opacity: 0 } : false}
+              initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ delay: 0.3 + i * 0.1 }}
             >
@@ -91,7 +91,7 @@ export function Monitoring() {
             <motion.div
               className="comic-panel p-4"
               style={{ borderColor: 'rgba(0,229,255,0.5)', backgroundColor: 'rgba(0,229,255,0.07)' }}
-              initial={!prefersReduced ? { opacity: 0, scale: 0.95, y: 10 } : false}
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >

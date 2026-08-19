@@ -64,7 +64,7 @@ export function SalesAutomation() {
           {AGENTS.map((agent, i) => (
             <motion.div
               key={agent.id}
-              initial={!prefersReduced ? { opacity: 0, y: 20 } : false}
+              initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.12, duration: 0.5 }}
             >
@@ -98,7 +98,7 @@ export function SalesAutomation() {
         <motion.div
           className="mt-12 comic-panel p-6 max-w-2xl mx-auto text-center"
           style={{ borderColor: 'rgba(0,229,255,0.3)', backgroundColor: 'rgba(0,229,255,0.04)' }}
-          initial={!prefersReduced ? { opacity: 0 } : false}
+          initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.6 }}
         >

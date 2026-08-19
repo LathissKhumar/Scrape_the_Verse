@@ -51,7 +51,7 @@ export function StructuredData() {
           {/* Raw */}
           <motion.div
             className="comic-panel overflow-hidden"
-            initial={!prefersReduced ? { opacity: 0, x: -30 } : false}
+            initial={{ opacity: 0, x: -30 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
@@ -66,7 +66,7 @@ export function StructuredData() {
           {/* Arrow + Gemini */}
           <motion.div
             className="flex flex-col items-center justify-center gap-4 py-8"
-            initial={!prefersReduced ? { opacity: 0, scale: 0.8 } : false}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
@@ -85,7 +85,7 @@ export function StructuredData() {
           <motion.div
             className="comic-panel overflow-hidden"
             style={{ borderColor: 'rgba(0,229,255,0.4)' }}
-            initial={!prefersReduced ? { opacity: 0, x: 30 } : false}
+            initial={{ opacity: 0, x: 30 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.5, duration: 0.6 }}
           >
@@ -102,7 +102,7 @@ export function StructuredData() {
         <motion.div
           className="comic-panel max-w-md mx-auto mt-10 p-6 space-y-3"
           style={{ borderColor: 'rgba(0,229,255,0.4)', backgroundColor: 'rgba(0,229,255,0.04)' }}
-          initial={!prefersReduced ? { opacity: 0, y: 20 } : false}
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8 }}
         >

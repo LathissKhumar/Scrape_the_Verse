@@ -12,25 +12,16 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const { scrollY } = useScroll()
-  const prefersReduced = useReducedMotion()
   const bgOpacity = useTransform(scrollY, [0, 80], [0, 0.95])
 
   return (
-    <motion.header
-      className="fixed top-0 left-0 right-0 z-50"
-      style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+    <header
+      className="fixed top-0 left-0 right-0 z-50 border-b border-white/5"
+      suppressHydrationWarning
     >
       <motion.div
-        className="absolute inset-0 backdrop-blur-md"
-        style={{
-          backgroundColor: prefersReduced
-            ? 'rgba(5,5,10,0.95)'
-            : undefined,
-          opacity: prefersReduced ? 1 : bgOpacity,
-          background: prefersReduced
-            ? 'rgba(5,5,10,0.95)'
-            : 'rgba(5,5,10,0.9)',
-        }}
+        className="absolute inset-0 backdrop-blur-md bg-[#05050A]"
+        style={{ opacity: bgOpacity }}
       />
       <nav className="relative max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Wordmark */}
@@ -73,6 +64,6 @@ export function Navbar() {
           Launch Scrape-Verse
         </Button>
       </nav>
-    </motion.header>
+    </header>
   )
 }

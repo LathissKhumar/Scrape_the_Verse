@@ -34,7 +34,7 @@ export function Pipeline() {
               <motion.div
                 key={stage.stage}
                 className={`flex items-center gap-8 ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
-                initial={!prefersReduced ? { opacity: 0, x: i % 2 === 0 ? -40 : 40 } : false}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: i * 0.12, duration: 0.6, ease: 'easeOut' }}
               >

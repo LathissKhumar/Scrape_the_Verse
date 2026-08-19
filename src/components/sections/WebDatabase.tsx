@@ -33,7 +33,7 @@ export function WebDatabase() {
               key={i}
               className={`text-${line.size} font-${line.weight} leading-tight`}
               style={{ color: line.color, fontFamily: i === 0 || i === 2 || i === 3 ? 'var(--font-display)' : 'var(--font-body)' }}
-              initial={!prefersReduced ? { opacity: 0, y: 20 } : false}
+              initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: line.delay, duration: 0.6, ease: 'easeOut' }}
             >
@@ -44,7 +44,7 @@ export function WebDatabase() {
 
         <motion.div
           className="mt-20"
-          initial={!prefersReduced ? { opacity: 0 } : false}
+          initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 1.6, duration: 0.8 }}
         >
@@ -62,7 +62,7 @@ export function WebDatabase() {
                   borderColor: `${NODE_COLORS[i]}40`,
                   backgroundColor: `${NODE_COLORS[i]}10`,
                 }}
-                initial={!prefersReduced ? { scale: 0, opacity: 0 } : false}
+                initial={{ scale: 0, opacity: 0 }}
                 animate={inView ? { scale: 1, opacity: 1 } : {}}
                 transition={{ delay: 1.8 + i * 0.08, type: 'spring' }}
               >

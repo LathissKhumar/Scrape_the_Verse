@@ -27,7 +27,7 @@ export function FinalCTA() {
 
       <div className="relative max-w-4xl mx-auto px-6 text-center">
         <motion.div
-          initial={!prefersReduced ? { opacity: 0, y: 30 } : false}
+          initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
         >

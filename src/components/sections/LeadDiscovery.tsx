@@ -87,7 +87,7 @@ export function LeadDiscovery() {
             <motion.div
               className="comic-panel p-6 space-y-4"
               style={{ backgroundColor: 'rgba(8,8,16,0.85)' }}
-              initial={!prefersReduced ? { opacity: 0, y: 10 } : false}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="space-y-2">
@@ -115,7 +115,7 @@ export function LeadDiscovery() {
                 <motion.div
                   className="space-y-3 border-t pt-4"
                   style={{ borderColor: 'rgba(255,255,255,0.08)' }}
-                  initial={!prefersReduced ? { opacity: 0 } : false}
+                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
                   {DISCOVERY_SOURCES.map((source) => (

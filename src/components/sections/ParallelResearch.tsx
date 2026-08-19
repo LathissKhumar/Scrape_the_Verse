@@ -46,7 +46,7 @@ export function ParallelResearch() {
           {RESEARCH_COLLECTORS.map((collector, i) => (
             <motion.div
               key={collector.id}
-              initial={!prefersReduced ? { opacity: 0, y: 30, scale: 0.95 } : false}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
               animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ delay: i * 0.12, duration: 0.5, ease: 'easeOut' }}
             >
@@ -73,7 +73,7 @@ export function ParallelResearch() {
         {/* Converge */}
         <motion.div
           className="flex flex-col items-center gap-3 mt-10"
-          initial={!prefersReduced ? { opacity: 0 } : false}
+          initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.7 }}
         >

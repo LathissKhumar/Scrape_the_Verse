@@ -104,7 +104,7 @@ export function SelfHealingDemo() {
                 <motion.div
                   key={i}
                   className="flex items-start gap-3"
-                  initial={!prefersReduced ? { opacity: 0, x: -10 } : false}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -150,7 +150,7 @@ export function SelfHealingDemo() {
         {/* Key insight */}
         <motion.div
           className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto"
-          initial={!prefersReduced ? { opacity: 0 } : false}
+          initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.5 }}
         >

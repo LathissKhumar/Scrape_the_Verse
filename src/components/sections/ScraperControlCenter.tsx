@@ -35,7 +35,7 @@ export function ScraperControlCenter() {
           {ACTIVE_COLLECTORS.map((collector, i) => (
             <motion.div
               key={collector.id}
-              initial={!prefersReduced ? { opacity: 0, y: 20 } : false}
+              initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.1, duration: 0.4 }}
             >
@@ -47,7 +47,7 @@ export function ScraperControlCenter() {
         {/* Event stream */}
         <motion.div
           className="max-w-3xl mx-auto"
-          initial={!prefersReduced ? { opacity: 0 } : false}
+          initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.5 }}
         >
@@ -63,7 +63,7 @@ export function ScraperControlCenter() {
                 <motion.div
                   key={i}
                   className="flex items-start gap-3"
-                  initial={!prefersReduced ? { opacity: 0, x: -8 } : false}
+                  initial={{ opacity: 0, x: -8 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: 0.6 + i * 0.08 }}
                 >
