@@ -1,12 +1,13 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useRef, useState } from 'react'
-import { Search, Filter, Database, CheckCircle2, ArrowRight } from 'lucide-react'
+import { Search, Filter, Database, ArrowRight } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
 import { useCollectorCounter } from '@/hooks/useCollectorCounter'
 import { CLIENT_METRICS } from '@/lib/mock-data'
+import { formatNumber } from '@/lib/utils'
 
 type Phase = 'idle' | 'searching' | 'collecting' | 'done'
 
@@ -142,22 +143,22 @@ export function LeadDiscovery() {
                   animate={{ opacity: 1 }}
                 >
                   <div className="glass-card p-4">
-                    <div className="text-2xl font-bold font-display text-text-primary tabular-nums">
-                      {countFound.toLocaleString()}
+                    <div className="text-2xl font-bold font-display text-text-primary tabular-nums" suppressHydrationWarning>
+                      {formatNumber(countFound)}
                     </div>
                     <div className="text-xs font-mono text-muted mt-1">businesses discovered</div>
                   </div>
 
                   <div className="glass-card p-4">
-                    <div className="text-2xl font-bold font-display text-blue-accent tabular-nums">
-                      {countMatched.toLocaleString()}
+                    <div className="text-2xl font-bold font-display text-blue-accent tabular-nums" suppressHydrationWarning>
+                      {formatNumber(countMatched)}
                     </div>
                     <div className="text-xs font-mono text-muted mt-1">matching criteria</div>
                   </div>
 
                   <div className="glass-card p-4">
-                    <div className="text-2xl font-bold font-display text-emerald-success tabular-nums">
-                      {countHigh.toLocaleString()}
+                    <div className="text-2xl font-bold font-display text-emerald-success tabular-nums" suppressHydrationWarning>
+                      {formatNumber(countHigh)}
                     </div>
                     <div className="text-xs font-mono text-muted mt-1">high-opportunity</div>
                   </div>

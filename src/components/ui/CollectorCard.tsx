@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion'
 import { NeonBadge } from './NeonBadge'
 import type { CollectorStatus } from '@/lib/types'
+import { formatNumber } from '@/lib/utils'
 
 const HEALTH_COLOR: Record<string, string> = {
   healthy: '#34D399',
@@ -50,8 +51,9 @@ export function CollectorCard({ collector }: { collector: CollectorStatus }) {
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.3 }}
+            suppressHydrationWarning
           >
-            {collector.recordsToday.toLocaleString()}
+            {formatNumber(collector.recordsToday)}
           </motion.div>
           <div className="text-xs font-mono text-muted mt-1">
             records processed today
