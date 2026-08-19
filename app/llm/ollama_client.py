@@ -54,6 +54,10 @@ class OllamaClient(LLMClient):
             "model": self._model,
             "prompt": prompt_text,
             "stream": False,
+            "options": kwargs.get("options") or {
+                "temperature": 0.1,
+                "num_predict": 400,
+            },
         }
         if system_text:
             payload["system"] = system_text

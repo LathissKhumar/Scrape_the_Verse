@@ -21,8 +21,10 @@ class RepairType(str, Enum):
     REPAIR_LLM_EXTRACTION_SCHEMA = "REPAIR_LLM_EXTRACTION_SCHEMA"
     REPAIR_CONTENT_TARGET = "REPAIR_CONTENT_TARGET"
     RETRY_WITH_ALTERNATIVE_STRATEGY = "RETRY_WITH_ALTERNATIVE_STRATEGY"
-    # Level 2: Scraper configuration repairs
+    # Level 2: Scraper / Action / Crawler configuration repairs
     REPAIR_SCRAPER_CONFIG = "REPAIR_SCRAPER_CONFIG"
+    REPAIR_ACTION_PLAN = "REPAIR_ACTION_PLAN"
+    REPAIR_CRAWLER_CONFIG = "REPAIR_CRAWLER_CONFIG"
     # Level 3: Collector refactor fallback
     BRIGHTDATA_REFACTOR_FALLBACK = "BRIGHTDATA_REFACTOR_FALLBACK"
     # Escalation
@@ -37,6 +39,23 @@ class RepairStatus(str, Enum):
     ACCEPTED = "accepted"
     REJECTED = "rejected"
     ESCALATED = "escalated"
+
+
+class RepairConfidenceLevel(str, Enum):
+    """Confidence tier for accepted repairs determining persistence and probation status."""
+
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+
+
+class RepairFreshnessStatus(str, Enum):
+    """Freshness and reliability status of a stored repair memory record."""
+
+    ACTIVE = "active"
+    PROBATION = "probation"
+    STALE = "stale"
+    DISABLED = "disabled"
 
 
 class PerformanceSnapshot(BaseModel):
@@ -111,6 +130,14 @@ class RepairEvaluation(BaseModel):
     rejection_reason: Optional[str] = Field(
         default=None, description="Detailed explanation if repair was rejected."
     )
+    confidence_score: float = Field(default=0.85, ge=0.0, le=1.0, description="Calculated repair confidence score.")
+    confidence_level: RepairConfidenceLevel = Field(
+        default=RepairConfidenceLevel.HIGH, description="Confidence tier: high, medium, or low."
+    )
+    multi_page_evaluated: bool = Field(default=False, description="True if validated across multiple pages.")
+    multi_page_results: list[dict[str, Any]] = Field(
+        default_factory=list, description="Multi-page canary validation metrics."
+    )
 
 
 class RepairMemoryRecord(BaseModel):
@@ -126,6 +153,12 @@ class RepairMemoryRecord(BaseModel):
     health_after: float
     strategy: str
     provider: str = "local"
+    status: RepairFreshnessStatus = Field(default=RepairFreshnessStatus.ACTIVE)
+    confidence_level: RepairConfidenceLevel = Field(default=RepairConfidenceLevel.HIGH)
+    success_count: int = Field(default=1, ge=0)
+    failure_count: int = Field(default=0, ge=0)
+    last_used_at: Optional[str] = None
+    structural_fingerprint: Optional[str] = None
     timestamp: str = Field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )

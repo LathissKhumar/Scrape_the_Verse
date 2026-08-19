@@ -1,7 +1,13 @@
-from typing import Optional
+from typing import Any, Optional
 from app.config.logging import get_logger
 from app.diagnosis.schemas import DiagnosisResult
-from app.healing.schemas import PerformanceSnapshot, RepairEvaluation, RepairPlan
+from app.healing.confidence import RepairConfidenceScorer
+from app.healing.schemas import (
+    PerformanceSnapshot,
+    RepairConfidenceLevel,
+    RepairEvaluation,
+    RepairPlan,
+)
 from app.validation.schemas import ValidationResult
 
 logger = get_logger("HEALING_EVALUATOR")
@@ -15,10 +21,12 @@ class RepairEvaluator:
         min_healthy_threshold: float = 0.80,
         min_health_improvement: float = 0.10,
         max_regression_drop: float = 0.05,
+        confidence_scorer: Optional[RepairConfidenceScorer] = None,
     ):
         self.min_healthy_threshold = min_healthy_threshold
         self.min_health_improvement = min_health_improvement
         self.max_regression_drop = max_regression_drop
+        self.confidence_scorer = confidence_scorer or RepairConfidenceScorer()
 
     def snapshot(self, val: ValidationResult, strategy: str = "unknown") -> PerformanceSnapshot:
         """Construct a quantitative performance snapshot from a ValidationResult."""
@@ -42,6 +50,10 @@ class RepairEvaluator:
         diagnosis: Optional[DiagnosisResult] = None,
         plan: Optional[RepairPlan] = None,
         strategy_used: str = "unknown",
+        multi_page_score: float = 1.0,
+        multi_page_results: Optional[list[dict[str, Any]]] = None,
+        attempt_number: int = 1,
+        target_fields: Optional[list[str]] = None,
     ) -> RepairEvaluation:
         """Deterministically assess whether a candidate repair should be accepted or rejected."""
         repair_id = plan.repair_id if plan else "unspecified"
@@ -57,8 +69,12 @@ class RepairEvaluator:
         regression_detected = False
         rejection_reason: Optional[str] = None
 
-        # 1. Per-field regression check (previously healthy fields must not degrade)
+        # 1. Per-field regression check (previously healthy target fields must not degrade)
+        valid_target_names = set(target_fields or []) if target_fields else set()
         for field_name, before_cov in before_snap.field_coverage.items():
+            # If target fields specified, ignore unrequested internal auxiliary fields (e.g. raw 'title' vs 'product_name')
+            if valid_target_names and field_name not in valid_target_names:
+                continue
             if before_cov >= 0.80:
                 after_cov = after_snap.field_coverage.get(field_name, 0.0)
                 if after_cov < (before_cov - self.max_regression_drop):
@@ -117,6 +133,17 @@ class RepairEvaluator:
                 )
                 logger.info(f"Repair rejected: {rejection_reason}")
 
+        # Compute confidence score & tier
+        cand_conf = plan.confidence if plan else 0.80
+        conf_score, conf_tier = self.confidence_scorer.compute_confidence(
+            candidate_confidence=cand_conf,
+            health_improvement=max(0.0, delta_health),
+            final_health=after.health_score,
+            schema_valid_rate=after_snap.schema_valid_rate,
+            multi_page_score=multi_page_score,
+            attempt_number=attempt_number,
+        )
+
         return RepairEvaluation(
             repair_id=repair_id,
             before=before_snap,
@@ -126,4 +153,8 @@ class RepairEvaluator:
             regression_detected=regression_detected,
             accepted=accepted,
             rejection_reason=rejection_reason,
+            confidence_score=conf_score,
+            confidence_level=conf_tier,
+            multi_page_evaluated=bool(multi_page_results),
+            multi_page_results=multi_page_results or [],
         )

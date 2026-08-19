@@ -24,7 +24,15 @@ class CSSExtractor:
             if matched:
                 containers = matched
             else:
-                return []
+                # Stale or drifted base selector: discover repeating card containers from field selectors
+                discovered_containers: list[Any] = []
+                for field_rule in schema.fields:
+                    if field_rule.selector:
+                        for elem in soup.select(field_rule.selector):
+                            parent = elem.find_parent(["article", "li", "tr", "section", "div"])
+                            if parent and parent not in discovered_containers:
+                                discovered_containers.append(parent)
+                containers = discovered_containers if discovered_containers else [soup]
 
         records: list[dict[str, Any]] = []
 

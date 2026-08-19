@@ -34,10 +34,13 @@ class RepairPatcher:
                 new_strategy = ExtractionStrategyEnum(proposed_strategy)
 
         # 2. Base selector update
-        if "base_selector" in patch_data:
-            new_base_selector = patch_data["base_selector"]
-        elif "base_selector" in plan.proposed_configuration:
-            new_base_selector = plan.proposed_configuration["base_selector"]
+        for k in ("base_selector", "container_selector", "item_selector", "card_selector", "card", "container"):
+            if k in patch_data and isinstance(patch_data[k], str):
+                new_base_selector = patch_data[k]
+                break
+            if k in plan.proposed_configuration and isinstance(plan.proposed_configuration[k], str):
+                new_base_selector = plan.proposed_configuration[k]
+                break
 
         # 3. Strict schema update
         if "strict_schema" in patch_data:
@@ -54,12 +57,20 @@ class RepairPatcher:
                 if not name:
                     continue
 
-                if name in fields_by_name:
-                    existing_rule = fields_by_name[name]
+                matching_rule = fields_by_name.get(name)
+                if not matching_rule:
+                    clean_name = name.lower().replace("_", "").replace(" ", "")
+                    for existing_name, rule in fields_by_name.items():
+                        existing_clean = existing_name.lower().replace("_", "").replace(" ", "")
+                        if clean_name == existing_clean or clean_name in existing_clean or existing_clean in clean_name:
+                            matching_rule = rule
+                            break
+
+                if matching_rule:
                     # Update existing field rule properties
                     for key, val in field_update.items():
-                        if hasattr(existing_rule, key) and val is not None:
-                            setattr(existing_rule, key, val)
+                        if hasattr(matching_rule, key) and val is not None and key != "name":
+                            setattr(matching_rule, key, val)
                 else:
                     # New field rule added
                     new_rule = FieldRule(**field_update)

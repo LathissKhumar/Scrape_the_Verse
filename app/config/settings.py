@@ -27,6 +27,16 @@ class Settings(BaseSettings):
     CRAWLER_HEADLESS: bool = True
     CRAWLER_TIMEOUT_MS: int = 30000
 
+    # Self-Healing & Adaptive Enhancements Settings
+    MULTI_PAGE_VALIDATION_ENABLED: bool = True
+    MAX_VALIDATION_PAGES: int = 3
+    MIN_PAGES_FOR_HIGH_CONFIDENCE: int = 2
+    FAILED_REPAIR_TTL_SECONDS: int = 3600
+    SEMANTIC_MEMORY_ENABLED: bool = True
+    STRUCTURAL_DRIFT_THRESHOLD: float = 0.35
+    HIGH_CONFIDENCE_THRESHOLD: float = 0.85
+    MEDIUM_CONFIDENCE_THRESHOLD: float = 0.65
+
     # Application Settings
     APP_ENV: str = "development"
     LOG_LEVEL: str = "INFO"

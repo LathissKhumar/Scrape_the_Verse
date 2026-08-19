@@ -49,3 +49,9 @@ htmlcov/
 # Operating System
 .DS_Store
 Thumbs.db
+
+# Database & Telemetry Local Files
+*.sqlite
+*.sqlite3
+*.jsonl
+

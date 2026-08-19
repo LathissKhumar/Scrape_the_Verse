@@ -202,8 +202,18 @@ class ExtractionEngine:
             page_strategy = "none"
             page_fallback = False
 
-            # Strategy A: CSS / XPath if base selector exists
-            if effective_schema.base_selector:
+            # Strategy A: LLM if explicitly requested in schema
+            if effective_schema.strategy == ExtractionStrategyEnum.LLM and self.llm_extractor:
+                logger.info("Executing LLM extraction strategy as configured in schema")
+                llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
+                if llm_records:
+                    page_records = llm_records
+                    page_strategy = ExtractionStrategyEnum.LLM.value
+                    if schema is None:
+                        page_fallback = True
+
+            # Strategy B: CSS / XPath if base selector exists
+            if not page_records and effective_schema.base_selector:
                 if effective_schema.base_selector.startswith("/") or effective_schema.base_selector.startswith(".//"):
                     logger.info("Attempting deterministic XPath extraction")
                     records = self.xpath_extractor.extract(page, effective_schema)
