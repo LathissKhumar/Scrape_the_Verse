@@ -16,7 +16,7 @@ class PersistentRepairMemory:
         self._init_db()
 
     def _init_db(self) -> None:
-        """Initialize SQLite table for persistent repair records."""
+        """Initialize SQLite table for persistent repair records with automatic column migration."""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 conn.execute(
@@ -38,6 +38,21 @@ class PersistentRepairMemory:
                     )
                     """
                 )
+                # Auto-migrate missing columns if table existed previously with old schema
+                cursor = conn.cursor()
+                cursor.execute("PRAGMA table_info(repair_memory)")
+                existing_cols = {row[1] for row in cursor.fetchall()}
+                for col, col_type in [
+                    ("memory_id", "TEXT"),
+                    ("root_cause", "TEXT DEFAULT 'UNKNOWN'"),
+                    ("strategy", "TEXT DEFAULT 'css'"),
+                    ("provider", "TEXT DEFAULT 'local'"),
+                    ("health_before", "REAL"),
+                    ("health_after", "REAL"),
+                    ("successful_patch", "TEXT DEFAULT '{}'"),
+                ]:
+                    if col not in existing_cols:
+                        conn.execute(f"ALTER TABLE repair_memory ADD COLUMN {col} {col_type}")
                 conn.commit()
         except Exception as e:
             logger.warning(f"Could not initialize SQLite persistent repair memory: {e}")

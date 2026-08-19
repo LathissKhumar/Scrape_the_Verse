@@ -1,5 +1,6 @@
 import asyncio
 from typing import Any, Optional
+from urllib.parse import urljoin
 from app.config.logging import get_logger
 from app.crawler.link_discovery import LinkDiscoveryEngine
 from app.extraction.css import CSSExtractor
@@ -30,8 +31,11 @@ FIELD_SYNONYM_MAP: dict[str, list[str]] = {
     "rating": ["stars", "score", "reviewrating", "customerrating"],
     "reviews": ["reviewcount", "numreviews", "numberofreviews", "totalreviews"],
     "specifications": ["specs", "technicalspecifications", "features", "details", "techspecs", "description"],
-    "tags": ["taglist", "keywords", "categories", "labels", "topics"],
+    "tags": ["taglist", "keywords", "categories", "labels", "topics", "tag"],
     "author": ["authorname", "creator", "writer", "by"],
+    "image": ["image_url", "imageurl", "img", "thumbnail", "photo", "pic", "image_src", "imagesrc", "picture"],
+    "image_url": ["image", "img", "thumbnail", "photo", "pic", "image_src", "imagesrc", "picture", "imageurl"],
+    "upc": ["upccode", "universalproductcode", "sku", "barcode", "productcode", "isbn"],
 }
 
 
@@ -83,8 +87,9 @@ class ExtractionEngine:
         self,
         records: list[dict[str, Any]],
         task: ScrapingTask,
+        base_url: Optional[str] = None,
     ) -> list[dict[str, Any]]:
-        """Ensure all requested task fields are present in each record with intelligent synonym aliasing."""
+        """Ensure all requested task fields are present in each record with intelligent synonym aliasing and absolute URL resolution."""
         if not task.fields:
             return records
 
@@ -95,15 +100,27 @@ class ExtractionEngine:
 
             for field in task.fields:
                 val = rec.get(field)
+                norm_field = field.lower().replace("_", "").replace(" ", "")
+
                 if val is None:
-                    norm_field = field.lower().replace("_", "").replace(" ", "")
                     val = rec_clean_map.get(norm_field)
 
                 if val is None:
-                    for syn in FIELD_SYNONYM_MAP.get(field.lower(), []):
-                        if syn in rec_clean_map:
-                            val = rec_clean_map[syn]
+                    synonyms = (
+                        FIELD_SYNONYM_MAP.get(field.lower(), [])
+                        + FIELD_SYNONYM_MAP.get(norm_field, [])
+                    )
+                    for syn in synonyms:
+                        syn_clean = syn.lower().replace("_", "").replace(" ", "")
+                        if syn_clean in rec_clean_map:
+                            val = rec_clean_map[syn_clean]
                             break
+
+                # Auto-resolve relative URLs for image/link fields
+                if val and isinstance(val, str) and base_url:
+                    is_url_field = any(u in norm_field for u in ["image", "img", "thumbnail", "picture", "url", "link", "href"])
+                    if is_url_field and (val.startswith("../") or val.startswith("/") or not val.startswith("http")):
+                        val = urljoin(base_url, val)
 
                 conformed_rec[field] = val
 
@@ -217,7 +234,7 @@ class ExtractionEngine:
 
             # Strategy C: Deterministic Repeating Grid / Card Extractor
             if not page_records and page.html:
-                card_records = self.grid_card_extractor.extract(page.html, target_fields=task.fields)
+                card_records = self.grid_card_extractor.extract(page.html, target_fields=task.fields, base_url=page.url)
                 if card_records:
                     has_card_coverage = all(
                         any(r.get(f) is not None for r in card_records)
@@ -261,7 +278,9 @@ class ExtractionEngine:
                 any_fallback = True
 
         deduped = self.deduplicator.deduplicate(all_extracted_records)
-        conformed = self._enforce_task_schema(deduped, task)
+        conformed = self._enforce_task_schema(
+            deduped, task, base_url=pages[0].url if pages else None
+        )
 
         # Conditional Fallback: If requested fields are missing, discover and crawl child links
         missing_fields = [
@@ -328,7 +347,9 @@ class ExtractionEngine:
                                         conf_rec[mf] = ch_rec[mf]
                     elif child_extracted_records:
                         conformed = self._enforce_task_schema(
-                            self.deduplicator.deduplicate(child_extracted_records), task
+                            self.deduplicator.deduplicate(child_extracted_records),
+                            task,
+                            base_url=pages[0].url if pages else None,
                         )
 
         return ExtractionResult(

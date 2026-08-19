@@ -1,4 +1,6 @@
+import re
 from typing import Any, Optional
+from urllib.parse import urljoin
 from bs4 import BeautifulSoup, Tag
 from app.config.logging import get_logger
 
@@ -23,7 +25,10 @@ class GridCardExtractor:
     ]
 
     def extract(
-        self, html: str, target_fields: Optional[list[str]] = None
+        self,
+        html: str,
+        target_fields: Optional[list[str]] = None,
+        base_url: Optional[str] = None,
     ) -> list[dict[str, Any]]:
         """Identify repeating card elements and extract structured records."""
         if not html or not html.strip():
@@ -59,7 +64,7 @@ class GridCardExtractor:
 
         records: list[dict[str, Any]] = []
         for item in best_items:
-            rec = self._extract_card_fields(item, fields)
+            rec = self._extract_card_fields(item, fields, base_url=base_url)
             # Only accept card if at least one target field has non-empty content
             if any(v is not None and str(v).strip() for v in rec.values()):
                 records.append(rec)
@@ -67,7 +72,7 @@ class GridCardExtractor:
         return records
 
     def _extract_card_fields(
-        self, card: Tag, target_fields: list[str]
+        self, card: Tag, target_fields: list[str], base_url: Optional[str] = None
     ) -> dict[str, Any]:
         rec: dict[str, Any] = {}
         for f in target_fields:
@@ -86,13 +91,15 @@ class GridCardExtractor:
                     class_=lambda c: c
                     and any(p in str(c).lower() for p in ["price", "cost", "amount"])
                 )
-                if price_el:
-                    val = price_el.get_text(strip=True)
-                else:
+                raw_price = price_el.get_text(strip=True) if price_el else ""
+                if not raw_price:
                     for text in card.stripped_strings:
-                        if any(cur in text for cur in ["$", "£", "€", "¥", "Rs"]):
-                            val = text
+                        if any(cur in text for cur in ["$", "£", "€", "¥", "Rs", "₹"]):
+                            raw_price = text
                             break
+                if raw_price:
+                    match = re.search(r"([$£€¥₹\u00A3\u20B9]?\s*[\d,]+(?:\.\d{1,2})?)", raw_price)
+                    val = match.group(1).strip() if match else raw_price
             elif f_lower in ("quote", "text", "quotetext", "content", "statement"):
                 text_el = card.find(
                     class_=lambda c: c
@@ -111,14 +118,17 @@ class GridCardExtractor:
                     small = card.find("small")
                     if small:
                         val = small.get_text(strip=True)
-            elif f_lower in ("link", "url", "href"):
+            elif f_lower in ("link", "url", "href", "producturl", "pageurl"):
                 a = card.find("a", href=True)
                 if a:
-                    val = a["href"]
-            elif f_lower in ("image", "img", "thumbnail", "picture"):
+                    raw_href = a["href"]
+                    val = urljoin(base_url, raw_href) if base_url else raw_href
+            elif f_lower in ("image", "img", "thumbnail", "picture", "image_url", "imageurl", "imagesrc"):
                 img = card.find("img")
                 if img:
-                    val = img.get("src") or img.get("data-src")
+                    raw_src = img.get("src") or img.get("data-src")
+                    if raw_src:
+                        val = urljoin(base_url, raw_src) if base_url else raw_src
             elif f_lower in ("availability", "stock", "status", "instock"):
                 stock_el = card.find(
                     class_=lambda c: c
@@ -126,6 +136,14 @@ class GridCardExtractor:
                 )
                 if stock_el:
                     val = stock_el.get_text(strip=True)
+            elif f_lower in ("tags", "taglist", "keywords", "labels", "tag"):
+                tag_els = card.find_all(class_=lambda c: c and "tag" in str(c).lower())
+                if tag_els:
+                    val = ", ".join(t.get_text(strip=True) for t in tag_els)
+                else:
+                    meta_el = card.find(class_=lambda c: c and any(k in str(c).lower() for k in ["meta", "tag", "category"]))
+                    if meta_el:
+                        val = meta_el.get_text(strip=True)
 
             if not val:
                 # Direct class matching fallback
