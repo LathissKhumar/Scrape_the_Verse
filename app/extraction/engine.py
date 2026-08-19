@@ -100,7 +100,7 @@ class ExtractionEngine:
                     val = rec_clean_map.get(norm_field)
 
                 if val is None:
-                    for syn in synonym_map.get(field.lower(), []):
+                    for syn in FIELD_SYNONYM_MAP.get(field.lower(), []):
                         if syn in rec_clean_map:
                             val = rec_clean_map[syn]
                             break
