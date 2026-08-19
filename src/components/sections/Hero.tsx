@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, ShieldCheck, Users } from 'lucide-react'
+import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
 import { WebCanvas } from '@/components/ui/WebCanvas'
@@ -86,7 +86,7 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Right Column — Floating Glass Card with Human Team Image */}
+        {/* Right Column — Tall Floating Glass Card with Clean Human Image */}
         <motion.div
           className="lg:col-span-5"
           initial={{ opacity: 0, y: 30 }}
@@ -94,7 +94,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           <motion.div
-            className="glass-level-3 p-4 sm:p-5 relative overflow-hidden group rounded-3xl border border-white/25 shadow-2xl"
+            className="glass-level-3 p-3 sm:p-4 relative overflow-hidden group rounded-3xl border border-white/25 shadow-2xl"
             animate={{
               y: [0, -6, 0],
             }}
@@ -110,43 +110,15 @@ export function Hero() {
             }}
           >
             {/* Top Specular Shine Accent */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent z-20" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent z-20" />
 
-            {/* Embedded Human Image Container */}
-            <div className="relative rounded-2xl overflow-hidden aspect-[4/3] border border-white/15 bg-black/40">
+            {/* Clean Taller Image Container without Inner Overlays */}
+            <div className="relative rounded-2xl overflow-hidden h-[480px] sm:h-[520px] w-full border border-white/15 bg-black/30">
               <img
                 src="/images/hero_human_team.png"
                 alt="AI Sales Intelligence Team Collaboration"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
-
-              {/* Glass Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#07090D]/90 via-transparent to-transparent pointer-events-none" />
-
-              {/* Floating Top Badge */}
-              <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                <span className="px-3 py-1 rounded-full text-[11px] font-mono font-medium bg-[#07090D]/80 text-white border border-white/20 backdrop-blur-md flex items-center gap-1.5 shadow-lg">
-                  <Sparkles className="w-3 h-3 text-blue-accent" />
-                  <span>HUMAN + AI SYNERGY</span>
-                </span>
-                <span className="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-emerald-success/20 text-emerald-success border border-emerald-success/30 backdrop-blur-md">
-                  LIVE WORKFLOW
-                </span>
-              </div>
-
-              {/* Floating Bottom Info Bar */}
-              <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-xl bg-[#07090D]/85 backdrop-blur-xl border border-white/20 space-y-1 shadow-2xl">
-                <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-white font-bold flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5 text-violet-accent" />
-                    <span>Scrape-Verse Workspace</span>
-                  </span>
-                  <span className="text-blue-accent font-semibold">99.8% Accuracy</span>
-                </div>
-                <p className="text-[11px] font-body text-text-secondary">
-                  Turning unstructured web data into actionable sales growth for your team.
-                </p>
-              </div>
             </div>
           </motion.div>
         </motion.div>
