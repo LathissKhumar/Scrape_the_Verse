@@ -41,18 +41,22 @@ class OllamaClient(LLMClient):
 
     async def invoke(
         self,
-        prompt: str,
+        prompt: Optional[str] = None,
         system: Optional[str] = None,
         json_mode: bool = False,
+        **kwargs: Any,
     ) -> str:
         """Asynchronously generate a completion from Ollama."""
+        prompt_text = prompt or kwargs.get("user_prompt") or ""
+        system_text = system or kwargs.get("system_prompt")
+
         payload: dict[str, Any] = {
             "model": self._model,
-            "prompt": prompt,
+            "prompt": prompt_text,
             "stream": False,
         }
-        if system:
-            payload["system"] = system
+        if system_text:
+            payload["system"] = system_text
         if json_mode:
             payload["format"] = "json"
 

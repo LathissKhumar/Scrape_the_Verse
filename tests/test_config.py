@@ -8,7 +8,7 @@ def test_default_settings():
     settings = Settings(_env_file=None)
     assert settings.OLLAMA_BASE_URL == "http://localhost:11434"
     assert settings.OLLAMA_MODEL == "qwen3:8b"
-    assert settings.OLLAMA_TIMEOUT_SECONDS == 60.0
+    assert settings.OLLAMA_TIMEOUT_SECONDS == 120.0
     assert settings.BRIGHTDATA is False
     assert settings.BRIGHTDATA_API_KEY is None
     assert settings.BRIGHTDATA_COLLECTOR_ID is None

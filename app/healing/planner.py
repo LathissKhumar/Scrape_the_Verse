@@ -1,4 +1,5 @@
 import json
+import re
 from typing import Any, Optional
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
@@ -224,12 +225,17 @@ class HealingPlanner:
         current_schema: ExtractionSchema,
         failed_attempts: Optional[list[dict[str, Any]]] = None,
     ) -> Optional[RepairPlan]:
-        """Query Qwen3:8b with HTML snippet and diagnostic context to produce a structured RepairPlan."""
+        """Query Qwen3:8b with a clean, script-free HTML snippet and diagnostic context to produce a structured RepairPlan."""
         try:
-            # Extract clean DOM snippet
-            soup = BeautifulSoup(sample_html[:8000], "html.parser")
-            body = soup.body
-            snippet = str(body)[:4000] if body else sample_html[:4000]
+            # Clean HTML to keep prompt lightweight and fast for local Ollama
+            soup = BeautifulSoup(sample_html, "html.parser")
+            for tag in soup(["script", "style", "noscript", "svg", "path", "link", "meta", "header", "footer", "nav"]):
+                tag.decompose()
+
+            # Find main content container or body
+            main_container = soup.find("main") or soup.find("article") or soup.body or soup
+            raw_snippet = main_container.prettify() if main_container else str(soup)
+            clean_snippet = re.sub(r"\s+", " ", raw_snippet)[:2500]
 
             user_prompt = f"""Target Objective: {task.objective}
 Target URLs: {task.target_urls}
@@ -247,9 +253,9 @@ Recommended Strategy: {diagnosis.repair_strategy.value}
 
 Previous Failed Repair Attempts: {failed_attempts or []}
 
-Observed Raw HTML DOM Snippet:
+Observed Clean HTML DOM Snippet:
 ```html
-{snippet}
+{clean_snippet}
 ```
 
 Propose the smallest evidence-supported repair plan in strict JSON. Do NOT invent selectors not present in the HTML snippet.
@@ -295,19 +301,35 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
         """Generate deterministic heuristic repair plans for common standard failures."""
         candidates: list[RepairPlan] = []
 
-        # If CSS or XPath failed and raw page text is present -> offer strategy switch to Semantic or LLM
+        # If CSS, Regex, or XPath failed and raw page text is present -> offer strategy switch to LLM or Semantic
         if diagnosis.root_cause in (RootCause.SELECTOR_DRIFT, RootCause.DOM_STRUCTURE_CHANGE, RootCause.EXTRACTION_DEGRADATION):
-            if current_schema.strategy == ExtractionStrategyEnum.CSS:
+            if current_schema.strategy in (ExtractionStrategyEnum.CSS, ExtractionStrategyEnum.REGEX):
+                # Candidate 1: Switch to LLM chunking (high fidelity)
                 candidates.append(
                     RepairPlan(
                         repair_type=RepairType.SWITCH_EXTRACTION_STRATEGY,
                         target_component="extraction",
-                        previous_configuration={"strategy": "css"},
+                        previous_configuration={"strategy": current_schema.strategy.value},
+                        proposed_configuration={"strategy": "llm"},
+                        patch={"strategy": "llm"},
+                        reason="Selectors or regex drifted; switch to LLM chunking extraction",
+                        confidence=0.85,
+                        expected_improvement={"coverage": 0.90},
+                        risk_level="low",
+                        level=1,
+                    )
+                )
+                # Candidate 2: Switch to semantic
+                candidates.append(
+                    RepairPlan(
+                        repair_type=RepairType.SWITCH_EXTRACTION_STRATEGY,
+                        target_component="extraction",
+                        previous_configuration={"strategy": current_schema.strategy.value},
                         proposed_configuration={"strategy": "semantic"},
                         patch={"strategy": "semantic"},
-                        reason="CSS selectors drifted; switch to semantic + chunking extraction",
-                        confidence=0.80,
-                        expected_improvement={"coverage": 0.85},
+                        reason="Selectors drifted; switch to semantic extraction",
+                        confidence=0.75,
+                        expected_improvement={"coverage": 0.80},
                         risk_level="low",
                         level=1,
                     )

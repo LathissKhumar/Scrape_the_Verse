@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     # Ollama Local LLM Settings
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "qwen3:8b"
-    OLLAMA_TIMEOUT_SECONDS: float = 60.0
+    OLLAMA_TIMEOUT_SECONDS: float = 120.0
 
     # Bright Data Settings
     BRIGHTDATA: bool = False

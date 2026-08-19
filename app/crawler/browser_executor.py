@@ -106,9 +106,23 @@ class BrowserExecutor:
             if action_plan:
                 extracted_data = await self.action_executor.execute_plan(page, action_plan)
 
-            # Wait for any lazy JS DOM rendering
-            await page.wait_for_timeout(500)
-            html_content = await page.content()
+            # Wait for lazy JS DOM rendering and client-side redirects
+            try:
+                await page.wait_for_load_state("domcontentloaded", timeout=5000)
+            except Exception:
+                pass
+
+            # Resilient content retrieval (handles in-flight redirects gracefully)
+            for attempt in range(3):
+                try:
+                    await page.wait_for_timeout(500)
+                    html_content = await page.content()
+                    final_url = page.url
+                    break
+                except Exception as content_err:
+                    if attempt == 2:
+                        raise content_err
+                    await page.wait_for_timeout(1000)
 
         except Exception as e:
             logger.error(f"Error during browser execution for '{validated_url}': {e}")
