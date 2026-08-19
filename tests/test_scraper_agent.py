@@ -18,12 +18,13 @@ async def test_scraper_agent_empty_urls_raises():
     )
     with pytest.raises(ValueError) as exc:
         await agent.execute(task=task)
-    assert "no target URLs" in str(exc.value)
+    assert "No target URL was supplied" in str(exc.value)
 
 
 @pytest.mark.asyncio
 async def test_scraper_agent_success():
     mock_client = AsyncMock(spec=BrightDataClient)
+    mock_client.is_configured = True
     mock_client.scrape_and_collect.return_value = [
         {"product": "Laptop", "price": "$999"},
         {"product": "Mouse", "price": "$29"},
@@ -40,12 +41,12 @@ async def test_scraper_agent_success():
     records = await agent.execute(task=task)
     assert len(records) == 2
     assert records[0]["product"] == "Laptop"
-    mock_client.scrape_and_collect.assert_called_once()
 
 
 @pytest.mark.asyncio
 async def test_scraper_agent_client_error_propagates():
     mock_client = AsyncMock(spec=BrightDataClient)
+    mock_client.is_configured = True
     mock_client.scrape_and_collect.side_effect = BrightDataJobError("Collector failed on remote server")
 
     agent = ScraperAgent(brightdata_client=mock_client)

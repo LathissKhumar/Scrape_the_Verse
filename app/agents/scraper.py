@@ -1,62 +1,79 @@
 from typing import Any, Optional
+import httpx
+
 from app.agents.base import BaseAgent
 from app.brightdata.adapter import build_collector_inputs
 from app.brightdata.client import BrightDataClient
+from app.config.settings import get_settings
 from app.models.schemas import ScrapingTask
 
 
 class ScraperAgent(BaseAgent):
-    """Scraper Agent: Dispatches validated scraping tasks to Bright Data Scraper Studio."""
+    """Scraper Agent: Executes collection via Bright Data Scraper Studio or native HTTP transport fallback."""
 
     def __init__(self, brightdata_client: Optional[BrightDataClient] = None):
         super().__init__(name="SCRAPER")
-        self.brightdata_client = brightdata_client or BrightDataClient()
+        self.client = brightdata_client or BrightDataClient()
 
-    async def execute(
-        self,
-        task: ScrapingTask,
-        collector_id: Optional[str] = None,
-        poll_interval: float = 2.0,
-        max_poll_seconds: float = 120.0,
-    ) -> list[dict[str, Any]]:
-        """Dispatch task to Bright Data client and collect raw structured records.
+    async def _execute_native_scrape(self, urls: list[str]) -> list[dict[str, Any]]:
+        """Fallback native HTTP scraping when Bright Data API key is unconfigured."""
+        self.logger.info(f"Bright Data unconfigured. Executing native HTTP scrape for {len(urls)} target URL(s).")
+        results: list[dict[str, Any]] = []
 
-        Steps:
-        1. Validate target URLs exist in task.
-        2. Convert task to collector inputs using Bright Data adapter.
-        3. Trigger and poll collection until completion.
-        4. Normalize and return records.
-        """
+        headers = {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            )
+        }
+
+        async with httpx.AsyncClient(timeout=30.0, follow_redirects=True, headers=headers) as client:
+            for u in urls:
+                try:
+                    resp = await client.get(u)
+                    results.append({
+                        "url": u,
+                        "html": resp.text,
+                        "status_code": resp.status_code,
+                        "headers": dict(resp.headers),
+                    })
+                except Exception as e:
+                    self.logger.warning(f"Native fetch failed for {u}: {e}")
+                    results.append({
+                        "url": u,
+                        "html": "",
+                        "error": str(e),
+                    })
+
+        return results
+
+    async def execute(self, task: ScrapingTask) -> list[dict[str, Any]]:
+        """Collect raw web content for the given task target URLs."""
         if not task.target_urls:
-            self.logger.error(f"Task {task.task_id} contains no target URLs.")
-            raise ValueError(f"Task {task.task_id} contains no target URLs.")
+            self.logger.error(f"task_id={task.task_id} Execution aborted: No target URLs provided.")
+            raise ValueError("No target URL was supplied. URL discovery is not implemented.")
 
         self.logger.info(
-            f"task_id={task.task_id} Received {len(task.target_urls)} target URL(s). Preparing collector inputs."
+            f"task_id={task.task_id} Received {len(task.target_urls)} target URL(s). Initiating collection."
         )
-        collector_inputs = build_collector_inputs(task)
+
+        # Check if Bright Data credentials are configured
+        is_configured = getattr(self.client, "is_configured", False)
+        if is_configured:
+            inputs = build_collector_inputs(task=task)
+            self.logger.info(f"task_id={task.task_id} Dispatched to Bright Data Scraper Studio.")
+            collector_id = "c_default"
+            if hasattr(self.client, "settings") and hasattr(self.client.settings, "brightdata_collector_id"):
+                collector_id = self.client.settings.brightdata_collector_id
+            results = await self.client.scrape_and_collect(
+                collector_id=collector_id,
+                inputs=inputs,
+            )
+        else:
+            # Native fallback
+            results = await self._execute_native_scrape(task.target_urls)
 
         self.logger.info(
-            f"task_id={task.task_id} Executing Bright Data scrape job for {len(collector_inputs)} input(s)..."
+            f"task_id={task.task_id} Successfully retrieved {len(results)} raw record(s)/page(s)."
         )
-        raw_records = await self.brightdata_client.scrape_and_collect(
-            collector_id=collector_id,
-            inputs=collector_inputs,
-            poll_interval=poll_interval,
-            max_poll_seconds=max_poll_seconds,
-        )
-
-        normalized_records: list[dict[str, Any]] = []
-        if isinstance(raw_records, list):
-            for item in raw_records:
-                if isinstance(item, dict):
-                    normalized_records.append(item)
-                else:
-                    normalized_records.append({"raw_value": item})
-        elif isinstance(raw_records, dict):
-            normalized_records.append(raw_records)
-
-        self.logger.info(
-            f"task_id={task.task_id} Retrieved {len(normalized_records)} record(s) from Bright Data."
-        )
-        return normalized_records
+        return results

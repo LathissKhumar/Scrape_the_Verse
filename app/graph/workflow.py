@@ -1,6 +1,7 @@
 from typing import Any, Optional
 from langgraph.graph import END, START, StateGraph
 
+from app.agents.diagnosis import DiagnosisAgent
 from app.agents.extraction import ExtractionAgent
 from app.agents.planner import ScrapingPlannerAgent
 from app.agents.scraper import ScraperAgent
@@ -8,6 +9,7 @@ from app.agents.validation import ValidationAgent
 from app.brightdata.client import BrightDataClient
 from app.config.logging import get_logger
 from app.config.settings import get_settings
+from app.diagnosis.schemas import DiagnosisResult
 from app.extraction.schema import ExtractionResult
 from app.graph.state import ScrapingGraphState
 from app.llm.ollama_client import OllamaClient
@@ -22,10 +24,11 @@ def create_scraping_workflow(
     scraper_agent: Optional[ScraperAgent] = None,
     extraction_agent: Optional[ExtractionAgent] = None,
     validation_agent: Optional[ValidationAgent] = None,
+    diagnosis_agent: Optional[DiagnosisAgent] = None,
 ):
-    """Build and compile the Phase 3 LangGraph scraping state machine:
+    """Build and compile the Phase 4 LangGraph scraping state machine:
 
-    START -> planner -> scraper -> extraction -> validation -> END
+    START -> planner -> scraper -> extraction -> validation -> [conditionally] diagnosis -> END
     """
     settings = get_settings()
     llm = OllamaClient(settings=settings)
@@ -33,6 +36,7 @@ def create_scraping_workflow(
     scraper = scraper_agent or ScraperAgent(brightdata_client=BrightDataClient(settings=settings))
     extractor = extraction_agent or ExtractionAgent(llm_client=llm)
     validator = validation_agent or ValidationAgent()
+    diagnostician = diagnosis_agent or DiagnosisAgent(llm_client=llm)
 
     async def planner_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
@@ -152,7 +156,6 @@ def create_scraping_workflow(
             raw_results=raw_results,
         )
 
-        # Derive final status
         if validation_result.status == "healthy":
             final_status = "success"
             err_str = None
@@ -165,7 +168,6 @@ def create_scraping_workflow(
             final_status = "failed" if not extracted_results else "partial"
             err_str = "Validation detected severe extraction degradation or broken output"
 
-        # Build final ScrapingResult
         final_res = ScrapingResult(
             task_id=task_id,
             status=final_status,
@@ -195,17 +197,80 @@ def create_scraping_workflow(
             "final_output": final_res,
         }
 
+    async def diagnosis_node(state: ScrapingGraphState) -> dict[str, Any]:
+        task_id = state.get("task_id", "unknown-task")
+        task: Optional[ScrapingTask] = state.get("scraping_task")
+        raw_results = state.get("raw_results")
+        extracted_results = state.get("extracted_results") or []
+        val_dict = state.get("validation_result") or {}
+
+        logger.info(f"task_id={task_id} [GRAPH:diagnosis_node] Running diagnosis agent")
+
+        # Parse validation result
+        val_result = ValidationResult(**val_dict) if val_dict else ValidationResult(status="broken", health_score=0.0)
+
+        diagnosis: DiagnosisResult = await diagnostician.diagnose(
+            task=task or ScrapingTask(task_id=task_id, objective="", target_urls=[]),
+            validation_result=val_result,
+            raw_results=raw_results,
+            extracted_results=extracted_results,
+        )
+
+        # Attach diagnosis to final_output metadata
+        final_output = state.get("final_output")
+        if final_output:
+            updated_meta = dict(final_output.metadata)
+            updated_meta["diagnosis"] = diagnosis.model_dump()
+            final_output.metadata = updated_meta
+            if diagnosis.root_cause.value != "UNKNOWN":
+                final_output.error = f"Degradation diagnosed: {diagnosis.root_cause.value} -> {diagnosis.repair_strategy.value}"
+
+        return {
+            "diagnosis_result": diagnosis.model_dump(),
+            "final_output": final_output,
+        }
+
+    def should_diagnose(state: ScrapingGraphState) -> str:
+        """Route to diagnosis node if validation reveals actionable degradation or failure."""
+        val_dict = state.get("validation_result")
+        if not val_dict:
+            # If failed before validation
+            if state.get("final_output") and state["final_output"].status == "failed":
+                return "diagnose"
+            return "end"
+
+        status = val_dict.get("status", "healthy")
+        failures = val_dict.get("failures", [])
+
+        if status in ("broken", "unstable"):
+            return "diagnose"
+        if status == "degraded" and failures:
+            return "diagnose"
+
+        return "end"
+
     graph = StateGraph(ScrapingGraphState)
 
     graph.add_node("planner", planner_node)
     graph.add_node("scraper", scraper_node)
     graph.add_node("extraction", extraction_node)
     graph.add_node("validation", validation_node)
+    graph.add_node("diagnosis", diagnosis_node)
 
     graph.add_edge(START, "planner")
     graph.add_edge("planner", "scraper")
     graph.add_edge("scraper", "extraction")
     graph.add_edge("extraction", "validation")
-    graph.add_edge("validation", END)
+
+    graph.add_conditional_edges(
+        "validation",
+        should_diagnose,
+        {
+            "diagnose": "diagnosis",
+            "end": END,
+        },
+    )
+
+    graph.add_edge("diagnosis", END)
 
     return graph.compile()

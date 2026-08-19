@@ -15,6 +15,7 @@ class ScrapingGraphState(TypedDict, total=False):
     raw_results: Optional[list[dict[str, Any]]]
     extracted_results: Optional[list[dict[str, Any]]]
     validation_result: Optional[dict[str, Any]]
-    failure: Optional[dict[str, Any]]
+    diagnosis_result: Optional[dict[str, Any]]
+    failure: Optional[Any]
     repair_attempt: int
     final_output: Optional[ScrapingResult]

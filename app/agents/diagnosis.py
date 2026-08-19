@@ -1,28 +1,46 @@
 from typing import Any, Optional
+
 from app.agents.base import BaseAgent
+from app.diagnosis.engine import DiagnosisEngine
+from app.diagnosis.schemas import DiagnosisResult
 from app.llm.base import LLMClient
 from app.models.schemas import ScrapingTask
+from app.validation.schemas import ValidationResult
 
 
 class DiagnosisAgent(BaseAgent):
-    """Diagnosis Agent: Identifies root cause of scraping/validation failures (Phase 5)."""
+    """Diagnosis Agent: Analyzes failures, identifies root causes, and recommends adaptive repair plans."""
 
-    def __init__(self, llm_client: Optional[LLMClient] = None):
+    def __init__(
+        self,
+        llm_client: Optional[LLMClient] = None,
+        engine: Optional[DiagnosisEngine] = None,
+    ):
         super().__init__(name="DIAGNOSIS")
-        self.llm_client = llm_client
+        self.engine = engine or DiagnosisEngine(llm_client=llm_client)
 
     async def diagnose(
         self,
-        failure_evidence: dict[str, Any],
         task: ScrapingTask,
-        scraper_code: Optional[str] = None,
-    ) -> dict[str, Any]:
-        """Analyze failure logs, error codes, and validation failures to categorize root cause.
+        validation_result: ValidationResult,
+        raw_results: Optional[Any] = None,
+        extracted_results: Optional[list[dict[str, Any]]] = None,
+        scraper_metadata: Optional[dict[str, Any]] = None,
+    ) -> DiagnosisResult:
+        """Analyze validation results and evidence to produce structured DiagnosisResult."""
+        self.logger.info(
+            f"task_id={task.task_id} Diagnosing failure for status='{validation_result.status}', health_score={validation_result.health_score}."
+        )
 
-        TODO (Phase 5):
-        1. Categorize error: selector drift, anti-bot block (403/429), schema mismatch, timeout.
-        2. Inspect scraper code and raw error trace.
-        3. Formulate diagnosis summary and suggested repair strategy.
-        4. Return diagnosis report: {"category": str, "root_cause": str, "actionable": bool}.
-        """
-        raise NotImplementedError("DiagnosisAgent execution will be implemented in Phase 5.")
+        result: DiagnosisResult = await self.engine.diagnose_async(
+            task=task,
+            validation_result=validation_result,
+            raw_results=raw_results,
+            extracted_results=extracted_results,
+            scraper_metadata=scraper_metadata,
+        )
+
+        self.logger.info(
+            f"task_id={task.task_id} Diagnosis result: root_cause='{result.root_cause.value}', confidence={result.confidence}, repair_strategy='{result.repair_strategy.value}'."
+        )
+        return result
