@@ -277,14 +277,20 @@ class ScrapingGraphState(TypedDict, total=False):
   - If attempts $\ge$ `MAX_REPAIR_ATTEMPTS` $\rightarrow$ `diagnosis` (routes to escalate) $\rightarrow$ `END`.
   - If actionable degradation $\rightarrow$ `diagnosis`.
 - `diagnosis -> should_heal(state)`:
-  - If confidence $< 0.50$ or root_cause == `UNKNOWN` $\rightarrow$ `healing` (produces `ESCALATE`) $\rightarrow$ `END`.
+  - If confidence $< 0.50$ or root_cause == `UNKNOWN` $\rightarrow$ `escalate_node` $\rightarrow$ `END` (explicit bypass of healing agent).
   - If confident actionable diagnosis $\rightarrow$ `healing`.
 - `healing -> repair_apply`: Applies candidate `ExtractionSchema`.
 - `repair_apply -> scraper`: Triggers canary scrape/extract/validate loop.
 
 ---
 
-## 11. API Metadata Contract
+## 11. Fresh Evidence Hard Invariant
+> [!IMPORTANT]
+> The Repair Planner must **never** generate selectors from the failed extraction output alone. Whenever diagnosis identifies DOM/layout drift, the planner **must** inspect a freshly acquired page snapshot provided by `RepairEvidenceCollector`.
+
+---
+
+## 12. API Metadata Contract
 
 `/scrape` response includes:
 ```json
