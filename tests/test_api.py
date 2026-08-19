@@ -1,9 +1,8 @@
-import json
 import pytest
 from unittest.mock import AsyncMock, patch
 
 from app.llm.exceptions import LLMConnectionError
-from app.models.schemas import ScrapingTask
+from app.models.schemas import ScrapingResult, ScrapingTask
 
 
 def test_get_root(api_client):
@@ -12,7 +11,7 @@ def test_get_root(api_client):
     data = response.json()
     assert data["service"] == "self-healing-scraper"
     assert data["status"] == "running"
-    assert data["phase"] == 1
+    assert data["phase"] == 2
 
 
 def test_get_health(api_client):
@@ -97,3 +96,57 @@ def test_post_parse_task_invalid_input(api_client):
         json={"query": "Scrape", "target_urls": ["ftp://invalid.com"]},
     )
     assert response.status_code == 422
+
+
+def test_post_scrape_success(api_client):
+    mock_result_state = {
+        "final_output": ScrapingResult(
+            status="success",
+            records=[{"title": "Product 1", "price": "$50"}],
+            metadata={"record_count": 1},
+        )
+    }
+
+    with patch("app.main.workflow.ainvoke", new_callable=AsyncMock, return_value=mock_result_state):
+        payload = {
+            "query": "Scrape product names and prices from the provided website",
+            "target_urls": ["https://example.com/products"],
+            "max_records": 20,
+        }
+        response = api_client.post("/scrape", json=payload)
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "success"
+        assert len(data["records"]) == 1
+        assert data["records"][0]["title"] == "Product 1"
+        assert "task_id" in data
+
+
+def test_post_scrape_missing_target_url_returns_400(api_client):
+    payload = {
+        "query": "Scrape product names and prices without providing any URL",
+        "target_urls": [],
+    }
+    response = api_client.post("/scrape", json=payload)
+    assert response.status_code == 400
+    assert "No target URL was supplied" in response.json()["detail"]
+
+
+def test_post_scrape_url_in_query_accepted(api_client):
+    mock_result_state = {
+        "final_output": ScrapingResult(
+            status="success",
+            records=[{"title": "Headline", "points": "120"}],
+            metadata={"record_count": 1},
+        )
+    }
+
+    with patch("app.main.workflow.ainvoke", new_callable=AsyncMock, return_value=mock_result_state):
+        payload = {
+            "query": "Scrape from https://news.ycombinator.com the front page",
+        }
+        response = api_client.post("/scrape", json=payload)
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "success"
+        assert len(data["records"]) == 1

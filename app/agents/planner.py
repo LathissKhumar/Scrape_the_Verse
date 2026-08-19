@@ -1,12 +1,11 @@
 import json
 import re
 from typing import Any, Optional
-from urllib.parse import urlparse
 from uuid import uuid4
 
 from app.agents.base import BaseAgent
 from app.llm.base import LLMClient
-from app.llm.exceptions import LLMError, LLMInvocationError
+from app.llm.exceptions import LLMInvocationError
 from app.models.schemas import ScrapingRequest, ScrapingTask, validate_http_url
 
 PLANNER_SYSTEM_PROMPT = """You are a scraping task planner.
@@ -20,32 +19,43 @@ The user may provide:
 - constraints
 - source requirements
 
-Rules:
-1. Never invent URLs.
+Strict Rules:
+1. Never invent URLs. Only use URLs provided by the user.
 2. Never invent facts.
 3. Never search the web.
 4. Never perform scraping.
 5. Preserve user-provided URLs verbatim.
 6. Preserve requested fields.
-7. Do not add fields unless structurally required.
+7. Do not add fields unless requested.
 8. Do not guess missing information.
-9. Return valid JSON only.
-10. If information is not provided, use an empty list or null.
-11. Create an output_schema when field types are obvious (e.g. {"field_name": "string", "price": "string", "rating": "number", "url": "url"}).
-12. Do NOT include a task_id field in your JSON output.
+9. Never invent generic constraints: Do NOT add 'respect robots.txt', 'follow terms of service', or legal rules unless the user explicitly requested them. If none requested, constraints must be [].
+10. Never invent source requirements: Do NOT add 'user-agent header required' or headers unless the user explicitly requested them. If none requested, source_requirements must be [].
+11. Never invent max_records: Set max_records to null unless the user explicitly specified a record limit.
+12. Return valid JSON only.
+13. Create an output_schema when field types are obvious (e.g. {"field1": "string", "price": "string", "rating": "number"}).
+14. Do NOT include a task_id field in your JSON output.
 
-Your output must be a single JSON object with the following schema:
+Your output must be a single JSON object with the following format:
 {
-  "objective": "Clear description of the scraping objective",
+  "objective": "Clear description of the user's scraping objective",
   "target_urls": ["https://example.com/page"],
   "fields": ["field1", "field2"],
   "output_schema": {"field1": "string", "field2": "string"},
-  "max_records": 100,
+  "max_records": null,
   "constraints": [],
   "source_requirements": []
 }"""
 
 URL_REGEX = re.compile(r"https?://[^\s,;\"'<>()\[\]{}]+", re.IGNORECASE)
+
+GENERIC_HALLUCINATIONS = [
+    "respect robots.txt",
+    "robots.txt",
+    "terms of service",
+    "user-agent header",
+    "user-agent header required",
+    "follow website terms",
+]
 
 
 def extract_urls_from_text(text: str) -> list[str]:
@@ -53,7 +63,6 @@ def extract_urls_from_text(text: str) -> list[str]:
     found = URL_REGEX.findall(text)
     valid_urls: list[str] = []
     for u in found:
-        # Strip trailing punctuation if any
         cleaned = u.rstrip(".,;:)")
         try:
             valid = validate_http_url(cleaned)
@@ -62,6 +71,22 @@ def extract_urls_from_text(text: str) -> list[str]:
         except ValueError:
             continue
     return valid_urls
+
+
+def sanitize_constraints(items: list[str], user_query: str) -> list[str]:
+    """Filter out hallucinated boilerplate constraints not mentioned in the user query."""
+    user_lower = user_query.lower()
+    cleaned = []
+    for item in items:
+        if not isinstance(item, str):
+            continue
+        item_lower = item.lower().strip()
+        # If it's a known generic boilerplate hallucination and not in query, drop it
+        if any(h in item_lower for h in GENERIC_HALLUCINATIONS) and item_lower not in user_lower:
+            continue
+        if item.strip():
+            cleaned.append(item.strip())
+    return cleaned
 
 
 class ScrapingPlannerAgent(BaseAgent):
@@ -92,18 +117,15 @@ class ScrapingPlannerAgent(BaseAgent):
         """Merge URLs from request, query, and LLM output, preserving verbatim and filtering invalid/invented."""
         merged: list[str] = []
 
-        # Ground truth URLs directly provided by user
         allowed_user_urls = list(request.target_urls)
         for u in query_urls:
             if u not in allowed_user_urls:
                 allowed_user_urls.append(u)
 
-        # First add explicit request target_urls
         for u in allowed_user_urls:
             if u not in merged:
                 merged.append(u)
 
-        # If LLM returned URLs, only allow them if they match allowed user URLs or are valid extracts from query
         for u in llm_urls:
             if isinstance(u, str):
                 cleaned = u.strip().rstrip(".,;:)")
@@ -148,22 +170,28 @@ class ScrapingPlannerAgent(BaseAgent):
 
         parsed_data = self._parse_llm_json(raw_output)
 
-        # Merge URLs safely
         llm_urls = parsed_data.get("target_urls", [])
         if not isinstance(llm_urls, list):
             llm_urls = []
         final_urls = self._merge_and_validate_urls(request, llm_urls, query_urls)
 
-        # Record limit: prioritize request.max_records if explicitly supplied
+        # Prioritize request.max_records; if not specified in request, check if mentioned in query
         max_records = request.max_records
         if max_records is None:
-            max_records = parsed_data.get("max_records")
+            # Only use LLM parsed max_records if a number or limit keyword was in query
+            candidate = parsed_data.get("max_records")
+            if isinstance(candidate, int) and candidate > 0:
+                if any(char.isdigit() for char in request.query):
+                    max_records = candidate
 
         objective = parsed_data.get("objective") or request.query.strip()
         fields = parsed_data.get("fields") or []
         output_schema = parsed_data.get("output_schema") or None
-        constraints = parsed_data.get("constraints") or []
-        source_requirements = parsed_data.get("source_requirements") or []
+
+        raw_constraints = parsed_data.get("constraints") or []
+        raw_source_reqs = parsed_data.get("source_requirements") or []
+        constraints = sanitize_constraints(raw_constraints, request.query)
+        source_requirements = sanitize_constraints(raw_source_reqs, request.query)
 
         task = ScrapingTask(
             task_id=effective_task_id,
@@ -213,13 +241,19 @@ class ScrapingPlannerAgent(BaseAgent):
 
         max_records = request.max_records
         if max_records is None:
-            max_records = parsed_data.get("max_records")
+            candidate = parsed_data.get("max_records")
+            if isinstance(candidate, int) and candidate > 0:
+                if any(char.isdigit() for char in request.query):
+                    max_records = candidate
 
         objective = parsed_data.get("objective") or request.query.strip()
         fields = parsed_data.get("fields") or []
         output_schema = parsed_data.get("output_schema") or None
-        constraints = parsed_data.get("constraints") or []
-        source_requirements = parsed_data.get("source_requirements") or []
+
+        raw_constraints = parsed_data.get("constraints") or []
+        raw_source_reqs = parsed_data.get("source_requirements") or []
+        constraints = sanitize_constraints(raw_constraints, request.query)
+        source_requirements = sanitize_constraints(raw_source_reqs, request.query)
 
         task = ScrapingTask(
             task_id=effective_task_id,

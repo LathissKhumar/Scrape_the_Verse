@@ -82,6 +82,10 @@ class ScrapingTask(BaseModel):
 class ScrapingResult(BaseModel):
     """Canonical result schema of a scraping workflow."""
 
+    task_id: Optional[str] = Field(
+        default=None,
+        description="Unique identifier of the scraping task.",
+    )
     status: Literal["success", "partial", "failed"] = Field(
         ...,
         description="Execution status of the scraping task.",
