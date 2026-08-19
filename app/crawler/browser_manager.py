@@ -40,12 +40,17 @@ class BrowserManager:
                         "--no-sandbox",
                         "--disable-dev-shm-usage",
                         "--disable-blink-features=AutomationControlled",
+                        "--disable-features=IsolateOrigins,site-per-process",
+                        "--disable-infobars",
+                        "--disable-background-timer-throttling",
+                        "--disable-backgrounding-occluded-windows",
+                        "--disable-renderer-backgrounding",
                     ],
                 )
             return self._browser
 
     async def create_isolated_context(self) -> BrowserContext:
-        """Create an isolated browser context with standard viewport, locale, and headers."""
+        """Create an isolated browser context with anti-bot stealth, viewport, locale, and headers."""
         browser = await self.get_browser()
         context = await browser.new_context(
             viewport={"width": self.config.viewport_width, "height": self.config.viewport_height},
@@ -53,6 +58,38 @@ class BrowserManager:
             locale=self.config.locale,
             timezone_id=self.config.timezone_id,
             ignore_https_errors=False,
+            extra_http_headers={
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Sec-Ch-Ua": '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
+                "Sec-Ch-Ua-Mobile": "?0",
+                "Sec-Ch-Ua-Platform": '"Windows"',
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "none",
+                "Sec-Fetch-User": "?1",
+                "Upgrade-Insecure-Requests": "1",
+            },
+        )
+        # Inject anti-bot evasion scripts
+        await context.add_init_script(
+            """
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            });
+            window.chrome = {
+                runtime: {},
+                loadTimes: function() {},
+                csi: function() {},
+                app: {}
+            };
+            Object.defineProperty(navigator, 'plugins', {
+                get: () => [1, 2, 3, 4, 5]
+            });
+            Object.defineProperty(navigator, 'languages', {
+                get: () => ['en-US', 'en']
+            });
+            """
         )
         context.set_default_timeout(self.config.timeout_ms)
         return context

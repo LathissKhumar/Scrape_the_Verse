@@ -24,6 +24,9 @@ class BlockDetector:
         "kasada",
         "incapsula",
         "distil networks",
+        "cs_503_link",
+        "dogsofamazon",
+        "api-services-support@amazon.com",
     ]
 
     CAPTCHA_SIGNATURES = [
@@ -35,6 +38,8 @@ class BlockDetector:
         "solve the captcha",
         "verify you are human",
         "enter the characters you see below",
+        "validatecaptcha",
+        "type the characters you see in this image",
     ]
 
     ACCESS_DENIED_SIGNATURES = [
@@ -44,6 +49,7 @@ class BlockDetector:
         "ip address has been banned",
         "request blocked",
         "waf block",
+        "503 service unavailable",
     ]
 
     AUTH_SIGNATURES = [
@@ -75,6 +81,19 @@ class BlockDetector:
 
         if status_code == 403:
             # Check if 403 has specific challenge or captcha signature
+            for sig in self.CAPTCHA_SIGNATURES:
+                if sig in html_lower:
+                    diagnostics["matched_signature"] = sig
+                    return True, BlockType.CAPTCHA, diagnostics
+
+            for sig in self.CHALLENGE_SIGNATURES:
+                if sig in html_lower:
+                    diagnostics["matched_signature"] = sig
+                    return True, BlockType.SECURITY_CHALLENGE, diagnostics
+
+            return True, BlockType.ACCESS_DENIED, diagnostics
+
+        if status_code == 503:
             for sig in self.CAPTCHA_SIGNATURES:
                 if sig in html_lower:
                     diagnostics["matched_signature"] = sig

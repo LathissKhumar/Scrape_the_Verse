@@ -274,18 +274,42 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
             except ValueError:
                 rep_type = RepairType.REPAIR_CSS_SELECTORS
 
+            # Sanitize target_component to valid Literal["extraction", "scraper", "collector"]
+            raw_target = str(data.get("target_component", "extraction")).lower()
+            if any(k in raw_target for k in ["scraper", "crawler", "browser", "content", "availability", "page"]):
+                target_component = "scraper"
+            elif any(k in raw_target for k in ["collector", "network", "proxy", "brightdata"]):
+                target_component = "collector"
+            else:
+                target_component = "extraction"
+
+            # Sanitize risk_level to valid Literal["low", "medium", "high"]
+            raw_risk = str(data.get("risk_level", "low")).lower()
+            if any(k in raw_risk for k in ["critical", "severe", "high"]):
+                risk_level = "high"
+            elif any(k in raw_risk for k in ["medium", "moderate"]):
+                risk_level = "medium"
+            else:
+                risk_level = "low"
+
+            raw_confidence = data.get("confidence", 0.85)
+            try:
+                conf_val = max(0.0, min(1.0, float(raw_confidence)))
+            except (ValueError, TypeError):
+                conf_val = 0.85
+
             return RepairPlan(
                 repair_type=rep_type,
-                target_component=data.get("target_component", "extraction"),
+                target_component=target_component,
                 affected_fields=data.get("affected_fields", diagnosis.affected_fields),
                 previous_configuration=current_schema.model_dump(),
-                proposed_configuration=data.get("proposed_configuration", {}),
-                patch=data.get("patch", {}),
+                proposed_configuration=data.get("proposed_configuration", {}) if isinstance(data.get("proposed_configuration"), dict) else {},
+                patch=data.get("patch", {}) if isinstance(data.get("patch"), dict) else {},
                 reason=data.get("reason", "LLM proposed evidence-based repair"),
-                confidence=float(data.get("confidence", 0.85)),
-                expected_improvement=data.get("expected_improvement", {"coverage": 0.9}),
-                test_requirements=data.get("test_requirements", []),
-                risk_level=data.get("risk_level", "low"),
+                confidence=conf_val,
+                expected_improvement=data.get("expected_improvement", {"coverage": 0.9}) if isinstance(data.get("expected_improvement"), dict) else {"coverage": 0.9},
+                test_requirements=data.get("test_requirements", []) if isinstance(data.get("test_requirements"), list) else [],
+                risk_level=risk_level,
                 level=1,
             )
         except Exception as e:

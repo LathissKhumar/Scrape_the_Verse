@@ -78,6 +78,21 @@ class ScraperAgent(BaseAgent):
             # Native Playwright Browser execution
             results = await self._execute_browser_scrape(task.target_urls)
 
+            # If native crawl gets blocked by anti-bot challenge and DCA is configured, fallback to DCA
+            any_blocked = any(r.get("blocked", False) or r.get("status_code") in (403, 429, 503) for r in results)
+            if any_blocked and is_configured:
+                self.logger.warning(
+                    f"task_id={task.task_id} Native browser execution encountered bot challenge/503. "
+                    "Automatically escalating to Bright Data DCA cloud scraper fallback..."
+                )
+                inputs = build_collector_inputs(task=task)
+                dca_results = await self.client.scrape_and_collect(
+                    collector_id=self.client.collector_id,
+                    inputs=inputs,
+                )
+                if dca_results:
+                    results = dca_results
+
         self.logger.info(
             f"task_id={task.task_id} Successfully retrieved {len(results)} raw record(s)/page(s)."
         )

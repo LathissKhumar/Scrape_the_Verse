@@ -22,6 +22,30 @@ class RuleBasedClassifier:
         record_count = evidence.get("record_count", 0)
         failures = validation_result.failures
         failure_types = [f.failure_type for f in failures]
+        scraper_meta = evidence.get("scraper_metadata", {}) or {}
+        sample_html = str(evidence.get("sample_html", "")).lower()
+        status_code = scraper_meta.get("status_code", 200)
+        blocked_flag = scraper_meta.get("blocked", False)
+
+        # Case 0: Bot Block, CAPTCHA, or 503 Challenge
+        is_bot_blocked = (
+            status_code in (403, 429, 503)
+            or blocked_flag
+            or any(sig in sample_html for sig in ["cs_503_link", "dogsofamazon", "validatecaptcha", "cf-browser-verification", "captcha", "cloudflare", "access denied"])
+        )
+        if is_bot_blocked:
+            return DiagnosisResult(
+                diagnosis_status="diagnosed",
+                root_cause=RootCause.BOT_BLOCKED if status_code != 429 else RootCause.RATE_LIMITED,
+                confidence=0.99,
+                failure_category="BOT_BLOCKED",
+                affected_stage=AffectedStage.SCRAPER_EXECUTION,
+                affected_fields=evidence.get("requested_fields", []),
+                evidence=[f"Anti-bot WAF, CAPTCHA challenge, or 503 block detected (HTTP {status_code}, blocked={blocked_flag})."],
+                repair_strategy=RepairStrategy.SWITCH_COLLECTOR_PROVIDER,
+                repair_targets=["scraper_transport", "proxy_configuration", "dca_cloud_scraper"],
+                recommended_action=RecommendedAction.SWITCH_PROXIES,
+            )
 
         # Case 1: Scraper returned zero/empty content
         if not raw_available or FailureTaxonomy.SCRAPER_OUTPUT_MISSING in failure_types:
