@@ -3,6 +3,7 @@ from uuid import uuid4
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
 
+from app.agents.healing import HealingAgent
 from app.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
 from app.agents.scraper import ScraperAgent
 from app.brightdata.client import BrightDataClient
@@ -34,7 +35,7 @@ settings = get_settings()
 app = FastAPI(
     title="Self-Healing Multi-Agent Web Scraper",
     description="Multi-agent self-healing web scraper with LangGraph, local Ollama Qwen3:8b, and Bright Data.",
-    version="0.2.0",
+    version="0.5.0",
 )
 
 # Initialize core clients and agents
@@ -42,11 +43,13 @@ llm_client = OllamaClient(settings=settings)
 brightdata_client = BrightDataClient(settings=settings)
 planner_agent = ScrapingPlannerAgent(llm_client=llm_client)
 scraper_agent = ScraperAgent(brightdata_client=brightdata_client)
+healing_agent = HealingAgent(llm_client=llm_client, scraper_agent=scraper_agent)
 
 # Initialize compiled LangGraph workflow
 workflow = create_scraping_workflow(
     planner_agent=planner_agent,
     scraper_agent=scraper_agent,
+    healing_agent=healing_agent,
 )
 
 
@@ -120,7 +123,7 @@ async def root() -> dict[str, Any]:
     return {
         "service": "self-healing-scraper",
         "status": "running",
-        "phase": 2,
+        "phase": 5,
     }
 
 
