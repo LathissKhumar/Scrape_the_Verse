@@ -4,41 +4,38 @@ import { GradientText } from '@/components/ui/GradientText'
 export function Footer() {
   return (
     <footer
-      className="border-t py-12 relative overflow-hidden"
-      style={{
-        borderColor: 'rgba(255,255,255,0.08)',
-        backgroundColor: '#05050A',
-      }}
+      className="py-16 relative bg-void border-t border-white/10"
     >
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
         {/* Left wordmark */}
         <div className="flex items-center gap-3">
           <div
-            className="w-7 h-7 rounded flex items-center justify-center text-xs font-bold"
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-mono font-bold shadow-md shadow-magenta/20"
             style={{
               background:
-                'linear-gradient(135deg, #240044 0%, #6D28D9 22%, #EC0AFF 45%, #FF1744 68%, #00E5FF 100%)',
+                'linear-gradient(135deg, #240044 0%, #6D28D9 30%, #EC0AFF 70%, #00E5FF 100%)',
               color: '#05050A',
             }}
           >
             SV
           </div>
           <span
-            className="font-bold text-lg tracking-tight"
-            style={{ fontFamily: 'var(--font-display)' }}
+            className="font-bold text-xl tracking-tight font-display"
           >
             <GradientText>SCRAPE-VERSE</GradientText>
           </span>
         </div>
 
         {/* Center note */}
-        <div className="text-xs font-mono text-center" style={{ color: '#A1A1B5' }}>
-          Self-Healing Web Intelligence + AI Sales Platform · Hackathon Project 2026
+        <div className="text-xs font-mono text-muted text-center max-w-md">
+          Self-Healing Web Intelligence + AI Sales Automation Platform
+          <br />
+          Built with Bright Data Scraper Studio & Gemini AI
         </div>
 
         {/* Right copyright */}
-        <div className="text-xs font-mono" style={{ color: '#A1A1B5' }}>
-          Built with Bright Data Scraper Studio & Gemini AI
+        <div className="text-xs font-mono text-muted">
+          © 2026 Scrape-Verse. All rights reserved.
         </div>
       </div>
     </footer>

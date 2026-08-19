@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
@@ -9,29 +9,28 @@ import { ACTIVE_COLLECTORS, SELF_HEAL_EVENTS } from '@/lib/mock-data'
 export function ScraperControlCenter() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
-  const prefersReduced = useReducedMotion()
 
   return (
     <section
       id="scraper-control"
       ref={ref}
-      className="py-24 relative"
+      className="py-32 md:py-40 relative border-b border-white/5 bg-void"
       aria-label="Scraper Control Center"
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="text-center mb-16 space-y-4">
           <SectionLabel label="Scraper Control Center" />
-          <h2 className="text-4xl md:text-5xl font-black" style={{ fontFamily: 'var(--font-display)' }}>
-            Six collectors.{' '}
-            <GradientText>Always running.</GradientText>
+          <h2 className="text-4xl md:text-5xl font-black font-display tracking-tight">
+            Six Collectors.{' '}
+            <GradientText>Always Active.</GradientText>
           </h2>
-          <p className="mt-4 max-w-xl mx-auto" style={{ color: '#A1A1B5' }}>
-            Real-time view of every Bright Data collector — health, record throughput, and the moment a self-heal fires.
+          <p className="text-base text-muted max-w-xl mx-auto font-body">
+            Real-time status monitor across all Bright Data Studio collectors — tracking extraction rate, status, and self-healing triggers.
           </p>
         </div>
 
-        {/* Collector grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+        {/* Collector Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {ACTIVE_COLLECTORS.map((collector, i) => (
             <motion.div
               key={collector.id}
@@ -44,30 +43,27 @@ export function ScraperControlCenter() {
           ))}
         </div>
 
-        {/* Event stream */}
+        {/* Live Stream Console */}
         <motion.div
-          className="max-w-3xl mx-auto"
+          className="max-w-4xl mx-auto space-y-4"
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.4 }}
         >
-          <div className="text-xs font-mono tracking-widest mb-3" style={{ color: '#A1A1B5' }}>
-            LIVE EVENT STREAM
+          <div className="text-xs font-mono tracking-widest text-muted uppercase">
+            LIVE SYSTEM EVENT STREAM
           </div>
-          <div
-            className="comic-panel overflow-hidden"
-            style={{ backgroundColor: '#060609' }}
-          >
-            <div className="p-4 space-y-1.5 font-mono text-xs max-h-56 overflow-y-auto">
+          <div className="glass-panel overflow-hidden border-white/10 shadow-2xl">
+            <div className="p-6 space-y-3 font-mono text-xs max-h-72 overflow-y-auto bg-[#05050A]/90">
               {SELF_HEAL_EVENTS.map((evt, i) => (
                 <motion.div
                   key={i}
-                  className="flex items-start gap-3"
+                  className="flex items-start gap-4 py-1 border-b border-white/[0.03]"
                   initial={{ opacity: 0, x: -8 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.6 + i * 0.08 }}
+                  transition={{ delay: 0.5 + i * 0.08 }}
                 >
-                  <span style={{ color: '#A1A1B5', flexShrink: 0 }}>{evt.time}</span>
+                  <span className="text-muted shrink-0 font-medium">{evt.time}</span>
                   <span
                     style={{
                       color:

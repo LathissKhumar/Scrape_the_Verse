@@ -1,5 +1,5 @@
 'use client'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
@@ -10,7 +10,6 @@ type CiState = 'pending' | 'running' | 'failing' | 'healing' | 'passing'
 export function SelfHealingCI() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
-  const prefersReduced = useReducedMotion()
   const [state, setState] = useState<CiState>('pending')
 
   useEffect(() => {
@@ -42,93 +41,74 @@ export function SelfHealingCI() {
   }[state]
 
   const ciStatusLabel = {
-    pending: 'WAITING', running: 'RUNNING', failing: 'FAILURE', healing: 'SELF-HEALING', passing: 'ALL PASSING',
+    pending: 'WAITING', running: 'RUNNING PIPELINE', failing: 'TEST FAILURE DETECTED', healing: 'SELF-HEALING AGENT ACTIVE', passing: 'ALL COLLECTORS PASSING',
   }[state]
 
   return (
-    <section id="self-healing-ci" ref={ref} className="py-24 relative" aria-label="Self-Healing CI">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+    <section id="self-healing-ci" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-void" aria-label="Self-Healing CI">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="text-center mb-16 space-y-4">
           <SectionLabel label="Self-Healing CI Pipeline" />
-          <h2 className="text-4xl md:text-5xl font-black" style={{ fontFamily: 'var(--font-display)' }}>
-            <GradientText gradient="healing">Continuous scraping.</GradientText> Zero downtime.
+          <h2 className="text-4xl md:text-5xl font-black font-display tracking-tight">
+            <GradientText gradient="healing">Continuous Scraping.</GradientText> Zero Downtime.
           </h2>
-          <p className="mt-4 max-w-xl mx-auto" style={{ color: '#A1A1B5' }}>
-            When a collector fails CI checks, the healing agent rewrites the extraction logic and re-runs automatically.
+          <p className="text-base text-muted max-w-xl mx-auto font-body">
+            Automated test runner catches website schema changes during CI runs, triggers LLM repair agents, and resumes pipeline operations automatically.
           </p>
         </div>
 
-        <div className="max-w-xl mx-auto">
-          {/* CI status bar */}
-          <div
-            className="flex items-center justify-between px-4 py-3 rounded-t font-mono text-sm"
-            style={{ backgroundColor: 'rgba(8,8,16,0.9)', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none' }}
-          >
-            <div className="flex items-center gap-2">
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: ciStatusColor, boxShadow: `0 0 6px ${ciStatusColor}` }}
-              />
-              <span style={{ color: ciStatusColor, fontWeight: 600 }}>CI: {ciStatusLabel}</span>
+        <div className="max-w-2xl mx-auto">
+          <div className="glass-panel overflow-hidden border-white/10 shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5 font-mono text-sm">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ backgroundColor: ciStatusColor, boxShadow: `0 0 10px ${ciStatusColor}` }}
+                />
+                <span className="font-bold tracking-wider" style={{ color: ciStatusColor }}>
+                  {ciStatusLabel}
+                </span>
+              </div>
+              <span className="text-xs text-muted">pipeline #47 · branch: main</span>
             </div>
-            <span style={{ color: '#A1A1B5', fontSize: '11px' }}>pipeline #47 · branch: main</span>
-          </div>
 
-          {/* Collector list */}
-          <div
-            className="p-4 space-y-2 font-mono text-sm"
-            style={{ backgroundColor: '#060609', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none' }}
-          >
-            {CI_COLLECTORS.map((c, i) => {
-              const colState = getCollectorStatus(i, c.status)
-              return (
-                <motion.div
-                  key={c.name}
-                  className="flex items-center justify-between gap-3 py-2 border-b"
-                  style={{ borderColor: 'rgba(255,255,255,0.05)' }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.08 }}
-                >
-                  <span style={{ color: '#A1A1B5' }}>{c.name}</span>
-                  <span style={{ color: STATUS_COLORS[colState], fontWeight: 600, minWidth: '80px', textAlign: 'right' }}>
-                    {STATUS_LABELS[colState]}
-                  </span>
-                </motion.div>
-              )
-            })}
-          </div>
+            {/* List */}
+            <div className="p-6 space-y-3 font-mono text-sm bg-[#05050A]/90">
+              {CI_COLLECTORS.map((c, i) => {
+                const colState = getCollectorStatus(i, c.status)
+                return (
+                  <div
+                    key={c.name}
+                    className="flex items-center justify-between gap-4 py-3 px-4 rounded-lg border border-white/5 bg-white/[0.02]"
+                  >
+                    <span className="text-muted">{c.name}</span>
+                    <span className="font-bold shrink-0" style={{ color: STATUS_COLORS[colState] }}>
+                      {STATUS_LABELS[colState]}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
 
-          {/* Healing message */}
-          <div
-            className="px-4 py-3"
-            style={{ backgroundColor: 'rgba(8,8,16,0.9)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '0 0 4px 4px' }}
-          >
-            {state === 'healing' && (
-              <motion.p
-                className="text-xs font-mono"
-                style={{ color: '#EC0AFF' }}
-                initial={!prefersReduced ? { opacity: 0 } : false}
-                animate={{ opacity: 1 }}
-              >
-                ⚙ Self-healing agent rewriting selector for Collector C…
-              </motion.p>
-            )}
-            {state === 'passing' && (
-              <motion.p
-                className="text-xs font-mono"
-                style={{ color: '#00E5FF' }}
-                initial={!prefersReduced ? { opacity: 0 } : false}
-                animate={{ opacity: 1 }}
-              >
-                ✓ All collectors passing · Pipeline resumed automatically
-              </motion.p>
-            )}
-            {(state === 'pending' || state === 'running' || state === 'failing') && (
-              <p className="text-xs font-mono" style={{ color: '#A1A1B5' }}>
-                {state === 'failing' ? '✗ Collector C failure detected' : 'Pipeline running…'}
-              </p>
-            )}
+            {/* Footer message */}
+            <div className="px-6 py-4 border-t border-white/10 bg-white/5 font-mono text-xs">
+              {state === 'healing' && (
+                <p className="text-magenta font-semibold animate-pulse">
+                  ⚙ Self-healing agent re-generating DOM extraction paths for Collector C…
+                </p>
+              )}
+              {state === 'passing' && (
+                <p className="text-cyan font-semibold">
+                  ✓ All collector tests restored — pipeline auto-merged and resumed.
+                </p>
+              )}
+              {(state === 'pending' || state === 'running' || state === 'failing') && (
+                <p className="text-muted">
+                  {state === 'failing' ? '✗ Schema failure caught in unit test stage' : 'Executing collector health checks…'}
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
