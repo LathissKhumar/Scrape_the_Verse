@@ -4,6 +4,7 @@ from app.config.logging import get_logger
 from app.crawler.link_discovery import LinkDiscoveryEngine
 from app.extraction.css import CSSExtractor
 from app.extraction.dedup import RecordDeduplicator
+from app.extraction.grid_cards import GridCardExtractor
 from app.extraction.llm import LLMExtractor
 from app.extraction.regex import RegexExtractor
 from app.extraction.schema import (
@@ -14,15 +15,28 @@ from app.extraction.schema import (
     RawPage,
 )
 from app.extraction.tables import TableExtractor
+from app.extraction.vision import VisionTextExtractor
 from app.extraction.xpath import XPathExtractor
 from app.llm.base import LLMClient
 from app.models.schemas import ScrapingTask
 
 logger = get_logger("EXTRACTION_ENGINE")
 
+FIELD_SYNONYM_MAP: dict[str, list[str]] = {
+    "quote": ["quotetext", "text", "quotecontent", "content", "statement", "message"],
+    "title": ["productname", "producttitle", "name", "itemname", "booktitle", "heading", "titlename"],
+    "price": ["cost", "priceamount", "pricing", "amount", "currentprice", "rate", "pricetaxexcl", "priceexcltax"],
+    "availability": ["stock", "stockstatus", "status", "instock", "inventory"],
+    "rating": ["stars", "score", "reviewrating", "customerrating"],
+    "reviews": ["reviewcount", "numreviews", "numberofreviews", "totalreviews"],
+    "specifications": ["specs", "technicalspecifications", "features", "details", "techspecs", "description"],
+    "tags": ["taglist", "keywords", "categories", "labels", "topics"],
+    "author": ["authorname", "creator", "writer", "by"],
+}
+
 
 class ExtractionEngine:
-    """Central extraction engine orchestrating deterministic and LLM strategies with fallback."""
+    """Central extraction engine orchestrating deterministic, card grid, vision, and LLM strategies."""
 
     def __init__(
         self,
@@ -31,6 +45,8 @@ class ExtractionEngine:
         xpath_extractor: Optional[XPathExtractor] = None,
         regex_extractor: Optional[RegexExtractor] = None,
         table_extractor: Optional[TableExtractor] = None,
+        grid_card_extractor: Optional[GridCardExtractor] = None,
+        vision_extractor: Optional[VisionTextExtractor] = None,
         llm_extractor: Optional[LLMExtractor] = None,
         deduplicator: Optional[RecordDeduplicator] = None,
         browser_executor: Optional[Any] = None,
@@ -40,6 +56,8 @@ class ExtractionEngine:
         self.xpath_extractor = xpath_extractor or XPathExtractor()
         self.regex_extractor = regex_extractor or RegexExtractor()
         self.table_extractor = table_extractor or TableExtractor()
+        self.grid_card_extractor = grid_card_extractor or GridCardExtractor()
+        self.vision_extractor = vision_extractor or VisionTextExtractor()
         self.deduplicator = deduplicator or RecordDeduplicator()
         self.browser_executor = browser_executor
         self.link_discovery = link_discovery or LinkDiscoveryEngine()
@@ -69,18 +87,6 @@ class ExtractionEngine:
         """Ensure all requested task fields are present in each record with intelligent synonym aliasing."""
         if not task.fields:
             return records
-
-        synonym_map = {
-            "quote": ["quotetext", "text", "quotecontent", "content", "statement", "message"],
-            "title": ["productname", "producttitle", "name", "itemname", "booktitle", "heading", "titlename"],
-            "price": ["cost", "priceamount", "pricing", "amount", "currentprice", "rate", "pricetaxexcl", "priceexcltax"],
-            "availability": ["stock", "stockstatus", "status", "instock", "inventory"],
-            "rating": ["stars", "score", "reviewrating", "customerrating"],
-            "reviews": ["reviewcount", "numreviews", "numberofreviews", "totalreviews"],
-            "specifications": ["specs", "technicalspecifications", "features", "details", "techspecs", "description"],
-            "tags": ["taglist", "keywords", "categories", "labels", "topics"],
-            "author": ["authorname", "creator", "writer", "by"],
-        }
 
         conformed: list[dict[str, Any]] = []
         for rec in records:
@@ -209,7 +215,22 @@ class ExtractionEngine:
                     else:
                         logger.info("Table extraction returned incomplete field coverage; cascading to next strategy")
 
-            # Strategy C: Regex Extraction for pattern fields
+            # Strategy C: Deterministic Repeating Grid / Card Extractor
+            if not page_records and page.html:
+                card_records = self.grid_card_extractor.extract(page.html, target_fields=task.fields)
+                if card_records:
+                    has_card_coverage = all(
+                        any(r.get(f) is not None for r in card_records)
+                        for f in task.fields
+                    )
+                    if has_card_coverage or not self.llm_extractor:
+                        logger.info(f"Deterministic GridCard extractor extracted {len(card_records)} card record(s)")
+                        page_records = card_records
+                        page_strategy = "grid_card"
+                    else:
+                        logger.info("GridCard extraction returned incomplete coverage; cascading to next strategy")
+
+            # Strategy D: Regex Extraction for pattern fields
             if not page_records:
                 regex_records = self.regex_extractor.extract(page, effective_schema)
                 if regex_records:
@@ -224,7 +245,7 @@ class ExtractionEngine:
                     else:
                         logger.info("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
 
-            # Strategy D: LLM Extraction Fallback with Qwen3:8b
+            # Strategy E: LLM Extraction Fallback with Qwen3:8b
             if not page_records and self.llm_extractor:
                 logger.info("Cascading to LLM extraction strategy (Qwen3:8b)")
                 llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
