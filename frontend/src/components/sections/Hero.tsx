@@ -9,7 +9,6 @@ const GLYPHS = '!<>-_\\/[]{}=+*^?#01~%'
 
 export function Hero() {
   const [headingText, setHeadingText] = useState('SCRAPE-VERSE')
-  const [isScrambled, setIsScrambled] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { scrollYProgress } = useScroll()
 
@@ -39,7 +38,6 @@ export function Hero() {
           animId = requestAnimationFrame(tick)
         } else {
           setHeadingText(target)
-          setIsScrambled(true)
         }
       }
       tick()

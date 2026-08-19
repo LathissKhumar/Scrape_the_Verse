@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
-import { Cpu, Zap, Activity } from 'lucide-react'
+import { Cpu, Activity } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { CollectorCard } from '@/components/ui/CollectorCard'

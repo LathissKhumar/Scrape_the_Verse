@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SCRAPE-VERSE — Self-Healing Web Intelligence Platform
 
-## Getting Started
+An enterprise-grade, self-healing web intelligence platform designed for discovering, researching, and converting business opportunities across the web.
 
-First, run the development server:
+## Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Scrape_The_Verse/
+├── frontend/                     # Dedicated Next.js frontend application
+│   ├── public/                   # Static assets & images
+│   │   ├── images/               # Cold twilight tech workspace & background assets
+│   │   └── ...
+│   ├── src/
+│   │   ├── app/                  # Next.js App Router (page, layout, globals.css)
+│   │   ├── components/
+│   │   │   ├── providers/        # Smooth scroll (Lenis + GSAP) providers & index
+│   │   │   ├── sections/         # Landing page section modules & index
+│   │   │   └── ui/               # Reusable UI primitives, cards, and cursor & index
+│   │   ├── hooks/                # Custom animation & interactive state hooks & index
+│   │   └── lib/                  # Data models, types, and utilities & index
+│   ├── eslint.config.mjs
+│   ├── next.config.ts
+│   ├── package.json
+│   ├── postcss.config.mjs
+│   └── tsconfig.json
+├── package.json                  # Root workspace orchestrator
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Quick Start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can run commands directly from the root repository directory (using npm workspaces) or from inside the `frontend/` folder.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### From Root:
+```bash
+# Start development server
+npm run dev
 
-## Learn More
+# Build production bundle
+npm run build
 
-To learn more about Next.js, take a look at the following resources:
+# Start production server
+npm run start
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Lint codebase
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### From `frontend/`:
+```bash
+cd frontend
+npm run dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000) with your browser to explore the platform.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

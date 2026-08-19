@@ -1,7 +1,7 @@
 'use client'
 import { motion, useInView } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { Radio, Bell, ArrowRight, Activity, Zap, ShieldCheck } from 'lucide-react'
+import { Radio, Bell, ArrowRight } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { MONITORING_PROSPECTS } from '@/lib/mock-data'

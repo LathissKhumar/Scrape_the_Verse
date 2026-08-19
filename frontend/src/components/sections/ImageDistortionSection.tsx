@@ -3,7 +3,6 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { GradientText } from '@/components/ui/GradientText'
-import { Eye, ShieldCheck, Sparkles, Layers } from 'lucide-react'
 
 export function ImageDistortionSection() {
   const sectionRef = useRef<HTMLDivElement>(null)

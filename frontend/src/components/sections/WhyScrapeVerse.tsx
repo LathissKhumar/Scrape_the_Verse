@@ -1,9 +1,7 @@
 'use client'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { useRef } from 'react'
 import { Zap, ShieldCheck, BrainCircuit, Rocket, Sparkles } from 'lucide-react'
-import { GradientText } from '@/components/ui/GradientText'
-import { SectionLabel } from '@/components/ui/SectionLabel'
 
 const MANIFESTO_WORDS =
   'We believe web intelligence should feel alive. Not just brittle extractors that break overnight — but resilient, self-healing, unforgettably fast autonomous pipelines. Every site Scrape-Verse monitors is parsed, understood, and transformed into continuous business growth.'.split(
@@ -111,7 +109,7 @@ function KineticWord({
 }: {
   word: string
   index: number
-  progress: any
+  progress: MotionValue<number>
   start: number
   end: number
 }) {

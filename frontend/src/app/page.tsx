@@ -1,25 +1,26 @@
-'use client'
-import { Navbar } from '@/components/sections/Navbar'
-import { Hero } from '@/components/sections/Hero'
-import { PinnedHorizontalPillars } from '@/components/sections/PinnedHorizontalPillars'
-import { WebDatabase } from '@/components/sections/WebDatabase'
-import { Pipeline } from '@/components/sections/Pipeline'
-import { LeadDiscovery } from '@/components/sections/LeadDiscovery'
-import { ParallelResearch } from '@/components/sections/ParallelResearch'
-import { ImageDistortionSection } from '@/components/sections/ImageDistortionSection'
-import { StaggeredGridReveal } from '@/components/sections/StaggeredGridReveal'
-import { SelfHealingDemo } from '@/components/sections/SelfHealingDemo'
-import { SelfHealingCI } from '@/components/sections/SelfHealingCI'
-import { StructuredData } from '@/components/sections/StructuredData'
-import { SalesAutomation } from '@/components/sections/SalesAutomation'
-import { Monitoring } from '@/components/sections/Monitoring'
-import { ScraperControlCenter } from '@/components/sections/ScraperControlCenter'
-import { Architecture } from '@/components/sections/Architecture'
-import { WhyScrapeVerse } from '@/components/sections/WhyScrapeVerse'
-import { FinalCTA } from '@/components/sections/FinalCTA'
-import { Footer } from '@/components/sections/Footer'
-import { CustomCursor } from '@/components/ui/CustomCursor'
-import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider'
+import {
+  Navbar,
+  Hero,
+  PinnedHorizontalPillars,
+  WebDatabase,
+  Pipeline,
+  LeadDiscovery,
+  ParallelResearch,
+  ImageDistortionSection,
+  StaggeredGridReveal,
+  SelfHealingDemo,
+  SelfHealingCI,
+  StructuredData,
+  SalesAutomation,
+  Monitoring,
+  ScraperControlCenter,
+  Architecture,
+  WhyScrapeVerse,
+  FinalCTA,
+  Footer,
+} from '@/components/sections'
+import { CustomCursor } from '@/components/ui'
+import { SmoothScrollProvider } from '@/components/providers'
 
 export default function Home() {
   return (

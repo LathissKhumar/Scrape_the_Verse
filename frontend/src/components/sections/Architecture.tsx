@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
-import { Layers, Database, ShieldCheck, BrainCircuit, Rocket } from 'lucide-react'
+import { Database, ShieldCheck, BrainCircuit, Rocket } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 
