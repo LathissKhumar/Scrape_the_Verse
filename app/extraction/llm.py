@@ -96,7 +96,7 @@ class LLMExtractor:
         if len(chunks) > 1:
             query_str = f"{task.objective} {' '.join(task.fields)}"
             ranked = self.semantic_filter.rank_and_filter(chunks, query=query_str, top_k=3)
-            selected_chunks = [c for c, _ in ranked]
+            selected_chunks = [c for c, _ in ranked] if ranked else chunks[:3]
         else:
             selected_chunks = chunks
 
@@ -135,7 +135,7 @@ class LLMExtractor:
         if len(chunks) > 1:
             query_str = f"{task.objective} {' '.join(task.fields)}"
             ranked = self.semantic_filter.rank_and_filter(chunks, query=query_str, top_k=3)
-            selected_chunks = [c for c, _ in ranked]
+            selected_chunks = [c for c, _ in ranked] if ranked else chunks[:3]
         else:
             selected_chunks = chunks
 

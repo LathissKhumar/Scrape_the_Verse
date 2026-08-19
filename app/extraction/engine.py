@@ -66,16 +66,41 @@ class ExtractionEngine:
         records: list[dict[str, Any]],
         task: ScrapingTask,
     ) -> list[dict[str, Any]]:
-        """Ensure all requested task fields are present in each record, filling missing with None."""
+        """Ensure all requested task fields are present in each record with intelligent synonym aliasing."""
         if not task.fields:
             return records
+
+        synonym_map = {
+            "quote": ["quotetext", "text", "quotecontent", "content", "statement", "message"],
+            "title": ["productname", "producttitle", "name", "itemname", "booktitle", "heading", "titlename"],
+            "price": ["cost", "priceamount", "pricing", "amount", "currentprice", "rate", "pricetaxexcl", "priceexcltax"],
+            "availability": ["stock", "stockstatus", "status", "instock", "inventory"],
+            "rating": ["stars", "score", "reviewrating", "customerrating"],
+            "reviews": ["reviewcount", "numreviews", "numberofreviews", "totalreviews"],
+            "specifications": ["specs", "technicalspecifications", "features", "details", "techspecs", "description"],
+            "tags": ["taglist", "keywords", "categories", "labels", "topics"],
+            "author": ["authorname", "creator", "writer", "by"],
+        }
 
         conformed: list[dict[str, Any]] = []
         for rec in records:
             conformed_rec: dict[str, Any] = {}
+            rec_clean_map = {k.lower().replace("_", "").replace(" ", ""): v for k, v in rec.items()}
+
             for field in task.fields:
-                conformed_rec[field] = rec.get(field)
-            # Include any other fields already present if structurally useful
+                val = rec.get(field)
+                if val is None:
+                    norm_field = field.lower().replace("_", "").replace(" ", "")
+                    val = rec_clean_map.get(norm_field)
+
+                if val is None:
+                    for syn in synonym_map.get(field.lower(), []):
+                        if syn in rec_clean_map:
+                            val = rec_clean_map[syn]
+                            break
+
+                conformed_rec[field] = val
+
             for k, v in rec.items():
                 if k not in conformed_rec:
                     conformed_rec[k] = v
