@@ -1,3 +1,4 @@
+import asyncio
 import json
 from typing import Any, Optional
 
@@ -9,7 +10,7 @@ from app.llm.base import LLMClient
 from app.llm.ollama_client import clean_markdown_fences
 from app.models.schemas import ScrapingTask
 
-logger = get_logger("EXTRACTION_LLM")
+logger = get_logger("LLM_EXTRACTOR")
 
 LLM_EXTRACTION_SYSTEM_PROMPT = """You are an expert data extraction assistant.
 Extract structured records from the provided content strictly conforming to the requested schema.
@@ -100,9 +101,7 @@ class LLMExtractor:
         else:
             selected_chunks = chunks
 
-        all_records: list[dict[str, Any]] = []
-
-        for chunk_text in selected_chunks:
+        async def _extract_chunk(chunk_text: str) -> list[dict[str, Any]]:
             prompt = self._build_prompt(chunk_text, task, schema)
             try:
                 raw_response = await self.llm_client.invoke(
@@ -110,10 +109,15 @@ class LLMExtractor:
                     system=LLM_EXTRACTION_SYSTEM_PROMPT,
                     json_mode=True,
                 )
-                records = self._parse_llm_records(raw_response)
-                all_records.extend(records)
+                return self._parse_llm_records(raw_response)
             except Exception as e:
                 logger.error(f"Error during LLM chunk extraction: {e}")
+                return []
+
+        chunk_results = await asyncio.gather(*[_extract_chunk(c) for c in selected_chunks])
+        all_records: list[dict[str, Any]] = []
+        for records in chunk_results:
+            all_records.extend(records)
 
         return all_records
 
