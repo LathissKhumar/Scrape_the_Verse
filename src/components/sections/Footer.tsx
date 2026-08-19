@@ -1,12 +1,11 @@
 'use client'
 import { Layers } from 'lucide-react'
-import { GradientText } from '@/components/ui/GradientText'
 
 export function Footer() {
   return (
-    <footer className="py-16 relative bg-void border-t border-white/10 font-body">
+    <footer className="py-16 relative bg-transparent border-t border-white/10 font-body">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
-        {/* Brand */}
+        {/* Brand in Solid White */}
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-md shadow-violet-accent/20"
@@ -16,8 +15,8 @@ export function Footer() {
           >
             <Layers className="w-4 h-4 text-white" />
           </div>
-          <span className="font-bold text-xl tracking-tight font-display text-text-primary">
-            <GradientText>SCRAPE-VERSE</GradientText>
+          <span className="font-bold text-xl tracking-tight font-display text-white">
+            SCRAPE-VERSE
           </span>
         </div>
 

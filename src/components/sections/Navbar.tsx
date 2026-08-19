@@ -1,7 +1,6 @@
 'use client'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Layers, ArrowRight } from 'lucide-react'
-import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
 
 const NAV_LINKS = [
@@ -30,7 +29,7 @@ export function Navbar() {
         {/* Top Specular Glass Refraction Line */}
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />
 
-        {/* Brand Logo */}
+        {/* Brand Logo in Solid Crisp White */}
         <a href="#" className="flex items-center gap-3 group shrink-0" id="nav-logo">
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg shadow-violet-accent/25 transition-transform group-hover:scale-105"
@@ -40,12 +39,12 @@ export function Navbar() {
           >
             <Layers className="w-5 h-5 text-white" />
           </div>
-          <span className="font-extrabold text-xl tracking-tight font-display text-text-primary">
-            <GradientText>SCRAPE-VERSE</GradientText>
+          <span className="font-extrabold text-xl tracking-tight font-display text-white">
+            SCRAPE-VERSE
           </span>
         </a>
 
-        {/* Navigation Links with Bold Weight */}
+        {/* Navigation Links */}
         <ul className="hidden md:flex items-center gap-9" role="list">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
