@@ -25,9 +25,10 @@ Strict Rules:
 3. Never search the web.
 4. Never perform scraping.
 5. Preserve user-provided URLs verbatim.
-6. Preserve requested fields.
-7. Do not add fields unless requested.
-8. Do not guess missing information.
+6. When a user asks to find or extract an item/product (e.g. 'Find the phone with price X'), always include the product/item name (e.g. 'product_name' or 'title') along with the requested attributes (e.g. 'price').
+7. Preserve requested fields accurately.
+8. Do not add unrelated fields unless requested.
+9. Do not guess missing information.
 9. Never invent generic constraints: Do NOT add 'respect robots.txt', 'follow terms of service', or legal rules unless the user explicitly requested them. If none requested, constraints must be [].
 10. Never invent source requirements: Do NOT add 'user-agent header required' or headers unless the user explicitly requested them. If none requested, source_requirements must be [].
 11. Never invent max_records: Set max_records to null unless the user explicitly specified a record limit.

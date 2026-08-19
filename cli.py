@@ -9,6 +9,18 @@ from typing import Optional
 
 warnings.filterwarnings("ignore")
 
+
+# Silence known Windows Proactor pipe destruction artifact on process exit
+def _silence_unraisablehook(unraisable):
+    if unraisable.exc_type in (ValueError, ResourceWarning) and "closed pipe" in str(unraisable.exc_value or ""):
+        return
+    if unraisable.exc_type is RuntimeError and "Event loop is closed" in str(unraisable.exc_value or ""):
+        return
+    sys.__unraisablehook__(unraisable)
+
+
+sys.unraisablehook = _silence_unraisablehook
+
 from app.graph.state import ScrapingGraphState
 from app.graph.workflow import create_scraping_workflow
 from app.llm.ollama_client import OllamaClient
