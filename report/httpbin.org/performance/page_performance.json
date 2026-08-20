@@ -1,8 +1,0 @@
-[
-  {
-    "url": "https://httpbin.org/html",
-    "response_time_ms": 3864.68,
-    "render_time_ms": null,
-    "status_code": 200
-  }
-]
