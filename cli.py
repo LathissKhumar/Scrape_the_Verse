@@ -31,9 +31,11 @@ def _silence_unraisablehook(unraisable):
 
 sys.unraisablehook = _silence_unraisablehook
 
+from app.agents.gmaps import GoogleMapsAgent
 from app.brightdata.client import BrightDataClient
 from app.brightdata.pipeline import BrightDataLeadPipeline
 from app.brightdata.service import BrightDataService
+from app.gmaps.service import GoogleMapsService
 from app.graph.state import ScrapingGraphState
 from app.graph.workflow import create_scraping_workflow
 from app.llm.ollama_client import OllamaClient
@@ -145,6 +147,68 @@ async def execute_lead_gen(
 
     except Exception as e:
         print(f"\n{Fore.RED}[ERROR] Lead generation failed: {e}{Style.RESET_ALL}")
+
+
+async def execute_gmaps_leads(
+    query: str,
+    location: Optional[str] = None,
+    output_path: Optional[str] = None,
+    output_format: Optional[str] = None,
+    verbose: bool = False,
+):
+    """Execute Google Maps local lead discovery."""
+    setup_logging(verbose=verbose, is_cli=True)
+    settings = get_settings()
+    service = GoogleMapsService(settings=settings)
+    agent = GoogleMapsAgent(service=service)
+
+    cat, loc = agent.parse_query_and_location(query)
+    eff_loc = location or loc
+
+    print("\n" + "=" * 65)
+    print(f"  {Style.BRIGHT}GOOGLE MAPS LOCAL LEAD DISCOVERY{Style.RESET_ALL}")
+    print("=" * 65)
+    print(f"{Style.BRIGHT}Category:{Style.RESET_ALL}           {cat}")
+    print(f"{Style.BRIGHT}Location / Zone:{Style.RESET_ALL}    {eff_loc or 'Local Detection'}")
+    print(f"{Style.BRIGHT}Collector ID:{Style.RESET_ALL}       {service.pipeline.collector_id}")
+    print("-" * 65)
+    print(f"{Fore.LIGHTCYAN_EX}[GMAPS]      {Style.RESET_ALL}Harvesting business listings & public phone numbers...")
+
+    try:
+        leads = await service.get_local_leads(query=cat, location=eff_loc)
+
+        print("\n" + "=" * 65)
+        print(f"  {Style.BRIGHT}GOOGLE MAPS RESULTS ({len(leads)} Leads Found){Style.RESET_ALL}")
+        print("=" * 65)
+
+        if leads:
+            for i, lead in enumerate(leads, 1):
+                print(f"\n{Fore.CYAN}[Place #{i}] {Style.BRIGHT}{lead.get('business_name', 'Unknown')}{Style.RESET_ALL}")
+                if lead.get("phone_number"):
+                    print(f"  {Style.BRIGHT}Phone Number:{Style.RESET_ALL} {Fore.GREEN}{lead.get('phone_number')}{Style.RESET_ALL}")
+                if lead.get("rating"):
+                    reviews = f"({lead.get('reviews_count')} reviews)" if lead.get("reviews_count") else ""
+                    print(f"  {Style.BRIGHT}Rating:{Style.RESET_ALL}       {lead.get('rating')} ⭐ {reviews}")
+                if lead.get("address"):
+                    print(f"  {Style.BRIGHT}Address:{Style.RESET_ALL}      {lead.get('address')}")
+                if lead.get("category"):
+                    print(f"  {Style.BRIGHT}Category:{Style.RESET_ALL}     {lead.get('category')}")
+                if lead.get("website"):
+                    print(f"  {Style.BRIGHT}Website:{Style.RESET_ALL}      {lead.get('website')}")
+                if lead.get("maps_url"):
+                    print(f"  {Style.BRIGHT}Maps Link:{Style.RESET_ALL}    {lead.get('maps_url')}")
+
+            if output_path:
+                fmt = (output_format or "json").lower()
+                content = DataExporter.to_csv(leads) if fmt == "csv" else DataExporter.to_json(leads)
+                with open(output_path, "w", encoding="utf-8") as f:
+                    f.write(content)
+                print(f"\n{Fore.GREEN}[EXPORT] Saved {len(leads)} Google Maps leads to {output_path} ({fmt.upper()}){Style.RESET_ALL}")
+        else:
+            print(f"\n{Fore.YELLOW}No Google Maps listings found for '{query}'.{Style.RESET_ALL}")
+
+    except Exception as e:
+        print(f"\n{Fore.RED}[ERROR] Google Maps extraction failed: {e}{Style.RESET_ALL}")
 
 
 async def execute_query(
@@ -313,6 +377,11 @@ def main():
         help="Run 2-Tier B2B Lead Generation (Discovery + Company Profile Enrichment)",
     )
     parser.add_argument(
+        "--maps",
+        action="store_true",
+        help="Run Google Maps Local Lead Discovery (Harvests business name, phone, address, ratings)",
+    )
+    parser.add_argument(
         "--check-brightdata",
         action="store_true",
         help="Inspect and verify Bright Data collector configuration and credentials",
@@ -350,6 +419,18 @@ def main():
                 clean = piece.strip()
                 if clean:
                     target_urls.append(clean)
+
+    if args.maps:
+        query_text = args.query or "plumbers in Chennai"
+        asyncio.run(
+            execute_gmaps_leads(
+                query=query_text,
+                output_path=args.output,
+                output_format=args.format,
+                verbose=args.verbose,
+            )
+        )
+        return
 
     if args.leads:
         query_text = args.query or "solar panels"

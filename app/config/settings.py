@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     BRIGHTDATA_COLLECTOR_ID: Optional[str] = None
     BRIGHTDATA_DISCOVERY_COLLECTOR_ID: Optional[str] = None
     BRIGHTDATA_COMPANY_COLLECTOR_ID: Optional[str] = None
+    BRIGHTDATA_GMAPS_COLLECTOR_ID: Optional[str] = None
 
     # Crawler & Browser Automation Settings
     SCRAPER_PROVIDER: str = "auto"  # "auto", "browser", "local", "brightdata"
@@ -42,9 +43,10 @@ class Settings(BaseSettings):
     HIGH_CONFIDENCE_THRESHOLD: float = 0.85
     MEDIUM_CONFIDENCE_THRESHOLD: float = 0.65
 
-    # Application Settings
+    # Application & Security Settings
     APP_ENV: str = "development"
     LOG_LEVEL: str = "INFO"
+    API_SECRET_KEY: Optional[str] = None
 
 
 @lru_cache()

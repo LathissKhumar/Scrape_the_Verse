@@ -23,6 +23,11 @@ class ScraperAgent(BaseAgent):
         self.client = brightdata_client or BrightDataClient()
         self.browser_executor = browser_executor or BrowserExecutor()
 
+    @property
+    def is_brightdata(self) -> bool:
+        """Return True if Bright Data client is enabled and configured."""
+        return bool(self.client and getattr(self.client, "is_configured", False))
+
     async def _execute_browser_scrape(self, urls: list[str], max_concurrency: Optional[int] = None) -> list[dict[str, Any]]:
         """Execute bounded parallel browser scraping using Playwright Chromium with SSRF and block detection."""
         settings = get_settings()

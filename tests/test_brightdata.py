@@ -20,7 +20,7 @@ def test_brightdata_is_configured_flag():
     disabled_even_with_keys = BrightDataClient(Settings(BRIGHTDATA=False, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
     assert disabled_even_with_keys.is_configured is False
 
-    partial_key = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID=None))
+    partial_key = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID=None, BRIGHTDATA_DISCOVERY_COLLECTOR_ID=None))
     assert partial_key.is_configured is False
 
     configured = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID="col_123"))

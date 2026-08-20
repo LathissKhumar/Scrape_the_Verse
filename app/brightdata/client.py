@@ -2,6 +2,7 @@ import asyncio
 import json
 import os
 import shutil
+import sys
 import time
 from typing import Any, Optional
 import httpx
@@ -282,18 +283,27 @@ class BrightDataClient:
         if api_key:
             env["BRIGHTDATA_API_KEY"] = api_key
 
-        cmd = ["npx", "-p", "@brightdata/cli", "brightdata", "scraper", "run", collector_id, url, "--json"]
+        npx_bin = shutil.which("npx") or shutil.which("npx.cmd") or "npx"
+        cmd = [npx_bin, "-p", "@brightdata/cli", "brightdata", "scraper", "run", collector_id, url, "--json"]
 
         logger.info(f"Executing CLI scraper run: collector={collector_id} url={url}")
 
         try:
-            # On Windows, run via cmd/powershell or create_subprocess_exec
-            proc = await asyncio.create_subprocess_exec(
-                *cmd,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-                env=env,
-            )
+            if sys.platform == "win32":
+                cmd_str = f'npx -p @brightdata/cli brightdata scraper run {collector_id} "{url}" --json'
+                proc = await asyncio.create_subprocess_shell(
+                    cmd_str,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                    env=env,
+                )
+            else:
+                proc = await asyncio.create_subprocess_exec(
+                    *cmd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                    env=env,
+                )
             stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout_seconds)
         except asyncio.TimeoutError as e:
             logger.error(f"CLI scrape timed out after {timeout_seconds}s for {url}")

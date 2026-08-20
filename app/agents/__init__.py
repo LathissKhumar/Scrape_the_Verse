@@ -6,6 +6,7 @@ from app.agents.validation import ValidationAgent
 from app.agents.diagnosis import DiagnosisAgent
 from app.agents.healing import HealingAgent
 from app.agents.navigation import NavigationAgent
+from app.agents.gmaps import GoogleMapsAgent
 
 __all__ = [
     "BaseAgent",
@@ -17,4 +18,5 @@ __all__ = [
     "ValidationAgent",
     "DiagnosisAgent",
     "HealingAgent",
+    "GoogleMapsAgent",
 ]
