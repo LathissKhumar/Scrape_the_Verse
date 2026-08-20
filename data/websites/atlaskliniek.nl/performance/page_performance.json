@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "response_time_ms": 5156.19,
+    "render_time_ms": 6842.1,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "response_time_ms": 2316.72,
+    "render_time_ms": 4200.0,
+    "status_code": 200
+  }
+]

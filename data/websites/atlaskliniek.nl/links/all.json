@@ -1,0 +1,12 @@
+[
+  {
+    "id": "lnk_7bacd35e0b2e",
+    "source_url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "target_url": "https://www.atlaskliniek.nl/tarieven/",
+    "anchor_text": "Tarieven",
+    "internal": true,
+    "status_code": 200,
+    "target_domain": "atlaskliniek.nl",
+    "placement": "header"
+  }
+]

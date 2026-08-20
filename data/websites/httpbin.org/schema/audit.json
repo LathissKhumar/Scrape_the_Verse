@@ -1,0 +1,25 @@
+{
+  "category": "Structured Data",
+  "score": 75,
+  "status": "warning",
+  "summary": "Schema audit identified 0 schema types across 0 pages. Score: 75/100.",
+  "findings": [
+    {
+      "category": "Schema",
+      "severity": "medium",
+      "title": "No Structured Data (Schema.org) Detected",
+      "description": "None of the crawled pages contain JSON-LD or Microdata structured data.",
+      "impact": "Misses opportunities for Google Rich Snippets (Star Ratings, Breadcrumbs, FAQs, Sitename).",
+      "recommendation": "Implement JSON-LD structured data (e.g. Organization, WebSite, BreadcrumbList) in the `<head>`.",
+      "affected_urls": [],
+      "evidence": {
+        "schema_coverage_percent": 0
+      }
+    }
+  ],
+  "metrics": {
+    "pages_with_schema": 0,
+    "schema_coverage_percent": 0.0,
+    "schema_types_found": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "total_pages": 1,
+  "pages": [
+    {
+      "page_id": "page_8badbcb95530",
+      "url": "https://httpbin.org/html",
+      "status_code": 503,
+      "depth": 0,
+      "title": "503 Service Temporarily Unavailable",
+      "word_count": 8,
+      "file": "pages/html_b95530.json"
+    }
+  ]
+}

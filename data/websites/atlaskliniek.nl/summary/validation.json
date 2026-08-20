@@ -1,0 +1,16 @@
+{
+  "valid": true,
+  "domain": "atlaskliniek.nl",
+  "raw_pages_count": 2,
+  "normalized_pages_count": 2,
+  "raw_issues_count": 3,
+  "normalized_issues_count": 3,
+  "duplicate_issues_deduplicated": 0,
+  "raw_links_count": 1,
+  "normalized_links_count": 1,
+  "duplicate_links_deduplicated": 0,
+  "unique_images_cataloged": 2,
+  "data_loss": false,
+  "broken_page_references": 0,
+  "validation_timestamp": "2026-08-20T13:22:38.758198+00:00"
+}

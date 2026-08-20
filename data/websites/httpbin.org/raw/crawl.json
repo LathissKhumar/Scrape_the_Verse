@@ -1,0 +1,554 @@
+{
+  "url": "https://httpbin.org/html",
+  "crawl_config": {
+    "max_depth": 1,
+    "max_pages": 1,
+    "javascript": false,
+    "pagespeed": false,
+    "google_api_key": null,
+    "respect_robots": true,
+    "discover_sitemaps": true
+  },
+  "job_id": "442c97d1-e4c1-418a-9abc-a83353aa6eab",
+  "status": "completed",
+  "raw_crawl_data": {
+    "crawl_id": "442c97d1-e4c1-418a-9abc-a83353aa6eab",
+    "base_url": "https://httpbin.org",
+    "base_domain": "httpbin.org",
+    "status": "completed",
+    "summary": {
+      "total_pages_crawled": 1,
+      "total_pages_discovered": 1,
+      "total_links": 0,
+      "total_issues": 10,
+      "duration_seconds": 4.21,
+      "started_at": "2026-08-20T13:22:00.659850+00:00",
+      "completed_at": "2026-08-20T13:22:04.872015+00:00"
+    },
+    "pages": [
+      {
+        "url": "https://httpbin.org/html",
+        "status_code": 503,
+        "content_type": "text/html",
+        "depth": 0,
+        "response_time_ms": 4012.57,
+        "render_time_ms": null,
+        "title": "503 Service Temporarily Unavailable",
+        "meta_description": "",
+        "h1": "503 Service Temporarily Unavailable",
+        "h2": [],
+        "h3": [],
+        "word_count": 8,
+        "canonical": "",
+        "robots": "",
+        "lang": "",
+        "charset": "",
+        "viewport": "",
+        "og_tags": {},
+        "twitter_tags": {},
+        "json_ld": [],
+        "analytics": {
+          "google_analytics": false,
+          "gtag": false,
+          "ga4_id": "",
+          "gtm_id": "",
+          "facebook_pixel": false,
+          "hotjar": false,
+          "mixpanel": false
+        },
+        "images": [],
+        "redirects": [],
+        "linked_from": []
+      }
+    ],
+    "links": [],
+    "issues": [
+      {
+        "type": "missing_meta_description",
+        "category": "SEO",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Meta Description",
+        "details": "Page has no meta description",
+        "evidence": {
+          "meta_description": "",
+          "length": 0
+        }
+      },
+      {
+        "type": "thin_content",
+        "category": "Content",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Thin Content",
+        "details": "Page has only 8 words (recommended: ≥300)",
+        "evidence": {
+          "word_count": 8
+        }
+      },
+      {
+        "type": "503_server_error",
+        "category": "Technical",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "503 Server Error",
+        "details": "Service Unavailable",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "canonical_issue",
+        "category": "Technical",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Canonical URL",
+        "details": "Page has no canonical URL specified",
+        "evidence": {
+          "canonical_url": "",
+          "url": "https://httpbin.org/html"
+        }
+      },
+      {
+        "type": "missing_viewport",
+        "category": "Mobile",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Viewport Meta Tag",
+        "details": "Page is not mobile-optimized",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "missing_language_attribute",
+        "category": "Accessibility",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Language Attribute",
+        "details": "HTML tag has no lang attribute",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "missing_opengraph_tags",
+        "category": "Social",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing OpenGraph Tags",
+        "details": "Page has no OpenGraph tags for social sharing",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "missing_twitter_card_tags",
+        "category": "Social",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Twitter Card Tags",
+        "details": "Page has no Twitter Card tags",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "no_structured_data",
+        "category": "Structured Data",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "No Structured Data",
+        "details": "Page has no JSON-LD or Schema.org markup",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "slow_response_time",
+        "category": "Performance",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "Slow Response Time",
+        "details": "Page took 4012.57ms to respond (recommended: <3000ms)",
+        "evidence": {
+          "response_time_ms": 4012.57,
+          "render_time_ms": null
+        }
+      }
+    ],
+    "sitemaps": {
+      "discovered": [],
+      "urls_found": 0
+    },
+    "pagespeed": []
+  },
+  "pages": [
+    {
+      "url": "https://httpbin.org/html",
+      "status_code": 503,
+      "content_type": "text/html",
+      "depth": 0,
+      "response_time_ms": 4012.57,
+      "render_time_ms": null,
+      "title": "503 Service Temporarily Unavailable",
+      "meta_description": "",
+      "h1": "503 Service Temporarily Unavailable",
+      "h2": [],
+      "h3": [],
+      "word_count": 8,
+      "canonical": "",
+      "robots": "",
+      "lang": "",
+      "charset": "",
+      "viewport": "",
+      "og_tags": {},
+      "twitter_tags": {},
+      "json_ld": [],
+      "analytics": {
+        "google_analytics": false,
+        "gtag": false,
+        "ga4_id": "",
+        "gtm_id": "",
+        "facebook_pixel": false,
+        "hotjar": false,
+        "mixpanel": false
+      },
+      "images": [],
+      "redirects": [],
+      "linked_from": []
+    }
+  ],
+  "links": [],
+  "issues": [
+    {
+      "type": "missing_meta_description",
+      "category": "SEO",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "issue": "Missing Meta Description",
+      "details": "Page has no meta description",
+      "evidence": {
+        "meta_description": "",
+        "length": 0
+      }
+    },
+    {
+      "type": "thin_content",
+      "category": "Content",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "issue": "Thin Content",
+      "details": "Page has only 8 words (recommended: ≥300)",
+      "evidence": {
+        "word_count": 8
+      }
+    },
+    {
+      "type": "503_server_error",
+      "category": "Technical",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "issue": "503 Server Error",
+      "details": "Service Unavailable",
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "type": "canonical_issue",
+      "category": "Technical",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "issue": "Missing Canonical URL",
+      "details": "Page has no canonical URL specified",
+      "evidence": {
+        "canonical_url": "",
+        "url": "https://httpbin.org/html"
+      }
+    },
+    {
+      "type": "missing_viewport",
+      "category": "Mobile",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "issue": "Missing Viewport Meta Tag",
+      "details": "Page is not mobile-optimized",
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "type": "missing_language_attribute",
+      "category": "Accessibility",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "issue": "Missing Language Attribute",
+      "details": "HTML tag has no lang attribute",
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "type": "missing_opengraph_tags",
+      "category": "Social",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "issue": "Missing OpenGraph Tags",
+      "details": "Page has no OpenGraph tags for social sharing",
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "type": "missing_twitter_card_tags",
+      "category": "Social",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "issue": "Missing Twitter Card Tags",
+      "details": "Page has no Twitter Card tags",
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "type": "no_structured_data",
+      "category": "Structured Data",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "issue": "No Structured Data",
+      "details": "Page has no JSON-LD or Schema.org markup",
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "type": "slow_response_time",
+      "category": "Performance",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "issue": "Slow Response Time",
+      "details": "Page took 4012.57ms to respond (recommended: <3000ms)",
+      "evidence": {
+        "response_time_ms": 4012.57,
+        "render_time_ms": null
+      }
+    }
+  ],
+  "sitemaps": {
+    "discovered": [],
+    "urls_found": 0
+  },
+  "pagespeed": [],
+  "crawl_summary": {
+    "total_pages_crawled": 1,
+    "total_pages_discovered": 1,
+    "total_links": 0,
+    "total_issues": 10,
+    "duration_seconds": 4.21,
+    "started_at": "2026-08-20T13:22:00.659850+00:00",
+    "completed_at": "2026-08-20T13:22:04.872015+00:00"
+  },
+  "technical_audit": {
+    "category": "Technical SEO",
+    "score": 75,
+    "status": "warning",
+    "summary": "Technical audit analyzed 1 pages and 0 links. Identified 2 key findings with score 75/100.",
+    "findings": [
+      {
+        "category": "Technical",
+        "severity": "critical",
+        "title": "5xx Server Errors Detected",
+        "description": "Found 1 page(s) returning 5xx server errors.",
+        "impact": "Search engine crawlers cannot index these pages; severe loss of crawl budget and user trust.",
+        "recommendation": "Investigate web server error logs, database connections, and application crashes immediately.",
+        "affected_urls": [
+          "https://httpbin.org/html"
+        ],
+        "evidence": {
+          "server_error_count": 1
+        }
+      },
+      {
+        "category": "Technical",
+        "severity": "medium",
+        "title": "No XML Sitemap Discovered",
+        "description": "Crawler did not discover a standard sitemap at /sitemap.xml or referenced in robots.txt.",
+        "impact": "Search engines may take longer to discover and index new or updated URLs.",
+        "recommendation": "Generate an XML sitemap, place it in the root directory, and specify its URL in robots.txt.",
+        "affected_urls": [],
+        "evidence": {
+          "sitemaps_found": 0
+        }
+      }
+    ],
+    "metrics": {
+      "total_pages": 1,
+      "server_errors": 1,
+      "client_errors": 0,
+      "missing_canonicals": 0,
+      "deep_pages": 0,
+      "sitemaps_discovered": 0
+    }
+  },
+  "onpage_audit": {
+    "category": "On-Page SEO",
+    "score": 100,
+    "status": "passed",
+    "summary": "On-page audit inspected 0 indexable pages. Discovered 0 issues with score 100/100.",
+    "findings": [],
+    "metrics": {
+      "indexable_pages": 0,
+      "missing_titles": 0,
+      "missing_meta_descriptions": 0,
+      "missing_h1": 0,
+      "images_missing_alt": 0
+    }
+  },
+  "content_audit": {
+    "category": "Content Quality",
+    "score": 100,
+    "status": "passed",
+    "summary": "Content audit evaluated 0 pages (Average: 0.0 words/page). Score: 100/100.",
+    "findings": [],
+    "metrics": {
+      "average_word_count": 0.0,
+      "thin_pages_count": 0,
+      "duplicate_title_groups": 0
+    }
+  },
+  "schema_audit": {
+    "category": "Structured Data",
+    "score": 75,
+    "status": "warning",
+    "summary": "Schema audit identified 0 schema types across 0 pages. Score: 75/100.",
+    "findings": [
+      {
+        "category": "Schema",
+        "severity": "medium",
+        "title": "No Structured Data (Schema.org) Detected",
+        "description": "None of the crawled pages contain JSON-LD or Microdata structured data.",
+        "impact": "Misses opportunities for Google Rich Snippets (Star Ratings, Breadcrumbs, FAQs, Sitename).",
+        "recommendation": "Implement JSON-LD structured data (e.g. Organization, WebSite, BreadcrumbList) in the `<head>`.",
+        "affected_urls": [],
+        "evidence": {
+          "schema_coverage_percent": 0
+        }
+      }
+    ],
+    "metrics": {
+      "pages_with_schema": 0,
+      "schema_coverage_percent": 0.0,
+      "schema_types_found": []
+    }
+  },
+  "local_audit": {
+    "category": "Local SEO",
+    "score": 100,
+    "status": "passed",
+    "summary": "Local SEO analysis completed. Local signals audited across 0 pages.",
+    "findings": [
+      {
+        "category": "Local",
+        "severity": "info",
+        "title": "LocalBusiness Schema Not Detected",
+        "description": "No LocalBusiness schema found on the website.",
+        "impact": "Relevant only if targeting local geographical searchers (Google Maps & Local Pack).",
+        "recommendation": "If this is a physical business or local service, implement LocalBusiness schema with address and telephone.",
+        "affected_urls": [],
+        "evidence": {
+          "has_local_schema": false
+        }
+      }
+    ],
+    "metrics": {
+      "has_local_schema": false
+    }
+  },
+  "performance_audit": {
+    "category": "Performance",
+    "score": 90,
+    "status": "passed",
+    "summary": "Performance audit analyzed 1 pages (Average TTFB: 4012.6ms). Score: 90/100.",
+    "findings": [
+      {
+        "category": "Performance",
+        "severity": "critical",
+        "title": "Severe Server Response Delay (> 1.5s)",
+        "description": "1 page(s) took longer than 1500ms to respond.",
+        "impact": "Drastically increases bounce rate and fails Google Core Web Vitals thresholds.",
+        "recommendation": "Optimize database queries, enable server-side caching (Redis/Varnish), and use a CDN.",
+        "affected_urls": [
+          "https://httpbin.org/html"
+        ],
+        "evidence": {
+          "slow_page_count": 1,
+          "max_response_ms": 4012.57
+        }
+      }
+    ],
+    "metrics": {
+      "average_response_time_ms": 4012.6,
+      "slow_pages_count": 1
+    }
+  },
+  "overall_seo_score": 88,
+  "category_scores": {
+    "Technical SEO": 75,
+    "On-Page SEO": 100,
+    "Content Quality": 100,
+    "Performance": 90,
+    "Structured Data": 75,
+    "Local SEO": 100
+  },
+  "priority_action_items": [
+    {
+      "priority": 1,
+      "category": "Technical",
+      "title": "5xx Server Errors Detected",
+      "action": "Investigate web server error logs, database connections, and application crashes immediately.",
+      "estimated_effort": "medium",
+      "impact_score": 10,
+      "affected_count": 1
+    },
+    {
+      "priority": 1,
+      "category": "Performance",
+      "title": "Severe Server Response Delay (> 1.5s)",
+      "action": "Optimize database queries, enable server-side caching (Redis/Varnish), and use a CDN.",
+      "estimated_effort": "medium",
+      "impact_score": 10,
+      "affected_count": 1
+    },
+    {
+      "priority": 3,
+      "category": "Technical",
+      "title": "No XML Sitemap Discovered",
+      "action": "Generate an XML sitemap, place it in the root directory, and specify its URL in robots.txt.",
+      "estimated_effort": "low",
+      "impact_score": 6,
+      "affected_count": 0
+    },
+    {
+      "priority": 3,
+      "category": "Schema",
+      "title": "No Structured Data (Schema.org) Detected",
+      "action": "Implement JSON-LD structured data (e.g. Organization, WebSite, BreadcrumbList) in the `<head>`.",
+      "estimated_effort": "low",
+      "impact_score": 6,
+      "affected_count": 0
+    },
+    {
+      "priority": 5,
+      "category": "Local",
+      "title": "LocalBusiness Schema Not Detected",
+      "action": "If this is a physical business or local service, implement LocalBusiness schema with address and telephone.",
+      "estimated_effort": "low",
+      "impact_score": 2,
+      "affected_count": 0
+    }
+  ],
+  "executive_summary": "SEO Audit completed for https://httpbin.org/html across 1 crawled pages. Overall SEO Health Score: 88/100. Identified 5 key findings with 2 high-priority action items.",
+  "detailed_report_markdown": "# SEO Audit Report: https://httpbin.org/html\n\n**Overall Health Score**: `88/100`  \n**Pages Crawled**: 1  \n**Links Analyzed**: 0  \n**Crawl Duration**: 4.21s  \n\n---\n\n## Category Scores\n\n| Category | Score | Status |\n| :--- | :---: | :---: |\n| Technical SEO | 75/100 | WARNING |\n| On-Page SEO | 100/100 | PASSED |\n| Content Quality | 100/100 | PASSED |\n| Performance | 90/100 | PASSED |\n| Structured Data | 75/100 | WARNING |\n| Local SEO | 100/100 | PASSED |\n\n---\n\n## Top Priority Action Items\n\n### 1. [Technical] 5xx Server Errors Detected (Priority 1)\n- **Action**: Investigate web server error logs, database connections, and application crashes immediately.\n- **Estimated Effort**: `Medium` | **Impact Score**: `10/10` | **Affected Pages**: `1`\n\n### 2. [Performance] Severe Server Response Delay (> 1.5s) (Priority 1)\n- **Action**: Optimize database queries, enable server-side caching (Redis/Varnish), and use a CDN.\n- **Estimated Effort**: `Medium` | **Impact Score**: `10/10` | **Affected Pages**: `1`\n\n### 3. [Technical] No XML Sitemap Discovered (Priority 3)\n- **Action**: Generate an XML sitemap, place it in the root directory, and specify its URL in robots.txt.\n- **Estimated Effort**: `Low` | **Impact Score**: `6/10` | **Affected Pages**: `0`\n\n### 4. [Schema] No Structured Data (Schema.org) Detected (Priority 3)\n- **Action**: Implement JSON-LD structured data (e.g. Organization, WebSite, BreadcrumbList) in the `<head>`.\n- **Estimated Effort**: `Low` | **Impact Score**: `6/10` | **Affected Pages**: `0`\n\n### 5. [Local] LocalBusiness Schema Not Detected (Priority 5)\n- **Action**: If this is a physical business or local service, implement LocalBusiness schema with address and telephone.\n- **Estimated Effort**: `Low` | **Impact Score**: `2/10` | **Affected Pages**: `0`\n\n",
+  "errors": []
+}
