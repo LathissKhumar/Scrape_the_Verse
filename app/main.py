@@ -15,6 +15,7 @@ from app.brightdata.exceptions import (
     BrightDataJobError,
     BrightDataTimeoutError,
 )
+from app.brightdata.service import BrightDataService
 from app.config.logging import get_logger, setup_logging
 from app.config.settings import get_settings
 from app.graph.state import ScrapingGraphState
@@ -26,7 +27,7 @@ from app.llm.exceptions import (
     LLMTimeoutError,
 )
 from app.llm.ollama_client import OllamaClient
-from app.models.schemas import ScrapingRequest, ScrapingResult
+from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
 
 setup_logging()
 logger = get_logger("API")
@@ -41,6 +42,7 @@ app = FastAPI(
 # Initialize core clients and agents
 llm_client = OllamaClient(settings=settings)
 brightdata_client = BrightDataClient(settings=settings)
+brightdata_service = BrightDataService(settings=settings, client=brightdata_client)
 planner_agent = ScrapingPlannerAgent(llm_client=llm_client)
 scraper_agent = ScraperAgent(brightdata_client=brightdata_client)
 healing_agent = HealingAgent(llm_client=llm_client, scraper_agent=scraper_agent)
@@ -229,6 +231,24 @@ async def scrape(request: ScrapingRequest) -> Any:
     task_id = str(uuid4())
     logger.info(f"POST /scrape received. Assigned task_id: {task_id} with {len(combined_urls)} URL(s)")
 
+    # Check dual-engine routing: Bright Data Fast-Path vs Native Multi-Agent Engine
+    provider = str(request.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto").lower()
+    if (brightdata_service.is_enabled and provider != "local") or provider == "brightdata":
+        logger.info(f"task_id={task_id} Routing to Bright Data Fast-Path (BRIGHTDATA=True)")
+        task = ScrapingTask(
+            task_id=task_id,
+            objective=request.query,
+            target_urls=combined_urls,
+            metadata=request.metadata,
+        )
+        try:
+            result = await brightdata_service.execute_task(task)
+            if result and result.status == "success" and result.records:
+                return result.model_dump()
+            logger.info(f"task_id={task_id} Bright Data fast-path returned no records. Engaging Native Multi-Agent fallback...")
+        except Exception as e:
+            logger.warning(f"Bright Data fast-path error ({e}). Falling back to Native Multi-Agent engine...")
+
     # If caller requested async_job or large URL batch, execute in background
     if request.async_job:
         asyncio.create_task(_run_background_workflow(task_id, request.query, combined_urls))
@@ -275,6 +295,26 @@ async def scrape(request: ScrapingRequest) -> Any:
             "metadata": {"task_id": task_id},
             "error": str(e),
         }
+
+
+@app.post("/api/v1/brightdata/leads")
+async def generate_brightdata_leads(request: ScrapingRequest) -> dict[str, Any]:
+    """Dedicated endpoint for B2B lead generation using chained Bright Data collectors."""
+    if not brightdata_service.is_enabled:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Bright Data is not enabled. Set BRIGHTDATA=True and provide BRIGHTDATA_API_KEY in .env.",
+        )
+
+    query = request.query or (request.target_urls[0] if request.target_urls else "solar panels")
+    enrich = request.metadata.get("enrich", True) if request.metadata else True
+
+    leads = await brightdata_service.generate_leads(query=query, enrich_profiles=enrich)
+    return {
+        "query": query,
+        "total_leads": len(leads),
+        "leads": leads,
+    }
 
 
 @app.post("/api/v1/jobs", status_code=status.HTTP_202_ACCEPTED)

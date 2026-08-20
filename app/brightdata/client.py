@@ -1,4 +1,7 @@
 import asyncio
+import json
+import os
+import shutil
 import time
 from typing import Any, Optional
 import httpx
@@ -38,12 +41,20 @@ class BrightDataClient:
 
     @property
     def collector_id(self) -> Optional[str]:
-        return self._settings.BRIGHTDATA_COLLECTOR_ID
+        return self._settings.BRIGHTDATA_COLLECTOR_ID or self._settings.BRIGHTDATA_DISCOVERY_COLLECTOR_ID
+
+    @property
+    def discovery_collector_id(self) -> Optional[str]:
+        return self._settings.BRIGHTDATA_DISCOVERY_COLLECTOR_ID or self._settings.BRIGHTDATA_COLLECTOR_ID
+
+    @property
+    def company_collector_id(self) -> Optional[str]:
+        return self._settings.BRIGHTDATA_COMPANY_COLLECTOR_ID
 
     @property
     def is_configured(self) -> bool:
         """Return True if Bright Data is enabled in settings and credentials are configured."""
-        return bool(self._settings.BRIGHTDATA and self.api_key and self.collector_id)
+        return bool(self._settings.BRIGHTDATA and self.api_key and (self.collector_id or self.discovery_collector_id))
 
     def _ensure_configured(self, collector_id: Optional[str] = None) -> tuple[str, str]:
         """Validate credentials and return (api_key, effective_collector_id)."""
@@ -258,3 +269,64 @@ class BrightDataClient:
 
             logger.debug(f"Job {job_id} is still {current_status}. Waiting {poll_interval}s...")
             await asyncio.sleep(poll_interval)
+
+    async def scrape_via_cli(
+        self,
+        collector_id: str,
+        url: str,
+        timeout_seconds: float = 120.0,
+    ) -> list[dict[str, Any]]:
+        """Execute scraper collector using Bright Data CLI as a reliable direct runner."""
+        api_key = self.api_key or ""
+        env = os.environ.copy()
+        if api_key:
+            env["BRIGHTDATA_API_KEY"] = api_key
+
+        cmd = ["npx", "-p", "@brightdata/cli", "brightdata", "scraper", "run", collector_id, url, "--json"]
+
+        logger.info(f"Executing CLI scraper run: collector={collector_id} url={url}")
+
+        try:
+            # On Windows, run via cmd/powershell or create_subprocess_exec
+            proc = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                env=env,
+            )
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout_seconds)
+        except asyncio.TimeoutError as e:
+            logger.error(f"CLI scrape timed out after {timeout_seconds}s for {url}")
+            raise BrightDataTimeoutError(f"CLI scrape timed out after {timeout_seconds}s: {url}") from e
+        except Exception as e:
+            logger.error(f"Failed to execute CLI scraper: {e}")
+            raise BrightDataError(f"Failed to execute CLI scraper: {e}") from e
+
+        out_text = stdout.decode("utf-8", errors="replace").strip()
+        err_text = stderr.decode("utf-8", errors="replace").strip()
+
+        if proc.returncode != 0:
+            logger.error(f"CLI scraper failed with returncode {proc.returncode}: {err_text}")
+            raise BrightDataJobError(f"CLI scraper failed ({proc.returncode}): {err_text or out_text}")
+
+        # Parse JSON from stdout (may have status/polling logs preceding the json payload)
+        try:
+            # Look for JSON array or object in output
+            start_idx = out_text.find("[")
+            end_idx = out_text.rfind("]")
+            if start_idx != -1 and end_idx != -1 and end_idx >= start_idx:
+                json_str = out_text[start_idx : end_idx + 1]
+                data = json.loads(json_str)
+                if isinstance(data, list):
+                    return data
+
+            # Fallback to direct json.loads
+            data = json.loads(out_text)
+            if isinstance(data, list):
+                return data
+            elif isinstance(data, dict):
+                return [data]
+        except Exception as e:
+            logger.warning(f"Could not parse JSON from CLI output: {e}. Raw text: {out_text[:200]}")
+
+        return []

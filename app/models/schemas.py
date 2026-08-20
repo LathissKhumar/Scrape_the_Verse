@@ -36,6 +36,10 @@ class ScrapingRequest(BaseModel):
         default=False,
         description="Execute as background job returning job_id immediately without holding HTTP connection.",
     )
+    metadata: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Optional metadata or provider options (e.g. scraper_provider, enrich).",
+    )
 
     @field_validator("target_urls")
     @classmethod

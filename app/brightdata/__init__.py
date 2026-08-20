@@ -8,9 +8,13 @@ from app.brightdata.exceptions import (
     BrightDataJobError,
     BrightDataTimeoutError,
 )
+from app.brightdata.pipeline import BrightDataLeadPipeline
+from app.brightdata.service import BrightDataService
 
 __all__ = [
     "BrightDataClient",
+    "BrightDataLeadPipeline",
+    "BrightDataService",
     "build_collector_inputs",
     "BrightDataError",
     "BrightDataConfigError",
