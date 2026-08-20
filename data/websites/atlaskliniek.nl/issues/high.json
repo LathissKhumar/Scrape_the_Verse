@@ -1,0 +1,16 @@
+[
+  {
+    "id": "iss_a6815384139a",
+    "page_id": "page_d9a19e274131",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "title": "Slow Response Time",
+    "description": "Page took 5156.19ms to respond (recommended: <3000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 5156.19
+    }
+  }
+]

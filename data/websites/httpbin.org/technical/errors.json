@@ -1,0 +1,7 @@
+[
+  {
+    "url": "https://httpbin.org/html",
+    "status_code": 503,
+    "content_type": "text/html"
+  }
+]

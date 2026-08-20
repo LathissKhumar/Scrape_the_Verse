@@ -40,3 +40,25 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+**/venv/
+ENV/
+env.bak/
+venv.bak/
+*.db
+users.db
+LibreCrawl/data/*.db
+.pytest_cache/
+**/.pytest_cache/
+.coverage
+htmlcov/
+

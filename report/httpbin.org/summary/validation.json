@@ -1,0 +1,16 @@
+{
+  "valid": true,
+  "domain": "httpbin.org",
+  "raw_pages_count": 1,
+  "normalized_pages_count": 1,
+  "raw_issues_count": 9,
+  "normalized_issues_count": 9,
+  "duplicate_issues_deduplicated": 0,
+  "raw_links_count": 0,
+  "normalized_links_count": 0,
+  "duplicate_links_deduplicated": 0,
+  "unique_images_cataloged": 0,
+  "data_loss": false,
+  "broken_page_references": 0,
+  "validation_timestamp": "2026-08-20T15:55:19.239882+00:00"
+}

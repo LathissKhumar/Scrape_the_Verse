@@ -1,0 +1,14 @@
+{
+  "category": "On-Page SEO",
+  "score": 100,
+  "status": "passed",
+  "summary": "On-page audit inspected 0 indexable pages. Discovered 0 issues with score 100/100.",
+  "findings": [],
+  "metrics": {
+    "indexable_pages": 0,
+    "missing_titles": 0,
+    "missing_meta_descriptions": 0,
+    "missing_h1": 0,
+    "images_missing_alt": 0
+  }
+}

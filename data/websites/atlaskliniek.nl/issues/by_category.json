@@ -1,0 +1,50 @@
+{
+  "Seo": [
+    {
+      "id": "iss_b44c7bca814b",
+      "page_id": "page_d9a19e274131",
+      "category": "Seo",
+      "type": "meta_description_too_short",
+      "severity": "medium",
+      "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+      "title": "Meta Description Too Short",
+      "description": "Description is 20 characters (recommended: 120-160)",
+      "recommendation": null,
+      "evidence": {
+        "length": 20
+      }
+    }
+  ],
+  "Accessibility": [
+    {
+      "id": "iss_cc12c2fd5c84",
+      "page_id": "page_d9a19e274131",
+      "category": "Accessibility",
+      "type": "images_without_alt_text",
+      "severity": "medium",
+      "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+      "title": "Images Without Alt Text",
+      "description": "2 of 11 images lack alt text",
+      "recommendation": null,
+      "evidence": {
+        "missing_count": 2
+      }
+    }
+  ],
+  "Performance": [
+    {
+      "id": "iss_a6815384139a",
+      "page_id": "page_d9a19e274131",
+      "category": "Performance",
+      "type": "slow_response_time",
+      "severity": "high",
+      "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+      "title": "Slow Response Time",
+      "description": "Page took 5156.19ms to respond (recommended: <3000ms)",
+      "recommendation": null,
+      "evidence": {
+        "response_time_ms": 5156.19
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "google_analytics": true,
+  "ga4_id": "G-ATLAS123",
+  "gtm_id": "GTM-ATLAS",
+  "facebook_pixel": false,
+  "hotjar": false,
+  "mixpanel": false,
+  "detected_on_pages": [
+    "https://www.atlaskliniek.nl/en/dentist-amsterdam/"
+  ]
+}

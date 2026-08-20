@@ -1,0 +1,176 @@
+{
+  "job_id": "442c97d1-e4c1-418a-9abc-a83353aa6eab",
+  "raw_crawl_data": {
+    "crawl_id": "442c97d1-e4c1-418a-9abc-a83353aa6eab",
+    "base_url": "https://httpbin.org",
+    "base_domain": "httpbin.org",
+    "status": "completed",
+    "summary": {
+      "total_pages_crawled": 1,
+      "total_pages_discovered": 1,
+      "total_links": 0,
+      "total_issues": 10,
+      "duration_seconds": 4.21,
+      "started_at": "2026-08-20T13:22:00.659850+00:00",
+      "completed_at": "2026-08-20T13:22:04.872015+00:00"
+    },
+    "pages": [
+      {
+        "url": "https://httpbin.org/html",
+        "status_code": 503,
+        "content_type": "text/html",
+        "depth": 0,
+        "response_time_ms": 4012.57,
+        "render_time_ms": null,
+        "title": "503 Service Temporarily Unavailable",
+        "meta_description": "",
+        "h1": "503 Service Temporarily Unavailable",
+        "h2": [],
+        "h3": [],
+        "word_count": 8,
+        "canonical": "",
+        "robots": "",
+        "lang": "",
+        "charset": "",
+        "viewport": "",
+        "og_tags": {},
+        "twitter_tags": {},
+        "json_ld": [],
+        "analytics": {
+          "google_analytics": false,
+          "gtag": false,
+          "ga4_id": "",
+          "gtm_id": "",
+          "facebook_pixel": false,
+          "hotjar": false,
+          "mixpanel": false
+        },
+        "images": [],
+        "redirects": [],
+        "linked_from": []
+      }
+    ],
+    "links": [],
+    "issues": [
+      {
+        "type": "missing_meta_description",
+        "category": "SEO",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Meta Description",
+        "details": "Page has no meta description",
+        "evidence": {
+          "meta_description": "",
+          "length": 0
+        }
+      },
+      {
+        "type": "thin_content",
+        "category": "Content",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Thin Content",
+        "details": "Page has only 8 words (recommended: ≥300)",
+        "evidence": {
+          "word_count": 8
+        }
+      },
+      {
+        "type": "503_server_error",
+        "category": "Technical",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "503 Server Error",
+        "details": "Service Unavailable",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "canonical_issue",
+        "category": "Technical",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Canonical URL",
+        "details": "Page has no canonical URL specified",
+        "evidence": {
+          "canonical_url": "",
+          "url": "https://httpbin.org/html"
+        }
+      },
+      {
+        "type": "missing_viewport",
+        "category": "Mobile",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Viewport Meta Tag",
+        "details": "Page is not mobile-optimized",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "missing_language_attribute",
+        "category": "Accessibility",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Language Attribute",
+        "details": "HTML tag has no lang attribute",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "missing_opengraph_tags",
+        "category": "Social",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing OpenGraph Tags",
+        "details": "Page has no OpenGraph tags for social sharing",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "missing_twitter_card_tags",
+        "category": "Social",
+        "severity": "medium",
+        "url": "https://httpbin.org/html",
+        "issue": "Missing Twitter Card Tags",
+        "details": "Page has no Twitter Card tags",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "no_structured_data",
+        "category": "Structured Data",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "No Structured Data",
+        "details": "Page has no JSON-LD or Schema.org markup",
+        "evidence": {
+          "status_code": 503
+        }
+      },
+      {
+        "type": "slow_response_time",
+        "category": "Performance",
+        "severity": "high",
+        "url": "https://httpbin.org/html",
+        "issue": "Slow Response Time",
+        "details": "Page took 4012.57ms to respond (recommended: <3000ms)",
+        "evidence": {
+          "response_time_ms": 4012.57,
+          "render_time_ms": null
+        }
+      }
+    ],
+    "sitemaps": {
+      "discovered": [],
+      "urls_found": 0
+    },
+    "pagespeed": []
+  },
+  "executive_summary": "SEO Audit completed for https://httpbin.org/html across 1 crawled pages. Overall SEO Health Score: 88/100. Identified 5 key findings with 2 high-priority action items."
+}

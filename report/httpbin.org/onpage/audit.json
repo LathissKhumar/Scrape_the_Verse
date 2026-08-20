@@ -1,0 +1,57 @@
+{
+  "category": "On-Page SEO",
+  "score": 77,
+  "status": "warning",
+  "summary": "On-page audit inspected 1 indexable pages. Discovered 3 issues with score 77/100.",
+  "findings": [
+    {
+      "category": "On-Page",
+      "severity": "critical",
+      "title": "Missing Title Tags",
+      "description": "1 page(s) lack a `<title>` tag.",
+      "impact": "Title tags are the primary on-page signal for relevance in SERP snippets.",
+      "recommendation": "Provide unique, compelling title tags between 50-60 characters for all pages.",
+      "affected_urls": [
+        "https://httpbin.org/html"
+      ],
+      "evidence": {
+        "missing_title_count": 1
+      }
+    },
+    {
+      "category": "On-Page",
+      "severity": "medium",
+      "title": "Missing Meta Descriptions",
+      "description": "1 page(s) have no meta description.",
+      "impact": "Search engines will generate arbitrary text snippets from page content, hurting SERP CTR.",
+      "recommendation": "Write unique, persuasive meta descriptions (120-160 characters) with a clear call to action.",
+      "affected_urls": [
+        "https://httpbin.org/html"
+      ],
+      "evidence": {
+        "missing_description_count": 1
+      }
+    },
+    {
+      "category": "On-Page",
+      "severity": "low",
+      "title": "Missing OpenGraph Metadata",
+      "description": "Pages lack `og:title`, `og:description`, and `og:image` tags for social sharing previews.",
+      "impact": "Links shared on Twitter, LinkedIn, Slack, and Facebook will display unoptimized generic cards.",
+      "recommendation": "Implement OpenGraph meta tags on all public landing pages and articles.",
+      "affected_urls": [
+        "https://httpbin.org/html"
+      ],
+      "evidence": {
+        "missing_og_count": 1
+      }
+    }
+  ],
+  "metrics": {
+    "indexable_pages": 1,
+    "missing_titles": 1,
+    "missing_meta_descriptions": 1,
+    "missing_h1": 0,
+    "images_missing_alt": 0
+  }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "canonical": "https://www.atlaskliniek.nl/tarieven/",
+    "is_self_referential": true
+  }
+]

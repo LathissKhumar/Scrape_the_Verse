@@ -1,0 +1,12 @@
+{
+  "category": "Content Quality",
+  "score": 100,
+  "status": "passed",
+  "summary": "Content audit evaluated 0 pages (Average: 0.0 words/page). Score: 100/100.",
+  "findings": [],
+  "metrics": {
+    "average_word_count": 0.0,
+    "thin_pages_count": 0,
+    "duplicate_title_groups": 0
+  }
+}

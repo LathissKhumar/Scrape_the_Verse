@@ -1,0 +1,11 @@
+[
+  {
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "schemas": [
+      {
+        "@type": "Dentist",
+        "name": "Tandheelkundige Kliniek Amsterdam"
+      }
+    ]
+  }
+]

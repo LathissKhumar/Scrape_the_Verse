@@ -1,0 +1,161 @@
+{
+  "Seo": [
+    {
+      "id": "iss_d50e4944a171",
+      "page_id": "page_8badbcb95530",
+      "category": "Seo",
+      "type": "missing_meta_description",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "title": "Missing Meta Description",
+      "description": "Page has no meta description",
+      "recommendation": null,
+      "evidence": {
+        "meta_description": "",
+        "length": 0
+      }
+    }
+  ],
+  "Content": [
+    {
+      "id": "iss_f3f3e63addd4",
+      "page_id": "page_8badbcb95530",
+      "category": "Content",
+      "type": "thin_content",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "title": "Thin Content",
+      "description": "Page has only 8 words (recommended: ≥300)",
+      "recommendation": null,
+      "evidence": {
+        "word_count": 8
+      }
+    }
+  ],
+  "Technical": [
+    {
+      "id": "iss_59318947e9bf",
+      "page_id": "page_8badbcb95530",
+      "category": "Technical",
+      "type": "503_server_error",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "title": "503 Server Error",
+      "description": "Service Unavailable",
+      "recommendation": null,
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "id": "iss_7207b945fd31",
+      "page_id": "page_8badbcb95530",
+      "category": "Technical",
+      "type": "canonical_issue",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "title": "Missing Canonical URL",
+      "description": "Page has no canonical URL specified",
+      "recommendation": null,
+      "evidence": {
+        "canonical_url": "",
+        "url": "https://httpbin.org/html"
+      }
+    }
+  ],
+  "Mobile": [
+    {
+      "id": "iss_8bdf9b50b78e",
+      "page_id": "page_8badbcb95530",
+      "category": "Mobile",
+      "type": "missing_viewport",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "title": "Missing Viewport Meta Tag",
+      "description": "Page is not mobile-optimized",
+      "recommendation": null,
+      "evidence": {
+        "status_code": 503
+      }
+    }
+  ],
+  "Accessibility": [
+    {
+      "id": "iss_66ee9bb60576",
+      "page_id": "page_8badbcb95530",
+      "category": "Accessibility",
+      "type": "missing_language_attribute",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "title": "Missing Language Attribute",
+      "description": "HTML tag has no lang attribute",
+      "recommendation": null,
+      "evidence": {
+        "status_code": 503
+      }
+    }
+  ],
+  "Social": [
+    {
+      "id": "iss_39ceaff578b8",
+      "page_id": "page_8badbcb95530",
+      "category": "Social",
+      "type": "missing_opengraph_tags",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "title": "Missing OpenGraph Tags",
+      "description": "Page has no OpenGraph tags for social sharing",
+      "recommendation": null,
+      "evidence": {
+        "status_code": 503
+      }
+    },
+    {
+      "id": "iss_91ae178ac637",
+      "page_id": "page_8badbcb95530",
+      "category": "Social",
+      "type": "missing_twitter_card_tags",
+      "severity": "medium",
+      "url": "https://httpbin.org/html",
+      "title": "Missing Twitter Card Tags",
+      "description": "Page has no Twitter Card tags",
+      "recommendation": null,
+      "evidence": {
+        "status_code": 503
+      }
+    }
+  ],
+  "Structured Data": [
+    {
+      "id": "iss_f90cc0656bc5",
+      "page_id": "page_8badbcb95530",
+      "category": "Structured Data",
+      "type": "no_structured_data",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "title": "No Structured Data",
+      "description": "Page has no JSON-LD or Schema.org markup",
+      "recommendation": null,
+      "evidence": {
+        "status_code": 503
+      }
+    }
+  ],
+  "Performance": [
+    {
+      "id": "iss_f171d8e692cb",
+      "page_id": "page_8badbcb95530",
+      "category": "Performance",
+      "type": "slow_response_time",
+      "severity": "high",
+      "url": "https://httpbin.org/html",
+      "title": "Slow Response Time",
+      "description": "Page took 4012.57ms to respond (recommended: <3000ms)",
+      "recommendation": null,
+      "evidence": {
+        "response_time_ms": 4012.57,
+        "render_time_ms": null
+      }
+    }
+  ]
+}

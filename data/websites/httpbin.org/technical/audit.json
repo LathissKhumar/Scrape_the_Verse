@@ -1,0 +1,42 @@
+{
+  "category": "Technical SEO",
+  "score": 75,
+  "status": "warning",
+  "summary": "Technical audit analyzed 1 pages and 0 links. Identified 2 key findings with score 75/100.",
+  "findings": [
+    {
+      "category": "Technical",
+      "severity": "critical",
+      "title": "5xx Server Errors Detected",
+      "description": "Found 1 page(s) returning 5xx server errors.",
+      "impact": "Search engine crawlers cannot index these pages; severe loss of crawl budget and user trust.",
+      "recommendation": "Investigate web server error logs, database connections, and application crashes immediately.",
+      "affected_urls": [
+        "https://httpbin.org/html"
+      ],
+      "evidence": {
+        "server_error_count": 1
+      }
+    },
+    {
+      "category": "Technical",
+      "severity": "medium",
+      "title": "No XML Sitemap Discovered",
+      "description": "Crawler did not discover a standard sitemap at /sitemap.xml or referenced in robots.txt.",
+      "impact": "Search engines may take longer to discover and index new or updated URLs.",
+      "recommendation": "Generate an XML sitemap, place it in the root directory, and specify its URL in robots.txt.",
+      "affected_urls": [],
+      "evidence": {
+        "sitemaps_found": 0
+      }
+    }
+  ],
+  "metrics": {
+    "total_pages": 1,
+    "server_errors": 1,
+    "client_errors": 0,
+    "missing_canonicals": 0,
+    "deep_pages": 0,
+    "sitemaps_discovered": 0
+  }
+}

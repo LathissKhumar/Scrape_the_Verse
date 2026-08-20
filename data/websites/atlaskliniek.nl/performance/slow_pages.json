@@ -1,0 +1,103 @@
+[
+  {
+    "page_id": "page_d9a19e274131",
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "raw_url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "status_code": 200,
+    "content_type": "text/html",
+    "depth": 0,
+    "response_time_ms": 5156.19,
+    "render_time_ms": 6842.1,
+    "seo": {
+      "title": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "meta_description": "We are here for you!",
+      "h1": "Dentist Amsterdam",
+      "h2": [
+        "About Our Clinic",
+        "Treatments",
+        "Emergency Dental Care"
+      ],
+      "h3": [
+        "Teeth Whitening",
+        "Invisalign"
+      ],
+      "word_count": 967
+    },
+    "technical": {
+      "canonical": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+      "robots": "follow, index, max-snippet:-1",
+      "language": "en-GB",
+      "charset": "UTF-8",
+      "viewport": "width=device-width, initial-scale=1"
+    },
+    "social": {
+      "og_tags": {
+        "title": "Dentist Amsterdam",
+        "type": "website"
+      },
+      "twitter_tags": {
+        "card": "summary_large_image"
+      }
+    },
+    "schema": [
+      {
+        "@type": "Dentist",
+        "name": "Tandheelkundige Kliniek Amsterdam"
+      }
+    ],
+    "analytics": {
+      "ga4_id": "G-ATLAS123",
+      "gtm_id": "GTM-ATLAS"
+    },
+    "images": [
+      {
+        "src": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+        "alt": "Atlas Logo"
+      },
+      {
+        "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+        "alt": ""
+      }
+    ],
+    "redirects": [],
+    "linked_from": []
+  },
+  {
+    "page_id": "page_0e0e229fbd69",
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "raw_url": "https://www.atlaskliniek.nl/tarieven/",
+    "status_code": 200,
+    "content_type": "text/html",
+    "depth": 1,
+    "response_time_ms": 2316.72,
+    "render_time_ms": 4200.0,
+    "seo": {
+      "title": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+      "meta_description": "Bekijk hier de tarieven die wij hanteren voor de diverse behandelingen.",
+      "h1": "Tarieven",
+      "h2": [
+        "Overzicht"
+      ],
+      "h3": [],
+      "word_count": 1641
+    },
+    "technical": {
+      "canonical": "https://www.atlaskliniek.nl/tarieven/",
+      "robots": "follow, index",
+      "language": "nl-NL",
+      "charset": "UTF-8",
+      "viewport": "width=device-width, initial-scale=1"
+    },
+    "social": {
+      "og_tags": {},
+      "twitter_tags": {}
+    },
+    "schema": [],
+    "analytics": {},
+    "images": [],
+    "redirects": [],
+    "linked_from": [
+      "https://www.atlaskliniek.nl/en/dentist-amsterdam/"
+    ]
+  }
+]
