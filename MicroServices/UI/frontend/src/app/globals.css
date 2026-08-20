@@ -1,0 +1,255 @@
+@import "tailwindcss";
+
+@theme {
+  /* Premium Dark SaaS Palette */
+  --color-void: #07090D;
+  --color-bg-surface: #0D1117;
+  --color-glass-surface: rgba(255, 255, 255, 0.08);
+  --color-glass-border: rgba(255, 255, 255, 0.2);
+  --color-text-primary: #F5F7FA;
+  --color-text-secondary: #C4CBD6;
+  --color-muted: #9DA7B8;
+  
+  /* Cold Palette Accents */
+  --color-violet-accent: #38BDF8;
+  --color-blue-accent: #60A5FA;
+  --color-emerald-success: #34D399;
+  --color-amber-warning: #F59E0B;
+  --color-rose-error: #FB7185;
+
+  /* Signature Cold Gradient */
+  --background-signature-gradient: linear-gradient(135deg, #38BDF8 0%, #60A5FA 50%, #818CF8 100%);
+  --background-glass-glow: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+
+  /* Inter Typography - Universal across all text, headers, and UI */
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: #07090D;
+  color: #F5F7FA;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background-color: #38BDF8;
+  color: #07090D;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #07090D; }
+::-webkit-scrollbar-thumb { background: #1F293D; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #38BDF8; }
+
+/* ── APPLE LIQUID GLASS THEME SPECIFICATION ── */
+.glass-surface {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.26s ease-out;
+}
+
+.glass-surface__filter {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: -1;
+}
+
+.glass-surface__content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: inherit;
+  position: relative;
+  z-index: 1;
+}
+
+.glass-surface--svg {
+  background: light-dark(hsl(0 0% 100% / var(--glass-frost, 0)), hsl(0 0% 0% / var(--glass-frost, 0)));
+  backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1.8));
+  -webkit-backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1.8));
+  box-shadow:
+    0 0 2px 1px light-dark(color-mix(in oklch, black, transparent 85%), color-mix(in oklch, white, transparent 65%)) inset,
+    0 0 10px 4px light-dark(color-mix(in oklch, black, transparent 90%), color-mix(in oklch, white, transparent 85%)) inset,
+    0px 4px 16px rgba(17, 17, 26, 0.05),
+    0px 8px 24px rgba(17, 17, 26, 0.05),
+    0px 16px 56px rgba(17, 17, 26, 0.05),
+    0px 4px 16px rgba(17, 17, 26, 0.05) inset,
+    0px 8px 24px rgba(17, 17, 26, 0.05) inset,
+    0px 16px 56px rgba(17, 17, 26, 0.05) inset;
+}
+
+.glass-surface--fallback,
+.glass-liquid {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px) saturate(1.8) brightness(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8) brightness(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.25),
+    0 2px 16px 0 rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.15),
+    0px 4px 16px rgba(17, 17, 26, 0.05) inset;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-liquid:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow:
+    0 16px 48px 0 rgba(56, 189, 248, 0.2),
+    0 4px 20px 0 rgba(0, 0, 0, 0.2),
+    inset 0 1.5px 0 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-surface:focus-visible {
+  outline: 2px solid light-dark(#007aff, #0a84ff);
+  outline-offset: 2px;
+}
+
+/* ── APPLE LIQUID GLASS PRIMITIVES FOR ALL COMPONENTS ── */
+.glass-level-1 {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px) saturate(1.8) brightness(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.8) brightness(1.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-level-2 {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px) saturate(1.85) brightness(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.85) brightness(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 20px;
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.25),
+    0 2px 16px rgba(0, 0, 0, 0.12),
+    inset 0 1.5px 0 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-level-3 {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(24px) saturate(1.9) brightness(1.22);
+  -webkit-backdrop-filter: blur(24px) saturate(1.9) brightness(1.22);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 24px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.3),
+    0 4px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1.5px 0 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1.5px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px) saturate(1.8) brightness(1.18);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8) brightness(1.18);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 18px;
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow:
+    0 20px 56px rgba(56, 189, 248, 0.22),
+    inset 0 1.5px 0 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.gradient-text-signature {
+  background: linear-gradient(135deg, #8B5CF6 0%, #38BDF8 50%, #34D399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── TIMELINE VERTICAL PIPELINE ANIMATIONS ── */
+@keyframes timelinePulseDot {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(0, 212, 255, 0);
+  }
+}
+
+@keyframes timelineNodeGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px #00d4ff, inset 0 0 4px #00d4ff;
+  }
+  50% {
+    box-shadow: 0 0 20px #00d4ff, inset 0 0 10px #00d4ff;
+  }
+}
+
+@keyframes timelineBulletPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+.timeline-pulse-dot {
+  animation: timelinePulseDot 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.timeline-node-active {
+  animation: timelineNodeGlow 2s infinite ease-in-out;
+}
+
+.timeline-bullet-active {
+  display: inline-block;
+  animation: timelineBulletPulse 2s infinite ease-in-out;
+}
+
