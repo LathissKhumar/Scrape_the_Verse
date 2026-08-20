@@ -1,13 +1,14 @@
+"""Evidence-grounded repair planner that synthesizes, scores, and ranks candidate repair plans."""
+
 import json
 import re
 from typing import Any, Optional
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from app.config.logging import get_logger
-from app.diagnosis.schemas import DiagnosisResult, RepairStrategy, RootCause
+from app.diagnosis.schemas import DiagnosisResult, RootCause
 from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, RawPage
 from app.healing.actions.detector import ActionIssueDetector
-from app.healing.actions.models import ActionType
 from app.healing.actions.planner import ActionRepairPlanner
 from app.healing.failed_memory import FailedRepairMemory
 from app.healing.fingerprint import DOMFingerprinter
@@ -63,6 +64,25 @@ Output MUST be a single JSON object matching this schema:
 }
 """
 
+_WHITESPACE_REGEX = re.compile(r"\s+")
+
+_STRATEGY_RELIABILITY_MAP: dict[RepairType, float] = {
+    RepairType.REPAIR_CSS_SELECTORS: 0.90,
+    RepairType.REPAIR_XPATH_SELECTORS: 0.85,
+    RepairType.REPAIR_TABLE_SCHEMA: 0.85,
+    RepairType.REPAIR_REGEX_PATTERN: 0.80,
+    RepairType.REPAIR_ACTION_PLAN: 0.80,
+    RepairType.REPAIR_CRAWLER_CONFIG: 0.75,
+    RepairType.SWITCH_EXTRACTION_STRATEGY: 0.75,
+    RepairType.REPAIR_SEMANTIC_FILTER: 0.75,
+    RepairType.REPAIR_CHUNKING: 0.70,
+    RepairType.REPAIR_LLM_EXTRACTION_SCHEMA: 0.70,
+    RepairType.REPAIR_SCRAPER_CONFIG: 0.65,
+    RepairType.BRIGHTDATA_REFACTOR_FALLBACK: 0.60,
+    RepairType.NO_REPAIR_REQUIRED: 1.0,
+    RepairType.ESCALATE: 0.10,
+}
+
 
 class HealingPlanner:
     """Evidence-grounded repair planner that synthesizes, scores, and ranks candidate repair plans."""
@@ -81,7 +101,7 @@ class HealingPlanner:
         reliability_weight: float = 0.20,
         history_weight: float = 0.10,
         risk_weight: float = 0.05,
-    ):
+    ) -> None:
         self.llm_client = llm_client
         self.memory = memory or RepairMemory()
         self.failed_memory = failed_memory or FailedRepairMemory()
@@ -111,24 +131,7 @@ class HealingPlanner:
         if plan.expected_improvement:
             exp_imp = sum(plan.expected_improvement.values()) / max(len(plan.expected_improvement), 1)
 
-        # Strategy reliability
-        strategy_reliability_map = {
-            RepairType.REPAIR_CSS_SELECTORS: 0.90,
-            RepairType.REPAIR_XPATH_SELECTORS: 0.85,
-            RepairType.REPAIR_TABLE_SCHEMA: 0.85,
-            RepairType.REPAIR_REGEX_PATTERN: 0.80,
-            RepairType.REPAIR_ACTION_PLAN: 0.80,
-            RepairType.REPAIR_CRAWLER_CONFIG: 0.75,
-            RepairType.SWITCH_EXTRACTION_STRATEGY: 0.75,
-            RepairType.REPAIR_SEMANTIC_FILTER: 0.75,
-            RepairType.REPAIR_CHUNKING: 0.70,
-            RepairType.REPAIR_LLM_EXTRACTION_SCHEMA: 0.70,
-            RepairType.REPAIR_SCRAPER_CONFIG: 0.65,
-            RepairType.BRIGHTDATA_REFACTOR_FALLBACK: 0.60,
-            RepairType.NO_REPAIR_REQUIRED: 1.0,
-            RepairType.ESCALATE: 0.10,
-        }
-        strat_rel = strategy_reliability_map.get(plan.repair_type, 0.50)
+        strat_rel = _STRATEGY_RELIABILITY_MAP.get(plan.repair_type, 0.50)
 
         # Historical success
         hist_score = 1.0 if source == "memory" else (0.8 if source == "semantic_memory" else 0.5)
@@ -271,15 +274,15 @@ class HealingPlanner:
 
         # Deduplicate and sort descending by score
         unique_candidates: list[RepairCandidate] = []
-        seen_types = set()
-        for c in sorted(candidates, key=lambda x: x.score, reverse=True):
-            rep_key = f"{c.plan.repair_type.value}:{json.dumps(c.plan.proposed_configuration, sort_keys=True)}"
+        seen_types: set[str] = set()
+        for candidate_item in sorted(candidates, key=lambda x: x.score, reverse=True):
+            rep_key = f"{candidate_item.plan.repair_type.value}:{json.dumps(candidate_item.plan.proposed_configuration, sort_keys=True)}"
             if rep_key not in seen_types:
                 seen_types.add(rep_key)
-                unique_candidates.append(c)
+                unique_candidates.append(candidate_item)
 
-        for idx, c in enumerate(unique_candidates, start=1):
-            c.rank = idx
+        for idx, candidate_item in enumerate(unique_candidates, start=1):
+            candidate_item.rank = idx
 
         return unique_candidates
 
@@ -302,7 +305,7 @@ class HealingPlanner:
             # Find main content container or body
             main_container = soup.find("main") or soup.find("article") or soup.body or soup
             raw_snippet = str(main_container) if main_container else str(soup)
-            clean_snippet = re.sub(r"\s+", " ", raw_snippet)[:1200]
+            clean_snippet = _WHITESPACE_REGEX.sub(" ", raw_snippet)[:1200]
 
             user_prompt = f"""Target Objective: {task.objective}
 Target URLs: {task.target_urls}
@@ -380,8 +383,8 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
                 risk_level=risk_level,
                 level=1,
             )
-        except Exception as e:
-            logger.warning(f"Failed to generate LLM repair candidate: {e}")
+        except Exception as error:
+            logger.warning(f"Failed to generate LLM repair candidate: {error}")
             return None
 
     def _generate_deterministic_candidates(
@@ -442,3 +445,4 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
             )
 
         return candidates
+

@@ -1,3 +1,5 @@
+"""Extraction engine and deterministic / semantic extractors package."""
+
 from app.extraction.chunking import ContentChunker
 from app.extraction.css import CSSExtractor
 from app.extraction.dedup import RecordDeduplicator
@@ -31,3 +33,4 @@ __all__ = [
     "ExtractionResult",
     "ExtractionStrategyEnum",
 ]
+

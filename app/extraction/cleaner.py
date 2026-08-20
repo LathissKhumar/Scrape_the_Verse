@@ -2,8 +2,7 @@
 
 import re
 from typing import Optional
-from bs4 import BeautifulSoup, Comment, Tag
-
+from bs4 import BeautifulSoup, Comment
 
 NOISE_TAGS = [
     "script",
@@ -50,11 +49,13 @@ NOISE_SELECTORS = [
     ".frequently-bought-together",
 ]
 
+_MULTIPLE_NEWLINES_PATTERN = re.compile(r"\n{3,}")
+
 
 class HTMLCleaner:
     """Cleans raw HTML by removing boilerplate, navigation, scripts, and citations to extract readable text."""
 
-    def __init__(self, remove_citations: bool = True):
+    def __init__(self, remove_citations: bool = True) -> None:
         self.remove_citations = remove_citations
 
     def clean_html_to_text(self, html: str, base_url: Optional[str] = None) -> str:
@@ -110,12 +111,12 @@ class HTMLCleaner:
 
         cleaned_text = "\n".join(lines)
         # Normalize multiple newlines and whitespace
-        cleaned_text = re.sub(r"\n{3,}", "\n\n", cleaned_text).strip()
+        cleaned_text = _MULTIPLE_NEWLINES_PATTERN.sub("\n\n", cleaned_text).strip()
 
         # If tag-based extraction yielded very little text, fallback to get_text
         if len(cleaned_text) < 100:
             cleaned_text = main_content.get_text(separator="\n", strip=True)
-            cleaned_text = re.sub(r"\n{3,}", "\n\n", cleaned_text).strip()
+            cleaned_text = _MULTIPLE_NEWLINES_PATTERN.sub("\n\n", cleaned_text).strip()
 
         return cleaned_text
 
@@ -126,3 +127,4 @@ _default_cleaner = HTMLCleaner()
 def clean_html(html: str) -> str:
     """Convenience helper to clean HTML to structured text using default settings."""
     return _default_cleaner.clean_html_to_text(html)
+

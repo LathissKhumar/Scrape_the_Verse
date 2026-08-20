@@ -4,7 +4,6 @@ from typing import Any, Optional
 from app.config.logging import get_logger
 from app.crawler.browser_executor import BrowserExecutor
 from app.crawler.result_models import CrawlResult
-from app.models.schemas import ScrapingTask
 
 logger = get_logger("CRAWLER_HEALING_ENGINE")
 
@@ -12,7 +11,7 @@ logger = get_logger("CRAWLER_HEALING_ENGINE")
 class CrawlerHealingEngine:
     """Adapts browser lifecycle parameters (wait_until, timeouts, scrolling) when pre-extraction DOM is insufficient."""
 
-    def __init__(self, browser_executor: Optional[BrowserExecutor] = None):
+    def __init__(self, browser_executor: Optional[BrowserExecutor] = None) -> None:
         self.browser_executor = browser_executor or BrowserExecutor()
 
     def generate_crawler_adaptations(
@@ -54,3 +53,4 @@ class CrawlerHealingEngine:
         logger.debug(f"Executing crawler repair for {url}: {adaptation.get('description')}")
         result = await self.browser_executor.crawl(url=url)
         return result
+

@@ -1,3 +1,5 @@
+"""High-Level Service for Bright Data Scraper Studio execution."""
+
 import time
 from typing import Any, Optional
 from uuid import uuid4
@@ -23,7 +25,7 @@ class BrightDataService:
         settings: Optional[Settings] = None,
         client: Optional[BrightDataClient] = None,
         pipeline: Optional[BrightDataLeadPipeline] = None,
-    ):
+    ) -> None:
         self._settings = settings or get_settings()
         self.client = client or BrightDataClient(settings=self._settings)
         self.pipeline = pipeline or BrightDataLeadPipeline(client=self.client, settings=self._settings)
@@ -65,9 +67,9 @@ class BrightDataService:
                     records = await self.pipeline.run_discovery(url)
 
                 all_records.extend(records)
-            except Exception as e:
-                logger.error(f"task_id={task_id} Error scraping '{url}' via Bright Data: {e}")
-                errors.append(f"{url}: {str(e)}")
+            except Exception as error:
+                logger.error(f"task_id={task_id} Error scraping '{url}' via Bright Data: {error}")
+                errors.append(f"{url}: {str(error)}")
 
         elapsed_ms = round((time.time() - start_time) * 1000, 2)
         status_str = "success" if all_records else ("failed" if errors else "empty")
@@ -107,3 +109,4 @@ class BrightDataService:
     async def get_company_profile(self, company_url: str) -> dict[str, Any]:
         """Perform a direct lookup for a single company profile/catalog URL."""
         return await self.pipeline.enrich_company(company_url)
+

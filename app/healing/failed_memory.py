@@ -10,11 +10,13 @@ from app.config.settings import get_settings
 
 logger = get_logger("FAILED_REPAIR_MEMORY")
 
+_DEFAULT_FAILED_REPAIR_TTL_SECONDS = 3600
+
 
 class FailedRepairMemory:
     """Tracks failed repair candidates per domain/signature to prevent wasteful retries."""
 
-    def __init__(self, db_path: str = ".repair_memory.sqlite"):
+    def __init__(self, db_path: str = ".repair_memory.sqlite") -> None:
         self.db_path = db_path
         self.settings = get_settings()
         self._memory_cache: dict[str, dict[str, Any]] = {}
@@ -39,8 +41,8 @@ class FailedRepairMemory:
                     """
                 )
                 conn.commit()
-        except Exception as e:
-            logger.warning(f"Could not initialize failed_repairs SQLite table: {e}")
+        except Exception as error:
+            logger.warning(f"Could not initialize failed_repairs SQLite table: {error}")
 
     def generate_fingerprint(self, config: dict[str, Any]) -> str:
         """Create a deterministic SHA-256 fingerprint for a proposed configuration."""
@@ -55,9 +57,9 @@ class FailedRepairMemory:
         reason: str = "Validation rejection",
     ) -> None:
         """Record or increment a candidate repair failure."""
-        fp = self.generate_fingerprint(config)
+        fingerprint = self.generate_fingerprint(config)
         now = time.time()
-        key = f"{domain}:{signature}:{fp}"
+        key = f"{domain}:{signature}:{fingerprint}"
 
         # Update in-memory
         if key in self._memory_cache:
@@ -68,7 +70,7 @@ class FailedRepairMemory:
             self._memory_cache[key] = {
                 "domain": domain,
                 "signature": signature,
-                "fingerprint": fp,
+                "fingerprint": fingerprint,
                 "failure_count": 1,
                 "updated_at": now,
                 "reason": reason,
@@ -86,13 +88,13 @@ class FailedRepairMemory:
                         failure_reason = excluded.failure_reason,
                         updated_at = excluded.updated_at
                     """,
-                    (domain, signature, fp, reason, now),
+                    (domain, signature, fingerprint, reason, now),
                 )
                 conn.commit()
-        except Exception as e:
-            logger.debug(f"Failed to persist failure record to SQLite: {e}")
+        except Exception as error:
+            logger.debug(f"Failed to persist failure record to SQLite: {error}")
 
-        logger.debug(f"Recorded failed repair candidate for {domain} (fp={fp}, reason='{reason[:40]}')")
+        logger.debug(f"Recorded failed repair candidate for {domain} (fp={fingerprint}, reason='{reason[:40]}')")
 
     def is_suppressed(
         self,
@@ -102,16 +104,16 @@ class FailedRepairMemory:
         ttl_seconds: Optional[int] = None,
     ) -> bool:
         """Check if this candidate has repeatedly failed within the active TTL window."""
-        fp = self.generate_fingerprint(config)
-        ttl = ttl_seconds if ttl_seconds is not None else getattr(self.settings, "FAILED_REPAIR_TTL_SECONDS", 3600)
+        fingerprint = self.generate_fingerprint(config)
+        ttl = ttl_seconds if ttl_seconds is not None else getattr(self.settings, "FAILED_REPAIR_TTL_SECONDS", _DEFAULT_FAILED_REPAIR_TTL_SECONDS)
         now = time.time()
-        key = f"{domain}:{signature}:{fp}"
+        key = f"{domain}:{signature}:{fingerprint}"
 
         # 1. Check in-memory
         if key in self._memory_cache:
-            rec = self._memory_cache[key]
-            if (now - rec["updated_at"]) < ttl and rec["failure_count"] >= 2:
-                logger.debug(f"Candidate {fp} suppressed via memory (failures={rec['failure_count']})")
+            record = self._memory_cache[key]
+            if (now - record["updated_at"]) < ttl and record["failure_count"] >= 2:
+                logger.debug(f"Candidate {fingerprint} suppressed via memory (failures={record['failure_count']})")
                 return True
 
         # 2. Check SQLite
@@ -123,13 +125,13 @@ class FailedRepairMemory:
                     SELECT failure_count, updated_at FROM failed_repairs
                     WHERE domain = ? AND signature = ? AND fingerprint = ?
                     """,
-                    (domain, signature, fp),
+                    (domain, signature, fingerprint),
                 )
                 row = cur.fetchone()
                 if row:
                     count, updated_at = row[0], row[1]
                     if (now - updated_at) < ttl and count >= 2:
-                        logger.debug(f"Candidate {fp} suppressed via SQLite (failures={count})")
+                        logger.debug(f"Candidate {fingerprint} suppressed via SQLite (failures={count})")
                         return True
         except Exception:
             pass
@@ -138,8 +140,9 @@ class FailedRepairMemory:
 
     def get_penalty(self, domain: str, signature: str, config: dict[str, Any]) -> float:
         """Return score penalty factor (0.0 to 0.5) if candidate has previous failures."""
-        fp = self.generate_fingerprint(config)
-        key = f"{domain}:{signature}:{fp}"
+        fingerprint = self.generate_fingerprint(config)
+        key = f"{domain}:{signature}:{fingerprint}"
         if key in self._memory_cache:
             return min(0.5, self._memory_cache[key]["failure_count"] * 0.20)
         return 0.0
+

@@ -1,17 +1,19 @@
 """Scorer for computing quantitative repair confidence scores and assigning confidence tiers."""
 
-from typing import Optional
 from app.config.logging import get_logger
 from app.config.settings import get_settings
 from app.healing.schemas import RepairConfidenceLevel
 
 logger = get_logger("REPAIR_CONFIDENCE_SCORER")
 
+_DEFAULT_HIGH_CONFIDENCE_THRESHOLD = 0.85
+_DEFAULT_MEDIUM_CONFIDENCE_THRESHOLD = 0.65
+
 
 class RepairConfidenceScorer:
     """Computes explainable, multi-signal confidence scores for repair evaluations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.settings = get_settings()
 
     def compute_confidence(
@@ -30,39 +32,40 @@ class RepairConfidenceScorer:
             (confidence_score, confidence_level)
         """
         # 1. Weights
-        w_cand = 0.20
-        w_imp = 0.25
-        w_schema = 0.20
-        w_mp = 0.15
-        w_hist = 0.10
-        w_att_penalty = 0.10
+        weight_candidate = 0.20
+        weight_improvement = 0.25
+        weight_schema = 0.20
+        weight_multi_page = 0.15
+        weight_history = 0.10
+        weight_attempt_penalty = 0.10
 
         # Normalized health improvement signal (bounded [0, 1])
-        norm_imp = min(1.0, max(0.0, final_health))
+        norm_improvement = min(1.0, max(0.0, final_health))
 
         # Attempt penalty (penalty grows on subsequent attempts)
-        att_penalty = min(1.0, (attempt_number - 1) * 0.4)
+        attempt_penalty = min(1.0, (attempt_number - 1) * 0.4)
 
         raw_score = (
-            (w_cand * candidate_confidence)
-            + (w_imp * norm_imp)
-            + (w_schema * schema_valid_rate)
-            + (w_mp * multi_page_score)
-            + (w_hist * historical_success_rate)
-            - (w_att_penalty * att_penalty)
+            (weight_candidate * candidate_confidence)
+            + (weight_improvement * norm_improvement)
+            + (weight_schema * schema_valid_rate)
+            + (weight_multi_page * multi_page_score)
+            + (weight_history * historical_success_rate)
+            - (weight_attempt_penalty * attempt_penalty)
         )
 
         score = round(max(0.0, min(1.0, raw_score)), 3)
 
-        high_thresh = getattr(self.settings, "HIGH_CONFIDENCE_THRESHOLD", 0.85)
-        med_thresh = getattr(self.settings, "MEDIUM_CONFIDENCE_THRESHOLD", 0.65)
+        high_threshold = getattr(self.settings, "HIGH_CONFIDENCE_THRESHOLD", _DEFAULT_HIGH_CONFIDENCE_THRESHOLD)
+        medium_threshold = getattr(self.settings, "MEDIUM_CONFIDENCE_THRESHOLD", _DEFAULT_MEDIUM_CONFIDENCE_THRESHOLD)
 
-        if score >= high_thresh:
+        if score >= high_threshold:
             tier = RepairConfidenceLevel.HIGH
-        elif score >= med_thresh:
+        elif score >= medium_threshold:
             tier = RepairConfidenceLevel.MEDIUM
         else:
             tier = RepairConfidenceLevel.LOW
 
         logger.debug(f"Calculated repair confidence: score={score:.3f} -> tier={tier.value}")
         return score, tier
+

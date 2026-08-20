@@ -1,3 +1,5 @@
+"""Autonomous Self-Healing Engine coordinating evidence collection, candidate ranking, canary execution, deterministic evaluation, multi-page validation, and repair memory."""
+
 import json
 import time
 from typing import Any, Optional
@@ -16,10 +18,8 @@ from app.healing.freshness import RepairFreshnessLifecycle
 from app.healing.memory import RepairMemory
 from app.healing.multi_page import MultiPageRepairValidator
 from app.healing.observability import RepairObservability, RepairSessionTelemetry
-from app.healing.patcher import RepairPatcher
 from app.healing.planner import HealingPlanner
 from app.healing.schemas import (
-    PerformanceSnapshot,
     RepairConfidenceLevel,
     RepairEvaluation,
     RepairFreshnessStatus,
@@ -55,7 +55,7 @@ class HealingEngine:
         freshness: Optional[RepairFreshnessLifecycle] = None,
         action_executor: Optional[ActionRepairExecutor] = None,
         max_repair_attempts: int = 3,
-    ):
+    ) -> None:
         self.evidence_collector = evidence_collector or RepairEvidenceCollector()
         self.planner = planner or HealingPlanner()
         self.executor = executor or RepairExecutor()
@@ -373,3 +373,4 @@ class HealingEngine:
             )
         )
         return False, None, last_eval, [], repair_history
+

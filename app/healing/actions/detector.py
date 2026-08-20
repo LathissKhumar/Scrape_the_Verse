@@ -1,12 +1,14 @@
 """Detector for identifying blocking UI interactions, cookie banners, modals, and dynamic triggers."""
 
 import re
-from typing import Any, Optional
+from typing import Any
 from bs4 import BeautifulSoup
 from app.config.logging import get_logger
-from app.healing.actions.models import ActionPlan, ActionType, PageAction
+from app.healing.actions.models import ActionType
 
 logger = get_logger("ACTION_ISSUE_DETECTOR")
+
+_HAS_TEXT_REGEX = re.compile(r"has-text\('([^']+)'\)")
 
 
 class ActionIssueDetector:
@@ -72,7 +74,7 @@ class ActionIssueDetector:
             else:
                 el = None
 
-            text_pattern = re.search(r"has-text\('([^']+)'\)", sel)
+            text_pattern = _HAS_TEXT_REGEX.search(sel)
             if text_pattern:
                 target_text = text_pattern.group(1).lower()
                 for btn in soup.find_all(["button", "a"]):
@@ -91,7 +93,7 @@ class ActionIssueDetector:
 
         # 2. Check for Blocking Modals / Overlays
         for sel in self.MODAL_DISMISS_SELECTORS:
-            text_pattern = re.search(r"has-text\('([^']+)'\)", sel)
+            text_pattern = _HAS_TEXT_REGEX.search(sel)
             matched = False
             if text_pattern:
                 target_text = text_pattern.group(1).lower()
@@ -101,7 +103,7 @@ class ActionIssueDetector:
                             "issue_type": "BLOCKING_MODAL_OVERLAY",
                             "recommended_action": ActionType.DISMISS_OVERLAY,
                             "target_selector": sel,
-                        })
+                            })
                         matched = True
                         break
             if matched:
@@ -109,7 +111,7 @@ class ActionIssueDetector:
 
         # 3. Check for Load More / Pagination triggers
         for sel in self.LOAD_MORE_SELECTORS:
-            text_pattern = re.search(r"has-text\('([^']+)'\)", sel)
+            text_pattern = _HAS_TEXT_REGEX.search(sel)
             if text_pattern:
                 target_text = text_pattern.group(1).lower()
                 for btn in soup.find_all(["button", "a"]):
@@ -131,3 +133,4 @@ class ActionIssueDetector:
             })
 
         return issues
+

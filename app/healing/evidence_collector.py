@@ -1,3 +1,5 @@
+"""Repair evidence collector acquiring fresh page snapshots and testing transient recovery."""
+
 from typing import Any, Optional
 from bs4 import BeautifulSoup
 from app.config.logging import get_logger
@@ -18,7 +20,7 @@ class RepairEvidenceCollector:
         scraper_agent: Optional[Any] = None,
         extraction_engine: Optional[ExtractionEngine] = None,
         validation_engine: Optional[ValidationEngine] = None,
-    ):
+    ) -> None:
         self.scraper_agent = scraper_agent
         self.extraction_engine = extraction_engine
         self.validation_engine = validation_engine
@@ -33,14 +35,14 @@ class RepairEvidenceCollector:
         try:
             raw_dicts = await self.scraper_agent.execute(task=task)
             raw_pages: list[RawPage] = []
-            for r in raw_dicts:
-                if isinstance(r, dict):
-                    raw_pages.append(RawPage(**r))
-                elif isinstance(r, RawPage):
-                    raw_pages.append(r)
+            for item in raw_dicts:
+                if isinstance(item, dict):
+                    raw_pages.append(RawPage(**item))
+                elif isinstance(item, RawPage):
+                    raw_pages.append(item)
             return raw_pages
-        except Exception as e:
-            logger.warning(f"Failed to fetch fresh page evidence for task {task.task_id}: {e}")
+        except Exception as error:
+            logger.warning(f"Failed to fetch fresh page evidence for task {task.task_id}: {error}")
             return []
 
     async def check_transient_recovery(
@@ -80,8 +82,8 @@ class RepairEvidenceCollector:
 
             return raw_pages, False, val_res
 
-        except Exception as e:
-            logger.warning(f"Error checking transient recovery on fresh scrape: {e}")
+        except Exception as error:
+            logger.warning(f"Error checking transient recovery on fresh scrape: {error}")
             return raw_pages, False, None
 
     def summarize_dom_evidence(self, raw_pages: list[RawPage], max_snippet_length: int = 4000) -> dict[str, Any]:
@@ -106,8 +108,8 @@ class RepairEvidenceCollector:
                             candidate_classes.add(str(c))
                     elif isinstance(classes, str):
                         candidate_classes.add(classes)
-            except Exception as e:
-                logger.warning(f"Failed to parse HTML for DOM summary: {e}")
+            except Exception as error:
+                logger.warning(f"Failed to parse HTML for DOM summary: {error}")
 
         # Limit candidate classes to top/most descriptive
         sorted_classes = sorted(list(candidate_classes))[:50]
@@ -118,3 +120,4 @@ class RepairEvidenceCollector:
             "tag_counts": tag_counts,
             "html_snippet": html_content[:max_snippet_length] if html_content else "",
         }
+

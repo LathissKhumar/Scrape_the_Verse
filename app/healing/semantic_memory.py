@@ -2,18 +2,21 @@
 
 from collections import Counter
 import math
-from typing import Any, Optional
+from typing import Any
 from bs4 import BeautifulSoup
 from app.config.logging import get_logger
-from app.healing.schemas import RepairMemoryRecord, RepairType
+from app.healing.schemas import RepairMemoryRecord
 
 logger = get_logger("SEMANTIC_REPAIR_MEMORY")
+
+_IGNORED_DOM_TAGS = {"script", "style", "meta", "link", "svg", "path"}
+_REPEATING_CONTAINER_KEYWORDS = ["card", "item", "product", "row", "post"]
 
 
 class SemanticRepairMemory:
     """Finds structurally and semantically similar successful repairs across different domains."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._structural_records: list[dict[str, Any]] = []
 
     def extract_structural_skeleton(self, html: str) -> dict[str, float]:
@@ -23,14 +26,17 @@ class SemanticRepairMemory:
 
         soup = BeautifulSoup(html[:15000], "html.parser")
         # Collect tag distribution and nesting signatures
-        tags = [tag.name for tag in soup.find_all(True) if tag.name not in ("script", "style", "meta", "link", "svg", "path")]
+        tags = [
+            tag.name for tag in soup.find_all(True)
+            if tag.name not in _IGNORED_DOM_TAGS
+        ]
         counts = Counter(tags)
         total = max(1, sum(counts.values()))
 
         vector = {k: v / total for k, v in counts.items()}
 
         # Add repeated container indicators
-        has_cards = len(soup.find_all(class_=lambda c: c and any(k in str(c).lower() for k in ["card", "item", "product", "row", "post"]))) > 2
+        has_cards = len(soup.find_all(class_=lambda c: c and any(k in str(c).lower() for k in _REPEATING_CONTAINER_KEYWORDS))) > 2
         has_table = len(soup.find_all("table")) > 0
 
         vector["__has_cards__"] = 1.0 if has_cards else 0.0
@@ -84,3 +90,4 @@ class SemanticRepairMemory:
         if results:
             logger.debug(f"Discovered {len(results)} cross-domain semantic candidate priors (top similarity={matches[0][0]:.2f})")
         return results
+

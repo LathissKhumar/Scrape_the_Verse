@@ -1,3 +1,5 @@
+"""Record deduplication engine based on primary keys and composite hashing."""
+
 import hashlib
 import json
 from typing import Any, Optional
@@ -35,18 +37,18 @@ class RecordDeduplicator:
 
             # Normalize values
             normalized_record: dict[str, Any] = {}
-            for k, v in record.items():
-                if isinstance(v, str):
-                    normalized_record[k] = v.strip()
+            for key, value in record.items():
+                if isinstance(value, str):
+                    normalized_record[key] = value.strip()
                 else:
-                    normalized_record[k] = v
+                    normalized_record[key] = value
 
             if effective_key and normalized_record.get(effective_key):
                 dedup_key = f"{effective_key}:{str(normalized_record[effective_key]).strip().lower()}"
             else:
                 # Composite hash of sorted items
                 sorted_items = sorted([
-                    (str(k), str(v).strip()) for k, v in normalized_record.items() if v is not None
+                    (str(key), str(val).strip()) for key, val in normalized_record.items() if val is not None
                 ])
                 serialized = json.dumps(sorted_items, sort_keys=True)
                 dedup_key = hashlib.md5(serialized.encode("utf-8")).hexdigest()
@@ -56,3 +58,4 @@ class RecordDeduplicator:
                 deduped.append(normalized_record)
 
         return deduped
+

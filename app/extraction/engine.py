@@ -1,7 +1,10 @@
+"""Central extraction engine orchestrating deterministic, card grid, vision, and LLM strategies."""
+
 import asyncio
 import html
 from typing import Any, Optional
 from urllib.parse import urljoin
+
 from app.config.logging import get_logger
 from app.crawler.link_discovery import LinkDiscoveryEngine
 from app.extraction.css import CSSExtractor
@@ -39,6 +42,10 @@ FIELD_SYNONYM_MAP: dict[str, list[str]] = {
     "upc": ["upccode", "universalproductcode", "sku", "barcode", "productcode", "isbn"],
 }
 
+_URL_FIELD_SUBSTRINGS = ["image", "img", "thumbnail", "picture", "url", "link", "href"]
+_RAW_PAGE_FIELD_KEYS = {"url", "html", "markdown", "text", "metadata", "raw_payload"}
+_NULL_LITERAL_STRINGS = {"none", "null", "n/a"}
+
 
 class ExtractionEngine:
     """Central extraction engine orchestrating deterministic, card grid, vision, and LLM strategies."""
@@ -56,7 +63,7 @@ class ExtractionEngine:
         deduplicator: Optional[RecordDeduplicator] = None,
         browser_executor: Optional[Any] = None,
         link_discovery: Optional[LinkDiscoveryEngine] = None,
-    ):
+    ) -> None:
         self.css_extractor = css_extractor or CSSExtractor()
         self.xpath_extractor = xpath_extractor or XPathExtractor()
         self.regex_extractor = regex_extractor or RegexExtractor()
@@ -72,7 +79,7 @@ class ExtractionEngine:
 
     def _build_default_schema(self, task: ScrapingTask) -> ExtractionSchema:
         """Construct an ExtractionSchema from a ScrapingTask."""
-        field_rules = []
+        field_rules: list[FieldRule] = []
         for field_name in task.fields:
             field_type = "string"
             if task.output_schema and field_name in task.output_schema:
@@ -121,15 +128,15 @@ class ExtractionEngine:
                 if val and isinstance(val, str):
                     val = html.unescape(val.strip())
                     if base_url:
-                        is_url_field = any(u in norm_field for u in ["image", "img", "thumbnail", "picture", "url", "link", "href"])
+                        is_url_field = any(u in norm_field for u in _URL_FIELD_SUBSTRINGS)
                         if is_url_field and (val.startswith("../") or val.startswith("/") or not val.startswith("http")):
                             val = urljoin(base_url, val)
 
                 conformed_rec[field] = val
 
-            for k, v in rec.items():
-                if k not in conformed_rec:
-                    conformed_rec[k] = html.unescape(v.strip()) if isinstance(v, str) else v
+            for key, value in rec.items():
+                if key not in conformed_rec:
+                    conformed_rec[key] = html.unescape(value.strip()) if isinstance(value, str) else value
             conformed.append(conformed_rec)
 
         return conformed
@@ -157,7 +164,7 @@ class ExtractionEngine:
             # Count populated non-empty values
             populated_fields = [
                 k for k, v in rec.items()
-                if v is not None and str(v).strip() and str(v).strip().lower() not in ("none", "null", "n/a")
+                if v is not None and str(v).strip() and str(v).strip().lower() not in _NULL_LITERAL_STRINGS
             ]
 
             if not populated_fields:
@@ -168,7 +175,7 @@ class ExtractionEngine:
                 has_primary = any(
                     rec.get(pk) is not None
                     and str(rec.get(pk)).strip()
-                    and str(rec.get(pk)).strip().lower() not in ("none", "null", "n/a")
+                    and str(rec.get(pk)).strip().lower() not in _NULL_LITERAL_STRINGS
                     for pk in primary_requested
                 )
                 if not has_primary:
@@ -192,34 +199,8 @@ class ExtractionEngine:
         """Alias for extract_async to maintain consistent interface across agent layers."""
         return await self.extract_async(raw_content=raw_results, task=task, schema=schema)
 
-    async def extract_async(
-        self,
-        raw_content: Any,
-        task: ScrapingTask,
-        schema: Optional[ExtractionSchema] = None,
-    ) -> ExtractionResult:
-        """Execute structured extraction asynchronously across content and task."""
-        effective_schema = schema or self._build_default_schema(task)
-
-        # 1. Check if raw_content is already a list of structured records (from Bright Data direct collector)
-        if isinstance(raw_content, list) and raw_content and isinstance(raw_content[0], dict):
-            first_item = raw_content[0]
-            raw_keys = {"url", "html", "markdown", "text", "metadata", "raw_payload"}
-            # If the item contains html or matches raw page fields, it is a raw page, not structured records
-            is_raw_page = bool("html" in first_item or "markdown" in first_item or set(first_item.keys()).issubset(raw_keys))
-            if not is_raw_page:
-                logger.info("Raw content is already structured records. Applying passthrough normalization.")
-                deduped = self.deduplicator.deduplicate(raw_content)
-                conformed = self._enforce_task_schema(deduped, task)
-                grounded = self._filter_grounded_records(conformed, task)
-                return ExtractionResult(
-                    records=grounded,
-                    strategy_used=ExtractionStrategyEnum.PASSTHROUGH.value,
-                    fallback_used=False,
-                    metadata={"record_count": len(grounded)},
-                )
-
-        # 2. Normalize content to list of RawPage instances
+    def _normalize_raw_pages(self, raw_content: Any) -> list[RawPage]:
+        """Convert arbitrary input payloads into standard list of RawPage instances."""
         pages: list[RawPage] = []
         if isinstance(raw_content, list):
             for item in raw_content:
@@ -242,7 +223,211 @@ class ExtractionEngine:
                 text=raw_content.get("text") if isinstance(raw_content, dict) else None,
                 raw_payload=raw_content,
             ))
+        return pages
 
+    async def _extract_page_with_cascade(
+        self,
+        page: RawPage,
+        task: ScrapingTask,
+        effective_schema: ExtractionSchema,
+        schema_provided: bool,
+    ) -> tuple[list[dict[str, Any]], str, bool]:
+        """Execute cascading extraction strategies on a single raw page."""
+        page_records: list[dict[str, Any]] = []
+        page_strategy = "none"
+        page_fallback = False
+
+        # Strategy A: LLM if explicitly requested in schema
+        if effective_schema.strategy == ExtractionStrategyEnum.LLM and self.llm_extractor:
+            logger.debug("Executing LLM extraction strategy as configured in schema")
+            llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
+            if llm_records:
+                page_records = llm_records
+                page_strategy = ExtractionStrategyEnum.LLM.value
+                if not schema_provided:
+                    page_fallback = True
+
+        # Strategy B: CSS / XPath if base selector exists
+        if not page_records and effective_schema.base_selector:
+            if effective_schema.base_selector.startswith("/") or effective_schema.base_selector.startswith(".//"):
+                logger.debug("Attempting deterministic XPath extraction")
+                records = self.xpath_extractor.extract(page, effective_schema)
+                if records:
+                    page_records = records
+                    page_strategy = ExtractionStrategyEnum.XPATH.value
+            else:
+                logger.debug("Attempting deterministic CSS extraction")
+                records = self.css_extractor.extract(page, effective_schema)
+                if records:
+                    page_records = records
+                    page_strategy = ExtractionStrategyEnum.CSS.value
+
+        # Strategy C: HTML Table Extraction (if table contains requested fields)
+        if not page_records:
+            table_records = self.table_extractor.extract(page, effective_schema)
+            if table_records:
+                has_table_coverage = all(
+                    any(r.get(f) is not None for r in table_records)
+                    for f in task.fields
+                )
+                if has_table_coverage or not self.llm_extractor:
+                    logger.debug(f"Deterministic Table extractor extracted {len(table_records)} record(s)")
+                    page_records = table_records
+                    page_strategy = ExtractionStrategyEnum.TABLE.value
+                else:
+                    logger.debug("Table extraction returned incomplete field coverage; cascading to next strategy")
+
+        # Strategy D: Deterministic Repeating Grid / Card Extractor
+        if not page_records and page.html:
+            card_records = self.grid_card_extractor.extract(page.html, target_fields=task.fields, base_url=page.url)
+            if card_records:
+                has_card_coverage = all(
+                    any(r.get(f) is not None for r in card_records)
+                    for f in task.fields
+                )
+                if has_card_coverage or not self.llm_extractor:
+                    logger.debug(f"Deterministic GridCard extractor extracted {len(card_records)} card record(s)")
+                    page_records = card_records
+                    page_strategy = "grid_card"
+                else:
+                    logger.debug("GridCard extraction returned incomplete coverage; cascading to next strategy")
+
+        # Strategy E: Regex Extraction for pattern fields
+        if not page_records:
+            regex_records = self.regex_extractor.extract(page, effective_schema)
+            if regex_records:
+                has_coverage = all(
+                    any(r.get(f) is not None for r in regex_records)
+                    for f in task.fields
+                )
+                if has_coverage or not self.llm_extractor:
+                    logger.debug(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
+                    page_records = regex_records
+                    page_strategy = ExtractionStrategyEnum.REGEX.value
+                else:
+                    logger.debug("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
+
+        # Strategy F: LLM Extraction Fallback with Qwen3:8b
+        if not page_records and self.llm_extractor:
+            logger.debug("Cascading to LLM extraction strategy (Qwen3:8b)")
+            llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
+            if llm_records:
+                page_records = llm_records
+                page_strategy = ExtractionStrategyEnum.LLM.value
+                page_fallback = True
+
+        return page_records, page_strategy, page_fallback
+
+    async def _handle_child_link_fallback(
+        self,
+        pages: list[RawPage],
+        task: ScrapingTask,
+        effective_schema: ExtractionSchema,
+        conformed: list[dict[str, Any]],
+        missing_fields: list[str],
+        is_insufficient_records: bool,
+    ) -> list[dict[str, Any]]:
+        """Discover candidate child links and crawl them in parallel to enrich missing fields."""
+        discovered_child_urls: list[str] = []
+        for p in pages:
+            if p.html and p.url:
+                links = self.link_discovery.extract_candidate_links(
+                    html=p.html,
+                    base_url=p.url,
+                    query_keywords=task.fields + ([task.objective] if task.objective else []),
+                    max_links=3,
+                )
+                for link in links:
+                    if link not in discovered_child_urls:
+                        discovered_child_urls.append(link)
+
+        if not discovered_child_urls:
+            return conformed
+
+        logger.debug(
+            f"Discovered {len(discovered_child_urls)} candidate child URL(s). "
+            f"Crawling child pages in parallel: {discovered_child_urls}"
+        )
+        child_crawl_tasks = [self.browser_executor.crawl(url=u) for u in discovered_child_urls]
+        child_results = await asyncio.gather(*child_crawl_tasks)
+        child_pages = [
+            RawPage(url=cr.url, html=cr.html, text=getattr(cr, "text", None), raw_payload=getattr(cr, "extracted_data", None))
+            for cr in child_results if cr and getattr(cr, "html", None)
+        ]
+
+        if not child_pages:
+            return conformed
+
+        child_extracted_records: list[dict[str, Any]] = []
+        for cp in child_pages:
+            c_records: list[dict[str, Any]] = []
+            # Strategy 1: Table
+            t_records = self.table_extractor.extract(cp, effective_schema)
+            if t_records and any(any(r.get(f) is not None for r in t_records) for f in missing_fields):
+                c_records = t_records
+            # Strategy 2: Regex
+            if not c_records:
+                r_records = self.regex_extractor.extract(cp, effective_schema)
+                if r_records and any(any(r.get(f) is not None for r in r_records) for f in missing_fields):
+                    c_records = r_records
+            # Strategy 3: LLM
+            if not c_records and self.llm_extractor:
+                llm_recs = await self.llm_extractor.extract_async(cp, task, effective_schema)
+                if llm_recs:
+                    c_records = llm_recs
+            child_extracted_records.extend(c_records)
+
+        # Fuse child records into conformed records
+        if conformed and child_extracted_records:
+            if is_insufficient_records:
+                combined = conformed + child_extracted_records
+                conformed = self._enforce_task_schema(
+                    self.deduplicator.deduplicate(combined),
+                    task,
+                    base_url=pages[0].url if pages else None,
+                )
+            else:
+                for conf_rec in conformed:
+                    for ch_rec in child_extracted_records:
+                        for mf in missing_fields:
+                            if conf_rec.get(mf) is None and ch_rec.get(mf) is not None:
+                                conf_rec[mf] = ch_rec[mf]
+        elif child_extracted_records:
+            conformed = self._enforce_task_schema(
+                self.deduplicator.deduplicate(child_extracted_records),
+                task,
+                base_url=pages[0].url if pages else None,
+            )
+
+        return conformed
+
+    async def extract_async(
+        self,
+        raw_content: Any,
+        task: ScrapingTask,
+        schema: Optional[ExtractionSchema] = None,
+    ) -> ExtractionResult:
+        """Execute structured extraction asynchronously across content and task."""
+        effective_schema = schema or self._build_default_schema(task)
+
+        # 1. Check if raw_content is already a list of structured records (from Bright Data direct collector)
+        if isinstance(raw_content, list) and raw_content and isinstance(raw_content[0], dict):
+            first_item = raw_content[0]
+            is_raw_page = bool("html" in first_item or "markdown" in first_item or set(first_item.keys()).issubset(_RAW_PAGE_FIELD_KEYS))
+            if not is_raw_page:
+                logger.info("Raw content is already structured records. Applying passthrough normalization.")
+                deduped = self.deduplicator.deduplicate(raw_content)
+                conformed = self._enforce_task_schema(deduped, task)
+                grounded = self._filter_grounded_records(conformed, task)
+                return ExtractionResult(
+                    records=grounded,
+                    strategy_used=ExtractionStrategyEnum.PASSTHROUGH.value,
+                    fallback_used=False,
+                    metadata={"record_count": len(grounded)},
+                )
+
+        # 2. Normalize content to list of RawPage instances
+        pages = self._normalize_raw_pages(raw_content)
         if not pages:
             return ExtractionResult(records=[], strategy_used="none", fallback_used=False, metadata={"record_count": 0})
 
@@ -251,88 +436,12 @@ class ExtractionEngine:
         any_fallback = False
 
         for page in pages:
-            page_records: list[dict[str, Any]] = []
-            page_strategy = "none"
-            page_fallback = False
-
-            # Strategy A: LLM if explicitly requested in schema
-            if effective_schema.strategy == ExtractionStrategyEnum.LLM and self.llm_extractor:
-                logger.debug("Executing LLM extraction strategy as configured in schema")
-                llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
-                if llm_records:
-                    page_records = llm_records
-                    page_strategy = ExtractionStrategyEnum.LLM.value
-                    if schema is None:
-                        page_fallback = True
-
-            # Strategy B: CSS / XPath if base selector exists
-            if not page_records and effective_schema.base_selector:
-                if effective_schema.base_selector.startswith("/") or effective_schema.base_selector.startswith(".//"):
-                    logger.debug("Attempting deterministic XPath extraction")
-                    records = self.xpath_extractor.extract(page, effective_schema)
-                    if records:
-                        page_records = records
-                        page_strategy = ExtractionStrategyEnum.XPATH.value
-                else:
-                    logger.debug("Attempting deterministic CSS extraction")
-                    records = self.css_extractor.extract(page, effective_schema)
-                    if records:
-                        page_records = records
-                        page_strategy = ExtractionStrategyEnum.CSS.value
-
-            # Strategy B: HTML Table Extraction (if table contains requested fields)
-            if not page_records:
-                table_records = self.table_extractor.extract(page, effective_schema)
-                if table_records:
-                    has_table_coverage = all(
-                        any(r.get(f) is not None for r in table_records)
-                        for f in task.fields
-                    )
-                    if has_table_coverage or not self.llm_extractor:
-                        logger.debug(f"Deterministic Table extractor extracted {len(table_records)} record(s)")
-                        page_records = table_records
-                        page_strategy = ExtractionStrategyEnum.TABLE.value
-                    else:
-                        logger.debug("Table extraction returned incomplete field coverage; cascading to next strategy")
-
-            # Strategy C: Deterministic Repeating Grid / Card Extractor
-            if not page_records and page.html:
-                card_records = self.grid_card_extractor.extract(page.html, target_fields=task.fields, base_url=page.url)
-                if card_records:
-                    has_card_coverage = all(
-                        any(r.get(f) is not None for r in card_records)
-                        for f in task.fields
-                    )
-                    if has_card_coverage or not self.llm_extractor:
-                        logger.debug(f"Deterministic GridCard extractor extracted {len(card_records)} card record(s)")
-                        page_records = card_records
-                        page_strategy = "grid_card"
-                    else:
-                        logger.debug("GridCard extraction returned incomplete coverage; cascading to next strategy")
-
-            # Strategy D: Regex Extraction for pattern fields
-            if not page_records:
-                regex_records = self.regex_extractor.extract(page, effective_schema)
-                if regex_records:
-                    has_coverage = all(
-                        any(r.get(f) is not None for r in regex_records)
-                        for f in task.fields
-                    )
-                    if has_coverage or not self.llm_extractor:
-                        logger.debug(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
-                        page_records = regex_records
-                        page_strategy = ExtractionStrategyEnum.REGEX.value
-                    else:
-                        logger.debug("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
-
-            # Strategy E: LLM Extraction Fallback with Qwen3:8b
-            if not page_records and self.llm_extractor:
-                logger.debug("Cascading to LLM extraction strategy (Qwen3:8b)")
-                llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
-                if llm_records:
-                    page_records = llm_records
-                    page_strategy = ExtractionStrategyEnum.LLM.value
-                    page_fallback = True
+            page_records, page_strategy, page_fallback = await self._extract_page_with_cascade(
+                page=page,
+                task=task,
+                effective_schema=effective_schema,
+                schema_provided=schema is not None,
+            )
 
             all_extracted_records.extend(page_records)
             if page_strategy != "none":
@@ -361,72 +470,14 @@ class ExtractionEngine:
                 f"Primary extraction incomplete ({reason}). "
                 "Initiating conditional fallback child link discovery..."
             )
-            discovered_child_urls: list[str] = []
-            for p in pages:
-                if p.html and p.url:
-                    links = self.link_discovery.extract_candidate_links(
-                        html=p.html,
-                        base_url=p.url,
-                        query_keywords=task.fields + ([task.objective] if task.objective else []),
-                        max_links=3,
-                    )
-                    for link in links:
-                        if link not in discovered_child_urls:
-                            discovered_child_urls.append(link)
-
-            if discovered_child_urls:
-                logger.debug(
-                    f"Discovered {len(discovered_child_urls)} candidate child URL(s). "
-                    f"Crawling child pages in parallel: {discovered_child_urls}"
-                )
-                child_crawl_tasks = [self.browser_executor.crawl(url=u) for u in discovered_child_urls]
-                child_results = await asyncio.gather(*child_crawl_tasks)
-                child_pages = [
-                    RawPage(url=cr.url, html=cr.html, text=getattr(cr, "text", None), raw_payload=getattr(cr, "extracted_data", None))
-                    for cr in child_results if cr and getattr(cr, "html", None)
-                ]
-
-                if child_pages:
-                    child_extracted_records: list[dict[str, Any]] = []
-                    for cp in child_pages:
-                        c_records: list[dict[str, Any]] = []
-                        # Strategy 1: Table
-                        t_records = self.table_extractor.extract(cp, effective_schema)
-                        if t_records and any(any(r.get(f) is not None for r in t_records) for f in missing_fields):
-                            c_records = t_records
-                        # Strategy 2: Regex
-                        if not c_records:
-                            r_records = self.regex_extractor.extract(cp, effective_schema)
-                            if r_records and any(any(r.get(f) is not None for r in r_records) for f in missing_fields):
-                                c_records = r_records
-                        # Strategy 3: LLM
-                        if not c_records and self.llm_extractor:
-                            llm_recs = await self.llm_extractor.extract_async(cp, task, effective_schema)
-                            if llm_recs:
-                                c_records = llm_recs
-                        child_extracted_records.extend(c_records)
-
-                    # Fuse child records into conformed records
-                    if conformed and child_extracted_records:
-                        if is_insufficient_records:
-                            combined = conformed + child_extracted_records
-                            conformed = self._enforce_task_schema(
-                                self.deduplicator.deduplicate(combined),
-                                task,
-                                base_url=pages[0].url if pages else None,
-                            )
-                        else:
-                            for conf_rec in conformed:
-                                for ch_rec in child_extracted_records:
-                                    for mf in missing_fields:
-                                        if conf_rec.get(mf) is None and ch_rec.get(mf) is not None:
-                                            conf_rec[mf] = ch_rec[mf]
-                    elif child_extracted_records:
-                        conformed = self._enforce_task_schema(
-                            self.deduplicator.deduplicate(child_extracted_records),
-                            task,
-                            base_url=pages[0].url if pages else None,
-                        )
+            conformed = await self._handle_child_link_fallback(
+                pages=pages,
+                task=task,
+                effective_schema=effective_schema,
+                conformed=conformed,
+                missing_fields=missing_fields,
+                is_insufficient_records=is_insufficient_records,
+            )
 
         grounded_records = self._filter_grounded_records(conformed, task)
 
@@ -436,4 +487,5 @@ class ExtractionEngine:
             fallback_used=any_fallback,
             metadata={"record_count": len(grounded_records)},
         )
+
 

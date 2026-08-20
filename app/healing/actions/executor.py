@@ -1,9 +1,9 @@
 """Safe, bounded browser action executor for dynamic self-healing interaction repair."""
 
 import asyncio
-from typing import Any, Optional
+from typing import Any
 from app.config.logging import get_logger
-from app.healing.actions.models import ActionPlan, ActionType, PageAction
+from app.healing.actions.models import ActionPlan, ActionType
 
 logger = get_logger("ACTION_REPAIR_EXECUTOR")
 
@@ -20,7 +20,7 @@ class ActionRepairExecutor:
         bounded_actions = plan.actions[:5]
 
         for idx, action in enumerate(bounded_actions, start=1):
-            act_record = {
+            act_record: dict[str, Any] = {
                 "step": idx,
                 "action_type": action.action_type.value,
                 "selector": action.selector,
@@ -61,10 +61,10 @@ class ActionRepairExecutor:
                         await page.hover(action.selector, timeout=action.timeout_ms)
                         act_record["status"] = "success"
 
-            except Exception as e:
-                logger.warning(f"Action step {idx} ({action.action_type.value} on {action.selector}) failed: {e}")
+            except Exception as error:
+                logger.warning(f"Action step {idx} ({action.action_type.value} on {action.selector}) failed: {error}")
                 act_record["status"] = "failed"
-                act_record["error"] = str(e)
+                act_record["error"] = str(error)
                 if not action.optional:
                     break
 
@@ -88,3 +88,4 @@ class ActionRepairExecutor:
             "success": any(a["status"] == "success" for a in actions_executed),
             "updated_html": updated_html,
         }
+

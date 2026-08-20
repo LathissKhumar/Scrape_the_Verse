@@ -1,5 +1,7 @@
+"""Google Maps scraping agent supporting autonomous delegation and geo-queries."""
+
 import re
-from typing import Any, Optional
+from typing import Optional
 from uuid import uuid4
 
 from app.config.logging import get_logger
@@ -9,6 +11,24 @@ from app.llm.base import LLMClient
 from app.models.schemas import ScrapingResult, ScrapingTask
 
 logger = get_logger("GMAPS_AGENT")
+
+_PREFIX_CLEAN_PATTERN = re.compile(
+    r"^(?:find|search|scrape|get|list|extract)\s+",
+    re.IGNORECASE,
+)
+_LOCATION_SPLIT_PATTERN = re.compile(
+    r"^(.*?)\s+(?:in|near|around|at)\s+(.*)$",
+    re.IGNORECASE,
+)
+_GMAPS_DOMAINS = ("google.com/maps", "maps.google", "g.page")
+_GMAPS_KEYWORDS = (
+    "google maps",
+    "near me",
+    "in chennai",
+    "in bangalore",
+    "in mumbai",
+    "in delhi",
+)
 
 
 class GoogleMapsAgent:
@@ -23,31 +43,29 @@ class GoogleMapsAgent:
         service: Optional[GoogleMapsService] = None,
         llm_client: Optional[LLMClient] = None,
         settings: Optional[Settings] = None,
-    ):
+    ) -> None:
         self._settings = settings or get_settings()
         self.service = service or GoogleMapsService(settings=self._settings)
         self.llm_client = llm_client
 
     def is_gmaps_query(self, query_or_url: str) -> bool:
         """Heuristic to detect if a query or URL is intended for Google Maps."""
-        lower = query_or_url.lower()
-        if "google.com/maps" in lower or "maps.google" in lower or "g.page" in lower:
+        lower_query = query_or_url.lower()
+        if any(domain in lower_query for domain in _GMAPS_DOMAINS):
             return True
-        if any(keyword in lower for keyword in ["google maps", "near me", "in chennai", "in bangalore", "in mumbai", "in delhi"]):
+        if any(keyword in lower_query for keyword in _GMAPS_KEYWORDS):
             return True
         return False
 
     def parse_query_and_location(self, query: str) -> tuple[str, Optional[str]]:
         """Extract search category and geographic location from query string."""
-        clean = query.strip()
-        # Strip common instruction prefixes: find, search, scrape, get, list, extract
-        clean = re.sub(r"^(?:find|search|scrape|get|list|extract)\s+", "", clean, flags=re.IGNORECASE).strip()
+        clean_query = query.strip()
+        clean_query = _PREFIX_CLEAN_PATTERN.sub("", clean_query).strip()
 
-        # Look for "in <Location>" or "near <Location>"
-        match = re.search(r"^(.*?)\s+(?:in|near|around|at)\s+(.*)$", clean, re.IGNORECASE)
+        match = _LOCATION_SPLIT_PATTERN.search(clean_query)
         if match:
             return match.group(1).strip(), match.group(2).strip()
-        return clean, None
+        return clean_query, None
 
     async def execute_agent_delegation(
         self,
@@ -79,3 +97,4 @@ class GoogleMapsAgent:
                 "scraper_provider": "brightdata_gmaps",
             },
         )
+

@@ -1,4 +1,5 @@
-"""Phase 5 Autonomous Self-Healing Subsystem."""
+"""Autonomous Self-Healing Subsystem for automated crawler and scraper repair."""
+
 from app.healing.schemas import (
     PerformanceSnapshot,
     RepairCandidate,
@@ -18,3 +19,4 @@ __all__ = [
     "RepairEvaluation",
     "RepairMemoryRecord",
 ]
+

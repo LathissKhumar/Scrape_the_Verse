@@ -1,3 +1,5 @@
+"""Data models and transfer schemas for self-healing, evaluations, and repair plans."""
+
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Literal, Optional
@@ -162,3 +164,4 @@ class RepairMemoryRecord(BaseModel):
     timestamp: str = Field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
+

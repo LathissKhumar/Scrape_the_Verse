@@ -9,11 +9,14 @@ from app.config.settings import get_settings
 
 logger = get_logger("DOM_FINGERPRINTER")
 
+_IGNORED_FINGERPRINT_TAGS = {"script", "style", "meta", "link"}
+_DEFAULT_STRUCTURAL_DRIFT_THRESHOLD = 0.35
+
 
 class DOMFingerprinter:
     """Computes compact structural fingerprints of DOM trees to quantify structural drift over time."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.settings = get_settings()
 
     def generate_fingerprint(self, html: str) -> dict[str, Any]:
@@ -22,11 +25,14 @@ class DOMFingerprinter:
             return {"tag_counts": {}, "depth": 0, "hash": "empty"}
 
         soup = BeautifulSoup(html[:25000], "html.parser")
-        tags = [tag.name for tag in soup.find_all(True) if tag.name not in ("script", "style", "meta", "link")]
+        tags = [
+            tag.name for tag in soup.find_all(True)
+            if tag.name not in _IGNORED_FINGERPRINT_TAGS
+        ]
         counts = Counter(tags)
 
         # Compute max DOM depth
-        def get_depth(elem, cur_depth=0):
+        def get_depth(elem: Any, cur_depth: int = 0) -> int:
             if not hasattr(elem, "children"):
                 return cur_depth
             children = [c for c in elem.children if hasattr(c, "children")]
@@ -77,8 +83,9 @@ class DOMFingerprinter:
     def is_significant_drift(self, fp1: dict[str, Any], fp2: dict[str, Any]) -> bool:
         """Check if structural drift exceeds the configured threshold."""
         score = self.compute_drift_score(fp1, fp2)
-        thresh = getattr(self.settings, "STRUCTURAL_DRIFT_THRESHOLD", 0.35)
-        is_drift = score > thresh
+        threshold = getattr(self.settings, "STRUCTURAL_DRIFT_THRESHOLD", _DEFAULT_STRUCTURAL_DRIFT_THRESHOLD)
+        is_drift = score > threshold
         if is_drift:
-            logger.warning(f"Significant structural DOM drift detected: {score:.3f} > {thresh:.3f}")
+            logger.warning(f"Significant structural DOM drift detected: {score:.3f} > {threshold:.3f}")
         return is_drift
+

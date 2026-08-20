@@ -1,3 +1,5 @@
+"""Deterministic repeater card extractor with robust e-commerce and catalog support."""
+
 import re
 from typing import Any, Optional
 from urllib.parse import urljoin
@@ -5,6 +7,39 @@ from bs4 import BeautifulSoup, Tag
 from app.config.logging import get_logger
 
 logger = get_logger("GRID_CARD_EXTRACTOR")
+
+_PRICE_PATTERN = re.compile(
+    r"([$£€¥₹\u00A3\u20B9]\s*[\d,]+(?:\.\d{1,2})?|Rs\.?\s*[\d,]+(?:\.\d{1,2})?)"
+)
+_BG_IMAGE_PATTERN = re.compile(
+    r"background(?:-image)?\s*:\s*[^;]*url\(\s*['\"]?([^'\")]+)['\"]?\s*\)",
+    re.IGNORECASE,
+)
+
+_CAROUSEL_NOISE_SELECTORS = [
+    "div[class*='carousel']",
+    "div[class*='slider']",
+    "div[class*='recommend']",
+    "div[class*='similar']",
+    "div[class*='sponsored']",
+    "div[data-widget*='carousel']",
+    "div[data-widget*='recommendation']",
+    "div[data-widget*='banner']",
+    ".frequently-bought-together",
+]
+
+_CURRENCY_SYMBOLS = ("$", "£", "€", "¥", "Rs", "₹", "rs.")
+_PRIMARY_IDENTIFIERS = {
+    "name",
+    "title",
+    "productname",
+    "product_name",
+    "heading",
+    "booktitle",
+    "quote",
+    "text",
+    "author",
+}
 
 
 class GridCardExtractor:
@@ -39,30 +74,19 @@ class GridCardExtractor:
             return []
 
         soup = BeautifulSoup(html, "html.parser")
-        
+
         # Remove noisy sidebar filters, navigation menus, header, footer, and carousels
         for noise in soup.find_all(["nav", "aside", "header", "footer", "script", "style", "noscript"]):
             noise.decompose()
 
-        carousel_selectors = [
-            "div[class*='carousel']",
-            "div[class*='slider']",
-            "div[class*='recommend']",
-            "div[class*='similar']",
-            "div[class*='sponsored']",
-            "div[data-widget*='carousel']",
-            "div[data-widget*='recommendation']",
-            "div[data-widget*='banner']",
-            ".frequently-bought-together",
-        ]
-        for sel in carousel_selectors:
+        for sel in _CAROUSEL_NOISE_SELECTORS:
             for el in soup.select(sel):
                 el.decompose()
 
         fields = target_fields or ["title", "price", "link", "description"]
         candidate_containers: list[tuple[float, list[Tag]]] = []
 
-        # 1. High-priority: Check explicit e-commerce item attributes (data-id, data-asin, data-item-id, data-component-type)
+        # 1. High-priority: Check explicit e-commerce item attributes
         for attr in ["data-id", "data-asin", "data-item-id", "data-pid"]:
             attr_elements = soup.find_all(attrs={attr: True})
             if len(attr_elements) >= 2:
@@ -91,8 +115,10 @@ class GridCardExtractor:
         best_items = candidate_containers[0][1]
 
         # Determine primary identifier field if requested
-        primary_identifiers = {"name", "title", "productname", "product_name", "heading", "booktitle", "quote", "text", "author"}
-        primary_requested = [f for f in fields if any(pk in f.lower().replace("_", "") for pk in primary_identifiers)]
+        primary_requested = [
+            f for f in fields
+            if any(pk in f.lower().replace("_", "") for pk in _PRIMARY_IDENTIFIERS)
+        ]
 
         records: list[dict[str, Any]] = []
         for item in best_items:
@@ -101,7 +127,7 @@ class GridCardExtractor:
             if not any(v is not None and str(v).strip() for v in rec.values()):
                 continue
 
-            # If primary keys were requested, ensure at least one primary identifier is present (reject orphaned price cards)
+            # If primary keys were requested, ensure at least one primary identifier is present
             if primary_requested:
                 has_primary = any(rec.get(pk) is not None and str(rec.get(pk)).strip() for pk in primary_requested)
                 if not has_primary:
@@ -119,7 +145,6 @@ class GridCardExtractor:
         if any(c in cls_lower for c in self.COMMON_CARD_CLASSES) or tag_name in ("article", "tr"):
             base_score *= 2.0
 
-        currency_symbols = ("$", "£", "€", "¥", "Rs", "₹", "rs.")
         items_with_price = 0
         items_with_title = 0
         items_with_link = 0
@@ -129,7 +154,7 @@ class GridCardExtractor:
         sample = items[:10]
         for it in sample:
             text = it.get_text()
-            if any(cur in text for cur in currency_symbols):
+            if any(cur in text for cur in _CURRENCY_SYMBOLS):
                 items_with_price += 1
             if it.find(["h1", "h2", "h3", "h4", "h5"]) or it.find("img", alt=True):
                 items_with_title += 1
@@ -162,159 +187,23 @@ class GridCardExtractor:
             f_lower = f.lower()
 
             if f_lower in ("title", "name", "heading", "booktitle", "productname", "product_name"):
-                # 1. Heading tags (h1-h5)
-                for heading_tag in ["h1", "h2", "h3", "h4", "h5"]:
-                    h = card.find(heading_tag)
-                    if h:
-                        t = h.get("title") or h.get_text(strip=True)
-                        if t and len(t) > 3 and not any(g in t.lower() for g in ["view", "buy now", "add to cart"]):
-                            val = t
-                            break
-
-                # 2. Dedicated product title classes in div or span (e.g. Flipkart .KzDlHZ, ._4rR01T, Amazon .a-size-medium)
-                if not val:
-                    for tag in card.find_all(["div", "span", "p"]):
-                        tag_cls = " ".join(tag.get("class", [])).lower()
-                        if any(k in tag_cls for k in ["title", "name", "heading", "kzdlhz", "4rr01t", "product", "a-size-medium", "a-size-base-plus"]):
-                            txt = tag.get_text(strip=True)
-                            if len(txt) > 5 and not any(c in txt for c in ["$", "₹", "£", "€", "Rs", "rs."]):
-                                val = txt
-                                break
-
-                # 3. Product image alt attribute (extremely consistent on Flipkart, Amazon, Walmart)
-                if not val:
-                    img = card.find("img", alt=True)
-                    if img and img.get("alt"):
-                        alt_txt = str(img["alt"]).strip()
-                        if len(alt_txt) > 5 and not any(g in alt_txt.lower() for g in ["placeholder", "logo", "icon", "star", "rating", "image"]):
-                            val = alt_txt
-
-                # 4. Descriptive product link (must be > 6 chars and not generic action verb)
-                if not val:
-                    for a in card.find_all("a"):
-                        a_title = a.get("title") or a.get_text(strip=True)
-                        if a_title and len(a_title) > 6:
-                            a_lower = a_title.lower()
-                            if not any(g in a_lower for g in ["view", "buy now", "add to cart", "learn more", "details", "click here", "read more"]):
-                                val = a_title
-                                break
-
+                val = self._extract_title(card)
             elif f_lower in ("price", "cost", "amount", "pricing", "current_price"):
-                # 1. Dedicated price classes
-                price_el = card.find(
-                    class_=lambda c: c
-                    and any(p in str(c).lower() for p in ["price", "cost", "amount", "nx9bqj", "30jeq3", "a-price-whole"])
-                )
-                raw_price = price_el.get_text(strip=True) if price_el else ""
-                
-                # 2. Search for currency symbols in strings
-                if not raw_price:
-                    for text in card.stripped_strings:
-                        if any(cur in text for cur in ["$", "£", "€", "¥", "Rs", "₹", "rs."]):
-                            raw_price = text
-                            break
-                            
-                if raw_price:
-                    match = re.search(r"([$£€¥₹\u00A3\u20B9]\s*[\d,]+(?:\.\d{1,2})?|Rs\.?\s*[\d,]+(?:\.\d{1,2})?)", raw_price)
-                    val = match.group(1).strip() if match else raw_price
-
+                val = self._extract_price(card)
             elif f_lower in ("details", "description", "specifications", "specs", "features", "summary"):
-                # 1. Feature / specification bullet lists (e.g. Flipkart <ul class="G4BRas">)
-                ul = card.find(["ul", "ol"])
-                if ul:
-                    bullets = [li.get_text(strip=True) for li in ul.find_all("li") if li.get_text(strip=True)]
-                    if bullets:
-                        val = " | ".join(bullets)
-
-                # 2. Paragraph or description div
-                if not val:
-                    desc_el = card.find(
-                        class_=lambda c: c
-                        and any(d in str(c).lower() for d in ["spec", "desc", "detail", "feature", "summary", "g4bras", "1xgfaf"])
-                    )
-                    if desc_el:
-                        val = desc_el.get_text(" | ", strip=True)
-
-                if not val:
-                    p = card.find("p")
-                    if p:
-                        p_text = p.get_text(strip=True)
-                        if len(p_text) > 15:
-                            val = p_text
-
+                val = self._extract_description(card)
             elif f_lower in ("quote", "text", "quotetext", "content", "statement"):
-                text_el = card.find(
-                    class_=lambda c: c
-                    and any(t in str(c).lower() for t in ["text", "quote", "content"])
-                )
-                if text_el:
-                    val = text_el.get_text(strip=True)
-
+                val = self._extract_quote(card)
             elif f_lower in ("author", "creator", "writer", "by"):
-                author_el = card.find(
-                    class_=lambda c: c
-                    and any(a in str(c).lower() for a in ["author", "creator", "writer", "user"])
-                )
-                if author_el:
-                    val = author_el.get_text(strip=True)
-                else:
-                    small = card.find("small")
-                    if small:
-                        val = small.get_text(strip=True)
-
+                val = self._extract_author(card)
             elif f_lower in ("link", "url", "href", "producturl", "pageurl"):
-                a = card.find("a", href=True)
-                if a:
-                    raw_href = a["href"]
-                    val = urljoin(base_url, raw_href) if base_url else raw_href
-
+                val = self._extract_link(card, base_url)
             elif f_lower in ("image", "img", "thumbnail", "picture", "image_url", "imageurl", "imagesrc"):
-                img = card.find("img")
-                if img:
-                    raw_src = None
-                    lazy_attrs = ["data-src", "data-lazy-src", "data-original", "data-srcset"]
-                    for attr in lazy_attrs:
-                        attr_val = img.get(attr)
-                        if attr_val and isinstance(attr_val, str) and not any(p in attr_val.lower() for p in ["placeholder", "blank.gif", "spacer.gif", "data:image/svg"]):
-                            raw_src = attr_val.split(",")[0].strip().split(" ")[0]
-                            break
-
-                    if not raw_src:
-                        source = card.find("source")
-                        if source and source.get("srcset"):
-                            raw_src = source["srcset"].split(",")[0].strip().split(" ")[0]
-
-                    if not raw_src and img.get("src"):
-                        raw_src = img["src"]
-
-                    if raw_src:
-                        val = urljoin(base_url, raw_src) if base_url else raw_src
-
-                # Fallback to CSS background-image on card or child styled elements
-                if not val:
-                    for elem in [card] + card.find_all(attrs={"style": True}):
-                        style_attr = elem.get("style", "")
-                        bg_match = re.search(r"background(?:-image)?\s*:\s*[^;]*url\(\s*['\"]?([^'\")]+)['\"]?\s*\)", style_attr, re.IGNORECASE)
-                        if bg_match:
-                            bg_url = bg_match.group(1).strip()
-                            if bg_url and not bg_url.startswith("data:"):
-                                val = urljoin(base_url, bg_url) if base_url else bg_url
-                                break
-
+                val = self._extract_image(card, base_url)
             elif f_lower in ("availability", "stock", "status", "instock"):
-                stock_el = card.find(
-                    class_=lambda c: c
-                    and any(s in str(c).lower() for s in ["stock", "availability", "status"])
-                )
-                if stock_el:
-                    val = stock_el.get_text(strip=True)
-
+                val = self._extract_stock(card)
             elif f_lower in ("rating", "stars", "score", "review_rating"):
-                rating_el = card.find(
-                    class_=lambda c: c and any(r in str(c).lower() for r in ["rating", "star", "review", "score", "x1dtvi", "5_whn1"])
-                )
-                if rating_el:
-                    val = rating_el.get_text(strip=True)
+                val = self._extract_rating(card)
 
             if not val:
                 # Direct class matching fallback
@@ -325,3 +214,168 @@ class GridCardExtractor:
             rec[f] = val
 
         return rec
+
+    @staticmethod
+    def _extract_title(card: Tag) -> Optional[str]:
+        # 1. Heading tags (h1-h5)
+        for heading_tag in ["h1", "h2", "h3", "h4", "h5"]:
+            h = card.find(heading_tag)
+            if h:
+                t = h.get("title") or h.get_text(strip=True)
+                if t and len(t) > 3 and not any(g in t.lower() for g in ["view", "buy now", "add to cart"]):
+                    return t
+
+        # 2. Dedicated product title classes in div or span
+        for tag in card.find_all(["div", "span", "p"]):
+            tag_cls = " ".join(tag.get("class", [])).lower()
+            if any(k in tag_cls for k in ["title", "name", "heading", "kzdlhz", "4rr01t", "product", "a-size-medium", "a-size-base-plus"]):
+                txt = tag.get_text(strip=True)
+                if len(txt) > 5 and not any(c in txt for c in ["$", "₹", "£", "€", "Rs", "rs."]):
+                    return txt
+
+        # 3. Product image alt attribute
+        img = card.find("img", alt=True)
+        if img and img.get("alt"):
+            alt_txt = str(img["alt"]).strip()
+            if len(alt_txt) > 5 and not any(g in alt_txt.lower() for g in ["placeholder", "logo", "icon", "star", "rating", "image"]):
+                return alt_txt
+
+        # 4. Descriptive product link
+        for a in card.find_all("a"):
+            a_title = a.get("title") or a.get_text(strip=True)
+            if a_title and len(a_title) > 6:
+                a_lower = a_title.lower()
+                if not any(g in a_lower for g in ["view", "buy now", "add to cart", "learn more", "details", "click here", "read more"]):
+                    return a_title
+
+        return None
+
+    @staticmethod
+    def _extract_price(card: Tag) -> Optional[str]:
+        # 1. Dedicated price classes
+        price_el = card.find(
+            class_=lambda c: c
+            and any(p in str(c).lower() for p in ["price", "cost", "amount", "nx9bqj", "30jeq3", "a-price-whole"])
+        )
+        raw_price = price_el.get_text(strip=True) if price_el else ""
+
+        # 2. Search for currency symbols in strings
+        if not raw_price:
+            for text in card.stripped_strings:
+                if any(cur in text for cur in ["$", "£", "€", "¥", "Rs", "₹", "rs."]):
+                    raw_price = text
+                    break
+
+        if raw_price:
+            match = _PRICE_PATTERN.search(raw_price)
+            return match.group(1).strip() if match else raw_price
+
+        return None
+
+    @staticmethod
+    def _extract_description(card: Tag) -> Optional[str]:
+        ul = card.find(["ul", "ol"])
+        if ul:
+            bullets = [li.get_text(strip=True) for li in ul.find_all("li") if li.get_text(strip=True)]
+            if bullets:
+                return " | ".join(bullets)
+
+        desc_el = card.find(
+            class_=lambda c: c
+            and any(d in str(c).lower() for d in ["spec", "desc", "detail", "feature", "summary", "g4bras", "1xgfaf"])
+        )
+        if desc_el:
+            return desc_el.get_text(" | ", strip=True)
+
+        p = card.find("p")
+        if p:
+            p_text = p.get_text(strip=True)
+            if len(p_text) > 15:
+                return p_text
+
+        return None
+
+    @staticmethod
+    def _extract_quote(card: Tag) -> Optional[str]:
+        text_el = card.find(
+            class_=lambda c: c
+            and any(t in str(c).lower() for t in ["text", "quote", "content"])
+        )
+        if text_el:
+            return text_el.get_text(strip=True)
+        return None
+
+    @staticmethod
+    def _extract_author(card: Tag) -> Optional[str]:
+        author_el = card.find(
+            class_=lambda c: c
+            and any(a in str(c).lower() for a in ["author", "creator", "writer", "user"])
+        )
+        if author_el:
+            return author_el.get_text(strip=True)
+        small = card.find("small")
+        if small:
+            return small.get_text(strip=True)
+        return None
+
+    @staticmethod
+    def _extract_link(card: Tag, base_url: Optional[str] = None) -> Optional[str]:
+        a = card.find("a", href=True)
+        if a:
+            raw_href = str(a["href"])
+            return urljoin(base_url, raw_href) if base_url else raw_href
+        return None
+
+    @staticmethod
+    def _extract_image(card: Tag, base_url: Optional[str] = None) -> Optional[str]:
+        img = card.find("img")
+        if img:
+            raw_src = None
+            lazy_attrs = ["data-src", "data-lazy-src", "data-original", "data-srcset"]
+            for attr in lazy_attrs:
+                attr_val = img.get(attr)
+                if attr_val and isinstance(attr_val, str) and not any(p in attr_val.lower() for p in ["placeholder", "blank.gif", "spacer.gif", "data:image/svg"]):
+                    raw_src = attr_val.split(",")[0].strip().split(" ")[0]
+                    break
+
+            if not raw_src:
+                source = card.find("source")
+                if source and source.get("srcset"):
+                    raw_src = source["srcset"].split(",")[0].strip().split(" ")[0]
+
+            if not raw_src and img.get("src"):
+                raw_src = str(img["src"])
+
+            if raw_src:
+                return urljoin(base_url, raw_src) if base_url else raw_src
+
+        # Fallback to CSS background-image on card or child styled elements
+        for elem in [card] + card.find_all(attrs={"style": True}):
+            style_attr = elem.get("style", "")
+            bg_match = _BG_IMAGE_PATTERN.search(style_attr)
+            if bg_match:
+                bg_url = bg_match.group(1).strip()
+                if bg_url and not bg_url.startswith("data:"):
+                    return urljoin(base_url, bg_url) if base_url else bg_url
+
+        return None
+
+    @staticmethod
+    def _extract_stock(card: Tag) -> Optional[str]:
+        stock_el = card.find(
+            class_=lambda c: c
+            and any(s in str(c).lower() for s in ["stock", "availability", "status"])
+        )
+        if stock_el:
+            return stock_el.get_text(strip=True)
+        return None
+
+    @staticmethod
+    def _extract_rating(card: Tag) -> Optional[str]:
+        rating_el = card.find(
+            class_=lambda c: c and any(r in str(c).lower() for r in ["rating", "star", "review", "score", "x1dtvi", "5_whn1"])
+        )
+        if rating_el:
+            return rating_el.get_text(strip=True)
+        return None
+

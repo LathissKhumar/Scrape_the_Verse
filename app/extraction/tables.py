@@ -1,12 +1,14 @@
+"""Deterministic HTML table detection, quality scoring, and structured extraction."""
+
 from typing import Any, Optional
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from app.extraction.schema import ExtractionSchema, RawPage
 
 
 class TableExtractor:
     """Deterministic HTML table detection, quality scoring, and structured extraction."""
 
-    def score_table(self, table_tag) -> float:
+    def score_table(self, table_tag: Tag) -> float:
         """Score table to determine if it is a genuine structured data table versus a layout table."""
         rows = table_tag.find_all("tr", recursive=False) or table_tag.find_all("tr")
         if not rows or len(rows) < 2:
@@ -129,3 +131,4 @@ class TableExtractor:
                 records.append(record)
 
         return records
+

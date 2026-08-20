@@ -1,3 +1,5 @@
+"""Deterministic regular-expression based extraction for pattern fields."""
+
 import re
 from typing import Any
 from app.extraction.schema import ExtractionSchema, RawPage
@@ -11,6 +13,18 @@ COMMON_PATTERNS = {
         r"\b(?:\d{4}[-/]\d{1,2}[-/]\d{1,2}|\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+\d{4})\b",
         re.IGNORECASE,
     ),
+}
+
+_PRIMARY_IDENTIFIERS = {
+    "name",
+    "title",
+    "productname",
+    "product_name",
+    "heading",
+    "booktitle",
+    "quote",
+    "text",
+    "author",
 }
 
 
@@ -48,12 +62,12 @@ class RegexExtractor:
             if pattern:
                 matches = pattern.findall(text_str)
                 # Deduplicate and clean
-                cleaned_matches = []
-                for m in matches:
-                    val = m[0] if isinstance(m, tuple) else m
-                    s = str(val).strip().rstrip(".,;)")
-                    if s and s not in cleaned_matches:
-                        cleaned_matches.append(s)
+                cleaned_matches: list[str] = []
+                for match in matches:
+                    val = match[0] if isinstance(match, tuple) else match
+                    cleaned_str = str(val).strip().rstrip(".,;)")
+                    if cleaned_str and cleaned_str not in cleaned_matches:
+                        cleaned_matches.append(cleaned_str)
                 field_matches[field_rule.name] = cleaned_matches
             else:
                 field_matches[field_rule.name] = []
@@ -64,8 +78,10 @@ class RegexExtractor:
 
         # Check if schema requested multi-field entities
         total_schema_fields = len(schema.fields)
-        primary_identifiers = {"name", "title", "productname", "product_name", "heading", "booktitle", "quote", "text", "author"}
-        primary_requested = [f.name for f in schema.fields if any(pk in f.name.lower().replace("_", "") for pk in primary_identifiers)]
+        primary_requested = [
+            f.name for f in schema.fields
+            if any(pk in f.name.lower().replace("_", "") for pk in _PRIMARY_IDENTIFIERS)
+        ]
 
         records: list[dict[str, Any]] = []
         for i in range(max_rows):
@@ -92,3 +108,4 @@ class RegexExtractor:
                 records.append(row)
 
         return records
+

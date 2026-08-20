@@ -1,6 +1,6 @@
-from datetime import datetime, timezone
+"""SQLite-backed persistent repair memory for instant repeat self-healing with freshness lifecycle."""
+
 import json
-import sqlite3
 import time
 from typing import Optional
 
@@ -19,7 +19,7 @@ logger = get_logger("PERSISTENT_REPAIR_MEMORY")
 class PersistentRepairMemory:
     """SQLite-backed persistent repair memory for instant repeat self-healing with freshness lifecycle."""
 
-    def __init__(self, db_path: str = ".repair_memory.sqlite"):
+    def __init__(self, db_path: str = ".repair_memory.sqlite") -> None:
         self.db_path = db_path
         self._init_db()
 
@@ -73,8 +73,8 @@ class PersistentRepairMemory:
                 ]:
                     if col not in existing_cols:
                         conn.execute(f"ALTER TABLE repair_memory ADD COLUMN {col} {col_type}")
-        except Exception as e:
-            logger.warning(f"Could not initialize SQLite persistent repair memory: {e}")
+        except Exception as error:
+            logger.warning(f"Could not initialize SQLite persistent repair memory: {error}")
 
     def record_success(self, record: RepairMemoryRecord) -> None:
         """Persist or update a verified working repair record into SQLite database."""
@@ -118,8 +118,8 @@ class PersistentRepairMemory:
                 logger.debug(
                     f"Persistent repair stored in SQLite for domain={record.domain} sig={record.signature} (status={record.status.value}, confidence={record.confidence_level.value})"
                 )
-        except Exception as e:
-            logger.error(f"Failed to persist repair memory to SQLite: {e}")
+        except Exception as error:
+            logger.error(f"Failed to persist repair memory to SQLite: {error}")
 
     def record_failure(self, domain: str, signature: str) -> None:
         """Increment failure count for a stored repair and transition to STALE/DISABLED if needed."""
@@ -138,8 +138,8 @@ class PersistentRepairMemory:
                     """,
                     (domain, signature),
                 )
-        except Exception as e:
-            logger.debug(f"Failed to record repair failure in SQLite: {e}")
+        except Exception as error:
+            logger.debug(f"Failed to record repair failure in SQLite: {error}")
 
     def lookup(
         self, domain: str, signature: str
@@ -180,6 +180,7 @@ class PersistentRepairMemory:
                     )
             finally:
                 conn.close()
-        except Exception as e:
-            logger.error(f"Failed to lookup repair memory in SQLite: {e}")
+        except Exception as error:
+            logger.error(f"Failed to lookup repair memory in SQLite: {error}")
         return None
+

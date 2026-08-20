@@ -1,10 +1,11 @@
+"""Deterministic validation evaluator comparing before/after validation metrics and enforcing regression guards."""
+
 from typing import Any, Optional
 from app.config.logging import get_logger
 from app.diagnosis.schemas import DiagnosisResult
 from app.healing.confidence import RepairConfidenceScorer
 from app.healing.schemas import (
     PerformanceSnapshot,
-    RepairConfidenceLevel,
     RepairEvaluation,
     RepairPlan,
 )
@@ -22,7 +23,7 @@ class RepairEvaluator:
         min_health_improvement: float = 0.10,
         max_regression_drop: float = 0.05,
         confidence_scorer: Optional[RepairConfidenceScorer] = None,
-    ):
+    ) -> None:
         self.min_healthy_threshold = min_healthy_threshold
         self.min_health_improvement = min_health_improvement
         self.max_regression_drop = max_regression_drop
@@ -158,3 +159,4 @@ class RepairEvaluator:
             multi_page_evaluated=bool(multi_page_results),
             multi_page_results=multi_page_results or [],
         )
+

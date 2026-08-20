@@ -1,4 +1,5 @@
-import base64
+"""Vision-based text and data extraction using multimodal models."""
+
 from typing import Optional
 import httpx
 
@@ -20,7 +21,7 @@ class VisionTextExtractor:
         self,
         model_name: str = "gemma4:e2b",
         client: Optional[httpx.AsyncClient] = None,
-    ):
+    ) -> None:
         self.settings = get_settings()
         self.model_name = model_name
         self.base_url = self.settings.OLLAMA_BASE_URL.rstrip("/")
@@ -46,7 +47,8 @@ class VisionTextExtractor:
             if resp.status_code == 200:
                 data = resp.json()
                 return data.get("response", "").strip()
-        except Exception as e:
-            logger.warning(f"Vision OCR extraction failed: {e}")
+        except Exception as error:
+            logger.warning(f"Vision OCR extraction failed: {error}")
 
         return ""
+

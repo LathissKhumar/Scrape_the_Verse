@@ -19,7 +19,7 @@ class MultiPageRepairValidator:
         self,
         extraction_engine: Optional[ExtractionEngine] = None,
         validation_engine: Optional[ValidationEngine] = None,
-    ):
+    ) -> None:
         self.settings = get_settings()
         self.extraction_engine = extraction_engine or ExtractionEngine()
         self.validation_engine = validation_engine or ValidationEngine()
@@ -81,3 +81,4 @@ class MultiPageRepairValidator:
 
         logger.debug(f"Multi-page validation completed: avg_health={avg_health:.2f}, passed={passed}")
         return passed, avg_health, per_page_metrics, reason
+

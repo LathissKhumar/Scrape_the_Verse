@@ -1,3 +1,5 @@
+"""Lightweight relevance ranking and filtering of content chunks using cosine similarity."""
+
 from typing import Optional
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -11,7 +13,7 @@ class SemanticFilter:
         similarity_threshold: float = 0.05,
         top_k: int = 5,
         min_word_count: int = 2,
-    ):
+    ) -> None:
         self.similarity_threshold = similarity_threshold
         self.top_k = top_k
         self.min_word_count = min_word_count
@@ -51,7 +53,7 @@ class SemanticFilter:
 
             scores = cosine_similarity(query_vec, chunk_vecs)[0]
 
-            scored_chunks = []
+            scored_chunks: list[tuple[str, float]] = []
             for chunk, score in zip(valid_chunks, scores):
                 scored_chunks.append((chunk, float(score)))
 
@@ -67,3 +69,4 @@ class SemanticFilter:
 
         except Exception:
             return [(c, 1.0) for c in valid_chunks[:effective_k]]
+

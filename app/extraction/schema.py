@@ -1,9 +1,13 @@
+"""Data schemas and transfer models for extraction operations."""
+
 from enum import Enum
 from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 
 class ExtractionStrategyEnum(str, Enum):
+    """Supported extraction strategies in order of deterministic priority."""
+
     CSS = "css"
     XPATH = "xpath"
     REGEX = "regex"
@@ -87,3 +91,4 @@ class ExtractionResult(BaseModel):
         default_factory=dict,
         description="Extraction diagnostics and statistics.",
     )
+

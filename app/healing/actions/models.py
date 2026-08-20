@@ -1,5 +1,7 @@
+"""Data models and schemas for browser action primitives and composite action plans."""
+
 from enum import Enum
-from typing import Any, Optional
+from typing import Optional
 from uuid import uuid4
 from pydantic import BaseModel, Field
 
@@ -38,3 +40,4 @@ class ActionPlan(BaseModel):
     description: str = Field(default="Autonomous action repair plan", description="Summary rationale.")
     wait_after_ms: int = Field(default=1000, ge=100, le=10000, description="Post-action DOM stabilization pause.")
     max_retries: int = Field(default=2, ge=1, le=3)
+

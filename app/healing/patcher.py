@@ -1,9 +1,19 @@
-from typing import Any, Optional
+"""Applies minimal, non-destructive patches to ExtractionSchema configurations."""
+
 from app.config.logging import get_logger
 from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
 from app.healing.schemas import RepairPlan, RepairType
 
 logger = get_logger("HEALING_PATCHER")
+
+_CONTAINER_SELECTOR_ALIASES = (
+    "base_selector",
+    "container_selector",
+    "item_selector",
+    "card_selector",
+    "card",
+    "container",
+)
 
 
 class RepairPatcher:
@@ -34,12 +44,12 @@ class RepairPatcher:
                 new_strategy = ExtractionStrategyEnum(proposed_strategy)
 
         # 2. Base selector update
-        for k in ("base_selector", "container_selector", "item_selector", "card_selector", "card", "container"):
-            if k in patch_data and isinstance(patch_data[k], str):
-                new_base_selector = patch_data[k]
+        for key in _CONTAINER_SELECTOR_ALIASES:
+            if key in patch_data and isinstance(patch_data[key], str):
+                new_base_selector = patch_data[key]
                 break
-            if k in plan.proposed_configuration and isinstance(plan.proposed_configuration[k], str):
-                new_base_selector = plan.proposed_configuration[k]
+            if key in plan.proposed_configuration and isinstance(plan.proposed_configuration[key], str):
+                new_base_selector = plan.proposed_configuration[key]
                 break
 
         # 3. Strict schema update
@@ -94,3 +104,4 @@ class RepairPatcher:
             fields=new_fields,
             strict_schema=new_strict_schema,
         )
+

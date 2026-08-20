@@ -17,7 +17,7 @@ class ActionRepairPlanner:
         self,
         detector: Optional[ActionIssueDetector] = None,
         llm_client: Optional[LLMClient] = None,
-    ):
+    ) -> None:
         self.detector = detector or ActionIssueDetector()
         self.llm_client = llm_client
 
@@ -28,8 +28,6 @@ class ActionRepairPlanner:
         for issue in issues:
             act_type = issue.get("recommended_action", ActionType.CLICK)
             selector = issue.get("target_selector")
-            val = issue.get("value")
-            desc = issue.get("issue_type", "UI interaction repair")
 
             if act_type == ActionType.ACCEPT_COOKIE and selector:
                 plan = ActionPlan(
@@ -85,3 +83,4 @@ class ActionRepairPlanner:
             )
 
         return candidates
+

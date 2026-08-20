@@ -1,3 +1,5 @@
+"""Bright Data Scraper Studio integration package."""
+
 from app.brightdata.adapter import build_collector_inputs
 from app.brightdata.client import BrightDataClient
 from app.brightdata.exceptions import (
@@ -23,3 +25,4 @@ __all__ = [
     "BrightDataTimeoutError",
     "BrightDataEmptyResultError",
 ]
+

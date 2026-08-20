@@ -1,3 +1,5 @@
+"""Deterministic XPath-based structured extraction using lxml."""
+
 from typing import Any
 import lxml.html
 from app.extraction.schema import ExtractionSchema, RawPage
@@ -74,3 +76,4 @@ class XPathExtractor:
                 records.append(record)
 
         return records
+

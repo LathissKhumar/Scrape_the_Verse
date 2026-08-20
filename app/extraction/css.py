@@ -1,4 +1,6 @@
-from typing import Any, Optional
+"""Deterministic CSS selector-based structured extraction."""
+
+from typing import Any
 from bs4 import BeautifulSoup
 from app.extraction.schema import ExtractionSchema, RawPage
 
@@ -63,3 +65,4 @@ class CSSExtractor:
                 records.append(record)
 
         return records
+

@@ -1,3 +1,5 @@
+"""Memory storage and retrieval for successful repair patterns indexed by domain and structural signatures."""
+
 import hashlib
 from typing import Optional
 from urllib.parse import urlparse
@@ -12,7 +14,7 @@ logger = get_logger("REPAIR_MEMORY")
 class RepairMemory:
     """Stores and retrieves proven successful repair patterns indexed by domain and DOM signatures."""
 
-    def __init__(self, persistent_db_path: str = ".repair_memory.sqlite"):
+    def __init__(self, persistent_db_path: str = ".repair_memory.sqlite") -> None:
         self._records: list[RepairMemoryRecord] = []
         self.persistent_storage = PersistentRepairMemory(db_path=persistent_db_path)
 
@@ -23,8 +25,8 @@ class RepairMemory:
         path_prefix = "/".join(parsed.path.strip("/").split("/")[:2])
 
         # Extract top structural tags and repeating classes
-        tag_summary = []
-        class_summary = []
+        tag_summary: list[str] = []
+        class_summary: list[str] = []
         if html:
             try:
                 soup = BeautifulSoup(html[:10000], "html.parser")
@@ -88,3 +90,4 @@ class RepairMemory:
     def clear(self) -> None:
         """Clear all stored repair memory records."""
         self._records.clear()
+

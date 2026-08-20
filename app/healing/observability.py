@@ -1,11 +1,10 @@
 """Structured observability and telemetry subsystem for the self-healing scraping lifecycle."""
 
 import asyncio
-import json
 import os
 import threading
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 from uuid import uuid4
 from pydantic import BaseModel, Field
 from app.config.logging import get_logger
@@ -40,7 +39,7 @@ class RepairSessionTelemetry(BaseModel):
 class RepairObservability:
     """Singleton-like telemetry buffer and JSONL log persistence for self-healing operations."""
 
-    def __init__(self, log_path: str = ".repair_sessions.jsonl"):
+    def __init__(self, log_path: str = ".repair_sessions.jsonl") -> None:
         self.log_path = log_path
         self._sessions: list[RepairSessionTelemetry] = []
         self._lock = threading.Lock()
@@ -53,12 +52,12 @@ class RepairObservability:
             if len(self._sessions) > 200:
                 self._sessions = self._sessions[-200:]
 
-        def _append_to_file():
+        def _append_to_file() -> None:
             try:
-                with open(self.log_path, "a", encoding="utf-8") as f:
-                    f.write(session.model_dump_json() + "\n")
-            except Exception as e:
-                logger.debug(f"Could not append session telemetry to file: {e}")
+                with open(self.log_path, "a", encoding="utf-8") as file_handle:
+                    file_handle.write(session.model_dump_json() + "\n")
+            except Exception as error:
+                logger.debug(f"Could not append session telemetry to file: {error}")
 
         # Offload file append to background thread or execute safely
         try:
@@ -81,8 +80,8 @@ class RepairObservability:
 
         loaded: list[RepairSessionTelemetry] = []
         try:
-            with open(self.log_path, "r", encoding="utf-8") as f:
-                lines = f.readlines()
+            with open(self.log_path, "r", encoding="utf-8") as file_handle:
+                lines = file_handle.readlines()
                 if limit and len(lines) > limit:
                     lines = lines[-limit:]
                 for line in lines:
@@ -92,8 +91,8 @@ class RepairObservability:
                             loaded.append(RepairSessionTelemetry.model_validate_json(line_str))
                         except Exception as parse_err:
                             logger.debug(f"Skipping malformed telemetry record: {parse_err}")
-        except Exception as e:
-            logger.warning(f"Error reading telemetry log from '{self.log_path}': {e}")
+        except Exception as error:
+            logger.warning(f"Error reading telemetry log from '{self.log_path}': {error}")
 
         with self._lock:
             if loaded and not self._sessions:
@@ -106,7 +105,7 @@ class RepairObservability:
         with self._lock:
             if self._sessions:
                 return [s.model_dump() for s in self._sessions[-limit:]]
-        
+
         tail = self.load_all_persisted_sessions(limit=limit)
         return [s.model_dump() for s in tail[-limit:]]
 
@@ -161,40 +160,40 @@ class RepairObservability:
         avg_final_health = sum(s.final_health for s in sessions) / total
 
         # Root causes breakdown
-        root_causes: Dict[str, Dict[str, Any]] = {}
-        for s in sessions:
-            rc = s.root_cause
+        root_causes: dict[str, dict[str, Any]] = {}
+        for session_item in sessions:
+            rc = session_item.root_cause
             if rc not in root_causes:
                 root_causes[rc] = {"total": 0, "accepted": 0, "total_improvement": 0.0}
             root_causes[rc]["total"] += 1
-            if s.accepted:
+            if session_item.accepted:
                 root_causes[rc]["accepted"] += 1
-            root_causes[rc]["total_improvement"] += s.improvement
+            root_causes[rc]["total_improvement"] += session_item.improvement
 
         for rc, data in root_causes.items():
             data["success_rate"] = round(data["accepted"] / data["total"], 3) if data["total"] > 0 else 0.0
             data["avg_improvement"] = round(data["total_improvement"] / data["total"], 3) if data["total"] > 0 else 0.0
 
         # Domain breakdown
-        domain_stats: Dict[str, Dict[str, Any]] = {}
-        for s in sessions:
-            d = s.domain
-            if d not in domain_stats:
-                domain_stats[d] = {"total": 0, "accepted": 0, "total_improvement": 0.0}
-            domain_stats[d]["total"] += 1
-            if s.accepted:
-                domain_stats[d]["accepted"] += 1
-            domain_stats[d]["total_improvement"] += s.improvement
+        domain_stats: dict[str, dict[str, Any]] = {}
+        for session_item in sessions:
+            domain_name = session_item.domain
+            if domain_name not in domain_stats:
+                domain_stats[domain_name] = {"total": 0, "accepted": 0, "total_improvement": 0.0}
+            domain_stats[domain_name]["total"] += 1
+            if session_item.accepted:
+                domain_stats[domain_name]["accepted"] += 1
+            domain_stats[domain_name]["total_improvement"] += session_item.improvement
 
-        for d, data in domain_stats.items():
+        for domain_name, data in domain_stats.items():
             data["success_rate"] = round(data["accepted"] / data["total"], 3) if data["total"] > 0 else 0.0
             data["avg_improvement"] = round(data["total_improvement"] / data["total"], 3) if data["total"] > 0 else 0.0
 
         # Confidence distribution
-        confidence_distribution: Dict[str, int] = {}
-        for s in sessions:
-            c = s.confidence_level
-            confidence_distribution[c] = confidence_distribution.get(c, 0) + 1
+        confidence_distribution: dict[str, int] = {}
+        for session_item in sessions:
+            conf_tier = session_item.confidence_level
+            confidence_distribution[conf_tier] = confidence_distribution.get(conf_tier, 0) + 1
 
         # Multi-page stats
         mp_evaluated = sum(1 for s in sessions if s.multi_page_evaluated)
@@ -382,11 +381,11 @@ class RepairObservability:
 </html>"""
         if output_file:
             try:
-                with open(output_file, "w", encoding="utf-8") as f:
-                    f.write(html_content)
+                with open(output_file, "w", encoding="utf-8") as file_handle:
+                    file_handle.write(html_content)
                 logger.info(f"Dashboard HTML exported to '{output_file}'")
-            except Exception as e:
-                logger.warning(f"Could not export HTML to '{output_file}': {e}")
+            except Exception as error:
+                logger.warning(f"Could not export HTML to '{output_file}': {error}")
 
         return html_content
 
@@ -400,3 +399,4 @@ if __name__ == "__main__":
         print(f"Generated HTML dashboard: {out_path}")
     else:
         print(obs.generate_dashboard_markdown())
+

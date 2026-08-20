@@ -43,3 +43,4 @@ class ActionRepairValidator:
 
         # 3. If steps succeeded without errors, accept as valid UI stabilization
         return any(a["status"] == "success" for a in execution_result.get("actions_executed", []))
+

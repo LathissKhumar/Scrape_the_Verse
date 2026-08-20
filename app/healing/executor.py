@@ -1,8 +1,10 @@
+"""Safely executes and applies structured candidate repair plans without arbitrary code injection."""
+
 from typing import Any, Optional
 from app.config.logging import get_logger
 from app.extraction.schema import ExtractionSchema
 from app.healing.patcher import RepairPatcher
-from app.healing.schemas import RepairPlan, RepairType
+from app.healing.schemas import RepairPlan
 
 logger = get_logger("REPAIR_EXECUTOR")
 
@@ -10,7 +12,7 @@ logger = get_logger("REPAIR_EXECUTOR")
 class RepairExecutor:
     """Safely executes and applies structured candidate repair plans without arbitrary code injection."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.patcher = RepairPatcher()
 
     def apply_candidate(
@@ -34,11 +36,11 @@ class RepairExecutor:
         if plan.level == 2 or plan.target_component == "scraper":
             patch_data = plan.patch or plan.proposed_configuration
             if isinstance(patch_data, dict):
-                for k, v in patch_data.items():
-                    if isinstance(v, dict) and k in updated_config and isinstance(updated_config[k], dict):
-                        updated_config[k].update(v)
+                for key, value in patch_data.items():
+                    if isinstance(value, dict) and key in updated_config and isinstance(updated_config[key], dict):
+                        updated_config[key].update(value)
                     else:
-                        updated_config[k] = v
+                        updated_config[key] = value
             return schema, updated_config
 
         # Level 3: Collector refactor fallback
@@ -50,3 +52,4 @@ class RepairExecutor:
 
         # Default fallback
         return schema, updated_config
+
