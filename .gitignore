@@ -61,4 +61,10 @@ LibreCrawl/data/*.db
 **/.pytest_cache/
 .coverage
 htmlcov/
+data/*
+report/*
+tmp/*
+AGENTS.md/
+CLAUDE.md/
+
 
