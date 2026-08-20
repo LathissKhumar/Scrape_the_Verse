@@ -3,8 +3,21 @@ Pytest Fixtures for SEO Agent Tests
 Provides standard sample crawl payloads, pages, links, and issues for testing.
 """
 
+import os
+import sys
+
+# Ensure workspace root (for LibreCrawl) and WebAuditAgent (for seo) are importable
+_tests_dir = os.path.dirname(os.path.abspath(__file__))         # .../WebAuditAgent/seo/tests
+_seo_dir = os.path.dirname(_tests_dir)                          # .../WebAuditAgent/seo
+_webaudit_dir = os.path.dirname(_seo_dir)                       # .../WebAuditAgent
+_workspace_root = os.path.dirname(_webaudit_dir)                # .../Scrape_the_Verse
+for _p in (_webaudit_dir, _workspace_root):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
 import pytest
 from typing import List, Dict, Any
+
 
 
 @pytest.fixture

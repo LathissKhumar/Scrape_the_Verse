@@ -6,10 +6,14 @@ import os
 import sys
 from typing import Dict, Any, Optional
 
-# Ensure project root is in sys.path
-root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-if root_dir not in sys.path:
-    sys.path.insert(0, root_dir)
+# Ensure workspace root (for LibreCrawl) and WebAuditAgent dir (for seo package) are in sys.path
+_tools_dir = os.path.dirname(os.path.abspath(__file__))         # .../WebAuditAgent/seo/tools
+_seo_dir = os.path.dirname(_tools_dir)                          # .../WebAuditAgent/seo
+_webaudit_dir = os.path.dirname(_seo_dir)                       # .../WebAuditAgent
+_workspace_root = os.path.dirname(_webaudit_dir)                # .../Scrape_the_Verse
+for _p in (_webaudit_dir, _workspace_root):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 from LibreCrawl.engine import crawl_website, validate_url, format_error_result
 
