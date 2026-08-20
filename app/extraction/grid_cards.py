@@ -40,9 +40,24 @@ class GridCardExtractor:
 
         soup = BeautifulSoup(html, "html.parser")
         
-        # Remove noisy sidebar filters, navigation menus, header, and footer
+        # Remove noisy sidebar filters, navigation menus, header, footer, and carousels
         for noise in soup.find_all(["nav", "aside", "header", "footer", "script", "style", "noscript"]):
             noise.decompose()
+
+        carousel_selectors = [
+            "div[class*='carousel']",
+            "div[class*='slider']",
+            "div[class*='recommend']",
+            "div[class*='similar']",
+            "div[class*='sponsored']",
+            "div[data-widget*='carousel']",
+            "div[data-widget*='recommendation']",
+            "div[data-widget*='banner']",
+            ".frequently-bought-together",
+        ]
+        for sel in carousel_selectors:
+            for el in soup.select(sel):
+                el.decompose()
 
         fields = target_fields or ["title", "price", "link", "description"]
         candidate_containers: list[tuple[float, list[Tag]]] = []
@@ -75,12 +90,24 @@ class GridCardExtractor:
         candidate_containers.sort(key=lambda x: x[0], reverse=True)
         best_items = candidate_containers[0][1]
 
+        # Determine primary identifier field if requested
+        primary_identifiers = {"name", "title", "productname", "product_name", "heading", "booktitle", "quote", "text", "author"}
+        primary_requested = [f for f in fields if any(pk in f.lower().replace("_", "") for pk in primary_identifiers)]
+
         records: list[dict[str, Any]] = []
         for item in best_items:
             rec = self._extract_card_fields(item, fields, base_url=base_url)
             # Only accept card if at least one meaningful target field has content
-            if any(v is not None and str(v).strip() for v in rec.values()):
-                records.append(rec)
+            if not any(v is not None and str(v).strip() for v in rec.values()):
+                continue
+
+            # If primary keys were requested, ensure at least one primary identifier is present (reject orphaned price cards)
+            if primary_requested:
+                has_primary = any(rec.get(pk) is not None and str(rec.get(pk)).strip() for pk in primary_requested)
+                if not has_primary:
+                    continue
+
+            records.append(rec)
 
         return records
 

@@ -146,31 +146,13 @@ class ScrapingPlannerAgent(BaseAgent):
             self.logger.error(f"Failed to parse LLM JSON: {raw_output}")
             raise LLMInvocationError(f"Planner LLM returned invalid JSON: {e}") from e
 
-    async def plan_async(
+    def _create_task_from_parsed_data(
         self,
         request: ScrapingRequest,
-        task_id: Optional[str] = None,
+        parsed_data: dict[str, Any],
+        query_urls: list[str],
+        effective_task_id: str,
     ) -> ScrapingTask:
-        """Asynchronously plan and generate a ScrapingTask from a ScrapingRequest."""
-        effective_task_id = task_id or str(uuid4())
-        self.logger.debug(f"Planning scraping task for task_id: {effective_task_id}")
-
-        query_urls = extract_urls_from_text(request.query)
-        known_urls = list(request.target_urls)
-        for u in query_urls:
-            if u not in known_urls:
-                known_urls.append(u)
-
-        user_prompt = self._build_user_prompt(request, known_urls)
-
-        raw_output = await self.llm_client.invoke(
-            prompt=user_prompt,
-            system=PLANNER_SYSTEM_PROMPT,
-            json_mode=True,
-        )
-
-        parsed_data = self._parse_llm_json(raw_output)
-
         llm_urls = parsed_data.get("target_urls", [])
         if not isinstance(llm_urls, list):
             llm_urls = []
@@ -206,6 +188,26 @@ class ScrapingPlannerAgent(BaseAgent):
         elif is_list:
             min_records = 5
 
+        # Autonomous search & deep crawling intent detection
+        is_search = False
+        search_keyword = None
+        search_patterns = [
+            r"search\s+(?:for\s+)?[\"']?([^\"'\n]+?)[\"']?\s+on\s+",
+            r"search\s+(?:for\s+)?[\"']?([^\"'\n]+?)[\"']?\s+in\s+",
+            r"find\s+[\"']?([^\"'\n]+?)[\"']?\s+on\s+",
+            r"find\s+[\"']?([^\"'\n]+?)[\"']?\s+in\s+",
+            r"look\s+for\s+[\"']?([^\"'\n]+?)[\"']?\s+on\s+",
+        ]
+        for pat in search_patterns:
+            m = re.search(pat, request.query, re.IGNORECASE)
+            if m:
+                is_search = True
+                search_keyword = m.group(1).strip()
+                break
+
+        deep_crawl = bool(is_search or any(d in query_lower for d in ["spec", "detail", "review", "feature", "deep", "description"]))
+        max_detail_pages = max_records or 20
+
         task = ScrapingTask(
             task_id=effective_task_id,
             objective=objective,
@@ -217,20 +219,82 @@ class ScrapingPlannerAgent(BaseAgent):
             is_list=is_list,
             constraints=constraints,
             source_requirements=source_requirements,
+            is_search=is_search,
+            search_keyword=search_keyword,
+            deep_crawl=deep_crawl,
+            max_detail_pages=max_detail_pages,
         )
 
         self.logger.info(
-            f"Task plan generated | target_urls={len(task.target_urls)} | fields={task.fields} | is_list={task.is_list}"
+            f"Task plan generated | target_urls={len(task.target_urls)} | fields={task.fields} | is_list={task.is_list} | is_search={task.is_search}"
         )
         return task
 
+    async def plan_async(
+        self,
+        request: Optional[ScrapingRequest] = None,
+        task_id: Optional[str] = None,
+        query: Optional[str] = None,
+        target_urls: Optional[list[str]] = None,
+    ) -> ScrapingTask:
+        """Asynchronously plan and generate a ScrapingTask from a ScrapingRequest or query parameters."""
+        effective_task_id = task_id or str(uuid4())
+        if request is None:
+            request = ScrapingRequest(
+                query=query or "",
+                target_urls=target_urls or [],
+            )
+
+        self.logger.debug(f"Planning scraping task asynchronously for task_id: {effective_task_id}")
+
+        query_urls = extract_urls_from_text(request.query)
+        known_urls = list(request.target_urls)
+        for u in query_urls:
+            if u not in known_urls:
+                known_urls.append(u)
+
+        user_prompt = self._build_user_prompt(request, known_urls)
+
+        # Handle both invoke and invoke_async on LLMClient
+        if hasattr(self.llm_client, "invoke_async") and "invoke_async" in getattr(self.llm_client, "__dict__", {}):
+            raw_output = await self.llm_client.invoke_async(
+                prompt=user_prompt,
+                system=PLANNER_SYSTEM_PROMPT,
+                json_mode=True,
+            )
+        elif hasattr(self.llm_client, "invoke"):
+            raw_output = await self.llm_client.invoke(
+                prompt=user_prompt,
+                system=PLANNER_SYSTEM_PROMPT,
+                json_mode=True,
+            )
+        elif hasattr(self.llm_client, "invoke_async"):
+            raw_output = await self.llm_client.invoke_async(
+                prompt=user_prompt,
+                system=PLANNER_SYSTEM_PROMPT,
+                json_mode=True,
+            )
+        else:
+            raise AttributeError("LLMClient does not support invoke or invoke_async.")
+
+        parsed_data = self._parse_llm_json(raw_output)
+        return self._create_task_from_parsed_data(request, parsed_data, query_urls, effective_task_id)
+
     def plan(
         self,
-        request: ScrapingRequest,
+        request: Optional[ScrapingRequest] = None,
         task_id: Optional[str] = None,
+        query: Optional[str] = None,
+        target_urls: Optional[list[str]] = None,
     ) -> ScrapingTask:
-        """Synchronously plan and generate a ScrapingTask from a ScrapingRequest."""
+        """Synchronously plan and generate a ScrapingTask from a ScrapingRequest or query parameters."""
         effective_task_id = task_id or str(uuid4())
+        if request is None:
+            request = ScrapingRequest(
+                query=query or "",
+                target_urls=target_urls or [],
+            )
+
         self.logger.debug(f"Planning scraping task synchronously for task_id: {effective_task_id}")
 
         query_urls = extract_urls_from_text(request.query)
@@ -248,54 +312,5 @@ class ScrapingPlannerAgent(BaseAgent):
         )
 
         parsed_data = self._parse_llm_json(raw_output)
+        return self._create_task_from_parsed_data(request, parsed_data, query_urls, effective_task_id)
 
-        llm_urls = parsed_data.get("target_urls", [])
-        if not isinstance(llm_urls, list):
-            llm_urls = []
-        final_urls = self._merge_and_validate_urls(request, llm_urls, query_urls)
-
-        max_records = request.max_records
-        if max_records is None:
-            candidate = parsed_data.get("max_records")
-            if isinstance(candidate, int) and candidate > 0:
-                if any(char.isdigit() for char in request.query):
-                    max_records = candidate
-
-        objective = parsed_data.get("objective") or request.query.strip()
-        fields = parsed_data.get("fields") or []
-        output_schema = parsed_data.get("output_schema") or None
-
-        raw_constraints = parsed_data.get("constraints") or []
-        raw_source_reqs = parsed_data.get("source_requirements") or []
-        constraints = sanitize_constraints(raw_constraints, request.query)
-        source_requirements = sanitize_constraints(raw_source_reqs, request.query)
-
-        query_lower = request.query.lower()
-        is_list = any(w in query_lower for w in ["list", "products", "items", "all", "each", "catalog", "books", "quotes", "articles"])
-        min_records = None
-        num_match = re.search(r"\b(\d+)\b", request.query)
-        if num_match:
-            num_val = int(num_match.group(1))
-            if 1 < num_val <= 1000:
-                min_records = num_val
-                max_records = max_records or num_val
-        elif is_list:
-            min_records = 5
-
-        task = ScrapingTask(
-            task_id=effective_task_id,
-            objective=objective,
-            target_urls=final_urls,
-            fields=fields,
-            output_schema=output_schema,
-            max_records=max_records,
-            min_records=min_records,
-            is_list=is_list,
-            constraints=constraints,
-            source_requirements=source_requirements,
-        )
-
-        self.logger.info(
-            f"Task plan generated | target_urls={len(task.target_urls)} | fields={task.fields} | is_list={task.is_list}"
-        )
-        return task

@@ -9,6 +9,7 @@ class ScrapingGraphState(TypedDict, total=False):
     original_user_query: str
     scraping_task: Optional[ScrapingTask]
     target_urls: list[str]
+    navigation_result: Optional[dict[str, Any]]
     scraper_provider: str
     scraper_id: Optional[str]
     scraper_version: Optional[str]

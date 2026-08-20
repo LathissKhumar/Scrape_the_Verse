@@ -58,23 +58,37 @@ class RegexExtractor:
             else:
                 field_matches[field_rule.name] = []
 
-        # Find maximum matches length to create list of records
         max_rows = max([len(v) for v in field_matches.values()] or [0])
         if max_rows == 0:
             return []
 
+        # Check if schema requested multi-field entities
+        total_schema_fields = len(schema.fields)
+        primary_identifiers = {"name", "title", "productname", "product_name", "heading", "booktitle", "quote", "text", "author"}
+        primary_requested = [f.name for f in schema.fields if any(pk in f.name.lower().replace("_", "") for pk in primary_identifiers)]
+
         records: list[dict[str, Any]] = []
         for i in range(max_rows):
             row: dict[str, Any] = {}
-            has_val = False
+            populated_count = 0
             for field_rule in schema.fields:
                 vals = field_matches.get(field_rule.name, [])
                 if i < len(vals):
                     row[field_rule.name] = vals[i]
-                    has_val = True
+                    populated_count += 1
                 else:
                     row[field_rule.name] = field_rule.default_value
-            if has_val:
+
+            # If multi-field schema with primary keys, ensure primary key is present or >= 50% fields populated
+            if total_schema_fields > 1:
+                if primary_requested:
+                    has_primary = any(row.get(pk) is not None and str(row.get(pk)).strip() for pk in primary_requested)
+                    if not has_primary:
+                        continue
+                elif populated_count < 2:
+                    continue
+
+            if populated_count > 0:
                 records.append(row)
 
         return records

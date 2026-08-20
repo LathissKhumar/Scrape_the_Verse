@@ -126,3 +126,26 @@ def test_llm_extractor_sanitizes_price_slogans():
     assert sanitized[0]["price"] is None
     assert sanitized[1]["price"] is None
     assert sanitized[2]["price"] == "₹ 97,000"
+
+
+def test_html_cleaner_strips_carousel_and_recommendation_widgets():
+    html = """
+    <main>
+      <h1>Main Laptop Results</h1>
+      <div class="product">Dell XPS 15 - ₹1,40,000</div>
+      <div class="recommendations-carousel" data-widget="carousel">
+        <div class="carousel-title">Similar Laptops You May Like</div>
+        <div class="card">Asus Vivobook - ₹45,000</div>
+      </div>
+      <div class="sponsored-banner" data-widget="banner">
+        <span>Sponsored Product - ₹12,000</span>
+      </div>
+    </main>
+    """
+    cleaner = HTMLCleaner()
+    cleaned = cleaner.clean_html_to_text(html)
+    assert "Dell XPS 15" in cleaned
+    assert "Similar Laptops" not in cleaned
+    assert "Asus Vivobook" not in cleaned
+    assert "Sponsored Product" not in cleaned
+

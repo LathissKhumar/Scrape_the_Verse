@@ -50,3 +50,36 @@ def test_grid_card_extractor_extracts_quotes():
 def test_grid_card_extractor_empty_html():
     extractor = GridCardExtractor()
     assert extractor.extract(html="", target_fields=["title"]) == []
+
+
+def test_grid_card_extractor_ignores_recommendation_carousels():
+    html = """
+    <div class="main-results">
+      <div class="product-card" data-id="p1">
+        <h2 class="title">Apple iPhone 15</h2>
+        <span class="price">₹79,900</span>
+      </div>
+      <div class="product-card" data-id="p2">
+        <h2 class="title">Apple iPhone 14</h2>
+        <span class="price">₹69,900</span>
+      </div>
+    </div>
+    <div class="similar-products-carousel" data-widget="carousel">
+      <div class="product-card" data-id="c1">
+        <span class="price">₹3,999</span>
+      </div>
+      <div class="product-card" data-id="c2">
+        <span class="price">₹1,299</span>
+      </div>
+      <div class="product-card" data-id="c3">
+        <span class="price">₹499</span>
+      </div>
+    </div>
+    """
+    extractor = GridCardExtractor()
+    records = extractor.extract(html=html, target_fields=["title", "price"])
+    assert len(records) == 2
+    assert records[0]["title"] == "Apple iPhone 15"
+    assert records[1]["title"] == "Apple iPhone 14"
+
+

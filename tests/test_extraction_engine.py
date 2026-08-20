@@ -91,3 +91,27 @@ async def test_engine_llm_fallback():
     assert result.fallback_used is True
     assert len(result.records) == 1
     assert result.records[0]["summary"] == "Extracted with LLM"
+
+
+@pytest.mark.asyncio
+async def test_engine_filters_orphaned_records_without_primary_key():
+    engine = ExtractionEngine()
+    task = ScrapingTask(
+        task_id="t5",
+        objective="Scrape product listings",
+        target_urls=["https://example.com/search"],
+        fields=["name", "price", "rating"],
+        is_list=True,
+    )
+    raw_records = [
+        {"name": "iPhone 15", "price": "₹79,900", "rating": "4.6"},
+        {"name": "Samsung S24", "price": "₹74,999", "rating": "4.5"},
+        {"name": None, "price": "₹4,000", "rating": None},  # Orphaned carousel price
+        {"name": None, "price": "₹230", "rating": None},    # Orphaned footer price
+    ]
+    result = await engine.extract_async(raw_records, task)
+    # Orphaned records must be filtered out
+    assert len(result.records) == 2
+    assert result.records[0]["name"] == "iPhone 15"
+    assert result.records[1]["name"] == "Samsung S24"
+

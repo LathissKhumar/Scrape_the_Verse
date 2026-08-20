@@ -38,6 +38,16 @@ NOISE_SELECTORS = [
     ".noprint",
     ".infobox-navbar",
     ".mw-empty-elt",
+    # Carousels, recommendation widgets, sponsored banners & ads
+    "div[class*='carousel']",
+    "div[class*='slider']",
+    "div[class*='recommend']",
+    "div[class*='similar']",
+    "div[class*='sponsored']",
+    "div[data-widget*='carousel']",
+    "div[data-widget*='recommendation']",
+    "div[data-widget*='banner']",
+    ".frequently-bought-together",
 ]
 
 

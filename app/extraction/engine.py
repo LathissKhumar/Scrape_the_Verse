@@ -134,6 +134,55 @@ class ExtractionEngine:
 
         return conformed
 
+    def _filter_grounded_records(
+        self,
+        records: list[dict[str, Any]],
+        task: ScrapingTask,
+    ) -> list[dict[str, Any]]:
+        """Filter out orphaned records lacking requested primary identifiers or having insufficient field grounding."""
+        if not records:
+            return []
+
+        primary_identifiers = {
+            "name", "title", "productname", "product_name", "producttitle", "heading",
+            "booktitle", "quote", "text", "author", "authorname", "itemname", "summary"
+        }
+        primary_requested = [
+            f for f in task.fields
+            if any(pk in f.lower().replace("_", "").replace(" ", "") for pk in primary_identifiers)
+        ]
+
+        grounded: list[dict[str, Any]] = []
+        for rec in records:
+            # Count populated non-empty values
+            populated_fields = [
+                k for k, v in rec.items()
+                if v is not None and str(v).strip() and str(v).strip().lower() not in ("none", "null", "n/a")
+            ]
+
+            if not populated_fields:
+                continue
+
+            # If task requested primary key(s), ensure at least one primary identifier is present and non-empty
+            if primary_requested:
+                has_primary = any(
+                    rec.get(pk) is not None
+                    and str(rec.get(pk)).strip()
+                    and str(rec.get(pk)).strip().lower() not in ("none", "null", "n/a")
+                    for pk in primary_requested
+                )
+                if not has_primary:
+                    # Drop orphaned rows (e.g. solitary carousel price with missing name/title)
+                    continue
+
+            # If multiple fields requested, discard rows with only 1 solitary value (unless user only requested 1 field)
+            if len(task.fields) > 1 and len(populated_fields) <= 1:
+                continue
+
+            grounded.append(rec)
+
+        return grounded
+
     async def extract(
         self,
         raw_results: Any,
@@ -162,11 +211,12 @@ class ExtractionEngine:
                 logger.info("Raw content is already structured records. Applying passthrough normalization.")
                 deduped = self.deduplicator.deduplicate(raw_content)
                 conformed = self._enforce_task_schema(deduped, task)
+                grounded = self._filter_grounded_records(conformed, task)
                 return ExtractionResult(
-                    records=conformed,
+                    records=grounded,
                     strategy_used=ExtractionStrategyEnum.PASSTHROUGH.value,
                     fallback_used=False,
-                    metadata={"record_count": len(conformed)},
+                    metadata={"record_count": len(grounded)},
                 )
 
         # 2. Normalize content to list of RawPage instances
@@ -378,9 +428,12 @@ class ExtractionEngine:
                             base_url=pages[0].url if pages else None,
                         )
 
+        grounded_records = self._filter_grounded_records(conformed, task)
+
         return ExtractionResult(
-            records=conformed,
+            records=grounded_records,
             strategy_used=dominant_strategy,
             fallback_used=any_fallback,
-            metadata={"record_count": len(conformed)},
+            metadata={"record_count": len(grounded_records)},
         )
+

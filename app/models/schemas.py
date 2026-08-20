@@ -89,6 +89,26 @@ class ScrapingTask(BaseModel):
         default_factory=list,
         description="Explicit source or data requirements (e.g. JavaScript rendering needed, headers).",
     )
+    is_search: bool = Field(
+        default=False,
+        description="Whether this task involves autonomous on-site searching.",
+    )
+    search_keyword: Optional[str] = Field(
+        default=None,
+        description="Search keyword to type into site search inputs.",
+    )
+    deep_crawl: bool = Field(
+        default=False,
+        description="Whether to follow search/catalog result links into deep detail pages.",
+    )
+    max_detail_pages: int = Field(
+        default=20,
+        description="Maximum number of product/item detail pages to crawl.",
+    )
+    filters: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Faceted filter criteria (e.g. brand, price range, sorting).",
+    )
     metadata: dict[str, Any] = Field(
         default_factory=dict,
         description="Arbitrary task metadata and execution configuration.",
