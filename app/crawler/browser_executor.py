@@ -92,7 +92,7 @@ class BrowserExecutor:
             wait_until = action_plan.wait_until if action_plan else "domcontentloaded"
             timeout = action_plan.timeout_ms if action_plan else self.browser_manager.config.timeout_ms
 
-            logger.info(f"Navigating to '{validated_url}' (wait_until={wait_until}, timeout={timeout}ms)...")
+            logger.debug(f"Navigating to '{validated_url}' (wait_until={wait_until}, timeout={timeout}ms)...")
             response = await page.goto(validated_url, wait_until=wait_until, timeout=timeout)
 
             if response:

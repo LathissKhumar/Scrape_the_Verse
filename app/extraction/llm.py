@@ -1,5 +1,6 @@
 import asyncio
 import json
+import re
 from typing import Any, Optional
 
 from app.config.logging import get_logger
@@ -17,11 +18,13 @@ Extract structured records from the provided content strictly conforming to the 
 
 Rules:
 1. Return a single JSON array containing objects matching the requested fields.
-2. Only extract information explicitly stated in the content.
-3. If a field value is missing or not found, set its value to null.
-4. Do NOT hallucinate or infer missing facts.
-5. Do NOT include markdown code blocks or explanations outside the JSON array.
-6. Preserve exact field names requested.
+2. Only extract information explicitly and directly stated in the Source Content.
+3. If a field value is not found or not mentioned in the Source Content, set its value to null.
+4. Do NOT hallucinate, invent, extrapolate, or use outside pre-trained knowledge.
+5. Extract exact names, facts, and descriptions as they appear in the content.
+6. For price/cost fields, extract only genuine numerical prices (e.g. '$199', '₹97,000', '19000'). Do NOT extract marketing slogans or button texts like 'free', 'get quote', 'best price', or 'सही दाम पर' as prices. If no real price is stated, return null.
+7. Do NOT include markdown code blocks or explanations outside the JSON array.
+8. Preserve exact field names requested.
 """
 
 
@@ -55,7 +58,10 @@ class LLMExtractor:
             prompt_lines.append(f"Expected Output Schema: {output_schema_str}")
 
         prompt_lines.append(f"\nSource Content:\n\"\"\"\n{content_snippet}\n\"\"\"")
-        prompt_lines.append("\nExtract the matching structured records as a JSON array of objects:")
+        prompt_lines.append(
+            "\nExtract structured records strictly matching the Source Content above as a JSON array of objects. "
+            "Only include facts directly stated in the text:"
+        )
         return "\n".join(prompt_lines)
 
     def _parse_llm_records(self, raw_output: str) -> list[dict[str, Any]]:
@@ -74,8 +80,32 @@ class LLMExtractor:
                         return [item for item in val if isinstance(item, dict)]
                 return [parsed]
             return []
-        except Exception as e:
-            logger.warning(f"Failed to parse LLM JSON records: {e}")
+        except Exception:
+            # Resilient fallback 1: auto-close unclosed brackets
+            for fix in ("]", "}", "}\n]", "\"]}"):
+                try:
+                    parsed = json.loads(cleaned + fix)
+                    if isinstance(parsed, list):
+                        return [item for item in parsed if isinstance(item, dict)]
+                    elif isinstance(parsed, dict):
+                        return [parsed]
+                except Exception:
+                    pass
+
+            # Resilient fallback 2: match individual JSON objects
+            extracted_objs: list[dict[str, Any]] = []
+            for obj_match in re.finditer(r"\{[^{}]+\}", cleaned):
+                try:
+                    obj = json.loads(obj_match.group(0))
+                    if isinstance(obj, dict):
+                        extracted_objs.append(obj)
+                except Exception:
+                    pass
+
+            if extracted_objs:
+                return extracted_objs
+
+            logger.debug(f"Could not parse LLM output as structured JSON records")
             return []
 
     async def extract_async(
@@ -114,11 +144,113 @@ class LLMExtractor:
                 logger.error(f"Error during LLM chunk extraction: {e}")
                 return []
 
+    def _consolidate_entity_records(
+        self,
+        records: list[dict[str, Any]],
+        fields: list[str],
+    ) -> list[dict[str, Any]]:
+        """Consolidate multiple chunk extraction outputs into a single comprehensive entity record."""
+        if not records:
+            return []
+        if len(records) == 1:
+            return records
+
+        unified: dict[str, Any] = {}
+        for f in fields:
+            best_val = None
+            for r in records:
+                val = r.get(f)
+                if val is not None and str(val).strip().lower() not in ("null", "none", "", "n/a", "unknown"):
+                    # Choose richest non-empty value
+                    if best_val is None or len(str(val)) > len(str(best_val)):
+                        best_val = val
+            unified[f] = best_val
+
+        # Preserve any non-requested keys that contain rich extracted data
+        for r in records:
+            for k, v in r.items():
+                if k not in unified and v is not None and str(v).strip().lower() not in ("null", "none", "", "n/a"):
+                    unified[k] = v
+
+        return [unified]
+
+    def _sanitize_records(
+        self,
+        records: list[dict[str, Any]],
+        fields: list[str],
+    ) -> list[dict[str, Any]]:
+        """Sanitize field values, converting marketing slogans in price/cost fields into None."""
+        invalid_price_slogans = {
+            "free", "on request", "call for price", "get quote", "सही दाम पर",
+            "best price", "fair price", "contact us", "ask price", "free quote", "n/a"
+        }
+        for r in records:
+            for f in fields:
+                val = r.get(f)
+                if val is not None and ("price" in f.lower() or "cost" in f.lower()):
+                    if isinstance(val, str):
+                        clean_str = val.strip().lower()
+                        # If string has no digits or matches a slogan without price, nullify it
+                        if not re.search(r"\d", clean_str) or clean_str in invalid_price_slogans:
+                            r[f] = None
+        return records
+
+    async def extract_async(
+        self,
+        content: str | RawPage,
+        task: ScrapingTask,
+        schema: Optional[ExtractionSchema] = None,
+    ) -> list[dict[str, Any]]:
+        """Asynchronously extract structured records using LLM with semantic chunk filtering."""
+        text_str = content.get_primary_content() if isinstance(content, RawPage) else str(content)
+        if not text_str or not text_str.strip():
+            return []
+
+        # If text is raw HTML, strip boilerplate and extract clean structured text
+        if "<html" in text_str.lower() or "<body" in text_str.lower() or "<div" in text_str.lower() or "<p" in text_str.lower():
+            try:
+                from app.extraction.cleaner import clean_html
+                cleaned = clean_html(text_str)
+                if cleaned and len(cleaned.strip()) > 20:
+                    text_str = cleaned
+            except Exception:
+                pass
+
+        chunks = self.chunker.chunk_text(text_str)
+        if not chunks:
+            return []
+
+        # If multiple chunks, rank them semantically against the task objective & fields
+        if len(chunks) > 1:
+            query_str = f"{task.objective} {' '.join(task.fields)}"
+            ranked = self.semantic_filter.rank_and_filter(chunks, query=query_str, top_k=3)
+            selected_chunks = [c for c, _ in ranked] if ranked else chunks[:3]
+        else:
+            selected_chunks = chunks
+
+        async def _extract_chunk(chunk_text: str) -> list[dict[str, Any]]:
+            prompt = self._build_prompt(chunk_text, task, schema)
+            try:
+                raw_response = await self.llm_client.invoke(
+                    prompt=prompt,
+                    system=LLM_EXTRACTION_SYSTEM_PROMPT,
+                    json_mode=True,
+                )
+                return self._parse_llm_records(raw_response)
+            except Exception as e:
+                logger.error(f"Error during LLM chunk extraction: {e}")
+                return []
+
         chunk_results = await asyncio.gather(*[_extract_chunk(c) for c in selected_chunks])
         all_records: list[dict[str, Any]] = []
         for records in chunk_results:
             all_records.extend(records)
 
+        # If multiple chunks were extracted for a single entity request, consolidate chunk fragments into one record
+        if len(selected_chunks) > 1 and not getattr(task, "is_list", False) and (not schema or not schema.base_selector):
+            all_records = self._consolidate_entity_records(all_records, task.fields)
+
+        all_records = self._sanitize_records(all_records, task.fields)
         return all_records
 
     def extract(
@@ -131,6 +263,16 @@ class LLMExtractor:
         text_str = content.get_primary_content() if isinstance(content, RawPage) else str(content)
         if not text_str or not text_str.strip():
             return []
+
+        # If text is raw HTML, strip boilerplate and extract clean structured text
+        if "<html" in text_str.lower() or "<body" in text_str.lower() or "<div" in text_str.lower() or "<p" in text_str.lower():
+            try:
+                from app.extraction.cleaner import clean_html
+                cleaned = clean_html(text_str)
+                if cleaned and len(cleaned.strip()) > 20:
+                    text_str = cleaned
+            except Exception:
+                pass
 
         chunks = self.chunker.chunk_text(text_str)
         if not chunks:
@@ -158,4 +300,9 @@ class LLMExtractor:
             except Exception as e:
                 logger.error(f"Error during sync LLM chunk extraction: {e}")
 
+        # If multiple chunks were extracted for a single entity request, consolidate chunk fragments into one record
+        if len(selected_chunks) > 1 and not getattr(task, "is_list", False) and (not schema or not schema.base_selector):
+            all_records = self._consolidate_entity_records(all_records, task.fields)
+
+        all_records = self._sanitize_records(all_records, task.fields)
         return all_records

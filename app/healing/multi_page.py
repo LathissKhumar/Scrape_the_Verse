@@ -40,7 +40,7 @@ class MultiPageRepairValidator:
 
         max_pages = min(len(raw_pages), self.settings.MAX_VALIDATION_PAGES)
         eval_pages = raw_pages[:max_pages]
-        logger.info(f"Executing multi-page validation across {len(eval_pages)} representative pages...")
+        logger.debug(f"Executing multi-page validation across {len(eval_pages)} representative pages...")
 
         per_page_metrics: list[dict[str, Any]] = []
         health_scores: list[float] = []
@@ -79,5 +79,5 @@ class MultiPageRepairValidator:
         passed = avg_health >= 0.70
         reason = None if passed else f"Aggregate multi-page health ({avg_health:.2f}) below threshold 0.70"
 
-        logger.info(f"Multi-page validation completed: avg_health={avg_health:.2f}, passed={passed}")
+        logger.debug(f"Multi-page validation completed: avg_health={avg_health:.2f}, passed={passed}")
         return passed, avg_health, per_page_metrics, reason

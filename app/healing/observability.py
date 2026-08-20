@@ -58,7 +58,7 @@ class RepairObservability:
         except Exception as e:
             logger.debug(f"Could not append session telemetry to file: {e}")
 
-        logger.info(
+        logger.debug(
             f"Logged repair telemetry: session={session.session_id[:8]}, "
             f"domain={session.domain}, accepted={session.accepted}, "
             f"health={session.initial_health:.2f}->{session.final_health:.2f}, "

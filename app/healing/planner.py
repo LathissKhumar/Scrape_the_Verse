@@ -159,7 +159,7 @@ class HealingPlanner:
         failed_attempts: Optional[list[dict[str, Any]]] = None,
     ) -> list[RepairCandidate]:
         """Generate, score, and rank repair candidates using memory, actions, LLM, and deterministic heuristics."""
-        logger.info(f"Generating repair candidates for task_id={task.task_id} (root_cause={diagnosis.root_cause.value})")
+        logger.debug(f"Generating repair candidates for task_id={task.task_id} (root_cause={diagnosis.root_cause.value})")
         candidates: list[RepairCandidate] = []
         target_url = task.target_urls[0] if task.target_urls else "https://example.com"
         parsed = urlparse(target_url)

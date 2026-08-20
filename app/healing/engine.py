@@ -91,7 +91,7 @@ class HealingEngine:
         """
         task_id = task.task_id
         start_time = time.time()
-        logger.info(f"Starting self-healing loop for task_id={task_id} (root_cause={diagnosis.root_cause.value})")
+        logger.debug(f"Starting self-healing loop for task_id={task_id} (root_cause={diagnosis.root_cause.value})")
 
         repair_history: list[dict[str, Any]] = []
         target_url = task.target_urls[0] if task.target_urls else "https://example.com"
@@ -110,7 +110,7 @@ class HealingEngine:
         current_fp = self.fingerprinter.generate_fingerprint(sample_html) if sample_html else None
 
         if is_recovered and recovery_val:
-            logger.info(f"Task {task_id} recovered transiently without repair needed.")
+            logger.debug(f"Task {task_id} recovered transiently without repair needed.")
             no_rep_plan = RepairPlan(
                 repair_type=RepairType.NO_REPAIR_REQUIRED,
                 reason="Fresh scrape recovered healthy performance without configuration modification",
@@ -212,7 +212,7 @@ class HealingEngine:
             plan = candidate.plan
             attempt_num = attempt_idx + 1
 
-            logger.info(
+            logger.debug(
                 f"[Attempt {attempt_num}/{attempts_budget}] Testing candidate repair: "
                 f"{plan.repair_type.value} (score={candidate.score:.2f}, source={candidate.source})"
             )
@@ -280,7 +280,7 @@ class HealingEngine:
             repair_history.append(attempt_record)
 
             if evaluation.accepted:
-                logger.info(
+                logger.debug(
                     f"Candidate repair accepted for task_id={task_id} on attempt {attempt_num}! "
                     f"health: {validation.health_score:.2f} -> {canary_validation.health_score:.2f} "
                     f"tier: {evaluation.confidence_level.value}"

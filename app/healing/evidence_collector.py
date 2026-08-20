@@ -29,7 +29,7 @@ class RepairEvidenceCollector:
             logger.warning("No scraper agent configured for RepairEvidenceCollector")
             return []
 
-        logger.info(f"Fetching fresh page evidence for task_id={task.task_id} from {task.target_urls}")
+        logger.debug(f"Fetching fresh page evidence for task_id={task.task_id} from {task.target_urls}")
         try:
             raw_dicts = await self.scraper_agent.execute(task=task)
             raw_pages: list[RawPage] = []

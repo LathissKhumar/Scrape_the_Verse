@@ -22,7 +22,7 @@ class ValidationAgent(BaseAgent):
         historical_baseline: Optional[HistoricalBaseline] = None,
     ) -> ValidationResult:
         """Execute deterministic data validation and return complete ValidationResult."""
-        self.logger.info(
+        self.logger.debug(
             f"task_id={task.task_id} Evaluating quality and health for {len(extracted_results)} extracted record(s)."
         )
 
@@ -34,6 +34,7 @@ class ValidationAgent(BaseAgent):
         )
 
         self.logger.info(
-            f"task_id={task.task_id} Validation completed -> status='{result.status}', health_score={result.health_score}, quality_score={result.quality_score}."
+            f"Quality audit completed | status={result.status} | health_score={result.health_score:.2f} | quality_score={result.quality_score:.2f} | anomalies={len(result.anomalies)}"
         )
         return result
+

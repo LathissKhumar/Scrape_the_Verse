@@ -71,7 +71,7 @@ def create_scraping_workflow(
         query = state.get("original_user_query", "")
         supplied_urls = state.get("target_urls", [])
 
-        logger.info(f"task_id={task_id} [GRAPH:planner_node] Running planner agent")
+        logger.debug(f"task_id={task_id} [GRAPH:planner_node] Running planner agent")
 
         request = ScrapingRequest(
             query=query,
@@ -93,7 +93,7 @@ def create_scraping_workflow(
         task_id = state.get("task_id", "unknown-task")
         task: Optional[ScrapingTask] = state.get("scraping_task")
 
-        logger.info(f"task_id={task_id} [GRAPH:scraper_node] Running scraper agent")
+        logger.debug(f"task_id={task_id} [GRAPH:scraper_node] Running scraper agent")
 
         if not task or not task.target_urls:
             err_msg = "No target URL was supplied. URL discovery is not implemented."
@@ -143,7 +143,7 @@ def create_scraping_workflow(
         if state.get("final_output") and state["final_output"].status == "failed":
             return {}
 
-        logger.info(f"task_id={task_id} [GRAPH:extraction_node] Running extraction agent")
+        logger.debug(f"task_id={task_id} [GRAPH:extraction_node] Running extraction agent")
 
         if not raw_results:
             empty_msg = "No raw content retrieved for extraction."
@@ -185,7 +185,7 @@ def create_scraping_workflow(
         if state.get("final_output") and state["final_output"].status == "failed":
             return {}
 
-        logger.info(f"task_id={task_id} [GRAPH:validation_node] Running validation agent")
+        logger.debug(f"task_id={task_id} [GRAPH:validation_node] Running validation agent")
 
         validation_result: ValidationResult = await validator.validate(
             extracted_results=extracted_results,
@@ -240,7 +240,7 @@ def create_scraping_workflow(
         extracted_results = state.get("extracted_results") or []
         val_dict = state.get("validation_result") or {}
 
-        logger.info(f"task_id={task_id} [GRAPH:diagnosis_node] Running diagnosis agent")
+        logger.debug(f"task_id={task_id} [GRAPH:diagnosis_node] Running diagnosis agent")
 
         val_result = ValidationResult(**val_dict) if val_dict else ValidationResult(status="broken", health_score=0.0)
 
@@ -273,7 +273,7 @@ def create_scraping_workflow(
         diag_dict = state.get("diagnosis_result") or {}
         schema_dict = state.get("extraction_schema")
 
-        logger.info(f"task_id={task_id} [GRAPH:healing_node] Running healing agent")
+        logger.debug(f"task_id={task_id} [GRAPH:healing_node] Running healing agent")
 
         val_result = ValidationResult(**val_dict) if val_dict else ValidationResult(status="broken", health_score=0.0)
         diag_result = DiagnosisResult(**diag_dict) if diag_dict else DiagnosisResult(root_cause=RootCause.UNKNOWN)
@@ -326,8 +326,6 @@ def create_scraping_workflow(
 
     async def escalate_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
-        logger.info(f"task_id={task_id} [GRAPH:escalate_node] Escalating failure to human operators")
-
         final_output = state.get("final_output")
         if not final_output:
             final_output = ScrapingResult(task_id=task_id, status="failed", records=[])
@@ -344,7 +342,7 @@ def create_scraping_workflow(
             else "Unrecoverable failure detected"
         )
         final_output.metadata = updated_meta
-        final_output.error = f"Escalated: {updated_meta['escalation_reason']}"
+        logger.warning(f"Escalation triggered | task_id={task_id} | reason={updated_meta['escalation_reason']}")
 
         return {"final_output": final_output}
 

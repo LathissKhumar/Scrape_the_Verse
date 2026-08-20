@@ -53,7 +53,7 @@ class ValidationEngine:
         total_records = len(actual_records)
         fields = actual_task.fields or (list(actual_records[0].keys()) if actual_records else [])
 
-        logger.info(f"task_id={actual_task.task_id} Validating {total_records} record(s) across {len(fields)} field(s)")
+        logger.debug(f"task_id={actual_task.task_id} Validating {total_records} record(s) across {len(fields)} field(s)")
 
         # 1. Evaluate Field Completeness & Placeholders
         field_metrics: dict[str, FieldMetric] = self.completeness_validator.evaluate_all(actual_records, fields)
@@ -142,7 +142,7 @@ class ValidationEngine:
             },
         )
 
-        logger.info(
+        logger.debug(
             f"task_id={actual_task.task_id} Validation completed: status={status}, health_score={health_score}, quality_score={quality_score}, anomalies={len(anomalies)}"
         )
 

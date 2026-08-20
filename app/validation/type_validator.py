@@ -59,6 +59,20 @@ class TypeValidator:
         if t in ("date", "datetime"):
             return isinstance(val, str) and bool(DATE_REGEX.match(val.strip()))
 
+        if t in ("price", "currency", "cost"):
+            if isinstance(val, (int, float)) and not isinstance(val, bool):
+                return True
+            if isinstance(val, str):
+                cleaned = val.strip().lower()
+                # Must contain at least one digit
+                if not re.search(r"\d", cleaned):
+                    return False
+                # Slogans and generic buttons without numerical context are invalid
+                if cleaned in ("free", "on request", "call for price", "get quote", "सही दाम पर", "best price"):
+                    return False
+                return True
+            return False
+
         return True
 
     def validate_records_schema(
@@ -88,7 +102,10 @@ class TypeValidator:
 
             for field_name, expected_type in schema.items():
                 val = r.get(field_name)
-                if val is not None and not self.validate_value(val, str(expected_type)):
+                f_type = str(expected_type)
+                if ("price" in field_name.lower() or "cost" in field_name.lower()) and f_type in ("string", "str"):
+                    f_type = "price"
+                if val is not None and not self.validate_value(val, f_type):
                     record_valid = False
 
             if record_valid:

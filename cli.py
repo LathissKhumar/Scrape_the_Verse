@@ -6,9 +6,18 @@ import json
 import sys
 import warnings
 from typing import Optional
+from colorama import Fore, Style, init as colorama_init
 
+colorama_init(autoreset=True)
 warnings.filterwarnings("ignore")
 
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 # Silence known Windows Proactor pipe destruction artifact on process exit
 def _silence_unraisablehook(unraisable):
@@ -30,6 +39,7 @@ from app.agents.extraction import ExtractionAgent
 from app.agents.validation import ValidationAgent
 from app.agents.diagnosis import DiagnosisAgent
 from app.agents.healing import HealingAgent
+from app.config.logging import setup_logging
 from app.config.settings import get_settings
 from app.export.exporter import DataExporter
 
@@ -39,8 +49,11 @@ async def execute_query(
     target_urls: Optional[list[str]] = None,
     output_path: Optional[str] = None,
     output_format: Optional[str] = None,
+    verbose: bool = False,
 ):
     """Execute scraping workflow directly from CLI."""
+    setup_logging(verbose=verbose, is_cli=True)
+
     settings = get_settings()
     llm = OllamaClient(settings=settings)
     scraper = ScraperAgent()
@@ -60,18 +73,19 @@ async def execute_query(
     )
 
     urls = target_urls or []
+    engine_name = "Bright Data" if settings.BRIGHTDATA else "Native Playwright Engine (Parallel)"
 
-    print("\n" + "=" * 60)
-    print("  SCRAPE THE VERSE - CLI QUERY EXECUTOR")
-    print("=" * 60)
-    print(f"Query:        {query}")
+    print("\n" + "=" * 65)
+    print(f"  {Style.BRIGHT}SCRAPE THE VERSE - CLI QUERY EXECUTOR{Style.RESET_ALL}")
+    print("=" * 65)
+    print(f"{Style.BRIGHT}Query:{Style.RESET_ALL}        {query}")
     if urls:
-        print(f"Target URLs ({len(urls)}):")
+        print(f"{Style.BRIGHT}Target URLs ({len(urls)}):{Style.RESET_ALL}")
         for u in urls:
             print(f"  - {u}")
-    print(f"Engine Mode:  {'Bright Data' if settings.BRIGHTDATA else 'Native Playwright Engine (Parallel)'}")
-    print("-" * 60)
-    print("Executing pipeline (Planner -> Scraper -> Extractor -> Validator)...")
+    print(f"{Style.BRIGHT}Engine Mode:{Style.RESET_ALL}  {engine_name}")
+    print("-" * 65)
+    print(f"{Fore.LIGHTCYAN_EX}[PIPELINE]   {Style.RESET_ALL}Starting (Planner -> Scraper -> Extractor -> Validator)...")
 
     initial_state: ScrapingGraphState = {
         "task_id": "cli_query",
@@ -84,33 +98,45 @@ async def execute_query(
         result = await workflow.ainvoke(initial_state)
         output = result.get("final_output")
 
-        print("\n" + "=" * 60)
-        print("  SCRAPING RESULTS")
-        print("=" * 60)
+        print("\n" + "=" * 65)
+        print(f"  {Style.BRIGHT}SCRAPING RESULTS{Style.RESET_ALL}")
+        print("=" * 65)
         if output:
-            print(f"Status:        {output.status.upper()}")
-            print(f"Health Score:  {output.metadata.get('health_score', 0.0):.2f}")
-            print(f"Record Count:  {len(output.records)}")
-            print("-" * 60)
+            status_color = Fore.GREEN if output.status == "success" else (Fore.YELLOW if output.status == "partial" else Fore.RED)
+            health_val = output.metadata.get("health_score", 0.0)
+            quality_val = output.metadata.get("quality_score", 0.0)
+            val_status = output.metadata.get("validation_status", "unknown")
 
-            for i, r in enumerate(output.records, 1):
-                print(f"\n[Record {i}]")
-                for k, v in r.items():
-                    print(f"  {k}: {v}")
+            print(f"{Style.BRIGHT}Status:{Style.RESET_ALL}        {status_color}{output.status.upper()}{Style.RESET_ALL}")
+            print(f"{Style.BRIGHT}Health Score:{Style.RESET_ALL}  {health_val:.2f} / 1.00 ({val_status.capitalize()})")
+            print(f"{Style.BRIGHT}Quality Score:{Style.RESET_ALL} {quality_val:.2f} / 1.00")
+            print(f"{Style.BRIGHT}Record Count:{Style.RESET_ALL}  {len(output.records)}")
+            print("-" * 65)
 
-            print("\n" + "-" * 60)
-            print("Metadata Summary:")
-            meta = {
-                "validation_status": output.metadata.get("validation_status"),
-                "quality_score": output.metadata.get("quality_score"),
-                "self_healed": output.metadata.get("self_healed"),
-                "anomalies": output.metadata.get("anomalies", []),
-            }
-            print(json.dumps(meta, indent=2))
+            if output.records:
+                for i, r in enumerate(output.records, 1):
+                    print(f"\n{Fore.CYAN}[Record {i}]{Style.RESET_ALL}")
+                    for k, v in r.items():
+                        print(f"  {Style.BRIGHT}{k}:{Style.RESET_ALL} {v}")
+            else:
+                print(f"\n{Fore.YELLOW}No structured records extracted.{Style.RESET_ALL}")
 
-            if output_path and output:
+            print("\n" + "-" * 65)
+            print(f"{Style.BRIGHT}Metadata Summary:{Style.RESET_ALL}")
+            print(f"  Validation Status: {val_status}")
+            print(f"  Quality Score:     {quality_val:.2f}")
+            print(f"  Self-Healed:       {output.metadata.get('self_healed')}")
+
+            anomalies = output.metadata.get("anomalies", [])
+            if anomalies:
+                print(f"  Anomalies Detected ({len(anomalies)}):")
+                for a in anomalies:
+                    print(f"    - {a}")
+            else:
+                print("  Anomalies:         None")
+
+            if output_path and output.records:
                 fmt = (output_format or "json").lower()
-                content = ""
                 if fmt == "csv" or output_path.endswith(".csv"):
                     content = DataExporter.to_csv(output.records)
                 elif fmt == "ndjson" or output_path.endswith(".ndjson"):
@@ -120,13 +146,13 @@ async def execute_query(
 
                 with open(output_path, "w", encoding="utf-8") as f:
                     f.write(content)
-                print(f"\n[EXPORT] Saved {len(output.records)} records to {output_path}")
+                print(f"\n{Fore.GREEN}[EXPORT] Saved {len(output.records)} records to {output_path} ({fmt.upper()}){Style.RESET_ALL}")
 
         else:
-            print("No output produced.")
+            print(f"{Fore.RED}No output produced.{Style.RESET_ALL}")
 
     except Exception as e:
-        print(f"\n[ERROR] Scraping execution failed: {e}")
+        print(f"\n{Fore.RED}[ERROR] Scraping execution failed: {e}{Style.RESET_ALL}")
 
 
 def main():
@@ -158,6 +184,11 @@ def main():
         choices=["json", "csv", "ndjson"],
         help="Export format (default: json)",
     )
+    parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="Enable verbose debug logs",
+    )
 
     args = parser.parse_args()
 
@@ -177,13 +208,15 @@ def main():
                 target_urls=target_urls,
                 output_path=args.output,
                 output_format=args.format,
+                verbose=args.verbose,
             )
         )
     else:
         # Interactive mode
-        print("\n" + "=" * 60)
-        print("  SCRAPE THE VERSE - INTERACTIVE PROMPT")
-        print("=" * 60)
+        setup_logging(verbose=args.verbose, is_cli=True)
+        print("\n" + "=" * 65)
+        print(f"  {Style.BRIGHT}SCRAPE THE VERSE - INTERACTIVE PROMPT{Style.RESET_ALL}")
+        print("=" * 65)
         user_query = input("\nEnter your scraping query: ").strip()
         if not user_query:
             print("No query provided. Exiting.")
@@ -196,9 +229,11 @@ def main():
                 target_urls=interactive_urls,
                 output_path=args.output,
                 output_format=args.format,
+                verbose=args.verbose,
             )
         )
 
 
 if __name__ == "__main__":
     main()
+

@@ -61,7 +61,7 @@ class RepairEvaluator:
         after_snap = self.snapshot(after, strategy=strategy_used)
 
         delta_health = after.health_score - before.health_score
-        logger.info(
+        logger.debug(
             f"Evaluating repair_id={repair_id}: before_health={before.health_score:.2f}, "
             f"after_health={after.health_score:.2f} (delta={delta_health:+.2f})"
         )
@@ -131,7 +131,7 @@ class RepairEvaluator:
                     f"after_health={after.health_score:.2f} (required delta>={self.min_health_improvement} "
                     f"or after_health>={self.min_healthy_threshold})"
                 )
-                logger.info(f"Repair rejected: {rejection_reason}")
+                logger.debug(f"Repair rejected: {rejection_reason}")
 
         # Compute confidence score & tier
         cand_conf = plan.confidence if plan else 0.80

@@ -29,7 +29,7 @@ class ExtractionAgent(BaseAgent):
         schema: Optional[ExtractionSchema] = None,
     ) -> ExtractionResult:
         """Extract structured records according to task schema and return ExtractionResult."""
-        self.logger.info(
+        self.logger.debug(
             f"task_id={task.task_id} Extracting structured fields ({len(task.fields)} fields) from raw content."
         )
 
@@ -40,6 +40,7 @@ class ExtractionAgent(BaseAgent):
         )
 
         self.logger.info(
-            f"task_id={task.task_id} Extracted {len(result.records)} record(s) using strategy '{result.strategy_used}' (fallback={result.fallback_used})."
+            f"Data extracted | strategy={result.strategy_used} | fields={len(task.fields)} | records={len(result.records)}"
         )
         return result
+

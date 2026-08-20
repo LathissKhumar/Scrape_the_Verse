@@ -92,7 +92,7 @@ class FailedRepairMemory:
         except Exception as e:
             logger.debug(f"Failed to persist failure record to SQLite: {e}")
 
-        logger.info(f"Recorded failed repair candidate for {domain} (fp={fp}, reason='{reason[:40]}')")
+        logger.debug(f"Recorded failed repair candidate for {domain} (fp={fp}, reason='{reason[:40]}')")
 
     def is_suppressed(
         self,
@@ -111,7 +111,7 @@ class FailedRepairMemory:
         if key in self._memory_cache:
             rec = self._memory_cache[key]
             if (now - rec["updated_at"]) < ttl and rec["failure_count"] >= 2:
-                logger.info(f"Candidate {fp} suppressed via memory (failures={rec['failure_count']})")
+                logger.debug(f"Candidate {fp} suppressed via memory (failures={rec['failure_count']})")
                 return True
 
         # 2. Check SQLite
@@ -129,7 +129,7 @@ class FailedRepairMemory:
                 if row:
                     count, updated_at = row[0], row[1]
                     if (now - updated_at) < ttl and count >= 2:
-                        logger.info(f"Candidate {fp} suppressed via SQLite (failures={count})")
+                        logger.debug(f"Candidate {fp} suppressed via SQLite (failures={count})")
                         return True
         except Exception:
             pass

@@ -51,6 +51,6 @@ class CrawlerHealingEngine:
         adaptation: dict[str, Any],
     ) -> CrawlResult:
         """Execute crawl with adapted configuration."""
-        logger.info(f"Executing crawler repair for {url}: {adaptation.get('description')}")
+        logger.debug(f"Executing crawler repair for {url}: {adaptation.get('description')}")
         result = await self.browser_executor.crawl(url=url)
         return result

@@ -46,7 +46,7 @@ class RepairMemory:
 
     def record_success(self, record: RepairMemoryRecord) -> None:
         """Save an accepted repair record to memory and persistent SQLite store."""
-        logger.info(
+        logger.debug(
             f"Recording successful repair in memory for domain={record.domain} "
             f"sig={record.signature} type={record.repair_type.value}"
         )

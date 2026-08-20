@@ -14,7 +14,7 @@ class ActionRepairExecutor:
     async def execute_plan(self, page: Any, plan: ActionPlan) -> dict[str, Any]:
         """Safely execute up to 5 actions sequentially with bounded timeouts and error containment."""
         actions_executed: list[dict[str, Any]] = []
-        logger.info(f"Executing ActionPlan {plan.plan_id}: '{plan.description}' ({len(plan.actions)} actions)")
+        logger.debug(f"Executing ActionPlan {plan.plan_id}: '{plan.description}' ({len(plan.actions)} actions)")
 
         # Enforce hard safety bound: maximum 5 actions per plan
         bounded_actions = plan.actions[:5]

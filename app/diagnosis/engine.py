@@ -97,7 +97,7 @@ class DiagnosisEngine:
         scraper_metadata: Optional[dict[str, Any]] = None,
     ) -> DiagnosisResult:
         """Asynchronously diagnose failure cause and determine adaptive repair strategy."""
-        logger.info(f"task_id={task.task_id} Initiating failure diagnosis (validation_status={validation_result.status})")
+        logger.debug(f"task_id={task.task_id} Initiating failure diagnosis (validation_status={validation_result.status})")
 
         # 1. Assemble compact evidence
         evidence = self.evidence_builder.build_evidence(
@@ -111,7 +111,7 @@ class DiagnosisEngine:
         # 2. Try Deterministic Rule-Based Classification first
         rule_result = self.rule_classifier.classify(evidence=evidence, validation_result=validation_result)
         if rule_result:
-            logger.info(f"task_id={task.task_id} Deterministic rule classified root_cause='{rule_result.root_cause.value}' (confidence={rule_result.confidence})")
+            logger.debug(f"task_id={task.task_id} Deterministic rule classified root_cause='{rule_result.root_cause.value}' (confidence={rule_result.confidence})")
             return rule_result
 
         # 3. If ambiguous, invoke LLM (Qwen3:8b)
@@ -124,7 +124,7 @@ class DiagnosisEngine:
                     json_mode=True,
                 )
                 diagnosis = self._parse_llm_diagnosis(raw_response, evidence)
-                logger.info(f"task_id={task.task_id} LLM diagnosed root_cause='{diagnosis.root_cause.value}' (confidence={diagnosis.confidence})")
+                logger.debug(f"task_id={task.task_id} LLM diagnosed root_cause='{diagnosis.root_cause.value}' (confidence={diagnosis.confidence})")
                 return diagnosis
             except Exception as e:
                 logger.error(f"task_id={task.task_id} LLM diagnosis execution error: {e}")

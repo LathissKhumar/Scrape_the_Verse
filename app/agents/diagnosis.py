@@ -28,7 +28,7 @@ class DiagnosisAgent(BaseAgent):
         scraper_metadata: Optional[dict[str, Any]] = None,
     ) -> DiagnosisResult:
         """Analyze validation results and evidence to produce structured DiagnosisResult."""
-        self.logger.info(
+        self.logger.debug(
             f"task_id={task.task_id} Diagnosing failure for status='{validation_result.status}', health_score={validation_result.health_score}."
         )
 
@@ -41,6 +41,7 @@ class DiagnosisAgent(BaseAgent):
         )
 
         self.logger.info(
-            f"task_id={task.task_id} Diagnosis result: root_cause='{result.root_cause.value}', confidence={result.confidence}, repair_strategy='{result.repair_strategy.value}'."
+            f"Degradation diagnosed | root_cause={result.root_cause.value} | confidence={result.confidence:.2f} | repair_strategy={result.repair_strategy.value}"
         )
         return result
+

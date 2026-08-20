@@ -60,7 +60,7 @@ class SemanticRepairMemory:
             "record": record,
             "skeleton": skeleton,
         })
-        logger.info(f"Registered semantic structural repair memory for {record.domain}")
+        logger.debug(f"Registered semantic structural repair memory for {record.domain}")
 
     def find_cross_domain_candidates(
         self,
@@ -82,5 +82,5 @@ class SemanticRepairMemory:
         matches.sort(key=lambda x: x[0], reverse=True)
         results = [m[1] for m in matches[:3]]
         if results:
-            logger.info(f"Discovered {len(results)} cross-domain semantic candidate priors (top similarity={matches[0][0]:.2f})")
+            logger.debug(f"Discovered {len(results)} cross-domain semantic candidate priors (top similarity={matches[0][0]:.2f})")
         return results

@@ -116,7 +116,7 @@ class PersistentRepairMemory:
                     ),
                 )
                 conn.commit()
-                logger.info(
+                logger.debug(
                     f"Persistent repair stored in SQLite for domain={record.domain} sig={record.signature} (status={record.status.value}, confidence={record.confidence_level.value})"
                 )
         except Exception as e:

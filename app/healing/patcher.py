@@ -12,7 +12,7 @@ class RepairPatcher:
     @staticmethod
     def apply_patch(schema: ExtractionSchema, plan: RepairPlan) -> ExtractionSchema:
         """Derive a new patched ExtractionSchema based on the proposed RepairPlan."""
-        logger.info(f"Applying patch for repair_id={plan.repair_id} ({plan.repair_type.value})")
+        logger.debug(f"Applying patch for repair_id={plan.repair_id} ({plan.repair_type.value})")
 
         # Deep copy or reconstruct fields
         new_fields = [FieldRule(**f.model_dump()) for f in schema.fields]

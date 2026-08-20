@@ -107,15 +107,28 @@ class BlockDetector:
             return True, BlockType.ACCESS_DENIED, diagnostics
 
         # 2. Inspect DOM content even on HTTP 200 (for soft-blocks)
-        for sig in self.CAPTCHA_SIGNATURES:
-            if sig in html_lower:
-                diagnostics["matched_signature"] = sig
-                return True, BlockType.CAPTCHA, diagnostics
+        is_short_page = len(html_lower) < 5000
 
         for sig in self.CHALLENGE_SIGNATURES:
             if sig in html_lower:
                 diagnostics["matched_signature"] = sig
                 return True, BlockType.SECURITY_CHALLENGE, diagnostics
+
+        for sig in self.CAPTCHA_SIGNATURES:
+            if is_short_page and sig in html_lower:
+                diagnostics["matched_signature"] = sig
+                return True, BlockType.CAPTCHA, diagnostics
+            elif not is_short_page:
+                # On large pages, only trigger if it's an explicit challenge prompt or widget element
+                if sig in ("are you a human", "cf-turnstile", "solve the captcha", "verify you are human",
+                            "enter the characters you see below", "type the characters you see in this image"):
+                    if sig in html_lower:
+                        diagnostics["matched_signature"] = sig
+                        return True, BlockType.CAPTCHA, diagnostics
+                elif sig in ("hcaptcha", "recaptcha", "g-recaptcha"):
+                    if f"class=\"{sig}\"" in html_lower or f"id=\"{sig}\"" in html_lower or f"class=\"h-captcha\"" in html_lower or f"class=\"g-recaptcha\"" in html_lower or "data-sitekey" in html_lower:
+                        diagnostics["matched_signature"] = sig
+                        return True, BlockType.CAPTCHA, diagnostics
 
         for sig in self.ACCESS_DENIED_SIGNATURES:
             if sig in html_lower and len(html_lower) < 2500:
@@ -129,3 +142,4 @@ class BlockDetector:
 
         # Not blocked
         return False, BlockType.NONE, diagnostics
+

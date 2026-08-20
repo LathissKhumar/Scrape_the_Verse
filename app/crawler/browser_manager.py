@@ -32,7 +32,7 @@ class BrowserManager:
                     self._playwright = await async_playwright().start()
 
                 proxy_cfg = self.proxy_provider.get_proxy() if self.proxy_provider else None
-                logger.info(f"Launching Playwright Chromium (headless={self.config.headless})...")
+                logger.debug(f"Launching Playwright Chromium (headless={self.config.headless})...")
                 self._browser = await self._playwright.chromium.launch(
                     headless=self.config.headless,
                     proxy=proxy_cfg,  # type: ignore

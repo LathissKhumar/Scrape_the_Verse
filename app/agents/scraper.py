@@ -25,7 +25,7 @@ class ScraperAgent(BaseAgent):
 
     async def _execute_browser_scrape(self, urls: list[str]) -> list[dict[str, Any]]:
         """Execute robust parallel browser scraping using Playwright Chromium with SSRF and block detection."""
-        self.logger.info(f"Executing parallel Playwright Chromium browser scrape for {len(urls)} target URL(s).")
+        self.logger.debug(f"Executing parallel Playwright Chromium browser scrape for {len(urls)} target URL(s).")
         
         async def _crawl_single(u: str) -> dict[str, Any]:
             crawl_res: CrawlResult = await self.browser_executor.crawl(url=u)
@@ -58,23 +58,20 @@ class ScraperAgent(BaseAgent):
             self.logger.error(f"task_id={task.task_id} Execution aborted: No target URLs provided.")
             raise ValueError("No target URL was supplied. URL discovery is not implemented.")
 
-        self.logger.info(
-            f"task_id={task.task_id} Received {len(task.target_urls)} target URL(s). Initiating collection."
-        )
-
         settings = get_settings()
         provider = (task.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto").lower()
 
         # Check if Bright Data credentials are configured and provider is auto/brightdata
         is_configured = getattr(self.client, "is_configured", False)
         if is_configured and provider in ("auto", "brightdata"):
+            engine_name = f"Bright Data (Collector: {self.client.collector_id})"
             inputs = build_collector_inputs(task=task)
-            self.logger.info(f"task_id={task.task_id} Dispatched to Bright Data Scraper Studio (Collector: {self.client.collector_id}).")
             results = await self.client.scrape_and_collect(
                 collector_id=self.client.collector_id,
                 inputs=inputs,
             )
         else:
+            engine_name = "Playwright Chromium"
             # Native Playwright Browser execution
             results = await self._execute_browser_scrape(task.target_urls)
 
@@ -82,9 +79,9 @@ class ScraperAgent(BaseAgent):
             any_blocked = any(r.get("blocked", False) or r.get("status_code") in (403, 429, 503) for r in results)
             if any_blocked and is_configured:
                 self.logger.warning(
-                    f"task_id={task.task_id} Native browser execution encountered bot challenge/503. "
-                    "Automatically escalating to Bright Data DCA cloud scraper fallback..."
+                    f"Bot challenge detected. Escalating to Bright Data DCA cloud scraper fallback..."
                 )
+                engine_name = "Bright Data DCA Fallback"
                 inputs = build_collector_inputs(task=task)
                 dca_results = await self.client.scrape_and_collect(
                     collector_id=self.client.collector_id,
@@ -94,6 +91,6 @@ class ScraperAgent(BaseAgent):
                     results = dca_results
 
         self.logger.info(
-            f"task_id={task.task_id} Successfully retrieved {len(results)} raw record(s)/page(s)."
+            f"Content collected | engine={engine_name} | pages={len(results)} | target_urls={len(task.target_urls)}"
         )
         return results

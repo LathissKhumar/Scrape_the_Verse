@@ -68,7 +68,7 @@ class HealingAgent(BaseAgent):
     ) -> tuple[bool, Optional[ExtractionSchema], RepairEvaluation, list[dict[str, Any]], list[dict[str, Any]]]:
         """Execute self-healing loop for the given task and diagnostic failure report."""
         schema = current_schema or ExtractionSchema()
-        return await self.engine.heal(
+        success, healed_schema, evaluation, healed_records, history = await self.engine.heal(
             task=task,
             diagnosis=diagnosis,
             validation=validation,
@@ -76,3 +76,14 @@ class HealingAgent(BaseAgent):
             scraper_config=scraper_config,
             raw_results=raw_results,
         )
+        if success:
+            repair_type_name = history[-1]["repair_type"] if history else "UNKNOWN"
+            self.logger.info(
+                f"Self-healing succeeded | repair_type={repair_type_name} | health={evaluation.before.health:.2f} -> {evaluation.after.health:.2f} | accepted=True"
+            )
+        else:
+            self.logger.warning(
+                f"Self-healing exhausted | attempts={len(history)} | initial_health={validation.health_score:.2f} | reason={evaluation.rejection_reason or 'exhausted'}"
+            )
+        return success, healed_schema, evaluation, healed_records, history
+

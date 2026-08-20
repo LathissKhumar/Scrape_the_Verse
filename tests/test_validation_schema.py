@@ -37,16 +37,28 @@ def test_type_validator_primitive_types():
     assert validator.validate_value("Aug 19, 2026", "date") is True
     assert validator.validate_value("not-a-date", "date") is False
 
+    # Prices & Currency
+    assert validator.validate_value("₹ 97,000", "price") is True
+    assert validator.validate_value("$199.99", "price") is True
+    assert validator.validate_value("19000", "price") is True
+    assert validator.validate_value(97000, "price") is True
+    # Slogans and non-numeric buttons must be rejected
+    assert validator.validate_value("free", "price") is False
+    assert validator.validate_value("सही दाम पर", "price") is False
+    assert validator.validate_value("get quote", "price") is False
+    assert validator.validate_value("on request", "price") is False
+
 
 def test_validate_records_schema():
     validator = TypeValidator()
     records = [
         {"name": "Alpha", "price": "$10", "in_stock": "true"},
         {"name": "Beta", "price": "invalid_num", "in_stock": "yes"},
+        {"name": "Gamma", "price": "सही दाम पर", "in_stock": "yes"},
     ]
-    output_schema = {"name": "string", "price": "number", "in_stock": "boolean"}
+    output_schema = {"name": "string", "price": "price", "in_stock": "boolean"}
 
     metric = validator.validate_records_schema(records, output_schema)
     assert metric.valid_records == 1
-    assert metric.invalid_records == 1
-    assert metric.valid_rate == 0.5
+    assert metric.invalid_records == 2
+    assert round(metric.valid_rate, 2) == 0.33

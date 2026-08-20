@@ -64,5 +64,5 @@ class RepairConfidenceScorer:
         else:
             tier = RepairConfidenceLevel.LOW
 
-        logger.info(f"Calculated repair confidence: score={score:.3f} -> tier={tier.value}")
+        logger.debug(f"Calculated repair confidence: score={score:.3f} -> tier={tier.value}")
         return score, tier

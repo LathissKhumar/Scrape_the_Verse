@@ -204,7 +204,7 @@ class ExtractionEngine:
 
             # Strategy A: LLM if explicitly requested in schema
             if effective_schema.strategy == ExtractionStrategyEnum.LLM and self.llm_extractor:
-                logger.info("Executing LLM extraction strategy as configured in schema")
+                logger.debug("Executing LLM extraction strategy as configured in schema")
                 llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
                 if llm_records:
                     page_records = llm_records
@@ -215,13 +215,13 @@ class ExtractionEngine:
             # Strategy B: CSS / XPath if base selector exists
             if not page_records and effective_schema.base_selector:
                 if effective_schema.base_selector.startswith("/") or effective_schema.base_selector.startswith(".//"):
-                    logger.info("Attempting deterministic XPath extraction")
+                    logger.debug("Attempting deterministic XPath extraction")
                     records = self.xpath_extractor.extract(page, effective_schema)
                     if records:
                         page_records = records
                         page_strategy = ExtractionStrategyEnum.XPATH.value
                 else:
-                    logger.info("Attempting deterministic CSS extraction")
+                    logger.debug("Attempting deterministic CSS extraction")
                     records = self.css_extractor.extract(page, effective_schema)
                     if records:
                         page_records = records
@@ -236,11 +236,11 @@ class ExtractionEngine:
                         for f in task.fields
                     )
                     if has_table_coverage or not self.llm_extractor:
-                        logger.info(f"Deterministic Table extractor extracted {len(table_records)} record(s)")
+                        logger.debug(f"Deterministic Table extractor extracted {len(table_records)} record(s)")
                         page_records = table_records
                         page_strategy = ExtractionStrategyEnum.TABLE.value
                     else:
-                        logger.info("Table extraction returned incomplete field coverage; cascading to next strategy")
+                        logger.debug("Table extraction returned incomplete field coverage; cascading to next strategy")
 
             # Strategy C: Deterministic Repeating Grid / Card Extractor
             if not page_records and page.html:
@@ -251,11 +251,11 @@ class ExtractionEngine:
                         for f in task.fields
                     )
                     if has_card_coverage or not self.llm_extractor:
-                        logger.info(f"Deterministic GridCard extractor extracted {len(card_records)} card record(s)")
+                        logger.debug(f"Deterministic GridCard extractor extracted {len(card_records)} card record(s)")
                         page_records = card_records
                         page_strategy = "grid_card"
                     else:
-                        logger.info("GridCard extraction returned incomplete coverage; cascading to next strategy")
+                        logger.debug("GridCard extraction returned incomplete coverage; cascading to next strategy")
 
             # Strategy D: Regex Extraction for pattern fields
             if not page_records:
@@ -266,15 +266,15 @@ class ExtractionEngine:
                         for f in task.fields
                     )
                     if has_coverage or not self.llm_extractor:
-                        logger.info(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
+                        logger.debug(f"Deterministic Regex extractor extracted {len(regex_records)} record(s)")
                         page_records = regex_records
                         page_strategy = ExtractionStrategyEnum.REGEX.value
                     else:
-                        logger.info("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
+                        logger.debug("Regex extraction returned incomplete field coverage; cascading to LLM extraction")
 
             # Strategy E: LLM Extraction Fallback with Qwen3:8b
             if not page_records and self.llm_extractor:
-                logger.info("Cascading to LLM extraction strategy (Qwen3:8b)")
+                logger.debug("Cascading to LLM extraction strategy (Qwen3:8b)")
                 llm_records = await self.llm_extractor.extract_async(page, task, effective_schema)
                 if llm_records:
                     page_records = llm_records
@@ -304,7 +304,7 @@ class ExtractionEngine:
 
         if (missing_fields or not conformed or is_insufficient_records) and self.browser_executor and pages:
             reason = f"missing fields: {missing_fields}" if missing_fields else f"insufficient records ({len(conformed)} extracted for listing request)"
-            logger.info(
+            logger.debug(
                 f"Primary extraction incomplete ({reason}). "
                 "Initiating conditional fallback child link discovery..."
             )
@@ -322,7 +322,7 @@ class ExtractionEngine:
                             discovered_child_urls.append(link)
 
             if discovered_child_urls:
-                logger.info(
+                logger.debug(
                     f"Discovered {len(discovered_child_urls)} candidate child URL(s). "
                     f"Crawling child pages in parallel: {discovered_child_urls}"
                 )

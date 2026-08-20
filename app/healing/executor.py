@@ -20,7 +20,7 @@ class RepairExecutor:
         scraper_config: Optional[dict[str, Any]] = None,
     ) -> tuple[ExtractionSchema, dict[str, Any]]:
         """Apply a validated candidate RepairPlan to produce an updated ExtractionSchema and scraper config."""
-        logger.info(
+        logger.debug(
             f"Executing repair plan {plan.repair_id} (level={plan.level}, type={plan.repair_type.value})"
         )
         updated_config = dict(scraper_config or {})

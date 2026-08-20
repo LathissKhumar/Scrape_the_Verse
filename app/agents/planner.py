@@ -153,7 +153,7 @@ class ScrapingPlannerAgent(BaseAgent):
     ) -> ScrapingTask:
         """Asynchronously plan and generate a ScrapingTask from a ScrapingRequest."""
         effective_task_id = task_id or str(uuid4())
-        self.logger.info(f"Planning scraping task for task_id: {effective_task_id}")
+        self.logger.debug(f"Planning scraping task for task_id: {effective_task_id}")
 
         query_urls = extract_urls_from_text(request.query)
         known_urls = list(request.target_urls)
@@ -220,7 +220,7 @@ class ScrapingPlannerAgent(BaseAgent):
         )
 
         self.logger.info(
-            f"Successfully generated ScrapingTask {task.task_id} with {len(task.target_urls)} URLs and {len(task.fields)} fields (is_list={task.is_list}, min_records={task.min_records})"
+            f"Task plan generated | target_urls={len(task.target_urls)} | fields={task.fields} | is_list={task.is_list}"
         )
         return task
 
@@ -231,7 +231,7 @@ class ScrapingPlannerAgent(BaseAgent):
     ) -> ScrapingTask:
         """Synchronously plan and generate a ScrapingTask from a ScrapingRequest."""
         effective_task_id = task_id or str(uuid4())
-        self.logger.info(f"Planning scraping task synchronously for task_id: {effective_task_id}")
+        self.logger.debug(f"Planning scraping task synchronously for task_id: {effective_task_id}")
 
         query_urls = extract_urls_from_text(request.query)
         known_urls = list(request.target_urls)
@@ -296,6 +296,6 @@ class ScrapingPlannerAgent(BaseAgent):
         )
 
         self.logger.info(
-            f"Successfully generated ScrapingTask {task.task_id} with {len(task.target_urls)} URLs and {len(task.fields)} fields (is_list={task.is_list}, min_records={task.min_records})"
+            f"Task plan generated | target_urls={len(task.target_urls)} | fields={task.fields} | is_list={task.is_list}"
         )
         return task
