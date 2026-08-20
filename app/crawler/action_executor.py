@@ -11,6 +11,7 @@ from app.crawler.action_models import (
     NavigateAction,
     ScrollAction,
     SelectAction,
+    SolveCaptchaAction,
     WaitForAction,
 )
 
@@ -55,5 +56,86 @@ class ActionPlanExecutor:
                     except Exception as e:
                         logger.warning(f"Failed to extract field '{field_name}' with selector '{selector}': {e}")
                         extracted_data[field_name] = None
+            elif isinstance(action, SolveCaptchaAction):
+                logger.info(f"Executing CAPTCHA solve action (type={action.captcha_type}, timeout={action.timeout_ms}ms)...")
+                try:
+                    solved = False
+                    # 1. Custom selector if specified
+                    if action.selector:
+                        try:
+                            elem = await page.wait_for_selector(action.selector, state="visible", timeout=min(5000, action.timeout_ms))
+                            if elem:
+                                await elem.click()
+                                solved = True
+                        except Exception as sel_err:
+                            logger.debug(f"Custom CAPTCHA selector '{action.selector}' click attempt: {sel_err}")
+
+                    # 2. Cloudflare Turnstile detection & click
+                    if not solved and action.captcha_type in ("turnstile", "auto"):
+                        for frame in getattr(page, "frames", []):
+                            frame_url = getattr(frame, "url", "")
+                            if "challenges.cloudflare.com" in frame_url or "turnstile" in frame_url:
+                                try:
+                                    if hasattr(frame, "query_selector"):
+                                        checkbox = await frame.query_selector("input[type='checkbox'], .cb-lb, .ctp-checkbox-label, #challenge-stage")
+                                        if checkbox:
+                                            await checkbox.click()
+                                            solved = True
+                                            break
+                                    await frame.click("body")
+                                    solved = True
+                                    break
+                                except Exception as frame_err:
+                                    logger.debug(f"Turnstile iframe click error: {frame_err}")
+
+                    # 3. Google reCAPTCHA detection & click
+                    if not solved and action.captcha_type in ("recaptcha", "auto"):
+                        for frame in getattr(page, "frames", []):
+                            frame_url = getattr(frame, "url", "")
+                            if "google.com/recaptcha" in frame_url or "recaptcha" in frame_url:
+                                try:
+                                    if hasattr(frame, "query_selector"):
+                                        anchor = await frame.query_selector(".recaptcha-checkbox-border, #recaptcha-anchor")
+                                        if anchor:
+                                            await anchor.click()
+                                            solved = True
+                                            break
+                                    await frame.click("body")
+                                    solved = True
+                                    break
+                                except Exception as recap_err:
+                                    logger.debug(f"reCAPTCHA anchor click error: {recap_err}")
+
+                    # 4. hCaptcha detection & click
+                    if not solved and action.captcha_type in ("hcaptcha", "auto"):
+                        for frame in getattr(page, "frames", []):
+                            frame_url = getattr(frame, "url", "")
+                            if "hcaptcha.com" in frame_url:
+                                try:
+                                    if hasattr(frame, "query_selector"):
+                                        checkbox = await frame.query_selector("#checkbox, .anchor-checkbox")
+                                        if checkbox:
+                                            await checkbox.click()
+                                            solved = True
+                                            break
+                                    await frame.click("body")
+                                    solved = True
+                                    break
+                                except Exception as hcap_err:
+                                    logger.debug(f"hCaptcha checkbox click error: {hcap_err}")
+
+                    if solved:
+                        extracted_data["_captcha_solved"] = True
+                        extracted_data["_captcha_status"] = "solved"
+                        if hasattr(page, "wait_for_timeout"):
+                            try:
+                                await page.wait_for_timeout(1000)
+                            except Exception:
+                                pass
+                    else:
+                        extracted_data["_captcha_status"] = "skipped"
+                except Exception as e:
+                    logger.warning(f"Error during CAPTCHA solving hook: {e}")
+                    extracted_data["_captcha_status"] = "failed"
 
         return extracted_data

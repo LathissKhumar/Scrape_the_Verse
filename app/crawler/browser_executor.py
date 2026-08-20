@@ -124,6 +124,36 @@ class BrowserExecutor:
                         raise content_err
                     await page.wait_for_timeout(1000)
 
+            # 5. Check if page triggered an active challenge/CAPTCHA and attempt automated solve
+            initial_blocked, initial_type, initial_diag = self.block_detector.detect_block(
+                status_code=status_code,
+                headers=headers_dict,
+                html=html_content,
+                url=final_url,
+            )
+
+            if initial_blocked and initial_type in (
+                BlockType.SECURITY_CHALLENGE,
+                BlockType.CAPTCHA,
+                BlockType.ACCESS_DENIED,
+            ):
+                logger.info(f"Challenge detected on '{final_url}' ({initial_type.value}). Attempting automated interactive solver...")
+                try:
+                    from app.crawler.action_models import SolveCaptchaAction
+                    solver_plan = ActionPlan(
+                        url=final_url,
+                        actions=[SolveCaptchaAction(captcha_type="auto", timeout_ms=6000)],
+                    )
+                    solve_res = await self.action_executor.execute_plan(page, solver_plan)
+                    if solve_res.get("_captcha_solved"):
+                        logger.info(f"Automated challenge solved for '{final_url}'. Refreshing page content...")
+                        await page.wait_for_timeout(1500)
+                        html_content = await page.content()
+                        final_url = page.url
+                        status_code = 200
+                except Exception as solve_err:
+                    logger.debug(f"Auto-solve attempt notice: {solve_err}")
+
         except Exception as e:
             logger.error(f"Error during browser execution for '{validated_url}': {e}")
             return CrawlResult(
@@ -139,7 +169,7 @@ class BrowserExecutor:
 
         timing_ms = (time.time() - start_time) * 1000.0
 
-        # 5. Block Detection
+        # 6. Final Block Detection Evaluation
         blocked, block_type, diagnostics = self.block_detector.detect_block(
             status_code=status_code,
             headers=headers_dict,
@@ -157,7 +187,7 @@ class BrowserExecutor:
             )
 
         if blocked:
-            logger.warning(f"Block detected on '{final_url}': {block_type} ({diagnostics})")
+            logger.warning(f"Block detected on '{final_url}': {block_type.value} ({diagnostics})")
 
         return CrawlResult(
             url=validated_url,

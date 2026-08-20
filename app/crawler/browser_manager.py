@@ -1,4 +1,4 @@
-"""Async Playwright browser instance manager with context isolation and proper lifecycle control."""
+"""Async Playwright browser instance manager with context isolation, crash recovery, and lifecycle control."""
 
 import asyncio
 import logging
@@ -11,7 +11,7 @@ logger = logging.getLogger("CRAWLER_BROWSER_MANAGER")
 
 
 class BrowserManager:
-    """Manages the lifecycle of async Playwright Chromium instances and isolated contexts."""
+    """Manages the lifecycle of async Playwright Chromium instances, isolated contexts, and auto-recovery."""
 
     def __init__(
         self,
@@ -23,11 +23,28 @@ class BrowserManager:
         self._playwright: Optional[Playwright] = None
         self._browser: Optional[Browser] = None
         self._lock = asyncio.Lock()
+        self._pages_processed: int = 0
 
     async def get_browser(self) -> Browser:
-        """Get or initialize the shared Chromium browser instance safely."""
+        """Get or initialize the shared Chromium browser instance safely with crash detection."""
         async with self._lock:
-            if self._browser is None or not self._browser.is_connected():
+            # Check for crash or disconnection
+            is_valid = self._browser is not None
+            if is_valid:
+                try:
+                    is_valid = self._browser.is_connected()
+                except Exception:
+                    is_valid = False
+
+            if not is_valid:
+                if self._browser is not None:
+                    logger.warning("Chromium instance disconnected or crashed. Restarting fresh browser...")
+                    try:
+                        await self._browser.close()
+                    except Exception:
+                        pass
+                    self._browser = None
+
                 if self._playwright is None:
                     self._playwright = await async_playwright().start()
 
@@ -47,10 +64,23 @@ class BrowserManager:
                         "--disable-renderer-backgrounding",
                     ],
                 )
+                self._pages_processed = 0
+
             return self._browser
 
-    async def create_isolated_context(self) -> BrowserContext:
-        """Create an isolated browser context with anti-bot stealth, viewport, locale, and headers."""
+    async def create_isolated_context(self, block_media: Optional[bool] = None) -> BrowserContext:
+        """Create an isolated browser context with anti-bot stealth, viewport, locale, and optional asset blocking."""
+        # Check if periodic recycling is due
+        should_recycle = False
+        async with self._lock:
+            self._pages_processed += 1
+            if self._pages_processed > self.config.recycle_after_pages:
+                should_recycle = True
+
+        if should_recycle:
+            logger.info(f"Recycling Playwright Chromium after {self.config.recycle_after_pages} pages to prevent memory degradation...")
+            await self.close()
+
         browser = await self.get_browser()
         context = await browser.new_context(
             viewport={"width": self.config.viewport_width, "height": self.config.viewport_height},
@@ -71,6 +101,15 @@ class BrowserManager:
                 "Upgrade-Insecure-Requests": "1",
             },
         )
+
+        # Apply deep anti-detection evasions (Canvas, WebGL, AudioContext, permissions, navigator)
+        try:
+            from playwright_stealth import Stealth
+            stealth = Stealth()
+            await stealth.apply_stealth_async(context)
+        except Exception as stealth_err:
+            logger.debug(f"playwright-stealth application notice: {stealth_err}")
+
         # Inject anti-bot evasion scripts
         await context.add_init_script(
             """
@@ -91,6 +130,15 @@ class BrowserManager:
             });
             """
         )
+
+        # Optional asset route blocking (images, media, fonts) for high performance
+        effective_block_media = block_media if block_media is not None else self.config.block_media
+        if effective_block_media:
+            await context.route(
+                "**/*.{png,jpg,jpeg,webp,gif,svg,mp4,webm,woff,woff2,ttf,eot,ico}",
+                lambda route: asyncio.create_task(route.abort()),
+            )
+
         context.set_default_timeout(self.config.timeout_ms)
         return context
 
@@ -110,4 +158,5 @@ class BrowserManager:
                 except Exception:
                     pass
                 self._playwright = None
+            self._pages_processed = 0
             logger.info("Playwright browser instance closed cleanly.")

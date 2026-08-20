@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     SCRAPER_PROVIDER: str = "auto"  # "auto", "browser", "local", "brightdata"
     CRAWLER_HEADLESS: bool = True
     CRAWLER_TIMEOUT_MS: int = 30000
+    CRAWLER_MAX_CONCURRENCY: int = 10
+    CRAWLER_BLOCK_MEDIA: bool = False
+    CRAWLER_RECYCLE_PAGES: int = 500
 
     # Self-Healing & Adaptive Enhancements Settings
     MULTI_PAGE_VALIDATION_ENABLED: bool = True

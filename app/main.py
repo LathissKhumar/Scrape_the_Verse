@@ -175,8 +175,41 @@ async def parse_task(request: ScrapingRequest) -> dict[str, Any]:
         )
 
 
+from app.crawler.job_manager import default_job_manager
+from app.export.exporter import DataExporter
+
+
+async def _run_background_workflow(task_id: str, query: str, urls: list[str]):
+    """Execute scraping workflow in background with progress and checkpoint tracking."""
+    default_job_manager.create_job(job_id=task_id, query=query, total_urls=len(urls))
+    default_job_manager.update_job_status(task_id, status="running")
+    initial_state: ScrapingGraphState = {
+        "task_id": task_id,
+        "original_user_query": query,
+        "target_urls": urls,
+        "repair_attempt": 0,
+    }
+    try:
+        final_state = await workflow.ainvoke(initial_state)
+        result: Optional[ScrapingResult] = final_state.get("final_output")
+        if result and result.records:
+            default_job_manager.record_checkpoint(
+                job_id=task_id,
+                url="aggregated_results",
+                status="completed",
+                records=result.records,
+            )
+            default_job_manager.update_job_status(task_id, status="completed")
+        else:
+            err = result.error if result else "Workflow completed without records"
+            default_job_manager.update_job_status(task_id, status="failed", error=err)
+    except Exception as e:
+        logger.error(f"Background job execution failed for {task_id}: {e}")
+        default_job_manager.update_job_status(task_id, status="failed", error=str(e))
+
+
 @app.post("/scrape")
-async def scrape(request: ScrapingRequest) -> dict[str, Any]:
+async def scrape(request: ScrapingRequest) -> Any:
     """Execute end-to-end web scraping workflow via LangGraph orchestration."""
     # Check that URLs were provided either in target_urls or embedded in query text
     query_urls = extract_urls_from_text(request.query)
@@ -195,6 +228,21 @@ async def scrape(request: ScrapingRequest) -> dict[str, Any]:
 
     task_id = str(uuid4())
     logger.info(f"POST /scrape received. Assigned task_id: {task_id} with {len(combined_urls)} URL(s)")
+
+    # If caller requested async_job or large URL batch, execute in background
+    if request.async_job:
+        asyncio.create_task(_run_background_workflow(task_id, request.query, combined_urls))
+        return JSONResponse(
+            status_code=status.HTTP_202_ACCEPTED,
+            content={
+                "task_id": task_id,
+                "job_id": task_id,
+                "status": "queued",
+                "total_urls": len(combined_urls),
+                "message": "Scraping task accepted for background execution",
+                "status_url": f"/api/v1/jobs/{task_id}",
+            },
+        )
 
     initial_state: ScrapingGraphState = {
         "task_id": task_id,
@@ -226,4 +274,73 @@ async def scrape(request: ScrapingRequest) -> dict[str, Any]:
             "records": [],
             "metadata": {"task_id": task_id},
             "error": str(e),
+        }
+
+
+@app.post("/api/v1/jobs", status_code=status.HTTP_202_ACCEPTED)
+async def create_scraping_job(request: ScrapingRequest) -> dict[str, Any]:
+    """Submit a long-running scraping task to execute asynchronously in the background."""
+    query_urls = extract_urls_from_text(request.query)
+    combined_urls = list(request.target_urls)
+    for u in query_urls:
+        if u not in combined_urls:
+            combined_urls.append(u)
+
+    if not combined_urls:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No target URL was supplied.",
+        )
+
+    job_id = str(uuid4())
+    logger.info(f"POST /api/v1/jobs accepted job_id: {job_id} for {len(combined_urls)} URLs")
+    asyncio.create_task(_run_background_workflow(job_id, request.query, combined_urls))
+
+    return {
+        "job_id": job_id,
+        "status": "queued",
+        "total_urls": len(combined_urls),
+        "status_url": f"/api/v1/jobs/{job_id}",
+    }
+
+
+@app.get("/api/v1/jobs/{job_id}")
+async def get_job_status(job_id: str) -> dict[str, Any]:
+    """Check progress, status, and record counts for an asynchronous scraping job."""
+    progress = default_job_manager.get_job(job_id)
+    if not progress:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job '{job_id}' not found.",
+        )
+    return progress.model_dump()
+
+
+@app.get("/api/v1/jobs/{job_id}/results")
+async def get_job_results(job_id: str, format: str = "json") -> Any:
+    """Retrieve extracted records for a completed job in JSON, CSV, or NDJSON format."""
+    progress = default_job_manager.get_job(job_id)
+    if not progress:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job '{job_id}' not found.",
+        )
+
+    records = default_job_manager.get_job_records(job_id)
+    fmt = format.lower().strip()
+
+    if fmt == "csv":
+        csv_str = DataExporter.to_csv(records)
+        from fastapi.responses import PlainTextResponse
+        return PlainTextResponse(content=csv_str, media_type="text/csv")
+    elif fmt == "ndjson":
+        ndjson_str = DataExporter.to_ndjson(records)
+        from fastapi.responses import PlainTextResponse
+        return PlainTextResponse(content=ndjson_str, media_type="application/x-ndjson")
+    else:
+        return {
+            "job_id": job_id,
+            "status": progress.status,
+            "total_records": len(records),
+            "records": records,
         }

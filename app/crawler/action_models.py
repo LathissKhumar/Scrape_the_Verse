@@ -1,6 +1,6 @@
 """Declarative, allowlisted action models for browser automation without arbitrary code execution."""
 
-from typing import Annotated, Dict, List, Literal, Optional, Union
+from typing import Annotated, Any, Dict, List, Literal, Optional, Union
 from pydantic import BaseModel, Field
 
 
@@ -54,6 +54,14 @@ class ExtractAction(BaseCrawlerAction):
     fields: Dict[str, str] = Field(description="Map of field name to CSS selector")
 
 
+class SolveCaptchaAction(BaseCrawlerAction):
+    action_type: Literal["solve_captcha"] = "solve_captcha"
+    captcha_type: Literal["turnstile", "recaptcha", "hcaptcha", "image", "auto"] = "auto"
+    selector: Optional[str] = None
+    timeout_ms: int = Field(default=15000, ge=1000, le=60000)
+    solver_config: Dict[str, Any] = Field(default_factory=dict)
+
+
 CrawlerAction = Annotated[
     Union[
         NavigateAction,
@@ -63,6 +71,7 @@ CrawlerAction = Annotated[
         SelectAction,
         ScrollAction,
         ExtractAction,
+        SolveCaptchaAction,
     ],
     Field(discriminator="action_type"),
 ]

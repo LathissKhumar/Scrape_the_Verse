@@ -23,27 +23,46 @@ class ScraperAgent(BaseAgent):
         self.client = brightdata_client or BrightDataClient()
         self.browser_executor = browser_executor or BrowserExecutor()
 
-    async def _execute_browser_scrape(self, urls: list[str]) -> list[dict[str, Any]]:
-        """Execute robust parallel browser scraping using Playwright Chromium with SSRF and block detection."""
-        self.logger.debug(f"Executing parallel Playwright Chromium browser scrape for {len(urls)} target URL(s).")
+    async def _execute_browser_scrape(self, urls: list[str], max_concurrency: Optional[int] = None) -> list[dict[str, Any]]:
+        """Execute bounded parallel browser scraping using Playwright Chromium with SSRF and block detection."""
+        settings = get_settings()
+        limit = max_concurrency or getattr(getattr(self.browser_executor, "config", None), "max_concurrency", None) or settings.CRAWLER_MAX_CONCURRENCY or 10
+        self.logger.debug(f"Executing bounded parallel browser scrape for {len(urls)} target URL(s) (concurrency_limit={limit}).")
+        
+        semaphore = asyncio.Semaphore(limit)
         
         async def _crawl_single(u: str) -> dict[str, Any]:
-            crawl_res: CrawlResult = await self.browser_executor.crawl(url=u)
-            record: dict[str, Any] = {
-                "url": crawl_res.url,
-                "final_url": crawl_res.final_url,
-                "html": crawl_res.html,
-                "status_code": crawl_res.status_code,
-                "blocked": crawl_res.blocked,
-                "block_type": crawl_res.block_type.value,
-                "diagnostics": crawl_res.diagnostics,
-                "timing_ms": crawl_res.timing_ms,
-            }
-            if crawl_res.error:
-                record["error"] = crawl_res.error
-            if crawl_res.extracted_data:
-                record["extracted_data"] = crawl_res.extracted_data
-            return record
+            async with semaphore:
+                try:
+                    crawl_res: CrawlResult = await self.browser_executor.crawl(url=u)
+                    record: dict[str, Any] = {
+                        "url": crawl_res.url,
+                        "final_url": crawl_res.final_url,
+                        "html": crawl_res.html,
+                        "status_code": crawl_res.status_code,
+                        "blocked": crawl_res.blocked,
+                        "block_type": crawl_res.block_type.value,
+                        "diagnostics": crawl_res.diagnostics,
+                        "timing_ms": crawl_res.timing_ms,
+                    }
+                    if crawl_res.error:
+                        record["error"] = crawl_res.error
+                    if crawl_res.extracted_data:
+                        record["extracted_data"] = crawl_res.extracted_data
+                    return record
+                except Exception as e:
+                    self.logger.error(f"Unexpected error crawling URL '{u}': {e}")
+                    return {
+                        "url": u,
+                        "final_url": u,
+                        "html": "",
+                        "status_code": 0,
+                        "blocked": False,
+                        "block_type": BlockType.NONE.value,
+                        "diagnostics": {},
+                        "timing_ms": 0.0,
+                        "error": str(e),
+                    }
 
         results = await asyncio.gather(*[_crawl_single(u) for u in urls])
         return list(results)

@@ -1,4 +1,5 @@
 import asyncio
+import html
 from typing import Any, Optional
 from urllib.parse import urljoin
 from app.config.logging import get_logger
@@ -117,16 +118,18 @@ class ExtractionEngine:
                             break
 
                 # Auto-resolve relative URLs for image/link fields
-                if val and isinstance(val, str) and base_url:
-                    is_url_field = any(u in norm_field for u in ["image", "img", "thumbnail", "picture", "url", "link", "href"])
-                    if is_url_field and (val.startswith("../") or val.startswith("/") or not val.startswith("http")):
-                        val = urljoin(base_url, val)
+                if val and isinstance(val, str):
+                    val = html.unescape(val.strip())
+                    if base_url:
+                        is_url_field = any(u in norm_field for u in ["image", "img", "thumbnail", "picture", "url", "link", "href"])
+                        if is_url_field and (val.startswith("../") or val.startswith("/") or not val.startswith("http")):
+                            val = urljoin(base_url, val)
 
                 conformed_rec[field] = val
 
             for k, v in rec.items():
                 if k not in conformed_rec:
-                    conformed_rec[k] = v
+                    conformed_rec[k] = html.unescape(v.strip()) if isinstance(v, str) else v
             conformed.append(conformed_rec)
 
         return conformed

@@ -32,6 +32,10 @@ class ScrapingRequest(BaseModel):
         default_factory=list,
         description="Optional list of target HTTP/HTTPS URLs explicitly supplied.",
     )
+    async_job: bool = Field(
+        default=False,
+        description="Execute as background job returning job_id immediately without holding HTTP connection.",
+    )
 
     @field_validator("target_urls")
     @classmethod

@@ -5,6 +5,7 @@ import time
 from typing import Optional
 
 from app.config.logging import get_logger
+from app.crawler.db import get_sqlite_connection, safe_sqlite_transaction
 from app.healing.schemas import (
     RepairConfidenceLevel,
     RepairFreshnessStatus,
@@ -25,7 +26,7 @@ class PersistentRepairMemory:
     def _init_db(self) -> None:
         """Initialize SQLite table for persistent repair records with automatic column migration."""
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with safe_sqlite_transaction(self.db_path) as conn:
                 conn.execute(
                     """
                     CREATE TABLE IF NOT EXISTS repair_memory (
@@ -72,7 +73,6 @@ class PersistentRepairMemory:
                 ]:
                     if col not in existing_cols:
                         conn.execute(f"ALTER TABLE repair_memory ADD COLUMN {col} {col_type}")
-                conn.commit()
         except Exception as e:
             logger.warning(f"Could not initialize SQLite persistent repair memory: {e}")
 
@@ -80,7 +80,7 @@ class PersistentRepairMemory:
         """Persist or update a verified working repair record into SQLite database."""
         try:
             now = time.time()
-            with sqlite3.connect(self.db_path) as conn:
+            with safe_sqlite_transaction(self.db_path) as conn:
                 conn.execute(
                     """
                     INSERT INTO repair_memory
@@ -115,7 +115,6 @@ class PersistentRepairMemory:
                         record.structural_fingerprint,
                     ),
                 )
-                conn.commit()
                 logger.debug(
                     f"Persistent repair stored in SQLite for domain={record.domain} sig={record.signature} (status={record.status.value}, confidence={record.confidence_level.value})"
                 )
@@ -125,7 +124,7 @@ class PersistentRepairMemory:
     def record_failure(self, domain: str, signature: str) -> None:
         """Increment failure count for a stored repair and transition to STALE/DISABLED if needed."""
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            with safe_sqlite_transaction(self.db_path) as conn:
                 conn.execute(
                     """
                     UPDATE repair_memory
@@ -139,7 +138,6 @@ class PersistentRepairMemory:
                     """,
                     (domain, signature),
                 )
-                conn.commit()
         except Exception as e:
             logger.debug(f"Failed to record repair failure in SQLite: {e}")
 
@@ -148,7 +146,8 @@ class PersistentRepairMemory:
     ) -> Optional[RepairMemoryRecord]:
         """Query SQLite database for a previously verified working repair record (skipping disabled)."""
         try:
-            with sqlite3.connect(self.db_path) as conn:
+            conn = get_sqlite_connection(self.db_path)
+            try:
                 cursor = conn.cursor()
                 cursor.execute(
                     """
@@ -179,6 +178,8 @@ class PersistentRepairMemory:
                         failure_count=row[13] or 0,
                         structural_fingerprint=row[14],
                     )
+            finally:
+                conn.close()
         except Exception as e:
             logger.error(f"Failed to lookup repair memory in SQLite: {e}")
         return None
