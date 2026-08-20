@@ -233,7 +233,10 @@ async def scrape(request: ScrapingRequest) -> Any:
 
     # Check dual-engine routing: Bright Data Fast-Path vs Native Multi-Agent Engine
     provider = str(request.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto").lower()
-    if (brightdata_service.is_enabled and provider != "local") or provider == "brightdata":
+    is_brightdata_target = any("indiamart" in u.lower() for u in combined_urls) if combined_urls else False
+    use_brightdata = (brightdata_service.is_enabled and (provider == "brightdata" or (provider == "auto" and is_brightdata_target))) or provider == "brightdata"
+
+    if use_brightdata and provider != "local":
         logger.info(f"task_id={task_id} Routing to Bright Data Fast-Path (BRIGHTDATA=True)")
         task = ScrapingTask(
             task_id=task_id,

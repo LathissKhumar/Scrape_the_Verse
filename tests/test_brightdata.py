@@ -167,14 +167,15 @@ async def test_brightdata_scrape_and_collect_polling_timeout():
 @pytest.mark.integration
 @pytest.mark.asyncio
 async def test_live_brightdata_integration():
-    """Optional integration test against live Bright Data (skipped if unconfigured)."""
-    settings = Settings()
-    client = BrightDataClient(settings=settings)
+    import os
+    if not os.getenv("RUN_LIVE_BRIGHTDATA_TESTS"):
+        pytest.skip("Live cloud test skipped. Set RUN_LIVE_BRIGHTDATA_TESTS=1 to run.")
+
     if not client.is_configured:
         pytest.skip("Bright Data credentials not configured in environment.")
 
     results = await client.scrape_and_collect(
-        inputs=[{"url": "https://example.com"}],
+        inputs=[{"url": "https://dir.indiamart.com/search.mp?ss=solar+panels"}],
         max_poll_seconds=60.0,
     )
     assert isinstance(results, list)

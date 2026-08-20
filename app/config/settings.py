@@ -21,8 +21,8 @@ class Settings(BaseSettings):
     BRIGHTDATA: bool = False
     BRIGHTDATA_API_KEY: Optional[str] = None
     BRIGHTDATA_COLLECTOR_ID: Optional[str] = None
-    BRIGHTDATA_DISCOVERY_COLLECTOR_ID: Optional[str] = "c_mt1klz941e6wjo8o6y"
-    BRIGHTDATA_COMPANY_COLLECTOR_ID: Optional[str] = "c_mt1n1d372h5qpcxcvh"
+    BRIGHTDATA_DISCOVERY_COLLECTOR_ID: Optional[str] = None
+    BRIGHTDATA_COMPANY_COLLECTOR_ID: Optional[str] = None
 
     # Crawler & Browser Automation Settings
     SCRAPER_PROVIDER: str = "auto"  # "auto", "browser", "local", "brightdata"
