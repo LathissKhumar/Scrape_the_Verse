@@ -66,5 +66,9 @@ report/*
 tmp/*
 AGENTS.md/
 CLAUDE.md/
+.agent/
+.superpowers/
+.vscode/
+
 
 
