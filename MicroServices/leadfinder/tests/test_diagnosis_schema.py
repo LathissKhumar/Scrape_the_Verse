@@ -1,4 +1,4 @@
-from app.diagnosis.schemas import (
+from leadfinder.diagnosis.schemas import (
     AffectedStage,
     DiagnosisResult,
     RecommendedAction,

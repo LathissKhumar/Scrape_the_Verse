@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import AsyncMock
 
-from app.agents.extraction import ExtractionAgent
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionResult
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.extraction import ExtractionAgent
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionResult
+from leadfinder.models.schemas import ScrapingTask
 
 
 @pytest.mark.asyncio

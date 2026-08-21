@@ -1,6 +1,6 @@
-from app.diagnosis.evidence import DiagnosisEvidenceBuilder
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import FieldMetric, ValidationResult
+from leadfinder.diagnosis.evidence import DiagnosisEvidenceBuilder
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import FieldMetric, ValidationResult
 
 
 def test_diagnosis_evidence_builder():

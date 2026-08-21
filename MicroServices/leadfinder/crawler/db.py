@@ -5,7 +5,7 @@ import sqlite3
 import threading
 from contextlib import contextmanager
 from typing import Generator
-from app.config.logging import get_logger
+from leadfinder.config.logging import get_logger
 
 logger = get_logger("SQLITE_DB_POOL")
 

@@ -1,6 +1,6 @@
 from unittest.mock import AsyncMock, MagicMock
 import pytest
-from app.crawler.pagination_walker import PaginationWalkerEngine
+from leadfinder.crawler.pagination_walker import PaginationWalkerEngine
 
 
 @pytest.mark.asyncio

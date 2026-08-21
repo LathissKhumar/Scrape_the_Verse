@@ -1,5 +1,5 @@
-from app.extraction.regex import RegexExtractor
-from app.extraction.schema import ExtractionSchema, FieldRule, RawPage
+from leadfinder.extraction.regex import RegexExtractor
+from leadfinder.extraction.schema import ExtractionSchema, FieldRule, RawPage
 
 
 def test_regex_extraction_common_patterns():

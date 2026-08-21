@@ -2,7 +2,7 @@ import logging
 import sys
 from typing import Optional
 from colorama import Fore, Style, init as colorama_init
-from app.config.settings import get_settings
+from leadfinder.config.settings import get_settings
 
 colorama_init(autoreset=True)
 

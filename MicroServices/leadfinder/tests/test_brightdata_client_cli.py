@@ -3,14 +3,14 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 
-from app.brightdata.client import BrightDataClient
-from app.brightdata.exceptions import (
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.exceptions import (
     BrightDataConfigError,
     BrightDataError,
     BrightDataJobError,
     BrightDataTimeoutError,
 )
-from app.config.settings import Settings
+from leadfinder.config.settings import Settings
 
 
 @pytest.fixture

@@ -1,9 +1,9 @@
 import json
 import pytest
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
-from app.models.schemas import ScrapingTask
-from app.tests.conftest import MockLLMClient
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.tests.conftest import MockLLMClient
 
 
 @pytest.mark.asyncio

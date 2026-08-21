@@ -1,9 +1,9 @@
 """Dynamic crawler-level healing for adapting browser timeouts, wait conditions, and scroll strategies."""
 
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.crawler.browser_executor import BrowserExecutor
-from app.crawler.result_models import CrawlResult
+from leadfinder.config.logging import get_logger
+from leadfinder.crawler.browser_executor import BrowserExecutor
+from leadfinder.crawler.result_models import CrawlResult
 
 logger = get_logger("CRAWLER_HEALING_ENGINE")
 

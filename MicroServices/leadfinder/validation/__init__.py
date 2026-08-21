@@ -1,10 +1,10 @@
-from app.validation.anomalies import AnomalyDetector
-from app.validation.baseline import HistoricalBaseline, build_baseline, compare_with_baseline
-from app.validation.completeness import CompletenessValidator
-from app.validation.duplicates import DuplicateValidator
-from app.validation.engine import ValidationEngine
-from app.validation.health import HealthScorer
-from app.validation.schemas import (
+from leadfinder.validation.anomalies import AnomalyDetector
+from leadfinder.validation.baseline import HistoricalBaseline, build_baseline, compare_with_baseline
+from leadfinder.validation.completeness import CompletenessValidator
+from leadfinder.validation.duplicates import DuplicateValidator
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.health import HealthScorer
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FailureItem,
     FailureTaxonomy,
@@ -14,8 +14,8 @@ from app.validation.schemas import (
     ValidationResult,
     ValidationStatus,
 )
-from app.validation.type_validator import TypeValidator
-from app.validation.urls import URLValidator
+from leadfinder.validation.type_validator import TypeValidator
+from leadfinder.validation.urls import URLValidator
 
 __all__ = [
     "ValidationEngine",

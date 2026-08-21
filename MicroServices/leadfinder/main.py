@@ -3,12 +3,12 @@ from uuid import uuid4
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.responses import JSONResponse
 
-from app.agents.gmaps import GoogleMapsAgent
-from app.agents.healing import HealingAgent
-from app.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
-from app.agents.scraper import ScraperAgent
-from app.brightdata.client import BrightDataClient
-from app.brightdata.exceptions import (
+from leadfinder.agents.gmaps import GoogleMapsAgent
+from leadfinder.agents.healing import HealingAgent
+from leadfinder.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.exceptions import (
     BrightDataAuthError,
     BrightDataConfigError,
     BrightDataEmptyResultError,
@@ -16,7 +16,7 @@ from app.brightdata.exceptions import (
     BrightDataJobError,
     BrightDataTimeoutError,
 )
-from app.brightdata.schemas import (
+from leadfinder.brightdata.schemas import (
     CollectorStatus,
     ScrapeTargetRequest,
     ScraperHealRequest,
@@ -25,20 +25,20 @@ from app.brightdata.schemas import (
     ScraperRunRequest,
     ScraperRunResponse,
 )
-from app.brightdata.service import BrightDataService
-from app.config.logging import get_logger, setup_logging
-from app.config.settings import get_settings
-from app.gmaps.service import GoogleMapsService
-from app.graph.state import ScrapingGraphState
-from app.graph.workflow import create_scraping_workflow
-from app.llm.exceptions import (
+from leadfinder.brightdata.service import BrightDataService
+from leadfinder.config.logging import get_logger, setup_logging
+from leadfinder.config.settings import get_settings
+from leadfinder.gmaps.service import GoogleMapsService
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.graph.workflow import create_scraping_workflow
+from leadfinder.llm.exceptions import (
     LLMConnectionError,
     LLMError,
     LLMModelNotFoundError,
     LLMTimeoutError,
 )
-from app.llm.ollama_client import OllamaClient
-from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.llm.ollama_client import OllamaClient
+from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
 
 setup_logging()
 logger = get_logger("API")
@@ -211,8 +211,8 @@ async def parse_task(request: ScrapingRequest) -> dict[str, Any]:
         )
 
 
-from app.crawler.job_manager import default_job_manager
-from app.export.exporter import DataExporter
+from leadfinder.crawler.job_manager import default_job_manager
+from leadfinder.export.exporter import DataExporter
 
 
 async def _run_background_workflow(task_id: str, query: str, urls: list[str]):

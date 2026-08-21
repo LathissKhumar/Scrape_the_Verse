@@ -1,21 +1,21 @@
 import json
 from typing import Any, Optional
 
-from app.config.logging import get_logger
-from app.diagnosis.classifier import RuleBasedClassifier
-from app.diagnosis.evidence import DiagnosisEvidenceBuilder
-from app.diagnosis.prompt import DIAGNOSIS_SYSTEM_PROMPT, build_diagnosis_prompt
-from app.diagnosis.schemas import (
+from leadfinder.config.logging import get_logger
+from leadfinder.diagnosis.classifier import RuleBasedClassifier
+from leadfinder.diagnosis.evidence import DiagnosisEvidenceBuilder
+from leadfinder.diagnosis.prompt import DIAGNOSIS_SYSTEM_PROMPT, build_diagnosis_prompt
+from leadfinder.diagnosis.schemas import (
     AffectedStage,
     DiagnosisResult,
     RecommendedAction,
     RepairStrategy,
     RootCause,
 )
-from app.llm.base import LLMClient
-from app.llm.ollama_client import clean_markdown_fences
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import ValidationResult
+from leadfinder.llm.base import LLMClient
+from leadfinder.llm.ollama_client import clean_markdown_fences
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("DIAGNOSIS_ENGINE")
 

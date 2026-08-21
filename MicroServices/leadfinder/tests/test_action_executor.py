@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.crawler.action_models import (
+from leadfinder.crawler.action_models import (
     ActionPlan,
     WaitForAction,
     ScrollAction,
@@ -10,7 +10,7 @@ from app.crawler.action_models import (
     SelectAction,
     NavigateAction,
 )
-from app.crawler.result_models import BlockType, CrawlResult
+from leadfinder.crawler.result_models import BlockType, CrawlResult
 
 
 def test_action_plan_validation():

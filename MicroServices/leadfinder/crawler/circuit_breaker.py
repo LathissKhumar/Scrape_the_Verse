@@ -3,7 +3,7 @@
 import time
 from typing import Dict
 from urllib.parse import urlparse
-from app.crawler.result_models import BlockType
+from leadfinder.crawler.result_models import BlockType
 
 
 class DomainCircuitBreaker:

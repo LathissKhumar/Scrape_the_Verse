@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 
-from app.llm.exceptions import LLMConnectionError
-from app.models.schemas import ScrapingResult, ScrapingTask
+from leadfinder.llm.exceptions import LLMConnectionError
+from leadfinder.models.schemas import ScrapingResult, ScrapingTask
 
 
 def test_get_root(api_client):
@@ -25,7 +25,7 @@ def test_get_health(api_client):
 
 def test_get_health_llm_available(api_client):
     with patch(
-        "app.main.llm_client.check_health",
+        "leadfinder.main.llm_client.check_health",
         new_callable=AsyncMock,
         return_value={"available": True, "model_installed": True, "model_name": "qwen3:8b"},
     ):
@@ -38,7 +38,7 @@ def test_get_health_llm_available(api_client):
 
 def test_get_health_llm_unavailable(api_client):
     with patch(
-        "app.main.llm_client.check_health",
+        "leadfinder.main.llm_client.check_health",
         new_callable=AsyncMock,
         return_value={"available": False, "model_installed": False, "error": "Cannot connect"},
     ):
@@ -58,7 +58,7 @@ def test_post_parse_task_success(api_client):
         max_records=100,
     )
 
-    with patch("app.main.planner_agent.plan_async", new_callable=AsyncMock, return_value=mock_task):
+    with patch("leadfinder.main.planner_agent.plan_async", new_callable=AsyncMock, return_value=mock_task):
         payload = {
             "query": "Scrape https://example.com/products and collect name and price",
             "target_urls": ["https://example.com/products"],
@@ -75,7 +75,7 @@ def test_post_parse_task_success(api_client):
 
 def test_post_parse_task_llm_connection_error(api_client):
     with patch(
-        "app.main.planner_agent.plan_async",
+        "leadfinder.main.planner_agent.plan_async",
         side_effect=LLMConnectionError("Ollama service unreachable"),
     ):
         payload = {"query": "Scrape items"}
@@ -107,7 +107,7 @@ def test_post_scrape_success(api_client):
         )
     }
 
-    with patch("app.main.workflow.ainvoke", new_callable=AsyncMock, return_value=mock_result_state):
+    with patch("leadfinder.main.workflow.ainvoke", new_callable=AsyncMock, return_value=mock_result_state):
         payload = {
             "query": "Scrape product names and prices from the provided website",
             "target_urls": ["https://example.com/products"],
@@ -141,7 +141,7 @@ def test_post_scrape_url_in_query_accepted(api_client):
         )
     }
 
-    with patch("app.main.workflow.ainvoke", new_callable=AsyncMock, return_value=mock_result_state):
+    with patch("leadfinder.main.workflow.ainvoke", new_callable=AsyncMock, return_value=mock_result_state):
         payload = {
             "query": "Scrape from https://news.ycombinator.com the front page",
         }

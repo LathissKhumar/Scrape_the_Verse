@@ -2,7 +2,7 @@
 
 from typing import Any
 from bs4 import BeautifulSoup
-from app.config.logging import get_logger
+from leadfinder.config.logging import get_logger
 
 logger = get_logger("ACTION_REPAIR_VALIDATOR")
 

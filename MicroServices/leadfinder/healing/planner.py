@@ -5,20 +5,20 @@ import re
 from typing import Any, Optional
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
-from app.config.logging import get_logger
-from app.diagnosis.schemas import DiagnosisResult, RootCause
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, RawPage
-from app.healing.actions.detector import ActionIssueDetector
-from app.healing.actions.planner import ActionRepairPlanner
-from app.healing.failed_memory import FailedRepairMemory
-from app.healing.fingerprint import DOMFingerprinter
-from app.healing.memory import RepairMemory
-from app.healing.schemas import RepairCandidate, RepairPlan, RepairType
-from app.healing.semantic_memory import SemanticRepairMemory
-from app.llm.base import LLMClient
-from app.llm.ollama_client import clean_markdown_fences
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import ValidationResult
+from leadfinder.config.logging import get_logger
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, RawPage
+from leadfinder.healing.actions.detector import ActionIssueDetector
+from leadfinder.healing.actions.planner import ActionRepairPlanner
+from leadfinder.healing.failed_memory import FailedRepairMemory
+from leadfinder.healing.fingerprint import DOMFingerprinter
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.schemas import RepairCandidate, RepairPlan, RepairType
+from leadfinder.healing.semantic_memory import SemanticRepairMemory
+from leadfinder.llm.base import LLMClient
+from leadfinder.llm.ollama_client import clean_markdown_fences
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("HEALING_PLANNER")
 

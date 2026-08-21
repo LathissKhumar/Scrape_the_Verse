@@ -2,10 +2,10 @@ import pytest
 from unittest.mock import AsyncMock, patch, MagicMock
 from fastapi.testclient import TestClient
 
-from app.agents.gmaps import GoogleMapsAgent
-from app.gmaps.pipeline import GoogleMapsPipeline
-from app.gmaps.service import GoogleMapsService
-from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.agents.gmaps import GoogleMapsAgent
+from leadfinder.gmaps.pipeline import GoogleMapsPipeline
+from leadfinder.gmaps.service import GoogleMapsService
+from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
 
 
 def test_gmaps_pipeline_url_formatting():
@@ -104,7 +104,7 @@ async def test_gmaps_agent_delegation_execution():
 
 def test_api_gmaps_leads_endpoint():
     """Test dedicated POST /api/v1/gmaps/leads endpoint."""
-    from app.main import app
+    from leadfinder.main import app
 
     mock_service = MagicMock(spec=GoogleMapsService)
     mock_service.is_enabled = True
@@ -119,7 +119,7 @@ def test_api_gmaps_leads_endpoint():
         ]
     )
 
-    with patch("app.main.gmaps_service", mock_service):
+    with patch("leadfinder.main.gmaps_service", mock_service):
         client = TestClient(app)
         response = client.post(
             "/api/v1/gmaps/leads",

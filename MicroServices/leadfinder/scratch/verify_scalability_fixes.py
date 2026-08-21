@@ -8,10 +8,10 @@ from unittest.mock import AsyncMock, MagicMock
 
 sys.path.insert(0, os.path.abspath("."))
 
-from app.agents.scraper import ScraperAgent
-from app.crawler.config import CrawlerConfig
-from app.crawler.job_manager import JobManager
-from app.crawler.result_models import BlockType, CrawlResult
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.crawler.config import CrawlerConfig
+from leadfinder.crawler.job_manager import JobManager
+from leadfinder.crawler.result_models import BlockType, CrawlResult
 
 async def benchmark_bounded_concurrency(url_count: int, concurrency_limit: int):
     print(f"\n--- Testing Bounded Concurrency: {url_count:,} URLs (Limit: {concurrency_limit}) ---")

@@ -1,6 +1,6 @@
 import pytest
-from app.healing.persistent_memory import PersistentRepairMemory
-from app.healing.schemas import RepairMemoryRecord, RepairType
+from leadfinder.healing.persistent_memory import PersistentRepairMemory
+from leadfinder.healing.schemas import RepairMemoryRecord, RepairType
 
 
 def test_persistent_repair_memory_saves_and_reloads(tmp_path):

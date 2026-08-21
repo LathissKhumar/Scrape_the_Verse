@@ -1,15 +1,15 @@
 """Deterministic validation evaluator comparing before/after validation metrics and enforcing regression guards."""
 
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.diagnosis.schemas import DiagnosisResult
-from app.healing.confidence import RepairConfidenceScorer
-from app.healing.schemas import (
+from leadfinder.config.logging import get_logger
+from leadfinder.diagnosis.schemas import DiagnosisResult
+from leadfinder.healing.confidence import RepairConfidenceScorer
+from leadfinder.healing.schemas import (
     PerformanceSnapshot,
     RepairEvaluation,
     RepairPlan,
 )
-from app.validation.schemas import ValidationResult
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("HEALING_EVALUATOR")
 

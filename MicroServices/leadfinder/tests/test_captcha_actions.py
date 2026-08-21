@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.crawler.action_models import ActionPlan, SolveCaptchaAction
-from app.crawler.action_executor import ActionPlanExecutor
+from leadfinder.crawler.action_models import ActionPlan, SolveCaptchaAction
+from leadfinder.crawler.action_executor import ActionPlanExecutor
 
 def test_solve_captcha_action_model_validation():
     action = SolveCaptchaAction(

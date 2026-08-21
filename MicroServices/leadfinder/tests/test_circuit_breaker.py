@@ -1,6 +1,6 @@
 import pytest
-from app.crawler.circuit_breaker import DomainCircuitBreaker
-from app.crawler.result_models import BlockType
+from leadfinder.crawler.circuit_breaker import DomainCircuitBreaker
+from leadfinder.crawler.result_models import BlockType
 
 
 def test_circuit_breaker_tripping():

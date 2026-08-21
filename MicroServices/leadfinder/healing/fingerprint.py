@@ -4,8 +4,8 @@ import hashlib
 from collections import Counter
 from typing import Any
 from bs4 import BeautifulSoup
-from app.config.logging import get_logger
-from app.config.settings import get_settings
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
 
 logger = get_logger("DOM_FINGERPRINTER")
 

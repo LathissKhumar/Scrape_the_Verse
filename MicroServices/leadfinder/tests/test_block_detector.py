@@ -1,6 +1,6 @@
 import pytest
-from app.crawler.block_detector import BlockDetector
-from app.crawler.result_models import BlockType
+from leadfinder.crawler.block_detector import BlockDetector
+from leadfinder.crawler.result_models import BlockType
 
 
 def test_detect_http_status_blocks():

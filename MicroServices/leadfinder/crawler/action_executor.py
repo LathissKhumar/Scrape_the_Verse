@@ -3,7 +3,7 @@
 import asyncio
 import logging
 from typing import Any, Dict, Optional
-from app.crawler.action_models import (
+from leadfinder.crawler.action_models import (
     ActionPlan,
     ClickAction,
     ExtractAction,

@@ -4,11 +4,11 @@ import time
 from typing import Any, Optional
 from uuid import uuid4
 
-from app.brightdata.client import BrightDataClient
-from app.config.logging import get_logger
-from app.config.settings import Settings, get_settings
-from app.gmaps.pipeline import GoogleMapsPipeline
-from app.models.schemas import ScrapingResult, ScrapingTask
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import Settings, get_settings
+from leadfinder.gmaps.pipeline import GoogleMapsPipeline
+from leadfinder.models.schemas import ScrapingResult, ScrapingTask
 
 logger = get_logger("GMAPS_SERVICE")
 

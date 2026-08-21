@@ -2,7 +2,7 @@
 
 from typing import Any
 import lxml.html
-from app.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
 
 class XPathExtractor:

@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.path.abspath("."))
 
 from playwright.async_api import async_playwright
-from app.extraction.vision import VisionTextExtractor
+from leadfinder.extraction.vision import VisionTextExtractor
 
 async def test_vision():
     async with async_playwright() as p:

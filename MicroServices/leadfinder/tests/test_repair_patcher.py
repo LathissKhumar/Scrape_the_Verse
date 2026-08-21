@@ -1,7 +1,7 @@
 import pytest
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
-from app.healing.patcher import RepairPatcher
-from app.healing.schemas import RepairPlan, RepairType
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.healing.patcher import RepairPatcher
+from leadfinder.healing.schemas import RepairPlan, RepairType
 
 
 def test_patch_css_field_selector():

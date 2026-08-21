@@ -2,7 +2,7 @@
 
 from typing import Any, Optional
 from bs4 import BeautifulSoup, Tag
-from app.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
 
 class TableExtractor:

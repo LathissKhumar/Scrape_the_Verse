@@ -2,8 +2,8 @@
 
 from enum import Enum
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.crawler.result_models import BlockType, CrawlResult
+from leadfinder.config.logging import get_logger
+from leadfinder.crawler.result_models import BlockType, CrawlResult
 
 logger = get_logger("PROVIDER_DECISION_ENGINE")
 

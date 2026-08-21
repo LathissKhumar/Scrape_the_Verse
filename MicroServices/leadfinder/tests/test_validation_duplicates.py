@@ -1,4 +1,4 @@
-from app.validation.duplicates import DuplicateValidator
+from leadfinder.validation.duplicates import DuplicateValidator
 
 
 def test_duplicate_validator_clean():

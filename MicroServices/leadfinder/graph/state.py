@@ -1,5 +1,5 @@
 from typing import Any, Optional, TypedDict
-from app.models.schemas import ScrapingResult, ScrapingTask
+from leadfinder.models.schemas import ScrapingResult, ScrapingTask
 
 
 class ScrapingGraphState(TypedDict, total=False):

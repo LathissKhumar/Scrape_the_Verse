@@ -1,22 +1,22 @@
 from typing import Any, Optional
 from langgraph.graph import END, START, StateGraph
 
-from app.agents.diagnosis import DiagnosisAgent
-from app.agents.extraction import ExtractionAgent
-from app.agents.healing import HealingAgent
-from app.agents.planner import ScrapingPlannerAgent
-from app.agents.scraper import ScraperAgent
-from app.agents.validation import ValidationAgent
-from app.brightdata.client import BrightDataClient
-from app.config.logging import get_logger
-from app.config.settings import get_settings
-from app.diagnosis.schemas import DiagnosisResult, RootCause
-from app.extraction.schema import ExtractionResult, ExtractionSchema
-from app.graph.state import ScrapingGraphState
-from app.healing.schemas import RepairEvaluation, RepairPlan, RepairType
-from app.llm.ollama_client import OllamaClient
-from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
-from app.validation.schemas import ValidationResult
+from leadfinder.agents.diagnosis import DiagnosisAgent
+from leadfinder.agents.extraction import ExtractionAgent
+from leadfinder.agents.healing import HealingAgent
+from leadfinder.agents.planner import ScrapingPlannerAgent
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.agents.validation import ValidationAgent
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
+from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.healing.schemas import RepairEvaluation, RepairPlan, RepairType
+from leadfinder.llm.ollama_client import OllamaClient
+from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("GRAPH")
 

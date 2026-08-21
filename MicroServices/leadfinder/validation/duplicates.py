@@ -1,7 +1,7 @@
 import hashlib
 import json
 from typing import Any, Optional
-from app.validation.schemas import DuplicateMetric
+from leadfinder.validation.schemas import DuplicateMetric
 
 PRIMARY_KEY_CANDIDATES = ["url", "product_url", "link", "id", "sku", "email", "title", "name"]
 

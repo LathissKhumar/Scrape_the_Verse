@@ -1,11 +1,11 @@
 """Planner for generating bounded ActionPlan candidates to unblock UI interactions and lazy hydration."""
 
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.healing.actions.detector import ActionIssueDetector
-from app.healing.actions.models import ActionPlan, ActionType, PageAction
-from app.llm.base import LLMClient
-from app.models.schemas import ScrapingTask
+from leadfinder.config.logging import get_logger
+from leadfinder.healing.actions.detector import ActionIssueDetector
+from leadfinder.healing.actions.models import ActionPlan, ActionType, PageAction
+from leadfinder.llm.base import LLMClient
+from leadfinder.models.schemas import ScrapingTask
 
 logger = get_logger("ACTION_REPAIR_PLANNER")
 

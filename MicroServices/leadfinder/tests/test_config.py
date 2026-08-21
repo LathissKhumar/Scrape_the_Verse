@@ -1,7 +1,7 @@
 import os
 import logging
-from app.config.settings import Settings, get_settings
-from app.config.logging import get_logger, setup_logging, LOG_FORMAT
+from leadfinder.config.settings import Settings, get_settings
+from leadfinder.config.logging import get_logger, setup_logging, LOG_FORMAT
 
 
 def test_default_settings():

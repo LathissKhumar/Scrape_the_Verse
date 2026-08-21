@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.healing.actions.detector import ActionIssueDetector
-from app.healing.actions.executor import ActionRepairExecutor
-from app.healing.actions.models import ActionPlan, ActionType, PageAction
-from app.healing.actions.planner import ActionRepairPlanner
-from app.healing.actions.validator import ActionRepairValidator
-from app.models.schemas import ScrapingTask
+from leadfinder.healing.actions.detector import ActionIssueDetector
+from leadfinder.healing.actions.executor import ActionRepairExecutor
+from leadfinder.healing.actions.models import ActionPlan, ActionType, PageAction
+from leadfinder.healing.actions.planner import ActionRepairPlanner
+from leadfinder.healing.actions.validator import ActionRepairValidator
+from leadfinder.models.schemas import ScrapingTask
 
 
 def test_action_issue_detector_cookie_banner():

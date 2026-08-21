@@ -1,6 +1,6 @@
 """Autonomous Self-Healing Subsystem for automated crawler and scraper repair."""
 
-from app.healing.schemas import (
+from leadfinder.healing.schemas import (
     PerformanceSnapshot,
     RepairCandidate,
     RepairEvaluation,

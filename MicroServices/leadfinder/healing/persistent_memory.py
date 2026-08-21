@@ -5,9 +5,9 @@ import os
 import time
 from typing import Optional
 
-from app.config.logging import get_logger
-from app.crawler.db import get_sqlite_connection, safe_sqlite_transaction
-from app.healing.schemas import (
+from leadfinder.config.logging import get_logger
+from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
+from leadfinder.healing.schemas import (
     RepairConfidenceLevel,
     RepairFreshnessStatus,
     RepairMemoryRecord,

@@ -4,7 +4,7 @@ import re
 from typing import Any, Optional
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup, Tag
-from app.config.logging import get_logger
+from leadfinder.config.logging import get_logger
 
 logger = get_logger("GRID_CARD_EXTRACTOR")
 

@@ -9,17 +9,17 @@ from typing import Any, Dict, List
 
 sys.path.insert(0, os.path.abspath("."))
 
-from app.crawler.block_detector import BlockDetector
-from app.crawler.circuit_breaker import DomainCircuitBreaker
-from app.crawler.rate_limiter import DomainRateLimiter
-from app.crawler.url_validator import UrlSecurityValidator
-from app.extraction.cleaner import HTMLCleaner
-from app.extraction.dedup import RecordDeduplicator
-from app.extraction.engine import ExtractionEngine
-from app.extraction.grid_cards import GridCardExtractor
-from app.extraction.schema import RawPage
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
+from leadfinder.crawler.block_detector import BlockDetector
+from leadfinder.crawler.circuit_breaker import DomainCircuitBreaker
+from leadfinder.crawler.rate_limiter import DomainRateLimiter
+from leadfinder.crawler.url_validator import UrlSecurityValidator
+from leadfinder.extraction.cleaner import HTMLCleaner
+from leadfinder.extraction.dedup import RecordDeduplicator
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.grid_cards import GridCardExtractor
+from leadfinder.extraction.schema import RawPage
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
 
 # Mock HTML Generator for High-Throughput Benchmarking
 def generate_mock_html(num_cards: int = 10) -> str:

@@ -10,39 +10,39 @@ import time
 from typing import Any, Dict, List
 from bs4 import BeautifulSoup
 
-from app.crawler.block_detector import BlockDetector
-from app.crawler.circuit_breaker import DomainCircuitBreaker
-from app.crawler.rate_limiter import DomainRateLimiter
-from app.crawler.result_models import BlockType
-from app.crawler.url_validator import SSRFSecurityError, UrlSecurityValidator
-from app.crawler.link_discovery import LinkDiscoveryEngine
-from app.crawler.action_models import ActionPlan, ClickAction, ScrollAction, WaitForAction, ExtractAction
-from app.crawler.action_executor import ActionPlanExecutor
+from leadfinder.crawler.block_detector import BlockDetector
+from leadfinder.crawler.circuit_breaker import DomainCircuitBreaker
+from leadfinder.crawler.rate_limiter import DomainRateLimiter
+from leadfinder.crawler.result_models import BlockType
+from leadfinder.crawler.url_validator import SSRFSecurityError, UrlSecurityValidator
+from leadfinder.crawler.link_discovery import LinkDiscoveryEngine
+from leadfinder.crawler.action_models import ActionPlan, ClickAction, ScrollAction, WaitForAction, ExtractAction
+from leadfinder.crawler.action_executor import ActionPlanExecutor
 
-from app.diagnosis.schemas import DiagnosisResult, RootCause, RepairStrategy
-from app.diagnosis.engine import DiagnosisEngine
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause, RepairStrategy
+from leadfinder.diagnosis.engine import DiagnosisEngine
 
-from app.extraction.cleaner import HTMLCleaner, clean_html
-from app.extraction.css import CSSExtractor
-from app.extraction.dedup import RecordDeduplicator
-from app.extraction.engine import ExtractionEngine
-from app.extraction.grid_cards import GridCardExtractor
-from app.extraction.regex import RegexExtractor
-from app.extraction.schema import ExtractionResult, ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
-from app.extraction.tables import TableExtractor
-from app.extraction.xpath import XPathExtractor
+from leadfinder.extraction.cleaner import HTMLCleaner, clean_html
+from leadfinder.extraction.css import CSSExtractor
+from leadfinder.extraction.dedup import RecordDeduplicator
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.grid_cards import GridCardExtractor
+from leadfinder.extraction.regex import RegexExtractor
+from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
+from leadfinder.extraction.tables import TableExtractor
+from leadfinder.extraction.xpath import XPathExtractor
 
-from app.healing.evaluator import RepairEvaluator
-from app.healing.memory import RepairMemory
-from app.healing.persistent_memory import PersistentRepairMemory
-from app.healing.failed_memory import FailedRepairMemory
-from app.healing.schemas import PerformanceSnapshot, RepairCandidate, RepairConfidenceLevel, RepairPlan, RepairType
-from app.healing.patcher import RepairPatcher
-from app.healing.fingerprint import DOMFingerprinter
+from leadfinder.healing.evaluator import RepairEvaluator
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.persistent_memory import PersistentRepairMemory
+from leadfinder.healing.failed_memory import FailedRepairMemory
+from leadfinder.healing.schemas import PerformanceSnapshot, RepairCandidate, RepairConfidenceLevel, RepairPlan, RepairType
+from leadfinder.healing.patcher import RepairPatcher
+from leadfinder.healing.fingerprint import DOMFingerprinter
 
-from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import ValidationResult
+from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import ValidationResult
 
 async def run_comprehensive_evaluation():
     results = {}

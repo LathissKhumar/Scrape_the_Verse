@@ -4,16 +4,16 @@ import time
 from typing import Any, Optional
 from uuid import uuid4
 
-from app.brightdata.client import BrightDataClient
-from app.brightdata.jobs import ScraperJobManager, default_job_manager
-from app.brightdata.pipeline import BrightDataLeadPipeline
-from app.brightdata.registry import (
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.jobs import ScraperJobManager, default_job_manager
+from leadfinder.brightdata.pipeline import BrightDataLeadPipeline
+from leadfinder.brightdata.registry import (
     ScraperRegistry,
     compute_schema_hash,
     default_scraper_registry,
     normalize_url,
 )
-from app.brightdata.schemas import (
+from leadfinder.brightdata.schemas import (
     CollectorRecord,
     CollectorStatus,
     FieldDefinition,
@@ -23,9 +23,9 @@ from app.brightdata.schemas import (
     ScraperResolveResponse,
     ScraperRunResponse,
 )
-from app.config.logging import get_logger
-from app.config.settings import Settings, get_settings
-from app.models.schemas import ScrapingResult, ScrapingTask
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import Settings, get_settings
+from leadfinder.models.schemas import ScrapingResult, ScrapingTask
 
 logger = get_logger("BRIGHTDATA_SERVICE")
 

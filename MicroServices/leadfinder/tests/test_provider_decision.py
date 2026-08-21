@@ -1,9 +1,9 @@
-from app.crawler.provider_decision import (
+from leadfinder.crawler.provider_decision import (
     FailureNature,
     ProviderDecisionEngine,
     ProviderRecommendation,
 )
-from app.crawler.result_models import BlockType, CrawlResult
+from leadfinder.crawler.result_models import BlockType, CrawlResult
 
 
 def test_provider_decision_transient_network_retry():

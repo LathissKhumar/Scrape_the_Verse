@@ -2,9 +2,9 @@
 
 import json
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.healing.fingerprint import DOMFingerprinter
-from app.healing.schemas import RepairFreshnessStatus, RepairMemoryRecord
+from leadfinder.config.logging import get_logger
+from leadfinder.healing.fingerprint import DOMFingerprinter
+from leadfinder.healing.schemas import RepairFreshnessStatus, RepairMemoryRecord
 
 logger = get_logger("REPAIR_FRESHNESS")
 

@@ -4,11 +4,11 @@ import re
 from typing import Optional
 from uuid import uuid4
 
-from app.config.logging import get_logger
-from app.config.settings import Settings, get_settings
-from app.gmaps.service import GoogleMapsService
-from app.llm.base import LLMClient
-from app.models.schemas import ScrapingResult, ScrapingTask
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import Settings, get_settings
+from leadfinder.gmaps.service import GoogleMapsService
+from leadfinder.llm.base import LLMClient
+from leadfinder.models.schemas import ScrapingResult, ScrapingTask
 
 logger = get_logger("GMAPS_AGENT")
 

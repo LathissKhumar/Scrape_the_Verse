@@ -4,8 +4,8 @@ from collections import Counter
 import math
 from typing import Any
 from bs4 import BeautifulSoup
-from app.config.logging import get_logger
-from app.healing.schemas import RepairMemoryRecord
+from leadfinder.config.logging import get_logger
+from leadfinder.healing.schemas import RepairMemoryRecord
 
 logger = get_logger("SEMANTIC_REPAIR_MEMORY")
 

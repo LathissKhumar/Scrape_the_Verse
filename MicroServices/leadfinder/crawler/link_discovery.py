@@ -3,8 +3,8 @@ from typing import Optional
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 
-from app.crawler.url_validator import UrlSecurityValidator
-from app.config.logging import get_logger
+from leadfinder.crawler.url_validator import UrlSecurityValidator
+from leadfinder.config.logging import get_logger
 
 logger = get_logger("LINK_DISCOVERY")
 

@@ -1,10 +1,10 @@
 import json
 import pytest
 
-from app.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
-from app.llm.exceptions import LLMInvocationError
-from app.models.schemas import ScrapingRequest
-from app.tests.conftest import MockLLMClient
+from leadfinder.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
+from leadfinder.llm.exceptions import LLMInvocationError
+from leadfinder.models.schemas import ScrapingRequest
+from leadfinder.tests.conftest import MockLLMClient
 
 
 def test_extract_urls_from_text():

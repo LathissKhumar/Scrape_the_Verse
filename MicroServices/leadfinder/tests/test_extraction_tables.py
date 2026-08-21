@@ -1,5 +1,5 @@
-from app.extraction.schema import ExtractionSchema, FieldRule
-from app.extraction.tables import TableExtractor
+from leadfinder.extraction.schema import ExtractionSchema, FieldRule
+from leadfinder.extraction.tables import TableExtractor
 
 
 def test_table_extractor_success():

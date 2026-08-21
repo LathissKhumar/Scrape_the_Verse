@@ -3,8 +3,8 @@
 from typing import Optional
 import httpx
 
-from app.config.logging import get_logger
-from app.config.settings import get_settings
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
 
 logger = get_logger("VISION_EXTRACTOR")
 

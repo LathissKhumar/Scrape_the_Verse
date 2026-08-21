@@ -4,14 +4,14 @@ import asyncio
 import logging
 import time
 from typing import Any, Dict, Optional
-from app.crawler.action_executor import ActionPlanExecutor
-from app.crawler.action_models import ActionPlan
-from app.crawler.block_detector import BlockDetector
-from app.crawler.browser_manager import BrowserManager
-from app.crawler.circuit_breaker import DomainCircuitBreaker
-from app.crawler.rate_limiter import DomainRateLimiter
-from app.crawler.result_models import BlockType, CrawlResult
-from app.crawler.url_validator import SSRFSecurityError, UrlSecurityValidator
+from leadfinder.crawler.action_executor import ActionPlanExecutor
+from leadfinder.crawler.action_models import ActionPlan
+from leadfinder.crawler.block_detector import BlockDetector
+from leadfinder.crawler.browser_manager import BrowserManager
+from leadfinder.crawler.circuit_breaker import DomainCircuitBreaker
+from leadfinder.crawler.rate_limiter import DomainRateLimiter
+from leadfinder.crawler.result_models import BlockType, CrawlResult
+from leadfinder.crawler.url_validator import SSRFSecurityError, UrlSecurityValidator
 
 logger = logging.getLogger("CRAWLER_BROWSER_EXECUTOR")
 
@@ -139,7 +139,7 @@ class BrowserExecutor:
             ):
                 logger.info(f"Challenge detected on '{final_url}' ({initial_type.value}). Attempting automated interactive solver...")
                 try:
-                    from app.crawler.action_models import SolveCaptchaAction
+                    from leadfinder.crawler.action_models import SolveCaptchaAction
                     solver_plan = ActionPlan(
                         url=final_url,
                         actions=[SolveCaptchaAction(captcha_type="auto", timeout_ms=6000)],

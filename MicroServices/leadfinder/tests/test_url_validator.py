@@ -1,5 +1,5 @@
 import pytest
-from app.crawler.url_validator import UrlSecurityValidator, SSRFSecurityError
+from leadfinder.crawler.url_validator import UrlSecurityValidator, SSRFSecurityError
 
 
 def test_valid_public_urls():

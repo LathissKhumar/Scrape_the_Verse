@@ -1,4 +1,4 @@
-from app.extraction.semantic import SemanticFilter
+from leadfinder.extraction.semantic import SemanticFilter
 
 
 def test_semantic_filter_ranks_relevant_chunks():

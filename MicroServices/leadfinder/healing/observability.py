@@ -7,7 +7,7 @@ import time
 from typing import Any, Optional
 from uuid import uuid4
 from pydantic import BaseModel, Field
-from app.config.logging import get_logger
+from leadfinder.config.logging import get_logger
 
 logger = get_logger("REPAIR_OBSERVABILITY")
 

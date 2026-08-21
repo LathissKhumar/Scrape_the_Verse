@@ -6,15 +6,15 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.extraction.schema import ExtractionSchema, FieldRule
-from app.healing.actions.detector import ActionIssueDetector
-from app.healing.actions.planner import ActionRepairPlanner
-from app.healing.confidence import RepairConfidenceScorer
-from app.healing.fingerprint import DOMFingerprinter
-from app.healing.freshness import RepairFreshnessLifecycle
-from app.healing.observability import RepairObservability, RepairSessionTelemetry
-from app.healing.schemas import RepairConfidenceLevel, RepairFreshnessStatus, RepairMemoryRecord, RepairType
-from app.models.schemas import ScrapingTask
+from leadfinder.extraction.schema import ExtractionSchema, FieldRule
+from leadfinder.healing.actions.detector import ActionIssueDetector
+from leadfinder.healing.actions.planner import ActionRepairPlanner
+from leadfinder.healing.confidence import RepairConfidenceScorer
+from leadfinder.healing.fingerprint import DOMFingerprinter
+from leadfinder.healing.freshness import RepairFreshnessLifecycle
+from leadfinder.healing.observability import RepairObservability, RepairSessionTelemetry
+from leadfinder.healing.schemas import RepairConfidenceLevel, RepairFreshnessStatus, RepairMemoryRecord, RepairType
+from leadfinder.models.schemas import ScrapingTask
 
 
 def run_demonstration():

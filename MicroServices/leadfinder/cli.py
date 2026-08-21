@@ -31,24 +31,31 @@ def _silence_unraisablehook(unraisable):
 
 sys.unraisablehook = _silence_unraisablehook
 
-from app.agents.gmaps import GoogleMapsAgent
-from app.brightdata.client import BrightDataClient
-from app.brightdata.pipeline import BrightDataLeadPipeline
-from app.brightdata.service import BrightDataService
-from app.gmaps.service import GoogleMapsService
-from app.graph.state import ScrapingGraphState
-from app.graph.workflow import create_scraping_workflow
-from app.llm.ollama_client import OllamaClient
-from app.agents.planner import ScrapingPlannerAgent
-from app.agents.scraper import ScraperAgent
-from app.agents.extraction import ExtractionAgent
-from app.agents.validation import ValidationAgent
-from app.agents.diagnosis import DiagnosisAgent
-from app.agents.healing import HealingAgent
-from app.config.logging import setup_logging
-from app.config.settings import get_settings
-from app.export.exporter import DataExporter
-from app.models.schemas import ScrapingTask
+from pathlib import Path
+_pkg_root = Path(__file__).resolve().parent.parent
+_repo_root = _pkg_root.parent
+for _path in (str(_pkg_root), str(_repo_root)):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
+
+from leadfinder.agents.gmaps import GoogleMapsAgent
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.pipeline import BrightDataLeadPipeline
+from leadfinder.brightdata.service import BrightDataService
+from leadfinder.gmaps.service import GoogleMapsService
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.graph.workflow import create_scraping_workflow
+from leadfinder.llm.ollama_client import OllamaClient
+from leadfinder.agents.planner import ScrapingPlannerAgent
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.agents.extraction import ExtractionAgent
+from leadfinder.agents.validation import ValidationAgent
+from leadfinder.agents.diagnosis import DiagnosisAgent
+from leadfinder.agents.healing import HealingAgent
+from leadfinder.config.logging import setup_logging
+from leadfinder.config.settings import get_settings
+from leadfinder.export.exporter import DataExporter
+from leadfinder.models.schemas import ScrapingTask
 
 
 async def check_brightdata_health(verbose: bool = False):

@@ -1,6 +1,6 @@
 import os
 import time
-from app.healing.failed_memory import FailedRepairMemory
+from leadfinder.healing.failed_memory import FailedRepairMemory
 
 
 def test_failed_repair_memory_recording_and_suppression(tmp_path):

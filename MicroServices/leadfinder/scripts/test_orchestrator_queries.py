@@ -9,14 +9,14 @@ from unittest.mock import AsyncMock, patch
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from app.brightdata.client import BrightDataClient
-from app.brightdata.registry import default_scraper_registry
-from app.brightdata.schemas import FieldDefinition, ScrapeTargetRequest
-from app.brightdata.service import BrightDataService
-from app.config.logging import get_logger, setup_logging
-from app.config.settings import get_settings
-from app.gmaps.service import GoogleMapsService
-from app.models.schemas import ScrapingRequest
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.registry import default_scraper_registry
+from leadfinder.brightdata.schemas import FieldDefinition, ScrapeTargetRequest
+from leadfinder.brightdata.service import BrightDataService
+from leadfinder.config.logging import get_logger, setup_logging
+from leadfinder.config.settings import get_settings
+from leadfinder.gmaps.service import GoogleMapsService
+from leadfinder.models.schemas import ScrapingRequest
 
 setup_logging()
 logger = get_logger("ORCHESTRATOR_QUERY_TEST")

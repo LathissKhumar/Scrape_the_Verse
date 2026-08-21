@@ -1,6 +1,6 @@
 from unittest.mock import AsyncMock, MagicMock
 import pytest
-from app.crawler.navigator import InteractiveNavigatorEngine
+from leadfinder.crawler.navigator import InteractiveNavigatorEngine
 
 
 @pytest.mark.asyncio

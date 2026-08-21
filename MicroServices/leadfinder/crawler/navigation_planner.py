@@ -2,7 +2,7 @@
 
 import logging
 from typing import Any, Dict, Optional
-from app.models.schemas import ScrapingTask
+from leadfinder.models.schemas import ScrapingTask
 
 logger = logging.getLogger("NAVIGATION_PLANNER")
 

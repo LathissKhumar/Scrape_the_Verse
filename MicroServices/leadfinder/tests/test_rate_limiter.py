@@ -1,6 +1,6 @@
 import asyncio
 import pytest
-from app.crawler.rate_limiter import DomainRateLimiter
+from leadfinder.crawler.rate_limiter import DomainRateLimiter
 
 
 @pytest.mark.asyncio

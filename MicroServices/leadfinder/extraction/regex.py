@@ -2,7 +2,7 @@
 
 import re
 from typing import Any
-from app.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
 COMMON_PATTERNS = {
     "email": re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE),

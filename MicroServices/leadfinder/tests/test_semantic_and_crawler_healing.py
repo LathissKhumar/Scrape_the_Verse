@@ -1,7 +1,7 @@
-from app.crawler.result_models import CrawlResult
-from app.healing.crawler_healing import CrawlerHealingEngine
-from app.healing.schemas import RepairMemoryRecord, RepairType
-from app.healing.semantic_memory import SemanticRepairMemory
+from leadfinder.crawler.result_models import CrawlResult
+from leadfinder.healing.crawler_healing import CrawlerHealingEngine
+from leadfinder.healing.schemas import RepairMemoryRecord, RepairType
+from leadfinder.healing.semantic_memory import SemanticRepairMemory
 
 
 def test_semantic_repair_memory_matching():

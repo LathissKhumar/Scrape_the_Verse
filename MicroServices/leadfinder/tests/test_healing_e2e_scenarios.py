@@ -1,24 +1,24 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.diagnosis.schemas import DiagnosisResult, RootCause
-from app.extraction.schema import (
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
+from leadfinder.extraction.schema import (
     ExtractionResult,
     ExtractionSchema,
     ExtractionStrategyEnum,
     FieldRule,
     RawPage,
 )
-from app.healing.engine import HealingEngine
-from app.healing.evaluator import RepairEvaluator
-from app.healing.evidence_collector import RepairEvidenceCollector
-from app.healing.executor import RepairExecutor
-from app.healing.memory import RepairMemory
-from app.healing.patcher import RepairPatcher
-from app.healing.planner import HealingPlanner
-from app.healing.schemas import RepairCandidate, RepairPlan, RepairType
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import (
+from leadfinder.healing.engine import HealingEngine
+from leadfinder.healing.evaluator import RepairEvaluator
+from leadfinder.healing.evidence_collector import RepairEvidenceCollector
+from leadfinder.healing.executor import RepairExecutor
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.patcher import RepairPatcher
+from leadfinder.healing.planner import HealingPlanner
+from leadfinder.healing.schemas import RepairCandidate, RepairPlan, RepairType
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import (
     FailureItem,
     FailureTaxonomy,
     FieldMetric,

@@ -12,15 +12,15 @@ from typing import Any, Optional
 
 import httpx
 
-from app.brightdata.exceptions import (
+from leadfinder.brightdata.exceptions import (
     BrightDataAuthError,
     BrightDataConfigError,
     BrightDataError,
     BrightDataJobError,
     BrightDataTimeoutError,
 )
-from app.config.logging import get_logger
-from app.config.settings import Settings, get_settings
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import Settings, get_settings
 
 logger = get_logger("BRIGHTDATA")
 

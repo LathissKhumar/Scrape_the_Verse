@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.extraction.llm import LLMExtractor
-from app.models.schemas import ScrapingTask
+from leadfinder.extraction.llm import LLMExtractor
+from leadfinder.models.schemas import ScrapingTask
 
 
 @pytest.mark.asyncio

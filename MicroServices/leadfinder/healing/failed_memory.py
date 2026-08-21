@@ -6,8 +6,8 @@ import os
 import sqlite3
 import time
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.config.settings import get_settings
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
 
 logger = get_logger("FAILED_REPAIR_MEMORY")
 

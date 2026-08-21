@@ -3,10 +3,10 @@ from typing import Any, Optional
 import pytest
 from fastapi.testclient import TestClient
 
-from app.config.settings import Settings
-from app.llm.base import LLMClient
-from app.models.schemas import ScrapingRequest, ScrapingTask
-from app.main import app
+from leadfinder.config.settings import Settings
+from leadfinder.llm.base import LLMClient
+from leadfinder.models.schemas import ScrapingRequest, ScrapingTask
+from leadfinder.main import app
 
 
 class MockLLMClient(LLMClient):

@@ -17,30 +17,30 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.config.logging import get_logger
-from app.config.settings import get_settings
-from app.diagnosis.engine import DiagnosisEngine
-from app.diagnosis.schemas import DiagnosisResult, RootCause
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
-from app.healing.actions.detector import ActionIssueDetector
-from app.healing.actions.planner import ActionRepairPlanner
-from app.healing.confidence import RepairConfidenceScorer
-from app.healing.engine import HealingEngine
-from app.healing.failed_memory import FailedRepairMemory
-from app.healing.fingerprint import DOMFingerprinter
-from app.healing.freshness import RepairFreshnessLifecycle
-from app.healing.memory import RepairMemory
-from app.healing.multi_page import MultiPageRepairValidator
-from app.healing.observability import RepairObservability
-from app.healing.persistent_memory import PersistentRepairMemory
-from app.healing.planner import HealingPlanner
-from app.healing.schemas import RepairConfidenceLevel, RepairType
-from app.healing.semantic_memory import SemanticRepairMemory
-from app.llm.ollama_client import OllamaClient
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import ValidationResult
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
+from leadfinder.diagnosis.engine import DiagnosisEngine
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
+from leadfinder.healing.actions.detector import ActionIssueDetector
+from leadfinder.healing.actions.planner import ActionRepairPlanner
+from leadfinder.healing.confidence import RepairConfidenceScorer
+from leadfinder.healing.engine import HealingEngine
+from leadfinder.healing.failed_memory import FailedRepairMemory
+from leadfinder.healing.fingerprint import DOMFingerprinter
+from leadfinder.healing.freshness import RepairFreshnessLifecycle
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.multi_page import MultiPageRepairValidator
+from leadfinder.healing.observability import RepairObservability
+from leadfinder.healing.persistent_memory import PersistentRepairMemory
+from leadfinder.healing.planner import HealingPlanner
+from leadfinder.healing.schemas import RepairConfidenceLevel, RepairType
+from leadfinder.healing.semantic_memory import SemanticRepairMemory
+from leadfinder.llm.ollama_client import OllamaClient
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("STRESS_TEST")
 

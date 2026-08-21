@@ -1,8 +1,8 @@
 import json
 import pytest
-from app.extraction.llm import LLMExtractor
-from app.models.schemas import ScrapingTask
-from app.tests.conftest import MockLLMClient
+from leadfinder.extraction.llm import LLMExtractor
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.tests.conftest import MockLLMClient
 
 
 @pytest.mark.asyncio

@@ -8,10 +8,10 @@ from typing import Any, Optional, Union
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 from uuid import uuid4
 
-from app.brightdata.schemas import CollectorRecord, CollectorStatus, FieldDefinition
-from app.config.logging import get_logger
-from app.config.settings import get_settings
-from app.crawler.db import get_sqlite_connection, safe_sqlite_transaction
+from leadfinder.brightdata.schemas import CollectorRecord, CollectorStatus, FieldDefinition
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
+from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
 
 logger = get_logger("BRIGHTDATA_REGISTRY")
 

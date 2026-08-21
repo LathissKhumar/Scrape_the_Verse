@@ -1,5 +1,5 @@
-from app.graph.state import ScrapingGraphState
-from app.models.schemas import ScrapingTask
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.models.schemas import ScrapingTask
 
 
 def test_scraping_task_navigation_fields():

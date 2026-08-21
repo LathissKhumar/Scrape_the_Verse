@@ -6,11 +6,11 @@ import time
 from typing import Any, Callable, Coroutine, Optional
 from uuid import uuid4
 
-from app.brightdata.registry import ScraperRegistry, default_scraper_registry
-from app.brightdata.schemas import CollectorJobRecord, CollectorStatus
-from app.config.logging import get_logger
-from app.config.settings import get_settings
-from app.crawler.db import get_sqlite_connection, safe_sqlite_transaction
+from leadfinder.brightdata.registry import ScraperRegistry, default_scraper_registry
+from leadfinder.brightdata.schemas import CollectorJobRecord, CollectorStatus
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
+from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
 
 logger = get_logger("BRIGHTDATA_JOBS")
 

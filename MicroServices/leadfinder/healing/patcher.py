@@ -1,8 +1,8 @@
 """Applies minimal, non-destructive patches to ExtractionSchema configurations."""
 
-from app.config.logging import get_logger
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
-from app.healing.schemas import RepairPlan, RepairType
+from leadfinder.config.logging import get_logger
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.healing.schemas import RepairPlan, RepairType
 
 logger = get_logger("HEALING_PATCHER")
 

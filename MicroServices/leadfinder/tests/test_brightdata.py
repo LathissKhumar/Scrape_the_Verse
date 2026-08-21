@@ -2,15 +2,15 @@ import pytest
 import httpx
 from unittest.mock import AsyncMock, patch
 
-from app.brightdata.client import BrightDataClient
-from app.brightdata.exceptions import (
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.exceptions import (
     BrightDataAuthError,
     BrightDataConfigError,
     BrightDataError,
     BrightDataJobError,
     BrightDataTimeoutError,
 )
-from app.config.settings import Settings
+from leadfinder.config.settings import Settings
 
 
 def test_brightdata_is_configured_flag():

@@ -1,7 +1,7 @@
 import re
 from typing import Any, Optional
 from urllib.parse import urlparse
-from app.validation.schemas import UrlMetric
+from leadfinder.validation.schemas import UrlMetric
 
 URL_SCHEMES = {"http", "https"}
 

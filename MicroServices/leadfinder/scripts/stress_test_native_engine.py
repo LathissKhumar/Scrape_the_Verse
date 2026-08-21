@@ -20,16 +20,16 @@ def _silence_unraisablehook(unraisable):
 
 sys.unraisablehook = _silence_unraisablehook
 
-from app.agents.diagnosis import DiagnosisAgent
-from app.agents.extraction import ExtractionAgent
-from app.agents.healing import HealingAgent
-from app.agents.planner import ScrapingPlannerAgent
-from app.agents.scraper import ScraperAgent
-from app.agents.validation import ValidationAgent
-from app.config.settings import get_settings
-from app.graph.workflow import create_scraping_workflow
-from app.graph.state import ScrapingGraphState
-from app.llm.ollama_client import OllamaClient
+from leadfinder.agents.diagnosis import DiagnosisAgent
+from leadfinder.agents.extraction import ExtractionAgent
+from leadfinder.agents.healing import HealingAgent
+from leadfinder.agents.planner import ScrapingPlannerAgent
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.agents.validation import ValidationAgent
+from leadfinder.config.settings import get_settings
+from leadfinder.graph.workflow import create_scraping_workflow
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.llm.ollama_client import OllamaClient
 
 
 async def run_stress_query(

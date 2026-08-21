@@ -1,5 +1,5 @@
 from typing import Any
-from app.validation.schemas import FieldMetric
+from leadfinder.validation.schemas import FieldMetric
 
 SUSPICIOUS_PLACEHOLDERS = {
     "n/a", "na", "n.a.", "unknown", "-", "--", "---",

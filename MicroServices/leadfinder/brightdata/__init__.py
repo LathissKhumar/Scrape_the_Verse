@@ -1,8 +1,8 @@
 """Bright Data Scraper Studio integration package."""
 
-from app.brightdata.adapter import build_collector_inputs
-from app.brightdata.client import BrightDataClient
-from app.brightdata.exceptions import (
+from leadfinder.brightdata.adapter import build_collector_inputs
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.exceptions import (
     BrightDataAuthError,
     BrightDataConfigError,
     BrightDataEmptyResultError,
@@ -10,15 +10,15 @@ from app.brightdata.exceptions import (
     BrightDataJobError,
     BrightDataTimeoutError,
 )
-from app.brightdata.jobs import ScraperJobManager, default_job_manager
-from app.brightdata.pipeline import BrightDataLeadPipeline
-from app.brightdata.registry import (
+from leadfinder.brightdata.jobs import ScraperJobManager, default_job_manager
+from leadfinder.brightdata.pipeline import BrightDataLeadPipeline
+from leadfinder.brightdata.registry import (
     ScraperRegistry,
     compute_schema_hash,
     default_scraper_registry,
     normalize_url,
 )
-from app.brightdata.schemas import (
+from leadfinder.brightdata.schemas import (
     CollectorJobRecord,
     CollectorRecord,
     CollectorStatus,
@@ -31,7 +31,7 @@ from app.brightdata.schemas import (
     ScraperRunRequest,
     ScraperRunResponse,
 )
-from app.brightdata.service import BrightDataService
+from leadfinder.brightdata.service import BrightDataService
 
 __all__ = [
     "BrightDataClient",

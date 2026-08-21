@@ -1,5 +1,5 @@
 from typing import Any, Optional
-from app.validation.schemas import (
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FailureItem,
     FailureTaxonomy,

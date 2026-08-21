@@ -1,6 +1,6 @@
 import pytest
-from app.agents.validation import ValidationAgent
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.validation import ValidationAgent
+from leadfinder.models.schemas import ScrapingTask
 
 
 @pytest.mark.asyncio

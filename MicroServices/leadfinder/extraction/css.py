@@ -2,7 +2,7 @@
 
 from typing import Any
 from bs4 import BeautifulSoup
-from app.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
 
 class CSSExtractor:

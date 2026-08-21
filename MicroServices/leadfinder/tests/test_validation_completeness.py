@@ -1,4 +1,4 @@
-from app.validation.completeness import CompletenessValidator
+from leadfinder.validation.completeness import CompletenessValidator
 
 
 def test_completeness_perfect_coverage():

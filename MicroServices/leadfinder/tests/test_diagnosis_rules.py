@@ -1,6 +1,6 @@
-from app.diagnosis.classifier import RuleBasedClassifier
-from app.diagnosis.schemas import RepairStrategy, RootCause
-from app.validation.schemas import (
+from leadfinder.diagnosis.classifier import RuleBasedClassifier
+from leadfinder.diagnosis.schemas import RepairStrategy, RootCause
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FailureItem,
     FailureTaxonomy,

@@ -2,11 +2,11 @@ import pytest
 from unittest.mock import AsyncMock, patch, MagicMock
 from fastapi.testclient import TestClient
 
-from app.brightdata.client import BrightDataClient
-from app.brightdata.pipeline import BrightDataLeadPipeline
-from app.brightdata.service import BrightDataService
-from app.config.settings import Settings
-from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.pipeline import BrightDataLeadPipeline
+from leadfinder.brightdata.service import BrightDataService
+from leadfinder.config.settings import Settings
+from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
 
 
 def test_pipeline_url_formatting():
@@ -115,7 +115,7 @@ async def test_brightdata_service_execute_task():
 
 def test_api_brightdata_routing_fast_path():
     """Test FastAPI /scrape endpoint fast-path routing when BRIGHTDATA=True."""
-    from app.main import app, brightdata_service
+    from leadfinder.main import app, brightdata_service
 
     # Mock brightdata_service to return immediate success
     mock_service = MagicMock(spec=BrightDataService)
@@ -129,7 +129,7 @@ def test_api_brightdata_routing_fast_path():
         )
     )
 
-    with patch("app.main.brightdata_service", mock_service):
+    with patch("leadfinder.main.brightdata_service", mock_service):
         client = TestClient(app)
         response = client.post(
             "/scrape",
@@ -146,7 +146,7 @@ def test_api_brightdata_routing_fast_path():
 
 def test_api_brightdata_leads_endpoint():
     """Test dedicated /api/v1/brightdata/leads endpoint."""
-    from app.main import app
+    from leadfinder.main import app
 
     mock_service = MagicMock(spec=BrightDataService)
     mock_service.is_enabled = True
@@ -160,7 +160,7 @@ def test_api_brightdata_leads_endpoint():
         ]
     )
 
-    with patch("app.main.brightdata_service", mock_service):
+    with patch("leadfinder.main.brightdata_service", mock_service):
         client = TestClient(app)
         response = client.post(
             "/api/v1/brightdata/leads",

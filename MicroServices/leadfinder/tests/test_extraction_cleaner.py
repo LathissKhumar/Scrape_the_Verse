@@ -1,11 +1,11 @@
 """Unit tests for HTMLCleaner, RawPage content extraction, and entity consolidation."""
 
 import pytest
-from app.extraction.cleaner import HTMLCleaner, clean_html
-from app.extraction.schema import RawPage
-from app.extraction.llm import LLMExtractor
-from app.tests.conftest import MockLLMClient
-from app.models.schemas import ScrapingTask
+from leadfinder.extraction.cleaner import HTMLCleaner, clean_html
+from leadfinder.extraction.schema import RawPage
+from leadfinder.extraction.llm import LLMExtractor
+from leadfinder.tests.conftest import MockLLMClient
+from leadfinder.models.schemas import ScrapingTask
 
 
 def test_html_cleaner_strips_scripts_styles_and_nav():

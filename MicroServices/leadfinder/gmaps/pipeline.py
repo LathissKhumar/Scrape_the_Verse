@@ -4,9 +4,9 @@ import re
 import urllib.parse
 from typing import Any, Optional
 
-from app.brightdata.client import BrightDataClient
-from app.config.logging import get_logger
-from app.config.settings import Settings, get_settings
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import Settings, get_settings
 
 logger = get_logger("GMAPS_PIPELINE")
 

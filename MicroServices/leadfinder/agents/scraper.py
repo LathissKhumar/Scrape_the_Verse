@@ -2,13 +2,13 @@ import asyncio
 from typing import Any, Optional
 import httpx
 
-from app.agents.base import BaseAgent
-from app.brightdata.adapter import build_collector_inputs
-from app.brightdata.client import BrightDataClient
-from app.config.settings import get_settings
-from app.crawler.browser_executor import BrowserExecutor
-from app.crawler.result_models import BlockType, CrawlResult
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.base import BaseAgent
+from leadfinder.brightdata.adapter import build_collector_inputs
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.config.settings import get_settings
+from leadfinder.crawler.browser_executor import BrowserExecutor
+from leadfinder.crawler.result_models import BlockType, CrawlResult
+from leadfinder.models.schemas import ScrapingTask
 
 
 class ScraperAgent(BaseAgent):

@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.healing.schemas import (
+from leadfinder.healing.schemas import (
     RepairType,
     RepairStatus,
     PerformanceSnapshot,

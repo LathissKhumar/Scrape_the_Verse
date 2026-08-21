@@ -6,9 +6,9 @@ from urllib.parse import urljoin
 
 sys.path.insert(0, os.path.abspath("."))
 
-from app.graph.workflow import create_scraping_workflow
-from app.graph.state import ScrapingGraphState
-from app.config.settings import get_settings
+from leadfinder.graph.workflow import create_scraping_workflow
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.config.settings import get_settings
 
 
 async def run_stress_test():

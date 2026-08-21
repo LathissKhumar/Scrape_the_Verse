@@ -5,13 +5,13 @@ import json
 import re
 from typing import Any, Optional
 
-from app.config.logging import get_logger
-from app.extraction.chunking import ContentChunker
-from app.extraction.schema import ExtractionSchema, RawPage
-from app.extraction.semantic import SemanticFilter
-from app.llm.base import LLMClient
-from app.llm.ollama_client import clean_markdown_fences
-from app.models.schemas import ScrapingTask
+from leadfinder.config.logging import get_logger
+from leadfinder.extraction.chunking import ContentChunker
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.extraction.semantic import SemanticFilter
+from leadfinder.llm.base import LLMClient
+from leadfinder.llm.ollama_client import clean_markdown_fences
+from leadfinder.models.schemas import ScrapingTask
 
 logger = get_logger("LLM_EXTRACTOR")
 
@@ -188,7 +188,7 @@ class LLMExtractor:
         # If text is raw HTML, strip boilerplate and extract clean structured text
         if "<html" in text_str.lower() or "<body" in text_str.lower() or "<div" in text_str.lower() or "<p" in text_str.lower():
             try:
-                from app.extraction.cleaner import clean_html
+                from leadfinder.extraction.cleaner import clean_html
                 cleaned = clean_html(text_str)
                 if cleaned and len(cleaned.strip()) > 20:
                     text_str = cleaned
@@ -246,7 +246,7 @@ class LLMExtractor:
         # If text is raw HTML, strip boilerplate and extract clean structured text
         if "<html" in text_str.lower() or "<body" in text_str.lower() or "<div" in text_str.lower() or "<p" in text_str.lower():
             try:
-                from app.extraction.cleaner import clean_html
+                from leadfinder.extraction.cleaner import clean_html
                 cleaned = clean_html(text_str)
                 if cleaned and len(cleaned.strip()) > 20:
                     text_str = cleaned

@@ -1,6 +1,6 @@
 import re
 from typing import Any, Optional
-from app.validation.schemas import SchemaMetric
+from leadfinder.validation.schemas import SchemaMetric
 
 EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$")
 DATE_REGEX = re.compile(

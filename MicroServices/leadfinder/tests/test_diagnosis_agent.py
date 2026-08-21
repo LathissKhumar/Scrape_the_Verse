@@ -1,10 +1,10 @@
 import json
 import pytest
-from app.agents.diagnosis import DiagnosisAgent
-from app.diagnosis.schemas import RepairStrategy, RootCause
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import FieldMetric, ValidationResult
-from app.tests.conftest import MockLLMClient
+from leadfinder.agents.diagnosis import DiagnosisAgent
+from leadfinder.diagnosis.schemas import RepairStrategy, RootCause
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import FieldMetric, ValidationResult
+from leadfinder.tests.conftest import MockLLMClient
 
 
 @pytest.mark.asyncio

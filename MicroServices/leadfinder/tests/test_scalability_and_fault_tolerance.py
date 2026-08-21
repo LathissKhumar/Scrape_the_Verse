@@ -6,17 +6,17 @@ import time
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.agents.scraper import ScraperAgent
-from app.crawler.browser_manager import BrowserManager
-from app.crawler.config import CrawlerConfig
-from app.crawler.db import get_sqlite_connection, safe_sqlite_transaction
-from app.crawler.job_manager import JobManager
-from app.crawler.rate_limiter import DomainRateLimiter
-from app.crawler.result_models import BlockType, CrawlResult
-from app.export.exporter import DataExporter
-from app.healing.persistent_memory import PersistentRepairMemory
-from app.healing.schemas import RepairConfidenceLevel, RepairFreshnessStatus, RepairMemoryRecord, RepairType
-from app.models.schemas import ScrapingRequest, ScrapingTask
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.crawler.browser_manager import BrowserManager
+from leadfinder.crawler.config import CrawlerConfig
+from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
+from leadfinder.crawler.job_manager import JobManager
+from leadfinder.crawler.rate_limiter import DomainRateLimiter
+from leadfinder.crawler.result_models import BlockType, CrawlResult
+from leadfinder.export.exporter import DataExporter
+from leadfinder.healing.persistent_memory import PersistentRepairMemory
+from leadfinder.healing.schemas import RepairConfidenceLevel, RepairFreshnessStatus, RepairMemoryRecord, RepairType
+from leadfinder.models.schemas import ScrapingRequest, ScrapingTask
 
 
 @pytest.mark.asyncio
@@ -179,7 +179,7 @@ async def test_browser_manager_crash_detection():
     mock_browser.is_connected.return_value = False
     mgr._browser = mock_browser
 
-    with patch("app.crawler.browser_manager.async_playwright") as mock_pw:
+    with patch("leadfinder.crawler.browser_manager.async_playwright") as mock_pw:
         mock_pw_inst = AsyncMock()
         mock_new_browser = MagicMock()
         mock_new_browser.is_connected.return_value = True
@@ -197,7 +197,7 @@ def test_observability_tail_loader():
         tmp_path = tmp.name
 
     try:
-        from app.healing.observability import RepairObservability, RepairSessionTelemetry
+        from leadfinder.healing.observability import RepairObservability, RepairSessionTelemetry
         obs = RepairObservability(log_path=tmp_path)
         for i in range(20):
             obs.record_session(RepairSessionTelemetry(

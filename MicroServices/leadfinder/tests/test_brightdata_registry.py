@@ -4,12 +4,12 @@ import os
 import tempfile
 import pytest
 
-from app.brightdata.registry import (
+from leadfinder.brightdata.registry import (
     ScraperRegistry,
     compute_schema_hash,
     normalize_url,
 )
-from app.brightdata.schemas import CollectorStatus, FieldDefinition
+from leadfinder.brightdata.schemas import CollectorStatus, FieldDefinition
 
 
 @pytest.fixture

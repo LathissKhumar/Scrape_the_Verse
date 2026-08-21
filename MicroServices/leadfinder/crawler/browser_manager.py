@@ -4,8 +4,8 @@ import asyncio
 import logging
 from typing import Any, Optional
 from playwright.async_api import async_playwright, Browser, BrowserContext, Playwright
-from app.crawler.config import CrawlerConfig
-from app.crawler.proxy_provider import ProxyProvider
+from leadfinder.crawler.config import CrawlerConfig
+from leadfinder.crawler.proxy_provider import ProxyProvider
 
 logger = logging.getLogger("CRAWLER_BROWSER_MANAGER")
 

@@ -2,14 +2,14 @@ import pytest
 import httpx
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.config.settings import Settings
-from app.llm.exceptions import (
+from leadfinder.config.settings import Settings
+from leadfinder.llm.exceptions import (
     LLMConnectionError,
     LLMInvocationError,
     LLMModelNotFoundError,
     LLMTimeoutError,
 )
-from app.llm.ollama_client import OllamaClient, clean_markdown_fences
+from leadfinder.llm.ollama_client import OllamaClient, clean_markdown_fences
 
 
 def test_clean_markdown_fences():

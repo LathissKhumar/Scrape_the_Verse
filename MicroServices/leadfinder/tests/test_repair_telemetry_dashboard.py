@@ -1,7 +1,7 @@
 import os
 import tempfile
 import pytest
-from app.healing.observability import RepairObservability, RepairSessionTelemetry
+from leadfinder.healing.observability import RepairObservability, RepairSessionTelemetry
 
 def test_repair_telemetry_load_persisted_sessions():
     with tempfile.NamedTemporaryFile(mode="w+", delete=False, suffix=".jsonl") as tmp:

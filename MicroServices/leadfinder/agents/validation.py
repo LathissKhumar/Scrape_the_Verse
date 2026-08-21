@@ -1,10 +1,10 @@
 from typing import Any, Optional
 
-from app.agents.base import BaseAgent
-from app.models.schemas import ScrapingTask
-from app.validation.baseline import HistoricalBaseline
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import ValidationResult
+from leadfinder.agents.base import BaseAgent
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.baseline import HistoricalBaseline
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import ValidationResult
 
 
 class ValidationAgent(BaseAgent):

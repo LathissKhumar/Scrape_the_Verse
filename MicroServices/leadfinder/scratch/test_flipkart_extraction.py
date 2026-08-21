@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath("."))
 
 from bs4 import BeautifulSoup
-from app.extraction.grid_cards import GridCardExtractor
+from leadfinder.extraction.grid_cards import GridCardExtractor
 
 html = """
 <html>

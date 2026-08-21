@@ -1,5 +1,5 @@
 from abc import ABC
-from app.config.logging import get_logger
+from leadfinder.config.logging import get_logger
 
 
 class BaseAgent(ABC):

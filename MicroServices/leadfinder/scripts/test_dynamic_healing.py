@@ -15,19 +15,19 @@ import sys
 
 sys.path.insert(0, os.path.abspath("."))
 
-from app.config.logging import get_logger
-from app.config.settings import get_settings
-from app.diagnosis.engine import DiagnosisEngine
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
-from app.healing.engine import HealingEngine
-from app.healing.evidence_collector import RepairEvidenceCollector
-from app.healing.memory import RepairMemory
-from app.healing.persistent_memory import PersistentRepairMemory
-from app.healing.planner import HealingPlanner
-from app.llm.ollama_client import OllamaClient
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
+from leadfinder.diagnosis.engine import DiagnosisEngine
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
+from leadfinder.healing.engine import HealingEngine
+from leadfinder.healing.evidence_collector import RepairEvidenceCollector
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.persistent_memory import PersistentRepairMemory
+from leadfinder.healing.planner import HealingPlanner
+from leadfinder.llm.ollama_client import OllamaClient
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
 
 logger = get_logger("DYNAMIC_HEALING_TEST")
 

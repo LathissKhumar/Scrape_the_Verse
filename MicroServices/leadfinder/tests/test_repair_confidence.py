@@ -1,5 +1,5 @@
-from app.healing.confidence import RepairConfidenceScorer
-from app.healing.schemas import RepairConfidenceLevel
+from leadfinder.healing.confidence import RepairConfidenceScorer
+from leadfinder.healing.schemas import RepairConfidenceLevel
 
 
 def test_confidence_scorer_high_confidence():

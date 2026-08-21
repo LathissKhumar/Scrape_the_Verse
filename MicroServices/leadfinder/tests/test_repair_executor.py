@@ -1,7 +1,7 @@
 import pytest
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
-from app.healing.executor import RepairExecutor
-from app.healing.schemas import RepairPlan, RepairType
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.healing.executor import RepairExecutor
+from leadfinder.healing.schemas import RepairPlan, RepairType
 
 
 def test_executor_applies_level1_extraction_patch():

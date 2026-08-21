@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
 
-from app.crawler.link_discovery import LinkDiscoveryEngine
-from app.crawler.result_models import CrawlResult
-from app.extraction.engine import ExtractionEngine
-from app.models.schemas import ScrapingTask
+from leadfinder.crawler.link_discovery import LinkDiscoveryEngine
+from leadfinder.crawler.result_models import CrawlResult
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.models.schemas import ScrapingTask
 
 
 @pytest.mark.asyncio

@@ -1,6 +1,6 @@
 from typing import Any, Optional
 from pydantic import BaseModel, Field
-from app.validation.schemas import FailureItem, FailureTaxonomy, ValidationResult
+from leadfinder.validation.schemas import FailureItem, FailureTaxonomy, ValidationResult
 
 
 class HistoricalBaseline(BaseModel):

@@ -1,4 +1,4 @@
-from app.extraction.dedup import RecordDeduplicator
+from leadfinder.extraction.dedup import RecordDeduplicator
 
 
 def test_deduplication_by_primary_key():

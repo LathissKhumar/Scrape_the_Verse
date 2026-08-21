@@ -1,9 +1,9 @@
 # Scrape the Verse — Multi-Engine Scraping & Intelligence Architecture 🌌
 
 This document provides a comprehensive technical breakdown of the three core scraping engines implemented in the **Scrape the Verse** repository:
-1. **Bright Data Cloud Subsystem (`app/brightdata/`)** — 2-Tier B2B Lead Intelligence & Cloud Fast-Path.
-2. **Google Maps Local Lead Subsystem (`app/gmaps/` & `app/agents/gmaps.py`)** — Localized business discovery, phone harvesting, and rating extraction.
-3. **Native Multi-Agent & Autonomous Self-Healing Engine (`app/crawler/`, `app/extraction/`, `app/validation/`, `app/diagnosis/`, `app/healing/`, `app/graph/`)** — LangGraph state machine, stealth Playwright crawling, cascading multi-strategy extraction, deterministic validation, and 4-tier closed-loop self-healing.
+1. **Bright Data Cloud Subsystem (`MicroServices/leadfinder/brightdata/`)** — 2-Tier B2B Lead Intelligence & Cloud Fast-Path.
+2. **Google Maps Local Lead Subsystem (`MicroServices/leadfinder/gmaps/` & `MicroServices/leadfinder/agents/gmaps.py`)** — Localized business discovery, phone harvesting, and rating extraction.
+3. **Native Multi-Agent & Autonomous Self-Healing Engine (`MicroServices/leadfinder/crawler/`, `MicroServices/leadfinder/extraction/`, `MicroServices/leadfinder/validation/`, `MicroServices/leadfinder/diagnosis/`, `MicroServices/leadfinder/healing/`, `MicroServices/leadfinder/graph/`)** — LangGraph state machine, stealth Playwright crawling, cascading multi-strategy extraction, deterministic validation, and 4-tier closed-loop self-healing.
 
 ---
 
@@ -49,16 +49,16 @@ flowchart TD
 
 ---
 
-## ⚡ 2. Engine 1: Bright Data Cloud Pipeline Subsystem (`app/brightdata/`)
+## ⚡ 2. Engine 1: Bright Data Cloud Pipeline Subsystem (`MicroServices/leadfinder/brightdata/`)
 
 The **Bright Data Subsystem** provides enterprise-grade, high-throughput cloud scraping and chained B2B supplier intelligence without local browser overhead.
 
 ### 2.1 Component Structure
-- [`app/brightdata/client.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/client.py): Async HTTP REST client for Bright Data Scraper Studio. Handles job triggering (`/trigger`), asynchronous status polling (`/progress`), dataset snapshot retrieval, timeout controls, and automated fallback to the Bright Data CLI runner (`scrape_via_cli`).
-- [`app/brightdata/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/pipeline.py): Implements the **2-Tier Chained B2B Lead Generation Pipeline**.
-- [`app/brightdata/service.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/service.py): Service orchestration layer integrating tasks, URL query formatting, error handling, and lead export formatting.
-- [`app/brightdata/adapter.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/adapter.py): Fallback adapter allowing the native Scraper agent to route requests to Bright Data when anti-bot obstacles or CAPTCHAs are encountered.
-- [`app/brightdata/exceptions.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/exceptions.py): Domain-specific exception hierarchy (`BrightDataAuthError`, `BrightDataConfigError`, `BrightDataJobError`, `BrightDataTimeoutError`, `BrightDataEmptyResultError`).
+- [`MicroServices/leadfinder/brightdata/client.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/client.py): Async HTTP REST client for Bright Data Scraper Studio. Handles job triggering (`/trigger`), asynchronous status polling (`/progress`), dataset snapshot retrieval, timeout controls, and automated fallback to the Bright Data CLI runner (`scrape_via_cli`).
+- [`MicroServices/leadfinder/brightdata/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/pipeline.py): Implements the **2-Tier Chained B2B Lead Generation Pipeline**.
+- [`MicroServices/leadfinder/brightdata/service.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/service.py): Service orchestration layer integrating tasks, URL query formatting, error handling, and lead export formatting.
+- [`MicroServices/leadfinder/brightdata/adapter.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/adapter.py): Fallback adapter allowing the native Scraper agent to route requests to Bright Data when anti-bot obstacles or CAPTCHAs are encountered.
+- [`MicroServices/leadfinder/brightdata/exceptions.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/exceptions.py): Domain-specific exception hierarchy (`BrightDataAuthError`, `BrightDataConfigError`, `BrightDataJobError`, `BrightDataTimeoutError`, `BrightDataEmptyResultError`).
 
 ### 2.2 2-Tier Chained Pipeline Flow
 ```mermaid
@@ -103,7 +103,7 @@ sequenceDiagram
 
 ---
 
-## 📍 3. Engine 2: Google Maps Local Lead Subsystem (`app/gmaps/`)
+## 📍 3. Engine 2: Google Maps Local Lead Subsystem (`MicroServices/leadfinder/gmaps/`)
 
 The **Google Maps Subsystem** is a specialized intelligence pipeline **powered directly by Bright Data's Scraper Studio** (`c_mt1qfvqx1051f3m8r9`). It leverages Bright Data's rotating residential proxy network to harvest localized business listings, public contact numbers, star ratings, review counts, websites, and Google Maps place links without getting blocked or rate-limited.
 
@@ -136,9 +136,9 @@ sequenceDiagram
 - **Cloud Infrastructure**: Cloud unblocking, dynamic JS rendering, and residential proxy rotation managed on Bright Data.
 
 ### 3.2 Component Structure
-- [`app/gmaps/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/app/gmaps/pipeline.py): Maps search URL formatter (`format_maps_search_url`), Bright Data collector trigger (`c_mt1qfvqx1051f3m8r9`), and data normalizer (`normalize_lead`).
-- [`app/gmaps/service.py`](file:///c:/Projects/Scrape_the_Verse/app/gmaps/service.py): High-level async interface (`get_local_leads`) managing search execution, result validation, and caching.
-- [`app/agents/gmaps.py`](file:///c:/Projects/Scrape_the_Verse/app/agents/gmaps.py): Intelligent agent wrapper with natural language parsing (`parse_query_and_location`) that decomposes unstructured queries (e.g. `"best dentists near Bangalore East"`) into `category="dentists"` and `location="Bangalore East"`.
+- [`MicroServices/leadfinder/gmaps/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/app/gmaps/pipeline.py): Maps search URL formatter (`format_maps_search_url`), Bright Data collector trigger (`c_mt1qfvqx1051f3m8r9`), and data normalizer (`normalize_lead`).
+- [`MicroServices/leadfinder/gmaps/service.py`](file:///c:/Projects/Scrape_the_Verse/app/gmaps/service.py): High-level async interface (`get_local_leads`) managing search execution, result validation, and caching.
+- [`MicroServices/leadfinder/agents/gmaps.py`](file:///c:/Projects/Scrape_the_Verse/app/agents/gmaps.py): Intelligent agent wrapper with natural language parsing (`parse_query_and_location`) that decomposes unstructured queries (e.g. `"best dentists near Bangalore East"`) into `category="dentists"` and `location="Bangalore East"`.
 
 ### 3.3 Field Normalization Engine
 Google Maps search results vary by business category. The normalizer handles:
@@ -191,7 +191,7 @@ graph LR
 
 ---
 
-### 4.1 LangGraph State Machine Architecture (`app/graph/`)
+### 4.1 LangGraph State Machine Architecture (`MicroServices/leadfinder/graph/`)
 State is strictly isolated per scraping job using [`ScrapingGraphState`](file:///c:/Projects/Scrape_the_Verse/app/graph/state.py):
 - **`task_id`**: UUID4 tracking the job across all agent nodes and threads.
 - **`raw_results`**: Unmodified raw HTML payloads captured by Playwright.
@@ -202,7 +202,7 @@ State is strictly isolated per scraping job using [`ScrapingGraphState`](file://
 
 ---
 
-### 4.2 Cascading Extraction Engine (`app/extraction/`)
+### 4.2 Cascading Extraction Engine (`MicroServices/leadfinder/extraction/`)
 The extraction engine executes a resilient cascade across multiple strategies:
 ```mermaid
 flowchart TD
@@ -224,7 +224,7 @@ flowchart TD
 
 ---
 
-### 4.3 Deterministic Validation Subsystem (`app/validation/`)
+### 4.3 Deterministic Validation Subsystem (`MicroServices/leadfinder/validation/`)
 Validation does **not** use fuzzy LLM guessing. It uses deterministic mathematical formulas:
 
 $$\text{Health Score } H = w_{\text{cov}} \cdot C_{\text{field}} + w_{\text{dup}} \cdot (1 - R_{\text{dup}}) + w_{\text{url}} \cdot U_{\text{valid}} + w_{\text{sch}} \cdot S_{\text{valid}}$$
@@ -236,7 +236,7 @@ $$\text{Health Score } H = w_{\text{cov}} \cdot C_{\text{field}} + w_{\text{dup}
 
 ---
 
-### 4.4 Evidence-Grounded Diagnosis Engine (`app/diagnosis/`)
+### 4.4 Evidence-Grounded Diagnosis Engine (`MicroServices/leadfinder/diagnosis/`)
 When $H < 0.80$, the diagnosis engine inspects validation failure evidence, raw HTML tags, and error metrics to categorize the precise failure:
 - **`SELECTOR_DRIFT`**: Target DOM elements changed classes/IDs while content remains present.
 - **`DOM_STRUCTURE_CHANGE`**: Hierarchy shifted (e.g. `div > div` changed to `section > article`).
@@ -248,7 +248,7 @@ When $H < 0.80$, the diagnosis engine inspects validation failure evidence, raw 
 
 ---
 
-### 4.5 Closed-Loop Self-Healing Subsystem (`app/healing/`)
+### 4.5 Closed-Loop Self-Healing Subsystem (`MicroServices/leadfinder/healing/`)
 The self-healing subsystem automatically repairs broken scraper configurations through a 5-step lifecycle:
 
 ```mermaid

@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.diagnosis.schemas import DiagnosisResult, RootCause
-from app.extraction.schema import ExtractionResult, ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
-from app.healing.engine import HealingEngine
-from app.healing.schemas import RepairCandidate, RepairPlan, RepairType
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import FieldMetric, ValidationResult
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
+from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
+from leadfinder.healing.engine import HealingEngine
+from leadfinder.healing.schemas import RepairCandidate, RepairPlan, RepairType
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import FieldMetric, ValidationResult
 
 
 @pytest.mark.asyncio

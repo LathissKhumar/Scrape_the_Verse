@@ -5,40 +5,40 @@ from urllib.parse import urlparse
 from unittest.mock import AsyncMock, MagicMock
 import pytest
 
-from app.agents.diagnosis import DiagnosisAgent
-from app.agents.healing import HealingAgent
-from app.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
-from app.agents.scraper import ScraperAgent
-from app.agents.validation import ValidationAgent
-from app.brightdata.client import BrightDataClient
-from app.config.settings import get_settings
-from app.diagnosis.schemas import DiagnosisResult, RepairStrategy, RootCause
-from app.extraction.chunking import ContentChunker
-from app.extraction.css import CSSExtractor
-from app.extraction.dedup import RecordDeduplicator
-from app.extraction.engine import ExtractionEngine
-from app.extraction.llm import LLMExtractor
-from app.extraction.regex import RegexExtractor
-from app.extraction.schema import (
+from leadfinder.agents.diagnosis import DiagnosisAgent
+from leadfinder.agents.healing import HealingAgent
+from leadfinder.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.agents.validation import ValidationAgent
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.config.settings import get_settings
+from leadfinder.diagnosis.schemas import DiagnosisResult, RepairStrategy, RootCause
+from leadfinder.extraction.chunking import ContentChunker
+from leadfinder.extraction.css import CSSExtractor
+from leadfinder.extraction.dedup import RecordDeduplicator
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.llm import LLMExtractor
+from leadfinder.extraction.regex import RegexExtractor
+from leadfinder.extraction.schema import (
     ExtractionResult,
     ExtractionSchema,
     ExtractionStrategyEnum,
     FieldRule,
     RawPage,
 )
-from app.extraction.semantic import SemanticFilter
-from app.extraction.tables import TableExtractor
-from app.extraction.xpath import XPathExtractor
-from app.graph.state import ScrapingGraphState
-from app.graph.workflow import create_scraping_workflow
-from app.healing.engine import HealingEngine
-from app.healing.evaluator import RepairEvaluator
-from app.healing.evidence_collector import RepairEvidenceCollector
-from app.healing.executor import RepairExecutor
-from app.healing.memory import RepairMemory
-from app.healing.patcher import RepairPatcher
-from app.healing.planner import HealingPlanner
-from app.healing.schemas import (
+from leadfinder.extraction.semantic import SemanticFilter
+from leadfinder.extraction.tables import TableExtractor
+from leadfinder.extraction.xpath import XPathExtractor
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.graph.workflow import create_scraping_workflow
+from leadfinder.healing.engine import HealingEngine
+from leadfinder.healing.evaluator import RepairEvaluator
+from leadfinder.healing.evidence_collector import RepairEvidenceCollector
+from leadfinder.healing.executor import RepairExecutor
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.patcher import RepairPatcher
+from leadfinder.healing.planner import HealingPlanner
+from leadfinder.healing.schemas import (
     PerformanceSnapshot,
     RepairCandidate,
     RepairEvaluation,
@@ -46,10 +46,10 @@ from app.healing.schemas import (
     RepairPlan,
     RepairType,
 )
-from app.llm.ollama_client import OllamaClient
-from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import (
+from leadfinder.llm.ollama_client import OllamaClient
+from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FailureItem,
     FailureTaxonomy,

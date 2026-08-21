@@ -1,10 +1,10 @@
 """Safely executes and applies structured candidate repair plans without arbitrary code injection."""
 
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.extraction.schema import ExtractionSchema
-from app.healing.patcher import RepairPatcher
-from app.healing.schemas import RepairPlan
+from leadfinder.config.logging import get_logger
+from leadfinder.extraction.schema import ExtractionSchema
+from leadfinder.healing.patcher import RepairPatcher
+from leadfinder.healing.schemas import RepairPlan
 
 logger = get_logger("REPAIR_EXECUTOR")
 

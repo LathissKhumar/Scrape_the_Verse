@@ -1,6 +1,6 @@
 import pytest
-from app.healing.memory import RepairMemory
-from app.healing.schemas import RepairMemoryRecord, RepairType
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.schemas import RepairMemoryRecord, RepairType
 
 
 def test_signature_generation_deterministic():

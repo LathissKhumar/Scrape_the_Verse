@@ -4,22 +4,22 @@ import json
 import time
 from typing import Any, Optional
 from urllib.parse import urlparse
-from app.config.logging import get_logger
-from app.diagnosis.schemas import DiagnosisResult
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionSchema, RawPage
-from app.healing.actions.executor import ActionRepairExecutor
-from app.healing.evaluator import RepairEvaluator
-from app.healing.evidence_collector import RepairEvidenceCollector
-from app.healing.executor import RepairExecutor
-from app.healing.failed_memory import FailedRepairMemory
-from app.healing.fingerprint import DOMFingerprinter
-from app.healing.freshness import RepairFreshnessLifecycle
-from app.healing.memory import RepairMemory
-from app.healing.multi_page import MultiPageRepairValidator
-from app.healing.observability import RepairObservability, RepairSessionTelemetry
-from app.healing.planner import HealingPlanner
-from app.healing.schemas import (
+from leadfinder.config.logging import get_logger
+from leadfinder.diagnosis.schemas import DiagnosisResult
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.healing.actions.executor import ActionRepairExecutor
+from leadfinder.healing.evaluator import RepairEvaluator
+from leadfinder.healing.evidence_collector import RepairEvidenceCollector
+from leadfinder.healing.executor import RepairExecutor
+from leadfinder.healing.failed_memory import FailedRepairMemory
+from leadfinder.healing.fingerprint import DOMFingerprinter
+from leadfinder.healing.freshness import RepairFreshnessLifecycle
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.multi_page import MultiPageRepairValidator
+from leadfinder.healing.observability import RepairObservability, RepairSessionTelemetry
+from leadfinder.healing.planner import HealingPlanner
+from leadfinder.healing.schemas import (
     RepairConfidenceLevel,
     RepairEvaluation,
     RepairFreshnessStatus,
@@ -27,10 +27,10 @@ from app.healing.schemas import (
     RepairPlan,
     RepairType,
 )
-from app.healing.semantic_memory import SemanticRepairMemory
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import ValidationResult
+from leadfinder.healing.semantic_memory import SemanticRepairMemory
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("HEALING_ENGINE")
 

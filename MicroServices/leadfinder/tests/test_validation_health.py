@@ -1,5 +1,5 @@
-from app.validation.health import HealthScorer
-from app.validation.schemas import (
+from leadfinder.validation.health import HealthScorer
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FieldMetric,
     SchemaMetric,

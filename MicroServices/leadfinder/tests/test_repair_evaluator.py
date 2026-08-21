@@ -1,8 +1,8 @@
 import pytest
-from app.diagnosis.schemas import DiagnosisResult, RootCause
-from app.healing.evaluator import RepairEvaluator
-from app.healing.schemas import RepairPlan, RepairType
-from app.validation.schemas import (
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
+from leadfinder.healing.evaluator import RepairEvaluator
+from leadfinder.healing.schemas import RepairPlan, RepairType
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FailureItem,
     FailureTaxonomy,

@@ -1,10 +1,10 @@
 from typing import Any, Optional
-from app.agents.base import BaseAgent
-from app.crawler.browser_executor import BrowserExecutor
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionResult, ExtractionSchema, RawPage
-from app.llm.base import LLMClient
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.base import BaseAgent
+from leadfinder.crawler.browser_executor import BrowserExecutor
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema, RawPage
+from leadfinder.llm.base import LLMClient
+from leadfinder.models.schemas import ScrapingTask
 
 
 class ExtractionAgent(BaseAgent):

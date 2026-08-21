@@ -1,4 +1,4 @@
-from app.validation.type_validator import TypeValidator
+from leadfinder.validation.type_validator import TypeValidator
 
 
 def test_type_validator_primitive_types():

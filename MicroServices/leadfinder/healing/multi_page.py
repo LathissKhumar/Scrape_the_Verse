@@ -1,13 +1,13 @@
 """Multi-page canary validation engine for verifying repair candidates across multiple representative pages."""
 
 from typing import Any, Optional
-from app.config.logging import get_logger
-from app.config.settings import get_settings
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionSchema, RawPage
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import ValidationResult
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("MULTI_PAGE_VALIDATOR")
 

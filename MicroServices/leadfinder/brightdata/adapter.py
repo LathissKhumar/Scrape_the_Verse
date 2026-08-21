@@ -1,7 +1,7 @@
 """Adapter converting internal ScrapingTask schemas to Bright Data input payloads."""
 
 from typing import Any
-from app.models.schemas import ScrapingTask
+from leadfinder.models.schemas import ScrapingTask
 
 
 def build_collector_inputs(task: ScrapingTask) -> list[dict[str, Any]]:

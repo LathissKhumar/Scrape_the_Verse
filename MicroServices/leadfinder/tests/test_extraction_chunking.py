@@ -1,4 +1,4 @@
-from app.extraction.chunking import ContentChunker
+from leadfinder.extraction.chunking import ContentChunker
 
 
 def test_chunker_small_text_single_chunk():

@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.models.schemas import ScrapingRequest, ScrapingTask, ScrapingResult, validate_http_url
+from leadfinder.models.schemas import ScrapingRequest, ScrapingTask, ScrapingResult, validate_http_url
 
 
 def test_validate_http_url_valid():

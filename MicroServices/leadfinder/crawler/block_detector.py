@@ -2,7 +2,7 @@
 
 import logging
 from typing import Any, Dict, Tuple
-from app.crawler.result_models import BlockType
+from leadfinder.crawler.result_models import BlockType
 
 logger = logging.getLogger("CRAWLER_BLOCK_DETECTOR")
 

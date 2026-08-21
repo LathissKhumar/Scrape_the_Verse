@@ -1,7 +1,7 @@
 from unittest.mock import AsyncMock, MagicMock
 import pytest
-from app.agents.navigation import NavigationAgent
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.navigation import NavigationAgent
+from leadfinder.models.schemas import ScrapingTask
 
 
 @pytest.mark.asyncio

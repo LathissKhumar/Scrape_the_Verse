@@ -1,5 +1,5 @@
-from app.validation.anomalies import AnomalyDetector
-from app.validation.schemas import (
+from leadfinder.validation.anomalies import AnomalyDetector
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FailureTaxonomy,
     FieldMetric,

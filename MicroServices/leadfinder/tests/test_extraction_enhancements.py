@@ -1,8 +1,8 @@
 import pytest
-from app.extraction.grid_cards import GridCardExtractor
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import RawPage
-from app.models.schemas import ScrapingTask
+from leadfinder.extraction.grid_cards import GridCardExtractor
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import RawPage
+from leadfinder.models.schemas import ScrapingTask
 
 @pytest.mark.asyncio
 async def test_lazy_loading_placeholder_precedence():

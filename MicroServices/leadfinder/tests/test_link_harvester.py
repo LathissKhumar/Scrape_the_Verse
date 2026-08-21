@@ -1,4 +1,4 @@
-from app.crawler.link_harvester import LinkHarvesterEngine
+from leadfinder.crawler.link_harvester import LinkHarvesterEngine
 
 
 def test_link_harvester_extracts_product_detail_links():

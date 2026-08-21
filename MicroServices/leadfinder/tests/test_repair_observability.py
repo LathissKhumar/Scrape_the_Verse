@@ -1,4 +1,4 @@
-from app.healing.observability import RepairObservability, RepairSessionTelemetry
+from leadfinder.healing.observability import RepairObservability, RepairSessionTelemetry
 
 
 def test_repair_observability_recording_and_summary(tmp_path):

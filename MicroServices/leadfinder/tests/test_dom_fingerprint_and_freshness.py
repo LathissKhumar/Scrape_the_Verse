@@ -1,7 +1,7 @@
 import json
-from app.healing.fingerprint import DOMFingerprinter
-from app.healing.freshness import RepairFreshnessLifecycle
-from app.healing.schemas import (
+from leadfinder.healing.fingerprint import DOMFingerprinter
+from leadfinder.healing.freshness import RepairFreshnessLifecycle
+from leadfinder.healing.schemas import (
     RepairConfidenceLevel,
     RepairFreshnessStatus,
     RepairMemoryRecord,

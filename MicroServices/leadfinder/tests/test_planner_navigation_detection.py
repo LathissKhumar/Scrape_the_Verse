@@ -1,6 +1,6 @@
 from unittest.mock import AsyncMock, MagicMock
 import pytest
-from app.agents.planner import ScrapingPlannerAgent
+from leadfinder.agents.planner import ScrapingPlannerAgent
 
 
 @pytest.mark.asyncio

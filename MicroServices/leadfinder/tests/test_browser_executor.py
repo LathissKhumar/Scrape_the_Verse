@@ -1,9 +1,9 @@
 import pytest
-from app.crawler.browser_manager import BrowserManager
-from app.crawler.browser_executor import BrowserExecutor
-from app.crawler.config import CrawlerConfig
-from app.crawler.action_models import ActionPlan, WaitForAction, ScrollAction, ExtractAction
-from app.crawler.result_models import BlockType
+from leadfinder.crawler.browser_manager import BrowserManager
+from leadfinder.crawler.browser_executor import BrowserExecutor
+from leadfinder.crawler.config import CrawlerConfig
+from leadfinder.crawler.action_models import ActionPlan, WaitForAction, ScrollAction, ExtractAction
+from leadfinder.crawler.result_models import BlockType
 
 
 @pytest.mark.asyncio

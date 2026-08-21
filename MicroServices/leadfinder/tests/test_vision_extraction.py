@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.extraction.vision import VisionTextExtractor
+from leadfinder.extraction.vision import VisionTextExtractor
 
 
 @pytest.mark.asyncio

@@ -1,3 +1,3 @@
-from app.export.exporter import DataExporter
+from leadfinder.export.exporter import DataExporter
 
 __all__ = ["DataExporter"]

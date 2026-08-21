@@ -1,8 +1,8 @@
 import pytest
-from app.agents.scraper import ScraperAgent
-from app.crawler.browser_executor import BrowserExecutor
-from app.crawler.config import CrawlerConfig
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.crawler.browser_executor import BrowserExecutor
+from leadfinder.crawler.config import CrawlerConfig
+from leadfinder.models.schemas import ScrapingTask
 
 
 @pytest.mark.asyncio

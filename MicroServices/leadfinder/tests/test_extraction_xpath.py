@@ -1,5 +1,5 @@
-from app.extraction.xpath import XPathExtractor
-from app.extraction.schema import ExtractionSchema, FieldRule
+from leadfinder.extraction.xpath import XPathExtractor
+from leadfinder.extraction.schema import ExtractionSchema, FieldRule
 
 
 def test_xpath_extraction_with_base_xpath():

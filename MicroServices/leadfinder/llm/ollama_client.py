@@ -2,10 +2,10 @@ import re
 from typing import Any, Optional
 import httpx
 
-from app.config.logging import get_logger
-from app.config.settings import Settings, get_settings
-from app.llm.base import LLMClient
-from app.llm.exceptions import (
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import Settings, get_settings
+from leadfinder.llm.base import LLMClient
+from leadfinder.llm.exceptions import (
     LLMConnectionError,
     LLMInvocationError,
     LLMModelNotFoundError,

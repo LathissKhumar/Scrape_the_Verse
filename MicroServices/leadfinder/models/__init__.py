@@ -1,4 +1,4 @@
-from app.models.schemas import (
+from leadfinder.models.schemas import (
     ScrapingRequest,
     ScrapingTask,
     ScrapingResult,

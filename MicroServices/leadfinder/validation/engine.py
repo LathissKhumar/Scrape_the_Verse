@@ -1,21 +1,21 @@
 from typing import Any, Optional
 
-from app.config.logging import get_logger
-from app.models.schemas import ScrapingTask
-from app.validation.anomalies import AnomalyDetector
-from app.validation.baseline import HistoricalBaseline, compare_with_baseline
-from app.validation.completeness import CompletenessValidator
-from app.validation.duplicates import DuplicateValidator
-from app.validation.health import HealthScorer
-from app.validation.schemas import (
+from leadfinder.config.logging import get_logger
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.anomalies import AnomalyDetector
+from leadfinder.validation.baseline import HistoricalBaseline, compare_with_baseline
+from leadfinder.validation.completeness import CompletenessValidator
+from leadfinder.validation.duplicates import DuplicateValidator
+from leadfinder.validation.health import HealthScorer
+from leadfinder.validation.schemas import (
     DuplicateMetric,
     FieldMetric,
     SchemaMetric,
     UrlMetric,
     ValidationResult,
 )
-from app.validation.type_validator import TypeValidator
-from app.validation.urls import URLValidator
+from leadfinder.validation.type_validator import TypeValidator
+from leadfinder.validation.urls import URLValidator
 
 logger = get_logger("VALIDATION_ENGINE")
 

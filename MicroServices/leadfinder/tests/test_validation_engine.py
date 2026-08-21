@@ -1,6 +1,6 @@
-from app.models.schemas import ScrapingTask
-from app.validation.baseline import HistoricalBaseline
-from app.validation.engine import ValidationEngine
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.baseline import HistoricalBaseline
+from leadfinder.validation.engine import ValidationEngine
 
 
 def test_validation_engine_healthy_evaluation():

@@ -7,21 +7,21 @@ import time
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from app.brightdata.client import BrightDataClient
-from app.brightdata.registry import (
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.registry import (
     ScraperRegistry,
     compute_schema_hash,
     default_scraper_registry,
 )
-from app.brightdata.schemas import (
+from leadfinder.brightdata.schemas import (
     CollectorStatus,
     FieldDefinition,
     ScrapeTargetRequest,
 )
-from app.brightdata.service import BrightDataService
-from app.config.logging import get_logger, setup_logging
-from app.config.settings import get_settings
-from app.gmaps.service import GoogleMapsService
+from leadfinder.brightdata.service import BrightDataService
+from leadfinder.config.logging import get_logger, setup_logging
+from leadfinder.config.settings import get_settings
+from leadfinder.gmaps.service import GoogleMapsService
 
 setup_logging()
 logger = get_logger("TEST_LIVE_COLLECTORS")

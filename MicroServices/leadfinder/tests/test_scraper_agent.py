@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import AsyncMock
 
-from app.agents.scraper import ScraperAgent
-from app.brightdata.client import BrightDataClient
-from app.brightdata.exceptions import BrightDataJobError
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.exceptions import BrightDataJobError
+from leadfinder.models.schemas import ScrapingTask
 
 
 @pytest.mark.asyncio

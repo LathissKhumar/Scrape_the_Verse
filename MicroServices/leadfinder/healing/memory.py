@@ -4,9 +4,9 @@ import hashlib
 from typing import Optional
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
-from app.config.logging import get_logger
-from app.healing.persistent_memory import PersistentRepairMemory
-from app.healing.schemas import RepairMemoryRecord
+from leadfinder.config.logging import get_logger
+from leadfinder.healing.persistent_memory import PersistentRepairMemory
+from leadfinder.healing.schemas import RepairMemoryRecord
 
 logger = get_logger("REPAIR_MEMORY")
 

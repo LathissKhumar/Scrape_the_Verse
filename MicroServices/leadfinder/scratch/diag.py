@@ -3,13 +3,13 @@ import os
 sys.path.insert(0, os.path.abspath("."))
 import asyncio
 from bs4 import BeautifulSoup
-from app.extraction.cleaner import clean_html, HTMLCleaner
-from app.extraction.grid_cards import GridCardExtractor
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import RawPage
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.extraction.dedup import RecordDeduplicator
+from leadfinder.extraction.cleaner import clean_html, HTMLCleaner
+from leadfinder.extraction.grid_cards import GridCardExtractor
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import RawPage
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.extraction.dedup import RecordDeduplicator
 
 async def diagnose():
     engine = ExtractionEngine()

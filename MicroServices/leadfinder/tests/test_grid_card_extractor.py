@@ -1,5 +1,5 @@
 import pytest
-from app.extraction.grid_cards import GridCardExtractor
+from leadfinder.extraction.grid_cards import GridCardExtractor
 
 
 def test_grid_card_extractor_extracts_product_cards():

@@ -3,13 +3,13 @@
 import asyncio
 import logging
 from typing import List, Optional
-from app.agents.base import BaseAgent
-from app.crawler.browser_manager import BrowserManager
-from app.crawler.link_harvester import LinkHarvesterEngine
-from app.crawler.navigation_planner import NavigationPlanner
-from app.crawler.navigator import InteractiveNavigatorEngine
-from app.crawler.pagination_walker import PaginationWalkerEngine
-from app.models.schemas import ScrapingTask
+from leadfinder.agents.base import BaseAgent
+from leadfinder.crawler.browser_manager import BrowserManager
+from leadfinder.crawler.link_harvester import LinkHarvesterEngine
+from leadfinder.crawler.navigation_planner import NavigationPlanner
+from leadfinder.crawler.navigator import InteractiveNavigatorEngine
+from leadfinder.crawler.pagination_walker import PaginationWalkerEngine
+from leadfinder.models.schemas import ScrapingTask
 
 logger = logging.getLogger("NAVIGATION_AGENT")
 

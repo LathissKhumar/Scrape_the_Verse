@@ -6,16 +6,16 @@ import tempfile
 import pytest
 from unittest.mock import AsyncMock, patch
 
-from app.brightdata.client import BrightDataClient
-from app.brightdata.jobs import ScraperJobManager
-from app.brightdata.registry import ScraperRegistry
-from app.brightdata.schemas import (
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.jobs import ScraperJobManager
+from leadfinder.brightdata.registry import ScraperRegistry
+from leadfinder.brightdata.schemas import (
     CollectorStatus,
     FieldDefinition,
     ScrapeTargetRequest,
 )
-from app.brightdata.service import BrightDataService
-from app.config.settings import Settings
+from leadfinder.brightdata.service import BrightDataService
+from leadfinder.config.settings import Settings
 
 
 @pytest.fixture

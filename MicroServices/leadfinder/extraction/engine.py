@@ -5,25 +5,25 @@ import html
 from typing import Any, Optional
 from urllib.parse import urljoin
 
-from app.config.logging import get_logger
-from app.crawler.link_discovery import LinkDiscoveryEngine
-from app.extraction.css import CSSExtractor
-from app.extraction.dedup import RecordDeduplicator
-from app.extraction.grid_cards import GridCardExtractor
-from app.extraction.llm import LLMExtractor
-from app.extraction.regex import RegexExtractor
-from app.extraction.schema import (
+from leadfinder.config.logging import get_logger
+from leadfinder.crawler.link_discovery import LinkDiscoveryEngine
+from leadfinder.extraction.css import CSSExtractor
+from leadfinder.extraction.dedup import RecordDeduplicator
+from leadfinder.extraction.grid_cards import GridCardExtractor
+from leadfinder.extraction.llm import LLMExtractor
+from leadfinder.extraction.regex import RegexExtractor
+from leadfinder.extraction.schema import (
     ExtractionResult,
     ExtractionSchema,
     ExtractionStrategyEnum,
     FieldRule,
     RawPage,
 )
-from app.extraction.tables import TableExtractor
-from app.extraction.vision import VisionTextExtractor
-from app.extraction.xpath import XPathExtractor
-from app.llm.base import LLMClient
-from app.models.schemas import ScrapingTask
+from leadfinder.extraction.tables import TableExtractor
+from leadfinder.extraction.vision import VisionTextExtractor
+from leadfinder.extraction.xpath import XPathExtractor
+from leadfinder.llm.base import LLMClient
+from leadfinder.models.schemas import ScrapingTask
 
 logger = get_logger("EXTRACTION_ENGINE")
 

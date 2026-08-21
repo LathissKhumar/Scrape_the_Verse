@@ -1,8 +1,8 @@
 """Scorer for computing quantitative repair confidence scores and assigning confidence tiers."""
 
-from app.config.logging import get_logger
-from app.config.settings import get_settings
-from app.healing.schemas import RepairConfidenceLevel
+from leadfinder.config.logging import get_logger
+from leadfinder.config.settings import get_settings
+from leadfinder.healing.schemas import RepairConfidenceLevel
 
 logger = get_logger("REPAIR_CONFIDENCE_SCORER")
 

@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.extraction.schema import ExtractionResult, ExtractionSchema, RawPage
-from app.healing.multi_page import MultiPageRepairValidator
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import ValidationResult
+from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema, RawPage
+from leadfinder.healing.multi_page import MultiPageRepairValidator
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import ValidationResult
 
 
 @pytest.mark.asyncio

@@ -1,5 +1,5 @@
 import pytest
-from app.crawler.link_discovery import LinkDiscoveryEngine
+from leadfinder.crawler.link_discovery import LinkDiscoveryEngine
 
 
 def test_link_discovery_basic_resolution():

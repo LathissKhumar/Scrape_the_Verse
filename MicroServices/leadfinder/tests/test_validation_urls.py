@@ -1,4 +1,4 @@
-from app.validation.urls import URLValidator
+from leadfinder.validation.urls import URLValidator
 
 
 def test_url_validator_all_valid():

@@ -3,8 +3,8 @@
 import re
 from typing import Any
 from bs4 import BeautifulSoup
-from app.config.logging import get_logger
-from app.healing.actions.models import ActionType
+from leadfinder.config.logging import get_logger
+from leadfinder.healing.actions.models import ActionType
 
 logger = get_logger("ACTION_ISSUE_DETECTOR")
 

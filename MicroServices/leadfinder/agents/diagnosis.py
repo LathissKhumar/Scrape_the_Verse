@@ -1,11 +1,11 @@
 from typing import Any, Optional
 
-from app.agents.base import BaseAgent
-from app.diagnosis.engine import DiagnosisEngine
-from app.diagnosis.schemas import DiagnosisResult
-from app.llm.base import LLMClient
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import ValidationResult
+from leadfinder.agents.base import BaseAgent
+from leadfinder.diagnosis.engine import DiagnosisEngine
+from leadfinder.diagnosis.schemas import DiagnosisResult
+from leadfinder.llm.base import LLMClient
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import ValidationResult
 
 
 class DiagnosisAgent(BaseAgent):

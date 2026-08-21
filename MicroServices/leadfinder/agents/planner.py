@@ -3,10 +3,10 @@ import re
 from typing import Any, Optional
 from uuid import uuid4
 
-from app.agents.base import BaseAgent
-from app.llm.base import LLMClient
-from app.llm.exceptions import LLMInvocationError
-from app.models.schemas import ScrapingRequest, ScrapingTask, validate_http_url
+from leadfinder.agents.base import BaseAgent
+from leadfinder.llm.base import LLMClient
+from leadfinder.llm.exceptions import LLMInvocationError
+from leadfinder.models.schemas import ScrapingRequest, ScrapingTask, validate_http_url
 
 PLANNER_SYSTEM_PROMPT = """You are a scraping task planner.
 Convert the user's plain-language scraping request into a structured scraping task.

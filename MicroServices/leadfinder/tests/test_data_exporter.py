@@ -1,6 +1,6 @@
 import json
 import pytest
-from app.export.exporter import DataExporter
+from leadfinder.export.exporter import DataExporter
 
 
 def test_data_exporter_to_csv():

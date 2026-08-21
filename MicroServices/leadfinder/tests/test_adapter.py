@@ -1,6 +1,6 @@
 import pytest
-from app.brightdata.adapter import build_collector_inputs
-from app.models.schemas import ScrapingTask
+from leadfinder.brightdata.adapter import build_collector_inputs
+from leadfinder.models.schemas import ScrapingTask
 
 
 def test_build_collector_inputs_success():

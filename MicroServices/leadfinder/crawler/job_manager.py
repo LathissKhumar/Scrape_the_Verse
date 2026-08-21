@@ -8,9 +8,9 @@ from typing import Any, Dict, List, Optional, Set
 from uuid import uuid4
 from pydantic import BaseModel, Field
 
-from app.config.logging import get_logger
-from app.crawler.db import get_sqlite_connection, safe_sqlite_transaction
-from app.export.exporter import DataExporter
+from leadfinder.config.logging import get_logger
+from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
+from leadfinder.export.exporter import DataExporter
 
 logger = get_logger("JOB_MANAGER")
 

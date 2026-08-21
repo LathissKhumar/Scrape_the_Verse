@@ -1,10 +1,10 @@
 from typing import Any, Optional
 from bs4 import BeautifulSoup
 
-from app.extraction.chunking import ContentChunker
-from app.extraction.semantic import SemanticFilter
-from app.models.schemas import ScrapingTask
-from app.validation.schemas import ValidationResult
+from leadfinder.extraction.chunking import ContentChunker
+from leadfinder.extraction.semantic import SemanticFilter
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import ValidationResult
 
 
 class DiagnosisEvidenceBuilder:

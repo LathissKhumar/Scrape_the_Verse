@@ -1,17 +1,17 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from app.agents.diagnosis import DiagnosisAgent
-from app.agents.healing import HealingAgent
-from app.agents.planner import ScrapingPlannerAgent
-from app.agents.scraper import ScraperAgent
-from app.agents.validation import ValidationAgent
-from app.diagnosis.schemas import DiagnosisResult, RootCause
-from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
-from app.graph.state import ScrapingGraphState
-from app.graph.workflow import create_scraping_workflow
-from app.healing.schemas import PerformanceSnapshot, RepairEvaluation, RepairPlan, RepairType
-from app.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
-from app.validation.schemas import FieldMetric, ValidationResult
+from leadfinder.agents.diagnosis import DiagnosisAgent
+from leadfinder.agents.healing import HealingAgent
+from leadfinder.agents.planner import ScrapingPlannerAgent
+from leadfinder.agents.scraper import ScraperAgent
+from leadfinder.agents.validation import ValidationAgent
+from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
+from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.graph.workflow import create_scraping_workflow
+from leadfinder.healing.schemas import PerformanceSnapshot, RepairEvaluation, RepairPlan, RepairType
+from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.validation.schemas import FieldMetric, ValidationResult
 
 
 @pytest.mark.asyncio

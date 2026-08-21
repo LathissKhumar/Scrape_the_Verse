@@ -1,21 +1,21 @@
 from typing import Any, Optional
-from app.agents.base import BaseAgent
-from app.config.logging import get_logger
-from app.diagnosis.schemas import DiagnosisResult
-from app.extraction.engine import ExtractionEngine
-from app.extraction.schema import ExtractionSchema, RawPage
-from app.healing.engine import HealingEngine
-from app.healing.evaluator import RepairEvaluator
-from app.healing.evidence_collector import RepairEvidenceCollector
-from app.healing.executor import RepairExecutor
-from app.healing.memory import RepairMemory
-from app.healing.patcher import RepairPatcher
-from app.healing.planner import HealingPlanner
-from app.healing.schemas import RepairEvaluation
-from app.llm.base import LLMClient
-from app.models.schemas import ScrapingTask
-from app.validation.engine import ValidationEngine
-from app.validation.schemas import ValidationResult
+from leadfinder.agents.base import BaseAgent
+from leadfinder.config.logging import get_logger
+from leadfinder.diagnosis.schemas import DiagnosisResult
+from leadfinder.extraction.engine import ExtractionEngine
+from leadfinder.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.healing.engine import HealingEngine
+from leadfinder.healing.evaluator import RepairEvaluator
+from leadfinder.healing.evidence_collector import RepairEvidenceCollector
+from leadfinder.healing.executor import RepairExecutor
+from leadfinder.healing.memory import RepairMemory
+from leadfinder.healing.patcher import RepairPatcher
+from leadfinder.healing.planner import HealingPlanner
+from leadfinder.healing.schemas import RepairEvaluation
+from leadfinder.llm.base import LLMClient
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.engine import ValidationEngine
+from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("HEALING_AGENT")
 
