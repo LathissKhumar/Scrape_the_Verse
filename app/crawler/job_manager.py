@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+import os
 import time
 from typing import Any, Dict, List, Optional, Set
 from uuid import uuid4
@@ -31,6 +32,8 @@ class JobManager:
     """Manages asynchronous scraping jobs, progress tracking, atomic checkpoints, and output export."""
 
     def __init__(self, db_path: str = ".job_progress.sqlite"):
+        if not os.path.exists(db_path) and os.path.exists(os.path.join("app", db_path)):
+            db_path = os.path.join("app", db_path)
         self.db_path = db_path
         self._init_db()
 

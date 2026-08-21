@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os
 import sqlite3
 import time
 from typing import Any, Optional
@@ -16,7 +17,9 @@ _DEFAULT_FAILED_REPAIR_TTL_SECONDS = 3600
 class FailedRepairMemory:
     """Tracks failed repair candidates per domain/signature to prevent wasteful retries."""
 
-    def __init__(self, db_path: str = ".repair_memory.sqlite") -> None:
+    def __init__(self, db_path: str = "app/.repair_memory.sqlite") -> None:
+        if not os.path.exists(db_path) and os.path.exists(os.path.join("app", db_path)):
+            db_path = os.path.join("app", db_path)
         self.db_path = db_path
         self.settings = get_settings()
         self._memory_cache: dict[str, dict[str, Any]] = {}

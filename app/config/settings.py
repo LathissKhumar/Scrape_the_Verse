@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     """Application configuration settings loaded from environment or .env."""
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=("app/.env", ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     BRIGHTDATA_DISCOVERY_COLLECTOR_ID: Optional[str] = None
     BRIGHTDATA_COMPANY_COLLECTOR_ID: Optional[str] = None
     BRIGHTDATA_GMAPS_COLLECTOR_ID: Optional[str] = None
+    BRIGHTDATA_CLI_COMMAND: str = "bdata"
+    BRIGHTDATA_COMMAND_TIMEOUT: float = 300.0
+    BRIGHTDATA_REGISTRY_DB_PATH: str = ".brightdata_registry.sqlite"
 
     # Crawler & Browser Automation Settings
     SCRAPER_PROVIDER: str = "auto"  # "auto", "browser", "local", "brightdata"

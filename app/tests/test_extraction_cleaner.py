@@ -4,7 +4,7 @@ import pytest
 from app.extraction.cleaner import HTMLCleaner, clean_html
 from app.extraction.schema import RawPage
 from app.extraction.llm import LLMExtractor
-from tests.conftest import MockLLMClient
+from app.tests.conftest import MockLLMClient
 from app.models.schemas import ScrapingTask
 
 

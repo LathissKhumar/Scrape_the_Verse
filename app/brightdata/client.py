@@ -3,6 +3,8 @@
 import asyncio
 import json
 import os
+import re
+import shlex
 import shutil
 import sys
 import time
@@ -29,8 +31,14 @@ _IN_PROGRESS_STATUSES = {"building", "running", "collecting", "pending"}
 _FAILURE_STATUSES = {"failed", "error"}
 
 
+import re
+
+_COLLECTOR_ID_PATTERN = re.compile(r"\b(c_[a-zA-Z0-9]+)\b")
+DEFAULT_CLI_TIMEOUT = 300.0
+
+
 class BrightDataClient:
-    """Production client for Bright Data Scraper Studio (Data Collector) API."""
+    """Production client for Bright Data Scraper Studio (Data Collector) API and CLI adapter."""
 
     def __init__(
         self,
@@ -85,6 +93,130 @@ class BrightDataClient:
         return {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
+        }
+
+    def _get_cli_base_command(self) -> list[str]:
+        """Resolve CLI command prefix using configured binary or npx fallback."""
+        raw_cmd = getattr(self._settings, "BRIGHTDATA_CLI_COMMAND", "bdata") or "bdata"
+        tokens = shlex.split(raw_cmd) if raw_cmd else ["bdata"]
+
+        first_bin = tokens[0]
+        # 1. If explicit npx invocation specified (e.g. "npx -p @brightdata/cli bdata")
+        if first_bin in ("npx", "npx.cmd", "npx.exe"):
+            resolved_npx = shutil.which("npx") or (shutil.which("npx.cmd") if sys.platform == "win32" else None) or first_bin
+            return [resolved_npx] + tokens[1:]
+
+        # 2. If direct binary is found in system PATH (e.g. bdata or brightdata)
+        bin_path = shutil.which(first_bin) or (shutil.which(f"{first_bin}.cmd") if sys.platform == "win32" else None)
+        if bin_path:
+            return [bin_path] + tokens[1:]
+
+        # 3. Fallback: check if 'bdata' or 'brightdata' binary exists in PATH
+        for alias in ("bdata", "brightdata"):
+            found = shutil.which(alias) or (shutil.which(f"{alias}.cmd") if sys.platform == "win32" else None)
+            if found:
+                return [found]
+
+        # 4. Standard Hackathon npx runner fallback
+        npx_bin = shutil.which("npx") or (shutil.which("npx.cmd") if sys.platform == "win32" else None) or "npx"
+        return [npx_bin, "-p", "@brightdata/cli", "bdata"]
+
+    async def _execute_cli_subprocess(
+        self,
+        sub_args: list[str],
+        timeout_seconds: float = DEFAULT_CLI_TIMEOUT,
+    ) -> tuple[int, str, str]:
+        """Execute Bright Data CLI command securely via asyncio subprocess."""
+        cmd = self._get_cli_base_command() + sub_args
+        env = os.environ.copy()
+        if self.api_key:
+            env["BRIGHTDATA_API_KEY"] = self.api_key
+
+        safe_cmd_preview = " ".join(cmd[:5])
+        logger.info(f"Executing Bright Data CLI command: {safe_cmd_preview} (args={len(sub_args)})")
+
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                env=env,
+            )
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout_seconds)
+        except asyncio.TimeoutError as error:
+            logger.error(f"Bright Data CLI command timed out after {timeout_seconds}s")
+            raise BrightDataTimeoutError(f"Bright Data CLI command timed out after {timeout_seconds}s") from error
+        except Exception as error:
+            logger.error(f"Failed to spawn Bright Data CLI subprocess: {error}")
+            raise BrightDataError(f"Failed to execute Bright Data CLI: {error}") from error
+
+        out_text = stdout.decode("utf-8", errors="replace").strip()
+        err_text = stderr.decode("utf-8", errors="replace").strip()
+        return proc.returncode, out_text, err_text
+
+    async def create_scraper(
+        self,
+        url: str,
+        extraction_description: str,
+        timeout_seconds: float = DEFAULT_CLI_TIMEOUT,
+    ) -> str:
+        """Create a new Bright Data Collector using Scraper Studio CLI.
+
+        Returns:
+            The newly created Collector ID (c_xxxxxx).
+        """
+        args = ["scraper", "create", url, extraction_description, "--json"]
+        code, out_text, err_text = await self._execute_cli_subprocess(args, timeout_seconds=timeout_seconds)
+
+        combined_output = f"{out_text}\n{err_text}"
+        if code != 0:
+            logger.error(f"Bright Data scraper creation failed with code {code}: {err_text or out_text}")
+            raise BrightDataJobError(f"Failed to create Bright Data scraper ({code}): {err_text or out_text}")
+
+        match = _COLLECTOR_ID_PATTERN.search(combined_output)
+        if not match:
+            logger.error(f"No valid collector ID found in CLI output: {out_text[:300]}")
+            raise BrightDataJobError(f"Scraper creation succeeded but collector ID was not parsed: {out_text[:300]}")
+
+        collector_id = match.group(1)
+        logger.info(f"Successfully created Bright Data Collector: {collector_id}")
+        return collector_id
+
+    async def run_scraper(
+        self,
+        collector_id: str,
+        url: str,
+        timeout_seconds: float = 120.0,
+    ) -> list[dict[str, Any]]:
+        """Run a ready Bright Data Collector against a target URL."""
+        if not collector_id or not collector_id.startswith("c_"):
+            raise BrightDataConfigError(f"Invalid Bright Data collector ID: '{collector_id}'")
+
+        return await self.scrape_via_cli(collector_id=collector_id, url=url, timeout_seconds=timeout_seconds)
+
+    async def heal_scraper(
+        self,
+        collector_id: str,
+        failure_description: str,
+        timeout_seconds: float = DEFAULT_CLI_TIMEOUT,
+    ) -> dict[str, Any]:
+        """Trigger self-healing on an existing Bright Data Collector."""
+        if not collector_id or not collector_id.startswith("c_"):
+            raise BrightDataConfigError(f"Invalid Bright Data collector ID: '{collector_id}'")
+
+        args = ["scraper", "heal", collector_id, failure_description, "--json"]
+        code, out_text, err_text = await self._execute_cli_subprocess(args, timeout_seconds=timeout_seconds)
+
+        if code != 0:
+            logger.error(f"Bright Data scraper healing failed ({code}): {err_text or out_text}")
+            raise BrightDataJobError(f"Healing failed for collector {collector_id} ({code}): {err_text or out_text}")
+
+        logger.info(f"Collector {collector_id} healing completed successfully.")
+        return {
+            "collector_id": collector_id,
+            "status": "ready",
+            "message": f"Collector {collector_id} successfully healed.",
+            "output": out_text[:500],
         }
 
     async def trigger_scraper(
@@ -295,46 +427,12 @@ class BrightDataClient:
         timeout_seconds: float = 120.0,
     ) -> list[dict[str, Any]]:
         """Execute scraper collector using Bright Data CLI as a reliable direct runner."""
-        api_key = self.api_key or ""
-        env = os.environ.copy()
-        if api_key:
-            env["BRIGHTDATA_API_KEY"] = api_key
+        args = ["scraper", "run", collector_id, url, "--json"]
+        code, out_text, err_text = await self._execute_cli_subprocess(args, timeout_seconds=timeout_seconds)
 
-        npx_bin = shutil.which("npx") or shutil.which("npx.cmd") or "npx"
-        cmd = [npx_bin, "-p", "@brightdata/cli", "brightdata", "scraper", "run", collector_id, url, "--json"]
-
-        logger.info(f"Executing CLI scraper run: collector={collector_id} url={url}")
-
-        try:
-            if sys.platform == "win32":
-                cmd_str = f'npx -p @brightdata/cli brightdata scraper run {collector_id} "{url}" --json'
-                proc = await asyncio.create_subprocess_shell(
-                    cmd_str,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE,
-                    env=env,
-                )
-            else:
-                proc = await asyncio.create_subprocess_exec(
-                    *cmd,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE,
-                    env=env,
-                )
-            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout_seconds)
-        except asyncio.TimeoutError as error:
-            logger.error(f"CLI scrape timed out after {timeout_seconds}s for {url}")
-            raise BrightDataTimeoutError(f"CLI scrape timed out after {timeout_seconds}s: {url}") from error
-        except Exception as error:
-            logger.error(f"Failed to execute CLI scraper: {error}")
-            raise BrightDataError(f"Failed to execute CLI scraper: {error}") from error
-
-        out_text = stdout.decode("utf-8", errors="replace").strip()
-        err_text = stderr.decode("utf-8", errors="replace").strip()
-
-        if proc.returncode != 0:
-            logger.error(f"CLI scraper failed with returncode {proc.returncode}: {err_text}")
-            raise BrightDataJobError(f"CLI scraper failed ({proc.returncode}): {err_text or out_text}")
+        if code != 0:
+            logger.error(f"CLI scraper run failed ({code}): {err_text or out_text}")
+            raise BrightDataJobError(f"CLI scraper failed ({code}): {err_text or out_text}")
 
         # Parse JSON from stdout (may have status/polling logs preceding the json payload)
         return self._extract_json_from_text(out_text)

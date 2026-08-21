@@ -4,7 +4,7 @@ from app.agents.diagnosis import DiagnosisAgent
 from app.diagnosis.schemas import RepairStrategy, RootCause
 from app.models.schemas import ScrapingTask
 from app.validation.schemas import FieldMetric, ValidationResult
-from tests.conftest import MockLLMClient
+from app.tests.conftest import MockLLMClient
 
 
 @pytest.mark.asyncio

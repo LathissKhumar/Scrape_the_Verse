@@ -2,7 +2,7 @@ import json
 import pytest
 from app.extraction.llm import LLMExtractor
 from app.models.schemas import ScrapingTask
-from tests.conftest import MockLLMClient
+from app.tests.conftest import MockLLMClient
 
 
 @pytest.mark.asyncio

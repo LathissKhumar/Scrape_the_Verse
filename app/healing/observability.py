@@ -39,7 +39,9 @@ class RepairSessionTelemetry(BaseModel):
 class RepairObservability:
     """Singleton-like telemetry buffer and JSONL log persistence for self-healing operations."""
 
-    def __init__(self, log_path: str = ".repair_sessions.jsonl") -> None:
+    def __init__(self, log_path: str = "app/.repair_sessions.jsonl") -> None:
+        if not os.path.exists(log_path) and os.path.exists(os.path.join("app", log_path)):
+            log_path = os.path.join("app", log_path)
         self.log_path = log_path
         self._sessions: list[RepairSessionTelemetry] = []
         self._lock = threading.Lock()

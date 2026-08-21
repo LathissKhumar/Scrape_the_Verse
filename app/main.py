@@ -16,6 +16,15 @@ from app.brightdata.exceptions import (
     BrightDataJobError,
     BrightDataTimeoutError,
 )
+from app.brightdata.schemas import (
+    CollectorStatus,
+    ScrapeTargetRequest,
+    ScraperHealRequest,
+    ScraperHealResponse,
+    ScraperResolveResponse,
+    ScraperRunRequest,
+    ScraperRunResponse,
+)
 from app.brightdata.service import BrightDataService
 from app.config.logging import get_logger, setup_logging
 from app.config.settings import get_settings
@@ -476,3 +485,83 @@ async def get_job_results(job_id: str, format: str = "json") -> Any:
             "total_records": len(records),
             "records": records,
         }
+
+
+# =====================================================================
+# DYNAMIC BRIGHT DATA COLLECTOR MANAGEMENT ENDPOINTS
+# =====================================================================
+
+
+@app.post("/scrapers/resolve", response_model=ScraperResolveResponse, dependencies=[Depends(verify_api_key)])
+@app.post("/api/v1/brightdata/resolve", response_model=ScraperResolveResponse, dependencies=[Depends(verify_api_key)])
+async def resolve_scraper(request: ScrapeTargetRequest) -> ScraperResolveResponse:
+    """Resolve target URL + schema against Scraper Registry to reuse or trigger async creation."""
+    return await brightdata_service.resolve_scraper(request)
+
+
+@app.get("/scrapers/jobs/{job_id}", dependencies=[Depends(verify_api_key)])
+@app.get("/api/v1/brightdata/jobs/{job_id}", dependencies=[Depends(verify_api_key)])
+async def get_scraper_job(job_id: str) -> dict[str, Any]:
+    """Inspect status of an asynchronous Bright Data scraper creation job."""
+    job = brightdata_service.jobs.get_job(job_id)
+    if not job:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Scraper creation job '{job_id}' not found.",
+        )
+    return {
+        "job_id": job.job_id,
+        "scraper_id": job.scraper_id,
+        "status": job.status.value.lower(),
+        "collector_id": job.collector_id,
+        "error": job.error,
+        "created_at": job.created_at,
+        "updated_at": job.updated_at,
+    }
+
+
+@app.post("/scrapers/run", response_model=ScraperRunResponse, dependencies=[Depends(verify_api_key)])
+@app.post("/api/v1/brightdata/run", response_model=ScraperRunResponse, dependencies=[Depends(verify_api_key)])
+async def run_scraper(request: ScraperRunRequest) -> ScraperRunResponse:
+    """Run a ready Bright Data Collector against a target URL."""
+    return await brightdata_service.run_collector(
+        collector_id=request.collector_id,
+        url=request.url,
+        timeout_seconds=request.timeout_seconds or 120.0,
+    )
+
+
+@app.post("/scrapers/heal", response_model=ScraperHealResponse, dependencies=[Depends(verify_api_key)])
+@app.post("/api/v1/brightdata/heal", response_model=ScraperHealResponse, dependencies=[Depends(verify_api_key)])
+async def heal_scraper(request: ScraperHealRequest) -> ScraperHealResponse:
+    """Self-heal a broken Bright Data collector using failure description."""
+    return await brightdata_service.heal_collector(
+        collector_id=request.collector_id,
+        failure_description=request.failure_description,
+    )
+
+
+@app.get("/scrapers", dependencies=[Depends(verify_api_key)])
+@app.get("/api/v1/brightdata/scrapers", dependencies=[Depends(verify_api_key)])
+async def list_scrapers(limit: int = 50, status_filter: Optional[str] = None) -> dict[str, Any]:
+    """List tracked Bright Data collectors in the registry."""
+    status_enum = CollectorStatus(status_filter.upper()) if status_filter else None
+    records = brightdata_service.registry.list_records(limit=limit, status=status_enum)
+    return {
+        "total": len(records),
+        "scrapers": [r.model_dump() for r in records],
+    }
+
+
+@app.get("/scrapers/{scraper_id_or_collector_id}", dependencies=[Depends(verify_api_key)])
+async def get_scraper(scraper_id_or_collector_id: str) -> dict[str, Any]:
+    """Retrieve details of a specific scraper by internal ID or collector ID."""
+    rec = brightdata_service.registry.get_record_by_id(scraper_id_or_collector_id)
+    if not rec:
+        rec = brightdata_service.registry.get_record_by_collector_id(scraper_id_or_collector_id)
+    if not rec:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Scraper '{scraper_id_or_collector_id}' not found in registry.",
+        )
+    return rec.model_dump()

@@ -3,7 +3,7 @@ import pytest
 from app.extraction.engine import ExtractionEngine
 from app.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
 from app.models.schemas import ScrapingTask
-from tests.conftest import MockLLMClient
+from app.tests.conftest import MockLLMClient
 
 
 @pytest.mark.asyncio

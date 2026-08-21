@@ -14,7 +14,7 @@ logger = get_logger("REPAIR_MEMORY")
 class RepairMemory:
     """Stores and retrieves proven successful repair patterns indexed by domain and DOM signatures."""
 
-    def __init__(self, persistent_db_path: str = ".repair_memory.sqlite") -> None:
+    def __init__(self, persistent_db_path: str = "app/.repair_memory.sqlite") -> None:
         self._records: list[RepairMemoryRecord] = []
         self.persistent_storage = PersistentRepairMemory(db_path=persistent_db_path)
 

@@ -1,6 +1,7 @@
 """SQLite-backed persistent repair memory for instant repeat self-healing with freshness lifecycle."""
 
 import json
+import os
 import time
 from typing import Optional
 
@@ -19,7 +20,9 @@ logger = get_logger("PERSISTENT_REPAIR_MEMORY")
 class PersistentRepairMemory:
     """SQLite-backed persistent repair memory for instant repeat self-healing with freshness lifecycle."""
 
-    def __init__(self, db_path: str = ".repair_memory.sqlite") -> None:
+    def __init__(self, db_path: str = "app/.repair_memory.sqlite") -> None:
+        if not os.path.exists(db_path) and os.path.exists(os.path.join("app", db_path)):
+            db_path = os.path.join("app", db_path)
         self.db_path = db_path
         self._init_db()
 
