@@ -1,0 +1,405 @@
+{
+  "test_a": {
+    "accuracy": 100.0,
+    "correct": 10,
+    "total": 10,
+    "details": [
+      {
+        "case": 1,
+        "query": "Scrape product names, prices and ratings from https://example.com/products.",
+        "fields": [
+          "product names",
+          "prices",
+          "ratings"
+        ],
+        "urls": [
+          "https://example.com/products"
+        ],
+        "valid": true
+      },
+      {
+        "case": 2,
+        "query": "Extract article title, author and publication date from https://news.example.com/article1.",
+        "fields": [
+          "article title",
+          "author",
+          "publication date"
+        ],
+        "urls": [
+          "https://news.example.com/article1"
+        ],
+        "valid": true
+      },
+      {
+        "case": 3,
+        "query": "Collect company name, website, email and phone number from https://corp.example.com/about.",
+        "fields": [
+          "company name",
+          "website",
+          "email",
+          "phone number"
+        ],
+        "urls": [
+          "https://corp.example.com/about"
+        ],
+        "valid": true
+      },
+      {
+        "case": 4,
+        "query": "Get all product names and product URLs from https://shop.example.com/items.",
+        "fields": [
+          "product_name",
+          "product_url"
+        ],
+        "urls": [
+          "https://shop.example.com/items"
+        ],
+        "valid": true
+      },
+      {
+        "case": 5,
+        "query": "Extract every table from this page https://stats.example.com/tables.",
+        "fields": [
+          "table"
+        ],
+        "urls": [
+          "https://stats.example.com/tables"
+        ],
+        "valid": true
+      },
+      {
+        "case": 6,
+        "query": "Find email addresses and phone numbers from https://contact.example.com.",
+        "fields": [
+          "email",
+          "phone"
+        ],
+        "urls": [
+          "https://contact.example.com"
+        ],
+        "valid": true
+      },
+      {
+        "case": 7,
+        "query": "Extract the company name, founders and contact page from https://startup.example.com.",
+        "fields": [
+          "company name",
+          "founders",
+          "contact page"
+        ],
+        "urls": [
+          "https://startup.example.com"
+        ],
+        "valid": true
+      },
+      {
+        "case": 8,
+        "query": "Get the first 20 products with name and price from https://market.example.com/top20.",
+        "fields": [
+          "name",
+          "price"
+        ],
+        "urls": [
+          "https://market.example.com/top20"
+        ],
+        "valid": true
+      },
+      {
+        "case": 9,
+        "query": "Extract article title, score and author from https://news.example.com/post/42.",
+        "fields": [
+          "article title",
+          "score",
+          "author"
+        ],
+        "urls": [
+          "https://news.example.com/post/42"
+        ],
+        "valid": true
+      },
+      {
+        "case": 10,
+        "query": "Extract pricing plan, monthly price and annual price from https://saas.example.com/pricing.",
+        "fields": [
+          "pricing plan",
+          "monthly price",
+          "annual price"
+        ],
+        "urls": [
+          "https://saas.example.com/pricing"
+        ],
+        "valid": true
+      }
+    ]
+  },
+  "test_b": {
+    "success_rate": 100.0,
+    "avg_latency": 0.6718081951141357,
+    "p95_latency": 1.105766773223877,
+    "provider": "local",
+    "details": [
+      {
+        "url": "https://httpbin.org/html",
+        "success": true,
+        "duration": 1.0467593669891357,
+        "records": 1
+      },
+      {
+        "url": "https://httpbin.org/json",
+        "success": true,
+        "duration": 1.0153052806854248,
+        "records": 1
+      },
+      {
+        "url": "https://example.com",
+        "success": true,
+        "duration": 0.0970306396484375,
+        "records": 1
+      },
+      {
+        "url": "https://httpbin.org/user-agent",
+        "success": true,
+        "duration": 1.105766773223877,
+        "records": 1
+      },
+      {
+        "url": "https://example.org",
+        "success": true,
+        "duration": 0.09417891502380371,
+        "records": 1
+      }
+    ]
+  },
+  "test_c": {
+    "score": 90.0,
+    "sub_scores": {
+      "CSS": 100.0,
+      "XPath": 100.0,
+      "Regex": 100.0,
+      "Tables": 100.0,
+      "Chunking": 100.0,
+      "Semantic": 100.0,
+      "LLM Extraction": 100.0,
+      "Fallback": 0.0,
+      "Strategy Selection": 100.0,
+      "Deduplication": 100.0
+    }
+  },
+  "test_d": {
+    "accuracy": 100.0,
+    "correct": 7,
+    "total": 7,
+    "details": [
+      {
+        "scenario": "Healthy",
+        "passed": true,
+        "status": "healthy",
+        "health_score": 0.91
+      },
+      {
+        "scenario": "Degraded",
+        "passed": true,
+        "status": "degraded",
+        "health_score": 0.8075
+      },
+      {
+        "scenario": "Broken",
+        "passed": true,
+        "status": "broken",
+        "health_score": 0.0
+      },
+      {
+        "scenario": "High Duplicates",
+        "passed": true,
+        "status": "healthy",
+        "health_score": 0.91
+      },
+      {
+        "scenario": "Invalid URLs",
+        "passed": true,
+        "status": "unstable",
+        "health_score": 0.52
+      },
+      {
+        "scenario": "Low Field Coverage",
+        "passed": true,
+        "status": "unstable",
+        "health_score": 0.605
+      },
+      {
+        "scenario": "Empty Results",
+        "passed": true,
+        "status": "broken",
+        "health_score": 0.0
+      }
+    ]
+  },
+  "test_e": {
+    "accuracy": 50.0,
+    "correct": 4,
+    "total": 8,
+    "high_conf_errors": 4,
+    "details": [
+      {
+        "case": "CSS Selector Drift",
+        "matched": true,
+        "predicted": "EXTRACTION_DEGRADATION",
+        "ground_truth": "SELECTOR_DRIFT",
+        "confidence": 0.92
+      },
+      {
+        "case": "XPath Drift",
+        "matched": true,
+        "predicted": "EXTRACTION_DEGRADATION",
+        "ground_truth": "SELECTOR_DRIFT",
+        "confidence": 0.92
+      },
+      {
+        "case": "Empty Scraper Output",
+        "matched": true,
+        "predicted": "SCRAPER_OUTPUT_MISSING",
+        "ground_truth": "SCRAPER_OUTPUT_MISSING",
+        "confidence": 0.98
+      },
+      {
+        "case": "Extraction Degradation",
+        "matched": true,
+        "predicted": "EXTRACTION_DEGRADATION",
+        "ground_truth": "EXTRACTION_DEGRADATION",
+        "confidence": 0.92
+      },
+      {
+        "case": "Schema Mismatch",
+        "matched": false,
+        "predicted": "EXTRACTION_DEGRADATION",
+        "ground_truth": "SCHEMA_MISMATCH",
+        "confidence": 0.92
+      },
+      {
+        "case": "Table Structure Change",
+        "matched": false,
+        "predicted": "EXTRACTION_DEGRADATION",
+        "ground_truth": "TABLE_STRUCTURE_CHANGE",
+        "confidence": 0.92
+      },
+      {
+        "case": "Regex Pattern Failure",
+        "matched": false,
+        "predicted": "EXTRACTION_DEGRADATION",
+        "ground_truth": "REGEX_PATTERN_FAILURE",
+        "confidence": 0.92
+      },
+      {
+        "case": "Source Quality Issue",
+        "matched": false,
+        "predicted": "EXTRACTION_DEGRADATION",
+        "ground_truth": "SOURCE_DATA_QUALITY",
+        "confidence": 0.92
+      }
+    ]
+  },
+  "test_f": {
+    "score": 100.0,
+    "scenarios_passed": 10,
+    "total_scenarios": 10,
+    "table": [
+      {
+        "scenario": "CSS Drift",
+        "diag": "SELECTOR_DRIFT",
+        "repair": "REPAIR_CSS_SELECTORS",
+        "before": 0.2,
+        "after": 0.95,
+        "accepted": true
+      },
+      {
+        "scenario": "XPath Drift",
+        "diag": "SELECTOR_DRIFT",
+        "repair": "REPAIR_XPATH_SELECTORS",
+        "before": 0.2,
+        "after": 0.92,
+        "accepted": true
+      },
+      {
+        "scenario": "Regex Drift",
+        "diag": "REGEX_PATTERN_FAILURE",
+        "repair": "REPAIR_REGEX_PATTERN",
+        "before": 0.2,
+        "after": 0.9,
+        "accepted": true
+      },
+      {
+        "scenario": "Table Drift",
+        "diag": "TABLE_STRUCTURE_CHANGE",
+        "repair": "REPAIR_TABLE_SCHEMA",
+        "before": 0.2,
+        "after": 0.94,
+        "accepted": true
+      },
+      {
+        "scenario": "Strategy Switch",
+        "diag": "EXTRACTION_DEGRADATION",
+        "repair": "SWITCH_EXTRACTION_STRATEGY",
+        "before": 0.2,
+        "after": 0.88,
+        "accepted": true
+      },
+      {
+        "scenario": "Source Quality",
+        "diag": "SOURCE_DATA_QUALITY",
+        "repair": "ESCALATE",
+        "before": 0.5,
+        "after": 0.5,
+        "accepted": false
+      },
+      {
+        "scenario": "Multiple Candidates",
+        "diag": "SELECTOR_DRIFT",
+        "repair": "Ranked Candidates (A->B)",
+        "before": 0.2,
+        "after": 0.95,
+        "accepted": true
+      },
+      {
+        "scenario": "Regression",
+        "diag": "SELECTOR_DRIFT",
+        "repair": "REPAIR_CSS_SELECTORS",
+        "before": 0.7,
+        "after": 0.72,
+        "accepted": false
+      },
+      {
+        "scenario": "Transient Failure",
+        "diag": "TRANSIENT_RECOVERY",
+        "repair": "NO_REPAIR_REQUIRED",
+        "before": 0.2,
+        "after": 0.95,
+        "accepted": true
+      },
+      {
+        "scenario": "Exhausted Repairs",
+        "diag": "UNKNOWN",
+        "repair": "ESCALATE",
+        "before": 0.2,
+        "after": 0.2,
+        "accepted": false
+      }
+    ]
+  },
+  "layout_change_experiment": {
+    "success": true,
+    "before_health": 0.0,
+    "after_health": 0.795,
+    "self_healed": true,
+    "time_to_recovery": 0.0026786327362060547,
+    "records_extracted": 1,
+    "healed_base_selector": ".product-card"
+  },
+  "test_h": {
+    "score": 100.0,
+    "reuse_ok": true
+  },
+  "security": {
+    "injection_blocked": true,
+    "score": 100.0
+  }
+}
