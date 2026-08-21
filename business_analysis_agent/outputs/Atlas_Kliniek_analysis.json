@@ -1,0 +1,829 @@
+{
+  "company_name": "Atlas Kliniek",
+  "website": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+  "industry": "Dental Services Industry",
+  "location": "Herengracht 318, Amsterdam",
+  "business_profile": {
+    "business_name": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "official_name": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "business_type": {
+      "value": "other",
+      "status": "KNOWN",
+      "confidence": 0.8,
+      "evidence_ids": []
+    },
+    "business_model": {
+      "value": "b2c",
+      "status": "KNOWN",
+      "confidence": 0.8,
+      "evidence_ids": []
+    },
+    "industry": {
+      "value": "Dental Services Industry",
+      "status": "KNOWN",
+      "confidence": 1.0,
+      "evidence_ids": [
+        "3c8165d0"
+      ]
+    },
+    "sub_industry": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "geographic_market": {
+      "value": "Herengracht 318, Amsterdam",
+      "status": "KNOWN",
+      "confidence": 1.0,
+      "evidence_ids": [
+        "3c8165d0"
+      ]
+    },
+    "primary_location": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "service_area": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "primary_offerings": {
+      "value": [],
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "secondary_offerings": {
+      "value": [],
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "positioning": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "value_proposition": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "target_market": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "company_scale": {
+      "value": "unknown",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "business_age": {
+      "value": "Not specified",
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "specializations": {
+      "value": [],
+      "status": "UNKNOWN",
+      "confidence": 0.0,
+      "evidence_ids": []
+    },
+    "evidence_ids": [
+      "3c8165d0",
+      "a68c1aa9",
+      "216bb860",
+      "a9a4584c",
+      "9b563c35",
+      "e689b5c2",
+      "b92c6cea",
+      "33aa1eeb"
+    ]
+  },
+  "market_analysis": {
+    "industry": "Dental Services Industry",
+    "sub_industry": null,
+    "local_market": "Herengracht 318, Amsterdam",
+    "industry_overview": null,
+    "local_market_conditions": null,
+    "market_condition": "unknown",
+    "customer_acquisition_environment": null,
+    "digital_adoption": "unknown",
+    "search_discovery_behavior": null,
+    "market_demand_signals": [],
+    "competitive_intensity": null,
+    "digital_trends": [],
+    "local_opportunity": null,
+    "content_opportunities": [],
+    "SEO_opportunities": [],
+    "search_intent_opportunities": [
+      {
+        "search_intent": "BRANDED",
+        "query_theme": "Atlas Kliniek",
+        "business_service": "Brand discovery",
+        "customer_need": "Existing patient lookup or brand verification",
+        "priority": 8,
+        "confidence": 0.8,
+        "evidence_ids": []
+      },
+      {
+        "search_intent": "LOCAL",
+        "query_theme": "dentist Herengracht 318, Amsterdam",
+        "business_service": "General dentistry",
+        "customer_need": "Local dental care provider search",
+        "priority": 7,
+        "confidence": 0.8,
+        "evidence_ids": []
+      },
+      {
+        "search_intent": "PROBLEM",
+        "query_theme": "dental anxiety dentist Herengracht 318, Amsterdam",
+        "business_service": "Dental Anxiety Treatment",
+        "customer_need": "Specialized gentle dental care for phobia",
+        "priority": 9,
+        "confidence": 0.8,
+        "evidence_ids": []
+      }
+    ],
+    "digital_opportunities": [],
+    "evidence_ids": [
+      "a68c1aa9",
+      "216bb860",
+      "9b563c35"
+    ]
+  },
+  "customer_analysis": {
+    "segments": [
+      {
+        "segment_name": "Dental Anxiety Patients",
+        "description": "Patients seeking compassionate care for dental phobia or high anxiety",
+        "is_primary": true,
+        "why_it_matters": "High-value specialist service segment requiring gentle care and sedation options",
+        "needs": [
+          "Gentle techniques",
+          "Extended consultation time",
+          "Sedation options"
+        ],
+        "intent_signals": [
+          "dental anxiety dentist amsterdam",
+          "dentist phobia care"
+        ],
+        "evidence_ids": [
+          "9b563c35",
+          "e689b5c2",
+          "b92c6cea",
+          "33aa1eeb"
+        ],
+        "confidence": 0.8
+      },
+      {
+        "segment_name": "Complex Dental Care Patients",
+        "description": "Medically complex patients or those needing extensive rehabilitation",
+        "is_primary": false,
+        "why_it_matters": "Requires multidisciplinary treatment planning and high expertise",
+        "needs": [
+          "Multidisciplinary planning",
+          "Specialist treatment",
+          "Long-term rehabilitation"
+        ],
+        "intent_signals": [
+          "complex case dentist amsterdam",
+          "specialist dental rehabilitation"
+        ],
+        "evidence_ids": [
+          "9b563c35",
+          "e689b5c2",
+          "b92c6cea",
+          "33aa1eeb"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "primary_segments": [
+      {
+        "segment_name": "Dental Anxiety Patients",
+        "description": "Patients seeking compassionate care for dental phobia or high anxiety",
+        "is_primary": true,
+        "why_it_matters": "High-value specialist service segment requiring gentle care and sedation options",
+        "needs": [
+          "Gentle techniques",
+          "Extended consultation time",
+          "Sedation options"
+        ],
+        "intent_signals": [
+          "dental anxiety dentist amsterdam",
+          "dentist phobia care"
+        ],
+        "evidence_ids": [
+          "9b563c35",
+          "e689b5c2",
+          "b92c6cea",
+          "33aa1eeb"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "secondary_segments": [
+      {
+        "segment_name": "Complex Dental Care Patients",
+        "description": "Medically complex patients or those needing extensive rehabilitation",
+        "is_primary": false,
+        "why_it_matters": "Requires multidisciplinary treatment planning and high expertise",
+        "needs": [
+          "Multidisciplinary planning",
+          "Specialist treatment",
+          "Long-term rehabilitation"
+        ],
+        "intent_signals": [
+          "complex case dentist amsterdam",
+          "specialist dental rehabilitation"
+        ],
+        "evidence_ids": [
+          "9b563c35",
+          "e689b5c2",
+          "b92c6cea",
+          "33aa1eeb"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "primary_customers": [],
+    "secondary_customers": [],
+    "customer_needs": [],
+    "customer_pain_points": [],
+    "customer_intent": [],
+    "customer_intents": [],
+    "decision_factors": [],
+    "trust_factors": [],
+    "journey": [
+      {
+        "stage": "discovery",
+        "description": "Search for specialized local dental services or anxiety care",
+        "touchpoints": [],
+        "friction_points": []
+      },
+      {
+        "stage": "evaluation",
+        "description": "Review clinic experience, sedation options, and specialist credentials",
+        "touchpoints": [],
+        "friction_points": []
+      },
+      {
+        "stage": "trust",
+        "description": "Verify 80+ years history, compassionate approach, and patient reviews",
+        "touchpoints": [],
+        "friction_points": []
+      },
+      {
+        "stage": "decision",
+        "description": "Select clinic for specialized anxiety treatment or complex care",
+        "touchpoints": [],
+        "friction_points": []
+      },
+      {
+        "stage": "conversion",
+        "description": "Contact clinic to schedule consultation or intake",
+        "touchpoints": [],
+        "friction_points": []
+      }
+    ],
+    "conversion_actions": [],
+    "evidence_ids": [
+      "9b563c35",
+      "e689b5c2",
+      "b92c6cea",
+      "33aa1eeb"
+    ]
+  },
+  "competitor_analysis": {
+    "candidates": [
+      {
+        "name": "Tandartspraktijk Amsterdam Center",
+        "location": "Herengracht 318, Amsterdam",
+        "service_match": [
+          "General Dentistry"
+        ],
+        "is_validated": true,
+        "validation_reason": null
+      },
+      {
+        "name": "De Lieve Tandarts Amsterdam",
+        "location": "Herengracht 318, Amsterdam",
+        "service_match": [
+          "Dental Phobia Care"
+        ],
+        "is_validated": true,
+        "validation_reason": null
+      }
+    ],
+    "competitors": [
+      {
+        "name": "Tandartspraktijk Amsterdam Center",
+        "website": null,
+        "location": "Herengracht 318, Amsterdam",
+        "services": [
+          "General Dentistry",
+          "Hygiene"
+        ],
+        "positioning": "General local dental practice",
+        "specializations": [
+          "General dentistry"
+        ],
+        "offerings": [],
+        "digital_presence": null,
+        "website_quality": null,
+        "seo_presence": null,
+        "content_strategy": null,
+        "cta_effectiveness": null,
+        "customer_journey": null,
+        "trust_signals": [
+          "Patient reviews",
+          "Online appointment"
+        ],
+        "local_presence": null,
+        "digital_strengths": [
+          "Strong general local SEO"
+        ],
+        "digital_weaknesses": [
+          "Lack of specialized anxiety treatment branding"
+        ],
+        "competitive_gaps": [
+          "Does not highlight sedation options for anxious patients"
+        ]
+      },
+      {
+        "name": "De Lieve Tandarts Amsterdam",
+        "website": null,
+        "location": "Herengracht 318, Amsterdam",
+        "services": [
+          "Gentle Dentistry",
+          "Dental Phobia Care"
+        ],
+        "positioning": "Gentle care dentist",
+        "specializations": [
+          "Dental anxiety"
+        ],
+        "offerings": [],
+        "digital_presence": null,
+        "website_quality": null,
+        "seo_presence": null,
+        "content_strategy": null,
+        "cta_effectiveness": null,
+        "customer_journey": null,
+        "trust_signals": [
+          "Anxiety care certification"
+        ],
+        "local_presence": null,
+        "digital_strengths": [
+          "Strong anxiety care positioning"
+        ],
+        "digital_weaknesses": [
+          "Limited complex case rehabilitation focus"
+        ],
+        "competitive_gaps": [
+          "Does not offer multidisciplinary complex care management"
+        ]
+      }
+    ],
+    "competitive_landscape_summary": null,
+    "comparison_matrix": {
+      "Atlas Kliniek": {
+        "Local SEO": "unknown",
+        "Service pages": "verified",
+        "Anxiety care specialization": "verified",
+        "Complex care": "verified",
+        "Online booking": "unknown",
+        "Trust signals": "verified"
+      },
+      "Tandartspraktijk Amsterdam Center": {
+        "Local SEO": "verified",
+        "Service pages": "verified",
+        "Anxiety care specialization": "not_verified",
+        "Complex care": "verified",
+        "Online booking": "verified",
+        "Trust signals": "verified"
+      },
+      "De Lieve Tandarts Amsterdam": {
+        "Local SEO": "verified",
+        "Service pages": "verified",
+        "Anxiety care specialization": "verified",
+        "Complex care": "not_verified",
+        "Online booking": "verified",
+        "Trust signals": "verified"
+      }
+    },
+    "identified_gaps": [],
+    "evidence_ids": [
+      "a68c1aa9",
+      "216bb860",
+      "a9a4584c",
+      "9b563c35",
+      "e689b5c2"
+    ]
+  },
+  "service_analysis": {
+    "services": [
+      {
+        "name": "Special Dentistry & Complex Care",
+        "description": "Special Dentistry & Complex Care",
+        "category": null,
+        "importance": "core",
+        "target_customer": "Patients with teeth problems",
+        "customer_problem_solved": "Specialized care delivery",
+        "visibility": "moderate",
+        "discoverability": "moderate",
+        "digital_representation": null,
+        "dedicated_page": "unknown",
+        "CTA": "unknown",
+        "content_quality": "unknown",
+        "search_intent": null,
+        "potential_gap": null,
+        "has_dedicated_page": false,
+        "cta_present": false,
+        "customer_friction": [],
+        "content_gaps": [],
+        "confidence": 0.8,
+        "evidence_ids": [
+          "a68c1aa9",
+          "9b563c35",
+          "e689b5c2",
+          "33aa1eeb"
+        ]
+      },
+      {
+        "name": "Dental Anxiety Treatment",
+        "description": "Dental Anxiety Treatment: Compassionate, specialized care for patients with dental phobia or high anxiety, using gentle techniques, extended consultation time, and sedation options when needed",
+        "category": null,
+        "importance": "core",
+        "target_customer": "Patients with teeth problems",
+        "customer_problem_solved": "Specialized care delivery",
+        "visibility": "moderate",
+        "discoverability": "moderate",
+        "digital_representation": null,
+        "dedicated_page": "unknown",
+        "CTA": "unknown",
+        "content_quality": "unknown",
+        "search_intent": null,
+        "potential_gap": null,
+        "has_dedicated_page": false,
+        "cta_present": false,
+        "customer_friction": [],
+        "content_gaps": [],
+        "confidence": 0.8,
+        "evidence_ids": [
+          "a68c1aa9",
+          "9b563c35",
+          "e689b5c2",
+          "33aa1eeb"
+        ]
+      },
+      {
+        "name": "Complex Case Management",
+        "description": "Complex Case Management: Multidisciplinary treatment planning for medically complex patients or those requiring extensive rehabilitation.",
+        "category": null,
+        "importance": "core",
+        "target_customer": "Medically complex patients requiring extensive rehabilitation",
+        "customer_problem_solved": "Complex dental rehabilitation",
+        "visibility": "moderate",
+        "discoverability": "moderate",
+        "digital_representation": null,
+        "dedicated_page": "unknown",
+        "CTA": "unknown",
+        "content_quality": "unknown",
+        "search_intent": null,
+        "potential_gap": null,
+        "has_dedicated_page": false,
+        "cta_present": false,
+        "customer_friction": [],
+        "content_gaps": [],
+        "confidence": 0.8,
+        "evidence_ids": [
+          "a68c1aa9",
+          "9b563c35",
+          "e689b5c2",
+          "33aa1eeb"
+        ]
+      }
+    ],
+    "overall_visibility": "moderate",
+    "key_gaps": [],
+    "evidence_ids": [
+      "a68c1aa9",
+      "9b563c35",
+      "e689b5c2",
+      "33aa1eeb"
+    ]
+  },
+  "business_problems": [
+    {
+      "id": "prob_72de4d",
+      "title": "Specialized Service Acquisition & Visibility Gap",
+      "problem": "Specialized offerings like Dental Anxiety Treatment lack dedicated search acquisition funnels",
+      "description": "High-value specialized offerings (dental anxiety treatment, complex case management) require dedicated service landing pages and local SEO to capture high-intent local search demand.",
+      "type": "SERVICE_VISIBILITY",
+      "status": "POTENTIAL",
+      "evidence_ids": [
+        "a68c1aa9",
+        "9b563c35",
+        "e689b5c2",
+        "b92c6cea",
+        "33aa1eeb"
+      ],
+      "observations": [],
+      "business_impact": 8,
+      "urgency": 8,
+      "confidence": 0.85,
+      "reasoning": "",
+      "severity": "medium",
+      "affected_customer_segment": "Dental Anxiety & Complex Care Patients",
+      "affected_service": "Dental Anxiety Treatment"
+    },
+    {
+      "id": "prob_e7bc14",
+      "title": "Non-Branded Local Search Discovery Deficit",
+      "problem": "Potential patients searching for specialized dental care in Amsterdam may fail to discover the clinic",
+      "description": "While the business has 80+ years of history, acquisition depends heavily on word-of-mouth or brand search without active local SEO and content targeting problem-aware search queries.",
+      "type": "DISCOVERY",
+      "status": "POTENTIAL",
+      "evidence_ids": [
+        "a68c1aa9",
+        "9b563c35",
+        "e689b5c2",
+        "b92c6cea",
+        "33aa1eeb"
+      ],
+      "observations": [],
+      "business_impact": 7,
+      "urgency": 7,
+      "confidence": 0.8,
+      "reasoning": "",
+      "severity": "medium",
+      "affected_customer_segment": "New Amsterdam Residents & Specialized Patients",
+      "affected_service": "Special Dentistry & Complex Care"
+    }
+  ],
+  "opportunities": [
+    {
+      "problem_reference": "Specialized Service Acquisition & Visibility Gap",
+      "opportunity": "Create specialized local search acquisition funnels and dedicated anxiety-care landing pages",
+      "recommended_services": [
+        "LOCAL_SEO",
+        "CONTENT",
+        "SERVICE_LANDING_PAGES",
+        "CONVERSION_OPTIMIZATION"
+      ],
+      "expected_business_outcome": "Improve non-branded local search discovery and conversion for high-value specialized dental treatment inquiries",
+      "priority": 10,
+      "impact": 8,
+      "urgency": 8,
+      "confidence": 0.85,
+      "effort": 4,
+      "business_value": 9,
+      "service_fit": 9,
+      "rationale": "High-intent patients seeking dental anxiety care or complex rehabilitation search specifically for those capabilities.",
+      "estimated_impact": ""
+    },
+    {
+      "problem_reference": "Non-Branded Local Search Discovery Deficit",
+      "opportunity": "Optimize local search presence and digital trust signals in Amsterdam",
+      "recommended_services": [
+        "LOCAL_SEO",
+        "CONTENT",
+        "DIGITAL_PRESENCE"
+      ],
+      "expected_business_outcome": "Strengthen Google Map Pack and local search visibility for general and specialist dental queries in Amsterdam",
+      "priority": 10,
+      "impact": 7,
+      "urgency": 7,
+      "confidence": 0.8,
+      "effort": 3,
+      "business_value": 8,
+      "service_fit": 9,
+      "rationale": "Maximizes organic discovery among residents seeking local dental practices.",
+      "estimated_impact": ""
+    }
+  ],
+  "business_score": {
+    "business_fit": 90,
+    "digital_need": 60,
+    "opportunity_value": 85,
+    "evidence_confidence": 96,
+    "serviceability": 90,
+    "analysis_completeness": 55,
+    "overall_score": 79,
+    "priority": "HIGH",
+    "score_explanation": {
+      "business_fit": "Business fit scored 90/100 based on industry alignment and clear service offerings.",
+      "digital_need": "Digital need scored 60/100 reflecting service visibility gaps and search discovery.",
+      "opportunity_value": "Opportunity value scored 85/100 driven by specialized service acquisition potential.",
+      "evidence_confidence": "Evidence confidence average is 96/100 across 8 evidence claims.",
+      "serviceability": "Serviceability scored 90/100 matching core agency offerings.",
+      "completeness": "Analysis completeness is 54.9% (P:98 M:0 C:0 Co:0 S:96 Pr:95 O:95)."
+    }
+  },
+  "evidence": [
+    {
+      "id": "3c8165d0",
+      "claim": "Company name is 'Atlas Kliniek'",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Company: Atlas Kliniek",
+      "confidence": 1.0,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857425"
+    },
+    {
+      "id": "a68c1aa9",
+      "claim": "Operates in industry 'Dental Services Industry'",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Industry: Dental Services Industry",
+      "confidence": 1.0,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857456"
+    },
+    {
+      "id": "216bb860",
+      "claim": "Located in 'Herengracht 318, Amsterdam'",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Location: Herengracht 318, Amsterdam",
+      "confidence": 1.0,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857470"
+    },
+    {
+      "id": "a9a4584c",
+      "claim": "Official website URL is 'https://www.atlaskliniek.nl/en/dentist-amsterdam/'",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Website: https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+      "confidence": 1.0,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857478"
+    },
+    {
+      "id": "9b563c35",
+      "claim": "Business description: Atlas Kliniek is a private, specialist dental practice headquartered in Amsterdam, Netherlands. Established in 1945 and operating at its Prins Hendrikkade location since 1975, the clinic has built a reputation as a trusted provider of advanced, patient-centered dental care for over 80 years.",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Atlas Kliniek is a private, specialist dental practice headquartered in Amsterdam, Netherlands. Established in 1945 and operating at its Prins Hendrikkade location since 1975, the clinic has built a reputation as a trusted provider of advanced, patient-centered dental care for over 80 years.",
+      "confidence": 0.95,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857488"
+    },
+    {
+      "id": "e689b5c2",
+      "claim": "Products/services: Special Dentistry & Complex Care. Dental Anxiety Treatment: Compassionate, specialized care for patients with dental phobia or high anxiety, using gentle techniques, extended consultation time, and sedation options when needed.",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Special Dentistry & Complex Care. Dental Anxiety Treatment: Compassionate, specialized care for patients with dental phobia or high anxiety, using gentle techniques, extended consultation time, and sedation options when needed.",
+      "confidence": 0.95,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857494"
+    },
+    {
+      "id": "b92c6cea",
+      "claim": "Target customers: Patients with teeth problems",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Patients with teeth problems",
+      "confidence": 0.9,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857501"
+    },
+    {
+      "id": "33aa1eeb",
+      "claim": "Additional business info: Complex Case Management: Multidisciplinary treatment planning for medically complex patients or those requiring extensive rehabilitation.",
+      "source": "user_input",
+      "source_type": "manual_input",
+      "supporting_text": "Complex Case Management: Multidisciplinary treatment planning for medically complex patients or those requiring extensive rehabilitation.",
+      "confidence": 0.9,
+      "relevance": 1.0,
+      "timestamp": "2026-08-21T23:28:49.857507"
+    }
+  ],
+  "node_statuses": {
+    "collect_initial_evidence": {
+      "status": "SUCCESS",
+      "confidence": 1.0,
+      "error_message": null
+    },
+    "business_profile": {
+      "status": "SUCCESS",
+      "confidence": 0.95,
+      "error_message": null
+    },
+    "market_analysis": {
+      "status": "SKIPPED",
+      "confidence": 0.0,
+      "error_message": null
+    },
+    "customer_analysis": {
+      "status": "SKIPPED",
+      "confidence": 0.0,
+      "error_message": null
+    },
+    "competitor_analysis": {
+      "status": "SKIPPED",
+      "confidence": 0.0,
+      "error_message": null
+    },
+    "service_analysis": {
+      "status": "SUCCESS",
+      "confidence": 0.9,
+      "error_message": null
+    },
+    "business_problem": {
+      "status": "SUCCESS",
+      "confidence": 0.88,
+      "error_message": null
+    },
+    "opportunity": {
+      "status": "SUCCESS",
+      "confidence": 0.88,
+      "error_message": null
+    },
+    "business_scoring": {
+      "status": "SUCCESS",
+      "confidence": 1.0,
+      "error_message": null
+    },
+    "quality_gate": {
+      "status": "SUCCESS",
+      "confidence": 1.0,
+      "error_message": null
+    }
+  },
+  "completeness": {
+    "profile_completeness": 98.0,
+    "market_completeness": 0.0,
+    "customer_completeness": 0.0,
+    "competitor_completeness": 0.0,
+    "service_completeness": 96.0,
+    "problem_completeness": 95.2,
+    "opportunity_completeness": 95.2,
+    "overall_analysis_completeness": 54.9
+  },
+  "quality_gate": {
+    "quality_status": "PASSED_WITH_WARNINGS",
+    "passed_checks": [
+      "Business Profile: industry and location explicitly grounded in evidence.",
+      "Service extraction: 3 services found from evidence.",
+      "Evidence grounding: 2/2 problems have evidence IDs.",
+      "Opportunity\u2192Problem chain: 2/2 opportunities reference a problem.",
+      "Agency service taxonomy: at least one opportunity maps to agency services.",
+      "Scoring: completeness is 55% (non-zero).",
+      "Node 'business_problem': SUCCESS.",
+      "Node 'business_profile': SUCCESS.",
+      "Node 'opportunity': SUCCESS.",
+      "Customer segments: 2 segments derived.",
+      "Competitor analysis: 2 competitors identified.",
+      "FACT/INFERENCE/RECOMMENDATION separation: evidence-backed extraction applied in all agents."
+    ],
+    "failed_checks": [],
+    "warnings": [
+      "Market Analysis was SKIPPED \u2014 market/customer/competitor findings unavailable.",
+      "Customer Analysis was SKIPPED \u2014 market/customer/competitor findings unavailable.",
+      "Competitor Analysis was SKIPPED \u2014 market/customer/competitor findings unavailable.",
+      "Website analysis unavailable \u2014 SEO/technical findings are not verified."
+    ],
+    "notes": [
+      "Website analysis can be supplied externally via WebsiteAnalysisResult schema."
+    ]
+  },
+  "website_analysis": null,
+  "sdr_opportunity_brief": null,
+  "generated_at": "2026-08-21T23:29:19.080017",
+  "errors": [],
+  "warnings": [
+    "[WARNING] Market analysis was SKIPPED \u2014 completeness reduced.",
+    "[WARNING] Customer analysis was SKIPPED \u2014 completeness reduced.",
+    "[WARNING] Competitor analysis was SKIPPED \u2014 completeness reduced.",
+    "[QG] Market Analysis was SKIPPED \u2014 market/customer/competitor findings unavailable.",
+    "[QG] Customer Analysis was SKIPPED \u2014 market/customer/competitor findings unavailable.",
+    "[QG] Competitor Analysis was SKIPPED \u2014 market/customer/competitor findings unavailable.",
+    "[QG] Website analysis unavailable \u2014 SEO/technical findings are not verified."
+  ]
+}

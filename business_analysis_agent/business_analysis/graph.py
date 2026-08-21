@@ -27,17 +27,12 @@ def run_business_profile_node(state: BusinessAnalysisState) -> BusinessAnalysisS
 
 
 def run_parallel_analysis(state: BusinessAnalysisState) -> BusinessAnalysisState:
-    print("[3/7] Running Market, Customer, Competitor & Service analyses in parallel...")
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        f_market = executor.submit(market_analysis_agent, state)
-        f_customer = executor.submit(customer_analysis_agent, state)
-        f_competitor = executor.submit(competitor_analysis_agent, state)
-        f_service = executor.submit(service_analysis_agent, state)
-
-        market_result = f_market.result()
-        customer_result = f_customer.result()
-        competitor_result = f_competitor.result()
-        service_result = f_service.result()
+    print("[3/7] Running Market, Customer, Competitor & Service analyses...")
+    # Process sequentially (max_workers=1) for local Ollama to avoid VRAM thrashing on 4GB GPUs
+    market_result = market_analysis_agent(state)
+    customer_result = customer_analysis_agent(state)
+    competitor_result = competitor_analysis_agent(state)
+    service_result = service_analysis_agent(state)
 
     merged_statuses = dict(state.get("node_statuses", {}))
     merged_statuses.update(market_result.get("node_statuses", {}))
@@ -91,6 +86,11 @@ def generate_final_report(state: BusinessAnalysisState) -> BusinessAnalysisState
             return {**state, "errors": state.get("errors", []) + [f"{key} not available for final report"]}
 
     input_business = state["input_business"]
+    all_errors = state.get("errors", [])
+
+    # Separate genuine errors from warnings
+    hard_errors = [e for e in all_errors if not e.startswith(("[WARNING]", "[QG]", "[ServiceAnalysis]"))]
+    warn_entries = [e for e in all_errors if e.startswith(("[WARNING]", "[QG]", "[ServiceAnalysis]"))]
 
     report = FinalBusinessAnalysis(
         company_name=input_business.company_name,
@@ -111,10 +111,12 @@ def generate_final_report(state: BusinessAnalysisState) -> BusinessAnalysisState
         quality_gate=state.get("quality_gate"),
         website_analysis=state.get("website_analysis"),
         generated_at=datetime.now(),
-        errors=state.get("errors", []),
+        errors=hard_errors,
+        warnings=warn_entries,
     )
 
     return {**state, "final_report": report}
+
 
 
 def build_business_analysis_graph():

@@ -316,6 +316,20 @@ class Service(BaseModel):
     confidence: float = 0.8
     evidence_ids: List[str] = []
 
+    @field_validator("name")
+    @classmethod
+    def validate_service_name(cls, v: str) -> str:
+        if not v or len(v.strip()) < 2:
+            raise ValueError(f"Service name too short: {v!r}")
+        # Reject obvious malformed names from LLM hallucinations
+        bad_patterns = ["=", "\\", '"', "{", "}", "target_customers", "products_services",
+                        "additional_info", "description", "schema", "json", "null", "true", "false"]
+        v_lower = v.lower().strip()
+        for pat in bad_patterns:
+            if pat in v:
+                raise ValueError(f"Service name appears malformed (contains '{pat}'): {v!r}")
+        return v.strip()
+
 
 class ServiceAnalysis(BaseModel):
     services: List[Service] = []
@@ -441,20 +455,21 @@ class NodeExecutionStatus(BaseModel):
 
 
 class AnalysisCompleteness(BaseModel):
-    profile_completeness: float = 100.0
-    market_completeness: float = 100.0
-    customer_completeness: float = 100.0
-    competitor_completeness: float = 100.0
-    service_completeness: float = 100.0
-    problem_completeness: float = 100.0
-    opportunity_completeness: float = 100.0
-    overall_analysis_completeness: float = 100.0
+    profile_completeness: float = 0.0
+    market_completeness: float = 0.0
+    customer_completeness: float = 0.0
+    competitor_completeness: float = 0.0
+    service_completeness: float = 0.0
+    problem_completeness: float = 0.0
+    opportunity_completeness: float = 0.0
+    overall_analysis_completeness: float = 0.0
 
 
 class QualityGateResult(BaseModel):
-    quality_status: Literal["PASSED", "NEEDS_REVIEW"] = "PASSED"
+    quality_status: Literal["PASSED", "PASSED_WITH_WARNINGS", "NEEDS_REVIEW", "FAILED"] = "PASSED"
     passed_checks: List[str] = []
     failed_checks: List[str] = []
+    warnings: List[str] = []
     notes: List[str] = []
 
 
@@ -464,6 +479,8 @@ class WebsiteAnalysisResult(BaseModel):
     ux_score: Optional[int] = None
     content_score: Optional[int] = None
     conversion_score: Optional[int] = None
+    crawl_status: Literal["COMPLETE", "PARTIAL", "FAILED", "UNAVAILABLE"] = "UNAVAILABLE"
+    pages_analyzed: int = 0
     pages: List[str] = []
     findings: List[str] = []
     broken_links: List[str] = []
@@ -472,6 +489,8 @@ class WebsiteAnalysisResult(BaseModel):
     performance: Optional[str] = None
     structured_data: Optional[str] = None
     mobile_issues: List[str] = []
+    service_page_findings: List[str] = []
+    confidence: float = 0.0
 
 
 class FinalBusinessAnalysis(BaseModel):
@@ -492,8 +511,10 @@ class FinalBusinessAnalysis(BaseModel):
     completeness: Optional[AnalysisCompleteness] = None
     quality_gate: Optional[QualityGateResult] = None
     website_analysis: Optional[WebsiteAnalysisResult] = None
+    sdr_opportunity_brief: Optional[Dict[str, Any]] = None
     generated_at: datetime = Field(default_factory=datetime.now)
     errors: List[str] = []
+    warnings: List[str] = []
 
 
 class BusinessInput(BaseModel):

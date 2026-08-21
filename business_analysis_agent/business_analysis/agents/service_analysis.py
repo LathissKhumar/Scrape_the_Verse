@@ -60,49 +60,83 @@ def service_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
     )
 
     statuses = dict(state.get("node_statuses", {}))
+    warnings = []
 
     try:
         llm = get_structured_llm(ServiceAnalysis)
-        analysis = llm.invoke(prompt)
-        analysis.evidence_ids = [e.id for e in relevant_evidence]
+        raw_analysis = llm.invoke(prompt)
+        raw_analysis.evidence_ids = [e.id for e in relevant_evidence]
 
-        # Heuristic fallback if LLM returned 0 services despite explicit input
+        # Post-LLM validation: reject malformed service names
+        valid_services = []
+        for svc in raw_analysis.services:
+            # Re-validate name through the model's validator
+            try:
+                from pydantic import ValidationError as PydanticValidationError
+                Service(name=svc.name, description=svc.description)  # triggers name validator
+                valid_services.append(svc)
+            except Exception as ve:
+                warnings.append(f"Rejected malformed service: {svc.name!r} — {ve}")
+        raw_analysis.services = valid_services
+        analysis = raw_analysis
+
+        # Heuristic fallback if LLM returned 0 valid services despite explicit input
         input_biz = state["input_business"]
         if not analysis.services:
             fallback_services = []
             if input_biz.products_services:
                 for line in input_biz.products_services.split("."):
                     line = line.strip()
-                    if line:
+                    if line and len(line) > 3:
                         svc_name = line.split(":")[0].strip()
-                        fallback_services.append(
-                            Service(
-                                name=svc_name,
-                                description=line,
-                                importance=ServiceImportance.CORE,
-                                target_customer=input_biz.target_customers or "Target Customers",
-                                customer_problem_solved="Specialized dental care",
-                                visibility=ServiceVisibility.MODERATE,
-                                evidence_ids=[e.id for e in relevant_evidence],
+                        # Skip obviously malformed
+                        if any(bad in svc_name.lower() for bad in ["=", "\\\\", "{", "}", "target_customers"]):
+                            warnings.append(f"Skipped malformed fallback service name: {svc_name!r}")
+                            continue
+                        try:
+                            fallback_services.append(
+                                Service(
+                                    name=svc_name,
+                                    description=line,
+                                    importance=ServiceImportance.CORE,
+                                    target_customer=input_biz.target_customers or "Target Customers",
+                                    customer_problem_solved="Specialized care delivery",
+                                    visibility=ServiceVisibility.MODERATE,
+                                    evidence_ids=[e.id for e in relevant_evidence],
+                                )
                             )
-                        )
+                        except Exception as fe:
+                            warnings.append(f"Rejected fallback service {svc_name!r}: {fe}")
             if input_biz.additional_info and "Complex Case" in input_biz.additional_info:
-                fallback_services.append(
-                    Service(
-                        name="Complex Case Management",
-                        description=input_biz.additional_info,
-                        importance=ServiceImportance.CORE,
-                        target_customer="Medically complex patients requiring extensive rehabilitation",
-                        customer_problem_solved="Complex dental rehabilitation",
-                        visibility=ServiceVisibility.MODERATE,
-                        evidence_ids=[e.id for e in relevant_evidence],
+                try:
+                    fallback_services.append(
+                        Service(
+                            name="Complex Case Management",
+                            description=input_biz.additional_info,
+                            importance=ServiceImportance.CORE,
+                            target_customer="Medically complex patients requiring extensive rehabilitation",
+                            customer_problem_solved="Complex dental rehabilitation",
+                            visibility=ServiceVisibility.MODERATE,
+                            evidence_ids=[e.id for e in relevant_evidence],
+                        )
                     )
-                )
+                except Exception as fe:
+                    warnings.append(f"Rejected fallback Complex Case service: {fe}")
             if fallback_services:
                 analysis.services = fallback_services
 
-        statuses["service_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
-        return {**state, "service_analysis": analysis, "node_statuses": statuses}
+        node_status = NodeStatusEnum.SUCCESS if analysis.services else NodeStatusEnum.PARTIAL
+        statuses["service_analysis"] = NodeExecutionStatus(
+            status=node_status,
+            confidence=0.9 if analysis.services else 0.4,
+        )
+        warning_msgs = [f"[ServiceAnalysis] {w}" for w in warnings]
+        return {
+            **state,
+            "service_analysis": analysis,
+            "node_statuses": statuses,
+            "errors": state.get("errors", []) + warning_msgs,
+        }
     except Exception as e:
         statuses["service_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e))
         return {**state, "errors": state.get("errors", []) + [f"ServiceAnalysisAgent error: {str(e)}"], "node_statuses": statuses}
