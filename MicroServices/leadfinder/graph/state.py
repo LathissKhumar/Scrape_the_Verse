@@ -1,0 +1,29 @@
+from typing import Any, Optional, TypedDict
+from leadfinder.models.schemas import ScrapingResult, ScrapingTask
+
+
+class ScrapingGraphState(TypedDict, total=False):
+    """Shared state structure for LangGraph workflow execution across agent nodes in Phase 5."""
+
+    task_id: str
+    original_user_query: str
+    scraping_task: Optional[ScrapingTask]
+    target_urls: list[str]
+    navigation_result: Optional[dict[str, Any]]
+    scraper_provider: str
+    scraper_id: Optional[str]
+    scraper_version: Optional[str]
+    scraper_code: Optional[str]
+    raw_results: Optional[list[dict[str, Any]]]
+    extracted_results: Optional[list[dict[str, Any]]]
+    extraction_schema: Optional[dict[str, Any]]
+    validation_result: Optional[dict[str, Any]]
+    diagnosis_result: Optional[dict[str, Any]]
+    repair_plan: Optional[dict[str, Any]]
+    candidate_configuration: Optional[dict[str, Any]]
+    candidate_scraper_version: Optional[str]
+    repair_evaluation: Optional[dict[str, Any]]
+    repair_history: list[dict[str, Any]]
+    repair_attempt: int
+    failure: Optional[Any]
+    final_output: Optional[ScrapingResult]
