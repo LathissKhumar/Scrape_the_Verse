@@ -1,9 +1,9 @@
 # Scrape the Verse — Multi-Engine Scraping & Intelligence Architecture 🌌
 
-This document provides a comprehensive technical breakdown of the three core scraping engines implemented in the **Scrape the Verse** repository:
-1. **Bright Data Cloud Subsystem (`MicroServices/leadfinder/brightdata/`)** — 2-Tier B2B Lead Intelligence & Cloud Fast-Path.
-2. **Google Maps Local Lead Subsystem (`MicroServices/leadfinder/gmaps/` & `MicroServices/leadfinder/agents/gmaps.py`)** — Localized business discovery, phone harvesting, and rating extraction.
-3. **Native Multi-Agent & Autonomous Self-Healing Engine (`MicroServices/leadfinder/crawler/`, `MicroServices/leadfinder/extraction/`, `MicroServices/leadfinder/validation/`, `MicroServices/leadfinder/diagnosis/`, `MicroServices/leadfinder/healing/`, `MicroServices/leadfinder/graph/`)** — LangGraph state machine, stealth Playwright crawling, cascading multi-strategy extraction, deterministic validation, and 4-tier closed-loop self-healing.
+This document provides a comprehensive technical breakdown and operational guide for the core scraping engines implemented in the **LeadFinder** microservice:
+1. **Bright Data Cloud Subsystem (`MicroServices/leadfinder/brightdata/`)** — Scraper Studio CLI integration, 2-Tier B2B lead intelligence, dynamic scraper resolution, and automated self-healing.
+2. **Google Maps Local Lead Subsystem (`MicroServices/leadfinder/gmaps/` & `MicroServices/leadfinder/agents/gmaps.py`)** — Localized business discovery, phone harvesting, rating extraction, and website capture.
+3. **Native Multi-Agent & Autonomous Self-Healing Engine (`MicroServices/leadfinder/crawler/`, `MicroServices/leadfinder/extraction/`, `MicroServices/leadfinder/validation/`, `MicroServices/leadfinder/diagnosis/`, `MicroServices/leadfinder/healing/`, `MicroServices/leadfinder/graph/`)** — LangGraph state machine, stealth crawling, cascading multi-strategy extraction, deterministic validation, and 4-tier closed-loop self-healing.
 
 ---
 
@@ -11,23 +11,26 @@ This document provides a comprehensive technical breakdown of the three core scr
 
 ```mermaid
 flowchart TD
-    UserReq["User Scraping Query / API Request / CLI"] --> Router{"Smart Dual-Engine Router (app/main.py / cli.py)"}
+    UserReq["User Scraping Query / API Request / CLI / Agent"] --> Router{"Smart Engine Router (main.py / cli.py)"}
 
-    %% Engine 1: Bright Data
-    Router -->|B2B Query / 'Indiamart' / --leads| B2B["🏢 Engine 1: Bright Data Pipeline (app/brightdata/)"]
-    B2B --> BD_T1["Tier 1: Discovery Collector\n(c_mt1klz941e6wjo8o6y)"]
-    BD_T1 --> BD_T2["Tier 2: Concurrent Profile Enrichment\n(c_mt1n1d372h5qpcxcvh)"]
-    BD_T2 --> Out_B2B["Enriched B2B Leads\n(Company, Contact, GSTIN, Catalog)"]
+    %% Engine 1: Bright Data & Scraper Studio
+    Router -->|Directory / URL Target| Resolver["Smart Resolver (BrightDataService)"]
+    Resolver --> Check{"Compatible in Registry?"}
+    Check -->|Yes: Status READY| Reuse["Reuse Collector (c_xxxxx)"]
+    Check -->|No| Create["Spawn Async Creation Job\n(bdata scraper create)"]
+    Create --> Registry[".brightdata_registry.sqlite"]
+    Reuse --> RunCollector["Run Collector (POST /scrapers/run)"]
 
-    %% Engine 2: Google Maps
-    Router -->|Local Places / Map Search / --maps| GMaps["📍 Engine 2: Google Maps Subsystem (app/gmaps/)"]
-    GMaps --> GMaps_NLP["Query & Location NLP Parser\n(app/agents/gmaps.py)"]
-    GMaps_NLP --> GMaps_Col["Bright Data Maps Collector\n(c_mt1qfvqx1051f3m8r9)"]
-    GMaps_Col --> GMaps_Norm["Field Normalizer & Filter\n(Phone, Rating, Website, Map URL)"]
-    GMaps_Norm --> Out_GMaps["Local Leads & Places"]
+    %% Self Healing
+    RunCollector -->|DOM Changed / Extraction Failed| Heal["Trigger Self-Healing\n(bdata scraper heal)"]
+    Heal -->|Preserve c_xxxxx| RunCollector
+
+    %% Engine 2: Google Maps & B2B
+    Router -->|B2B Query / 'Indiamart' / --leads| B2B["2-Tier B2B Pipeline\n(Discovery + Concurrent Enrichment)"]
+    Router -->|Local Places Query / --maps| GMaps["Google Maps Subsystem\n(Collector c_mt1qfvqx1051f3m8r9)"]
 
     %% Engine 3: Native Self-Healing Engine
-    Router -->|Target URLs / Fallback / --engine local| Native["🤖 Engine 3: Native LangGraph Engine (app/graph/)"]
+    Router -->|Target URLs / Fallback / --engine local| Native["🤖 Engine 3: Native LangGraph Engine (graph/)"]
     
     subgraph MultiAgentLoop ["Native 6-Node Self-Healing LangGraph Pipeline"]
         Planner["1. Planner Agent\n(Ollama Qwen3:8b)"] --> ScraperNode["2. Scraper Agent\n(Playwright Stealth / Concurrency)"]
@@ -45,22 +48,55 @@ flowchart TD
     end
     
     Native --> MultiAgentLoop
+
+    RunCollector --> Out["Normalized 100% JSON Output"]
+    B2B --> Out
+    GMaps --> Out
+    EndNode --> Out
 ```
 
 ---
 
 ## ⚡ 2. Engine 1: Bright Data Cloud Pipeline Subsystem (`MicroServices/leadfinder/brightdata/`)
 
-The **Bright Data Subsystem** provides enterprise-grade, high-throughput cloud scraping and chained B2B supplier intelligence without local browser overhead.
+The **Bright Data Subsystem** provides enterprise-grade, high-throughput cloud scraping, Scraper Studio CLI integration, and chained B2B supplier intelligence without local browser overhead.
 
 ### 2.1 Component Structure
-- [`MicroServices/leadfinder/brightdata/client.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/client.py): Async HTTP REST client for Bright Data Scraper Studio. Handles job triggering (`/trigger`), asynchronous status polling (`/progress`), dataset snapshot retrieval, timeout controls, and automated fallback to the Bright Data CLI runner (`scrape_via_cli`).
-- [`MicroServices/leadfinder/brightdata/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/pipeline.py): Implements the **2-Tier Chained B2B Lead Generation Pipeline**.
-- [`MicroServices/leadfinder/brightdata/service.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/service.py): Service orchestration layer integrating tasks, URL query formatting, error handling, and lead export formatting.
-- [`MicroServices/leadfinder/brightdata/adapter.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/adapter.py): Fallback adapter allowing the native Scraper agent to route requests to Bright Data when anti-bot obstacles or CAPTCHAs are encountered.
-- [`MicroServices/leadfinder/brightdata/exceptions.py`](file:///c:/Projects/Scrape_the_Verse/app/brightdata/exceptions.py): Domain-specific exception hierarchy (`BrightDataAuthError`, `BrightDataConfigError`, `BrightDataJobError`, `BrightDataTimeoutError`, `BrightDataEmptyResultError`).
+- [`MicroServices/leadfinder/brightdata/client.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/brightdata/client.py): Subprocess CLI adapter and async REST DCA client for Scraper Studio. Handles `bdata login`, `bdata scraper create`, `bdata scraper run`, and `bdata scraper heal`.
+- [`MicroServices/leadfinder/brightdata/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/brightdata/pipeline.py): Implements the **2-Tier Chained B2B Lead Generation Pipeline**.
+- [`MicroServices/leadfinder/brightdata/service.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/brightdata/service.py): High-level orchestrator managing dynamic scraper resolution, collector runs, self-healing, and task execution.
+- [`MicroServices/leadfinder/brightdata/registry.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/brightdata/registry.py): Thread-safe SQLite repository tracking created collectors, normalized URLs, and schema fingerprints.
+- [`MicroServices/leadfinder/brightdata/adapter.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/brightdata/adapter.py): Fallback adapter allowing the native Scraper agent to route requests to Bright Data when anti-bot obstacles or CAPTCHAs are encountered.
+- [`MicroServices/leadfinder/brightdata/exceptions.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/brightdata/exceptions.py): Domain-specific exception hierarchy (`BrightDataAuthError`, `BrightDataConfigError`, `BrightDataJobError`, `BrightDataTimeoutError`, `BrightDataEmptyResultError`).
 
-### 2.2 2-Tier Chained Pipeline Flow
+### 2.2 Dynamic Scraper Resolution & Autonomous Creation
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as API Client / Agent
+    participant Service as BrightDataService
+    participant Registry as ScraperRegistry (SQLite)
+    participant Worker as Background Creation Worker
+    participant CLI as Bright Data CLI (bdata)
+
+    Client->>Service: resolve_scraper(target_url, fields, description)
+    Service->>Registry: find_compatible(normalized_url, schema_hash)
+    
+    alt Compatible Collector Exists (status = READY)
+        Registry-->>Service: CollectorRecord (collector_id = 'c_xxxxx')
+        Service-->>Client: ScraperResolveResponse(action='reuse', collector_id='c_xxxxx')
+    else Collector Not Found
+        Service->>Registry: create_record(target_url, fields, status='CREATING')
+        Service->>Worker: spawn_worker(job_id, scraper_id, target_url)
+        Service-->>Client: ScraperResolveResponse(action='create', job_id='job_xxxxx', status='creating')
+        
+        Worker->>CLI: bdata scraper create <target_url> "<fields>" --json
+        CLI-->>Worker: Successfully Created Collector ID 'c_xxxxx'
+        Worker->>Registry: update_status(record_id, status='READY', collector_id='c_xxxxx')
+    end
+```
+
+### 2.3 2-Tier Chained B2B Pipeline Flow
 ```mermaid
 sequenceDiagram
     autonumber
@@ -85,10 +121,10 @@ sequenceDiagram
     end
 
     Pipeline->>Pipeline: Merge Tier 1 + Tier 2 Fields
-    Pipeline-->>User: Complete Enriched B2B Lead Objects
+    Pipeline-->>User: Complete Enriched B2B Lead Objects (JSON)
 ```
 
-### 2.3 Extracted Data Schema
+### 2.4 Extracted B2B Data Schema
 | Field | Type | Description | Source |
 |---|---|---|---|
 | `company_name` | `string` | Legal registered business name | Tier 1 & 2 |
@@ -105,15 +141,15 @@ sequenceDiagram
 
 ## 📍 3. Engine 2: Google Maps Local Lead Subsystem (`MicroServices/leadfinder/gmaps/`)
 
-The **Google Maps Subsystem** is a specialized intelligence pipeline **powered directly by Bright Data's Scraper Studio** (`c_mt1qfvqx1051f3m8r9`). It leverages Bright Data's rotating residential proxy network to harvest localized business listings, public contact numbers, star ratings, review counts, websites, and Google Maps place links without getting blocked or rate-limited.
+The **Google Maps Subsystem** is a specialized intelligence pipeline **powered directly by Bright Data's Scraper Studio** (`c_mt1qfvqx1051f3m8r9`). It leverages rotating residential proxies to harvest localized business listings, public contact numbers, star ratings, review counts, websites, and Google Maps place links.
 
 ```mermaid
 sequenceDiagram
     autonumber
     actor User as Client / CLI / API
-    participant Agent as GoogleMapsAgent (app/agents/gmaps.py)
-    participant Pipeline as GoogleMapsPipeline (app/gmaps/pipeline.py)
-    participant Client as BrightDataClient (app/brightdata/client.py)
+    participant Agent as GoogleMapsAgent (agents/gmaps.py)
+    participant Pipeline as GoogleMapsPipeline (gmaps/pipeline.py)
+    participant Client as BrightDataClient (brightdata/client.py)
     participant BD as Bright Data Scraper Studio (c_mt1qfvqx1051f3m8r9)
 
     User->>Agent: "carpenters in Bangalore"
@@ -126,41 +162,13 @@ sequenceDiagram
     BD-->>Client: Raw Google Maps Dataset
     Client-->>Pipeline: Raw JSON Records
     Pipeline->>Pipeline: normalize_lead() -> Clean phone, rating, reviews, maps_url
-    Pipeline-->>User: Structured Verified Local Leads
+    Pipeline-->>User: Structured Verified Local Leads (JSON)
 ```
 
-### 3.1 Bright Data Collector Details
-- **Collector ID**: `c_mt1qfvqx1051f3m8r9` (Configurable via `BRIGHTDATA_GMAPS_COLLECTOR_ID` in `.env`).
-- **Input Parameter**: Google Maps Search URL (`https://www.google.com/maps/search/...`).
-- **Execution Mechanism**: Async REST polling with automatic fallback to the Bright Data CLI runner (`scrape_via_cli`).
-- **Cloud Infrastructure**: Cloud unblocking, dynamic JS rendering, and residential proxy rotation managed on Bright Data.
-
-### 3.2 Component Structure
-- [`MicroServices/leadfinder/gmaps/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/app/gmaps/pipeline.py): Maps search URL formatter (`format_maps_search_url`), Bright Data collector trigger (`c_mt1qfvqx1051f3m8r9`), and data normalizer (`normalize_lead`).
-- [`MicroServices/leadfinder/gmaps/service.py`](file:///c:/Projects/Scrape_the_Verse/app/gmaps/service.py): High-level async interface (`get_local_leads`) managing search execution, result validation, and caching.
-- [`MicroServices/leadfinder/agents/gmaps.py`](file:///c:/Projects/Scrape_the_Verse/app/agents/gmaps.py): Intelligent agent wrapper with natural language parsing (`parse_query_and_location`) that decomposes unstructured queries (e.g. `"best dentists near Bangalore East"`) into `category="dentists"` and `location="Bangalore East"`.
-
-### 3.3 Field Normalization Engine
-Google Maps search results vary by business category. The normalizer handles:
-- **Phone Numbers**: Extracts sanitized national and international dialing codes (e.g. `+91 99806 00167`) from `phone_number`, `phone`, `contact_number`, or `tel`.
-- **Ratings & Reviews**: Normalizes localized numeric formats (e.g. `"4,8"` or `4.8`) into standard IEEE floats and integer review counts.
-- **Websites & URLs**: Filters out invalid placeholders (`"#"`, `"null"`, `"None"`).
-
-### 3.4 CLI & API Execution
-- **CLI**:
-  ```bash
-  python cli.py "carpenters in Bangalore" --maps -o carpenters.json -f json
-  python cli.py "plumbers in Chennai" --maps -o plumbers.csv -f csv
-  ```
-- **REST API**:
-  ```http
-  POST /api/v1/gmaps/leads
-  Content-Type: application/json
-
-  {
-    "query": "electricians in Hyderabad"
-  }
-  ```
+### 3.1 Component Structure
+- [`MicroServices/leadfinder/gmaps/pipeline.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/gmaps/pipeline.py): Maps search URL formatter (`format_maps_search_url`), Bright Data collector trigger (`c_mt1qfvqx1051f3m8r9`), and data normalizer (`normalize_lead`).
+- [`MicroServices/leadfinder/gmaps/service.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/gmaps/service.py): High-level async interface (`get_local_leads`) managing search execution, result validation, and caching.
+- [`MicroServices/leadfinder/agents/gmaps.py`](file:///c:/Projects/Scrape_the_Verse/MicroServices/leadfinder/agents/gmaps.py): Intelligent agent wrapper with natural language parsing (`parse_query_and_location`) that decomposes unstructured queries into `category` and `location`.
 
 ---
 
@@ -189,145 +197,263 @@ graph LR
     end
 ```
 
----
-
-### 4.1 LangGraph State Machine Architecture (`MicroServices/leadfinder/graph/`)
-State is strictly isolated per scraping job using [`ScrapingGraphState`](file:///c:/Projects/Scrape_the_Verse/app/graph/state.py):
-- **`task_id`**: UUID4 tracking the job across all agent nodes and threads.
-- **`raw_results`**: Unmodified raw HTML payloads captured by Playwright.
-- **`extracted_results`**: Structured JSON dictionaries generated by extraction strategies.
-- **`validation_result`**: Deterministic metrics and health scores.
-- **`diagnosis_result`**: Root cause and evidence categorization.
-- **`repair_history`**: Audit trail of all attempted patches, before/after metrics, and confidence tiers.
+### 4.1 Cascading Extraction & Deterministic Validation
+- **Extraction Cascade**: CSS Selectors $\to$ XPath Expressions $\to$ HTML Table Extractor $\to$ Regex Structural Matchers $\to$ Semantic Cosine TF-IDF $\to$ Local LLM Chunking (Qwen3:8b) $\to$ Multimodal Vision OCR.
+- **Deterministic Mathematical Health Formula**:
+  $$\text{Health Score } H = w_{\text{cov}} \cdot C_{\text{field}} + w_{\text{dup}} \cdot (1 - R_{\text{dup}}) + w_{\text{url}} \cdot U_{\text{valid}} + w_{\text{sch}} \cdot S_{\text{valid}}$$
 
 ---
 
-### 4.2 Cascading Extraction Engine (`MicroServices/leadfinder/extraction/`)
-The extraction engine executes a resilient cascade across multiple strategies:
-```mermaid
-flowchart TD
-    RawDOM["Raw Page DOM / HTML"] --> S1{"1. Deterministic CSS Selectors"}
-    S1 -->|Coverage >= 80%| Out["Extracted Structured Records"]
-    S1 -->|Failed / Drifted| S2{"2. XPath Expressions"}
-    S2 -->|Matched| Out
-    S2 -->|Failed| S3{"3. HTML Table Extractor"}
-    S3 -->|Valid Grid/Matrix| Out
-    S3 -->|Not a Table| S4{"4. Regex Structural Patterns"}
-    S4 -->|Matched| Out
-    S4 -->|Failed| S5{"5. Semantic Cosine Filter (TF-IDF)"}
-    S5 -->|Ranked Chunks| Out
-    S5 -->|Complex Unstructured| S6{"6. Local LLM Chunking (Qwen3:8b)"}
-    S6 --> Out
-    S6 -->|Vision Fallback| S7{"7. Multimodal Vision OCR Extractor"}
-    S7 --> Out
-```
+## ⚙️ 5. Environment Configuration
 
----
-
-### 4.3 Deterministic Validation Subsystem (`MicroServices/leadfinder/validation/`)
-Validation does **not** use fuzzy LLM guessing. It uses deterministic mathematical formulas:
-
-$$\text{Health Score } H = w_{\text{cov}} \cdot C_{\text{field}} + w_{\text{dup}} \cdot (1 - R_{\text{dup}}) + w_{\text{url}} \cdot U_{\text{valid}} + w_{\text{sch}} \cdot S_{\text{valid}}$$
-
-- **Completeness Validator** ([`completeness.py`](file:///c:/Projects/Scrape_the_Verse/app/validation/completeness.py)): Calculates per-field fill rate, detecting empty strings, nulls, and placeholder values (`"N/A"`, `"-"`, `"TBD"`).
-- **Duplicate Validator** ([`duplicates.py`](file:///c:/Projects/Scrape_the_Verse/app/validation/duplicates.py)): Computes duplicate record ratios and flags duplicate explosions (common when pagination or CSS selectors break).
-- **Schema & Type Validator** ([`schema.py`](file:///c:/Projects/Scrape_the_Verse/app/validation/schema.py)): Verifies primitive data types (`string`, `number`, `boolean`, `array`) against expected field models.
-- **Anomaly Detector** ([`anomalies.py`](file:///c:/Projects/Scrape_the_Verse/app/validation/anomalies.py)): Flags zero-record anomalies, severe coverage drops ($>40\%$), and baseline deviations.
-
----
-
-### 4.4 Evidence-Grounded Diagnosis Engine (`MicroServices/leadfinder/diagnosis/`)
-When $H < 0.80$, the diagnosis engine inspects validation failure evidence, raw HTML tags, and error metrics to categorize the precise failure:
-- **`SELECTOR_DRIFT`**: Target DOM elements changed classes/IDs while content remains present.
-- **`DOM_STRUCTURE_CHANGE`**: Hierarchy shifted (e.g. `div > div` changed to `section > article`).
-- **`TABLE_STRUCTURE_CHANGE`**: Table column headers or layout altered.
-- **`ANTI_BOT_CHALLENGE`**: Cloudflare, DataDome, or CAPTCHA interstitial detected.
-- **`PAGINATION_BROKEN`**: Next page link selector or dynamic click trigger failed.
-- **`DYNAMIC_CONTENT_UNRENDERED`**: JavaScript SPA client-side rendering was delayed or unhydrated.
-- **`SOURCE_DATA_QUALITY`**: Upstream website is genuinely missing data (healing is bypassed).
-
----
-
-### 4.5 Closed-Loop Self-Healing Subsystem (`MicroServices/leadfinder/healing/`)
-The self-healing subsystem automatically repairs broken scraper configurations through a 5-step lifecycle:
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant D as Diagnosis Engine
-    participant HP as Healing Planner
-    participant Act as Action Repair Subsystem
-    participant Patcher as Repair Patcher
-    participant Exe as Canary Executor
-    participant MP as Multi-Page Validator
-    participant Eval as Repair Evaluator
-    participant Mem as 4-Tier Memory
-
-    D->>HP: DiagnosisResult (Root Cause, Affected Fields, Evidence)
-    
-    alt Dynamic UI Interaction Barrier (Modal / Cookie / Scroll)
-        HP->>Act: Detect UI barriers & generate ActionPlan
-        Act->>Exe: Execute bounded clicks/scrolls in Playwright
-    end
-
-    HP->>Mem: Query Exact & Cross-Domain Semantic Memory
-    HP->>HP: Score & Rank Candidates (Score Formula with History & Penalties)
-    
-    loop For top ranked repair candidates (Budget = max 3 attempts)
-        HP->>Patcher: apply_patch(current_schema, repair_plan)
-        Patcher->>Exe: Canary extraction on fresh raw pages
-        Exe->>MP: Multi-page canary consistency check (up to 3 representative pages)
-        MP-->>Eval: Aggregate Multi-Page Health Score
-        Eval->>Eval: Evaluate before vs after metrics & regression check
-        
-        alt Repair Accepted (No Regression & Health >= 0.70)
-            Eval->>Mem: Persist to Memory (High/Medium Tier -> Active/Probation)
-            Eval-->>D: Return Healed Schema & Recovered Records
-        else Repair Rejected
-            Eval->>Mem: Record in FailedRepairMemory (Suppress for 24h)
-        end
-    end
-```
-
-#### 4-Tier Self-Healing Memory Subsystems:
-1. **Exact Signature Memory ([`memory.py`](file:///c:/Projects/Scrape_the_Verse/app/healing/memory.py))**: Generates deterministic SHA-256 signatures from `(domain + tag_distribution + field_names)` to instantly apply 0ms cached repairs on identical DOM states.
-2. **Cross-Domain Semantic Memory ([`semantic_memory.py`](file:///c:/Projects/Scrape_the_Verse/app/healing/semantic_memory.py))**: Extracts abstract structural patterns (e.g. grid card hierarchies, product containers) and transfers proven selectors across different domains.
-3. **Failed Repair Memory ([`failed_memory.py`](file:///c:/Projects/Scrape_the_Verse/app/healing/failed_memory.py))**: Records rejected patches with a 24-hour TTL and applies penalty scores to prevent repeating unsuccessful repair strategies.
-4. **Persistent SQLite WAL Storage ([`persistent_memory.py`](file:///c:/Projects/Scrape_the_Verse/app/healing/persistent_memory.py))**: Saves all successful and failed repairs to local SQLite with Write-Ahead Logging for cross-session and cross-process persistence.
-
----
-
-## 📊 5. Scraping Engines Comparison Matrix
-
-| Feature / Dimension | 🏢 Engine 1: Bright Data | 📍 Engine 2: Google Maps | 🤖 Engine 3: Native LangGraph |
-|---|---|---|---|
-| **Primary Use Case** | B2B directory & supplier discovery (IndiaMART, wholesale) | Local service contractors, shops, ratings, contact discovery | Arbitrary websites, dynamic SPAs, e-commerce, custom targets |
-| **Execution Environment** | Cloud Scraper Studio collectors | Cloud Google Maps search collectors | Local Playwright Chromium + Ollama Qwen3:8b |
-| **Average Latency** | 4 – 10 seconds | 3 – 8 seconds | 5 – 25 seconds (includes full validation & LLM) |
-| **Anti-Bot Resilience** | High (Cloud proxy rotating residential networks) | High (Cloud unblockers) | High (Playwright stealth + dynamic action repair) |
-| **Self-Healing Capability** | Upstream maintained by Bright Data | Upstream maintained by Bright Data | Full local 4-tier closed-loop self-healing |
-| **Field Enrichment** | 2-Tier: Discovery + Deep Company Profile (GSTIN, CEO) | Single-pass search listing normalization | Multi-strategy cascading extraction (CSS, XPath, LLM) |
-| **CLI Flag** | `--leads` | `--maps` | `--engine local` or standard query |
-| **API Endpoint** | `POST /api/v1/brightdata/leads` | `POST /api/v1/gmaps/leads` | `POST /scrape` or `POST /api/v1/jobs` |
-
----
-
-## 🛠️ 6. Quick Reference & CLI Cheat Sheet
+Create a `.env` file in `MicroServices/leadfinder/` (or use the root `.env`):
 
 ```bash
-# 1. Google Maps Local Lead Discovery
-python cli.py "carpenters in Bangalore" --maps
-python cli.py "plumbers in Chennai" --maps -o plumbers.csv -f csv
+# --- Bright Data Configuration ---
+BRIGHTDATA=True
+BRIGHTDATA_API_KEY=your_brightdata_api_key
+BRIGHTDATA_CLI_COMMAND=bdata
+BRIGHTDATA_COMMAND_TIMEOUT=300.0
+BRIGHTDATA_REGISTRY_DB_PATH=.brightdata_registry.sqlite
 
-# 2. 2-Tier B2B Supplier Intelligence
+# --- Pre-Configured Cloud Collectors ---
+BRIGHTDATA_DISCOVERY_COLLECTOR_ID=c_mt1klz941e6wjo8o6y
+BRIGHTDATA_COMPANY_COLLECTOR_ID=c_mt1n1d372h5qpcxcvh
+BRIGHTDATA_GMAPS_COLLECTOR_ID=c_mt1qfvqx1051f3m8r9
+BRIGHTDATA_YELP_COLLECTOR_ID=c_mt38sv49yfrrosp1u
+BRIGHTDATA_AVVO_COLLECTOR_ID=c_mt39jryq1q6vcwtxcy
+BRIGHTDATA_ZOCDOC_COLLECTOR_ID=c_mt3ajhz86vez2jrmb
+BRIGHTDATA_AUTOTRADER_COLLECTOR_ID=c_mt3amw4t2n5emgqhsn
+
+# --- Ollama Local LLM Configuration (For Native Engine) ---
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen3:8b
+OLLAMA_TIMEOUT_SECONDS=60.0
+
+# --- Service Settings ---
+PORT=8001
+HOST=0.0.0.0
+```
+
+---
+
+## 💻 6. How to Run & Invoke LeadFinder
+
+### 1. Start the FastAPI Microservice
+
+```bash
+# Start from the project root or MicroServices/leadfinder:
+python -m uvicorn leadfinder.main:app --host 0.0.0.0 --port 8001 --reload
+```
+
+---
+
+### 2. Invoke via REST API (HTTP Endpoints)
+
+All responses return pure, structured **JSON**.
+
+#### **A. Google Maps Local Lead Scraping**
+* **Endpoint**: `POST /scrape`
+```bash
+curl -X POST http://localhost:8001/scrape \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "commercial architects in Hyderabad",
+    "engine": "brightdata_gmaps"
+  }'
+```
+
+#### **B. 2-Tier B2B Lead Intelligence**
+* **Endpoint**: `POST /api/v1/brightdata/leads`
+```bash
+curl -X POST http://localhost:8001/api/v1/brightdata/leads \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "corrugated boxes manufacturers in Pune",
+    "limit": 10
+  }'
+```
+
+#### **C. Dynamic Scraper Resolution (Auto-Reuse vs. Create)**
+* **Endpoint**: `POST /scrapers/resolve`
+```bash
+curl -X POST http://localhost:8001/scrapers/resolve \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://www.houzz.com/professionals/interior-designers/new-york-ny",
+    "description": "Extract interior designer name, phone, rating, and address",
+    "fields": [
+      {"name": "firm_name", "description": "Name of firm"},
+      {"name": "phone", "description": "Phone number"},
+      {"name": "rating", "description": "Star rating"}
+    ]
+  }'
+```
+
+#### **D. Run a Ready Collector**
+* **Endpoint**: `POST /scrapers/run`
+```bash
+curl -X POST http://localhost:8001/scrapers/run \
+  -H "Content-Type: application/json" \
+  -d '{
+    "collector_id": "c_mt38sv49yfrrosp1u",
+    "url": "https://www.yelp.com/search?find_desc=Restaurants&find_loc=San+Francisco%2C+CA"
+  }'
+```
+
+#### **E. Self-Heal a Broken Collector**
+* **Endpoint**: `POST /scrapers/heal`
+```bash
+curl -X POST http://localhost:8001/scrapers/heal \
+  -H "Content-Type: application/json" \
+  -d '{
+    "collector_id": "c_mt38sv49yfrrosp1u",
+    "failure_description": "Rating selector changed from .rating to [data-test=stars]"
+  }'
+```
+
+---
+
+### 3. Invoke via Python SDK / Service Layer
+
+```python
+import asyncio
+from leadfinder.config.settings import get_settings
+from leadfinder.brightdata.client import BrightDataClient
+from leadfinder.brightdata.service import BrightDataService
+from leadfinder.brightdata.schemas import ScrapeTargetRequest, FieldDefinition
+
+async def main():
+    settings = get_settings()
+    client = BrightDataClient(settings=settings)
+    service = BrightDataService(settings=settings, client=client)
+
+    # 1. Resolve or Create Scraper
+    target = ScrapeTargetRequest(
+        url="https://www.yelp.com/search?find_desc=Restaurants&find_loc=San+Francisco%2C+CA",
+        description="Extract Yelp restaurant leads, ratings, and phone numbers",
+        fields=[
+            FieldDefinition(name="business_name", description="Restaurant Name"),
+            FieldDefinition(name="phone_number", description="Phone Number"),
+            FieldDefinition(name="rating", description="Star rating"),
+        ]
+    )
+    resolution = await service.resolve_scraper(target)
+    print(f"Action: {resolution.action}, Collector: {resolution.collector_id}")
+
+    # 2. Run Collector
+    if resolution.collector_id:
+        result = await service.run_collector(
+            collector_id=resolution.collector_id,
+            url=target.url
+        )
+        print("Scraped Data Records (JSON):", result.data)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+---
+
+### 4. Invoke via Command Line Interface (CLI)
+
+```bash
+# 1. Google Maps Discovery
+python cli.py "commercial architects in Hyderabad" --maps
+
+# 2. B2B Lead Intelligence
 python cli.py "solar panels in Delhi" --leads -o solar_suppliers.json -f json
-python cli.py "packaging boxes in Mumbai" --leads
 
-# 3. Native Multi-Agent Self-Healing Engine
-python cli.py "Extract news titles" -u "https://news.ycombinator.com" --engine local
-python cli.py "Extract product prices" -u "https://books.toscrape.com" -o products.csv -f csv
+# 3. Dynamic Collector Resolver
+python cli.py --resolve "https://www.yelp.com/search?find_desc=Dentists&find_loc=New+York" --fields "business_name,phone,rating"
 
-# 4. Verify Health & System Readiness
+# 4. Verify System Readiness
 python cli.py --check-brightdata
-pytest -k "not live"
+```
+
+---
+
+## 📊 7. Structured JSON Output Specifications
+
+Every endpoint, CLI command, and SDK invocation outputs **100% structured JSON**:
+
+### **A. Google Maps Local Leads JSON Output (`POST /scrape`)**
+```json
+{
+  "task_id": "gmaps_task_d41d8cd98f00",
+  "status": "success",
+  "data": [
+    {
+      "name": "RAJA ARCHITECTS",
+      "rating": 4.8,
+      "reviews_count": 142,
+      "phone_number": "+91 98490 12345",
+      "address": "Road No 36, Jubilee Hills, Hyderabad, Telangana 500033",
+      "website": "https://rajaarchitects.com",
+      "category": "Architectural designer",
+      "source": "google_maps"
+    },
+    {
+      "name": "Finger6 Architects",
+      "rating": 4.7,
+      "reviews_count": 98,
+      "phone_number": "+91 40 2355 6789",
+      "address": "Banjara Hills, Hyderabad, Telangana 500034",
+      "website": "https://finger6.com",
+      "category": "Architect",
+      "source": "google_maps"
+    }
+  ]
+}
+```
+
+### **B. 2-Tier B2B Companies JSON Output (`POST /api/v1/brightdata/leads`)**
+```json
+{
+  "status": "success",
+  "count": 2,
+  "leads": [
+    {
+      "company_name": "Apex Corrugators Pvt Ltd",
+      "product_title": "Heavy Duty 7 Ply Corrugated Boxes",
+      "price": "₹ 45 / Piece",
+      "contact_person": "Vikram Desai (Managing Director)",
+      "gstin": "27AAACA1234F1Z5",
+      "established_year": "2012",
+      "nature_of_business": "Manufacturer, Exporter",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "company_catalog_url": "https://www.indiamart.com/apex-corrugators/"
+    }
+  ]
+}
+```
+
+### **C. Custom Directory / Yelp JSON Output (`POST /scrapers/run`)**
+```json
+{
+  "collector_id": "c_mt38sv49yfrrosp1u",
+  "status": "success",
+  "elapsed_ms": 1420.5,
+  "data": [
+    {
+      "business_name": "Khao Tiew",
+      "rating": 4.5,
+      "review_count": 830,
+      "address": "272 Claremont Blvd San Francisco, CA 94127",
+      "phone_number": "(415) 532-1860",
+      "website_url": "https://khaotiew.square.site",
+      "product_page_url": "https://www.yelp.com/biz/khao-tiew-san-francisco-2"
+    }
+  ]
+}
+```
+
+### **D. Self-Healing Response JSON Output (`POST /scrapers/heal`)**
+```json
+{
+  "collector_id": "c_mt38sv49yfrrosp1u",
+  "status": "ready",
+  "message": "Collector c_mt38sv49yfrrosp1u successfully healed."
+}
 ```

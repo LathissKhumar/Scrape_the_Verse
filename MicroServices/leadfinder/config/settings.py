@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     """Application configuration settings loaded from environment or .env."""
 
     model_config = SettingsConfigDict(
-        env_file=("app/.env", ".env"),
+        env_file=(".env", "MicroServices/leadfinder/.env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
