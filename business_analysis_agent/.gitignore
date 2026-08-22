@@ -1,0 +1,7 @@
+# Ignore generated analysis output artifacts
+outputs/
+__pycache__/
+*.py[cod]
+.env
+venv/
+.pytest_cache/

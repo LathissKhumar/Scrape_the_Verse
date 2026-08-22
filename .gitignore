@@ -117,3 +117,6 @@ LibreCrawl/data/*.db
 .coverage
 htmlcov/
 
+# Outputs
+outputs/
+business_analysis_agent/outputs/
