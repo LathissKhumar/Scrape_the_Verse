@@ -9,10 +9,13 @@ import json
 import argparse
 from typing import Dict, Any, List
 
-# Ensure project root is in sys.path
-root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if root_dir not in sys.path:
-    sys.path.insert(0, root_dir)
+# Ensure workspace root (for LibreCrawl) and WebAuditAgent dir (for seo package) are in sys.path
+_seo_dir = os.path.dirname(os.path.abspath(__file__))          # .../WebAuditAgent/seo
+_webaudit_dir = os.path.dirname(_seo_dir)                       # .../WebAuditAgent
+_workspace_root = os.path.dirname(_webaudit_dir)                # .../Scrape_the_Verse
+for _p in (_webaudit_dir, _workspace_root):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 from seo.state import SEOState, ActionItem, CategoryAuditResult, AuditFinding
 from seo.tools.crawl import crawl_target_tool
