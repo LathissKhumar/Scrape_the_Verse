@@ -1,0 +1,658 @@
+[
+  {
+    "id": "iss_a6815384139a",
+    "page_id": "page_d9a19e274131",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "title": "Slow Response Time",
+    "description": "Page took 5690.83ms to respond (recommended: <3000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 5690.83,
+      "render_time_ms": 27010.49
+    }
+  },
+  {
+    "id": "iss_573f05063034",
+    "page_id": "page_8a7279d833e5",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/werken-bij/",
+    "title": "Slow Response Time",
+    "description": "Page took 4815.88ms to respond (recommended: <3000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 4815.88,
+      "render_time_ms": 7886.49
+    }
+  },
+  {
+    "id": "iss_4a861f24d164",
+    "page_id": "page_56b0fcdc1efc",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  },
+  {
+    "id": "iss_1b853877f411",
+    "page_id": "page_3ed8c16ddf95",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_844d0f51dd7a",
+    "page_id": "page_9c7e29d9a88a",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/tandarts/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_17ba0c25923b",
+    "page_id": "page_248678ddca62",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_edf7bfb24266",
+    "page_id": "page_63ca90cff096",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_617f889b11da",
+    "page_id": "page_a63d71178079",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/assistent/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_1221df148252",
+    "page_id": "page_130cf1c842fa",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_6ebf440f3fce",
+    "page_id": "page_5e79383da39a",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_3a86924ddbd2",
+    "page_id": "page_c83f1504097e",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_fb1e8254a4a9",
+    "page_id": "page_d4dadafe6ed7",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_b2b9f83bc9b6",
+    "page_id": "page_abb63033bb54",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_c1518cd4e127",
+    "page_id": "page_abb63033bb54",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "title": "Slow Response Time",
+    "description": "Page took 3161.53ms to respond (recommended: <3000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 3161.53,
+      "render_time_ms": 6227.56
+    }
+  },
+  {
+    "id": "iss_041e35de0307",
+    "page_id": "page_0230478a91e0",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1ccb1b3e1946",
+    "page_id": "page_7998ae689556",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d59ea30b1363",
+    "page_id": "page_a63eddcf5b3a",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ad7b17bcd36e",
+    "page_id": "page_f6b7e1817639",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0a6c7d2f3f28",
+    "page_id": "page_5b2ee780b008",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_36d70c163ac6",
+    "page_id": "page_165c3c8d61e1",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_94f1035ed8fd",
+    "page_id": "page_cb419703430c",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_e0a09d5c40e4",
+    "page_id": "page_039db2a82ba2",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_2859867850a8",
+    "page_id": "page_3e70968777ad",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d8ac587fc941",
+    "page_id": "page_c4aeaaee360d",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ef010dcc6241",
+    "page_id": "page_c945a406e92e",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_187bf3940d50",
+    "page_id": "page_03f0dbc6dcdb",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_122198e55ecb",
+    "page_id": "page_3188e3ba225d",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_26069e28acf2",
+    "page_id": "page_0265451ed277",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_cb8cd98a65b6",
+    "page_id": "page_49c8fae54f04",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f30cba19b1f5",
+    "page_id": "page_f198a6cf9f21",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f2b6a9a3bc8d",
+    "page_id": "page_089328e054f3",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d6231adb6112",
+    "page_id": "page_1aa344c36772",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_98f935274b9c",
+    "page_id": "page_04a167df1a57",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_efcbd2d59a46",
+    "page_id": "page_f09d5a317b60",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_cdea64e3011e",
+    "page_id": "page_04b2c16b2372",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_14021de7d134",
+    "page_id": "page_317590d94d87",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5ae4d860bb5a",
+    "page_id": "page_aad42192f664",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_759cc3241819",
+    "page_id": "page_b7feff077d90",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ffc7692972a9",
+    "page_id": "page_322fd4ec018f",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8586d068fd31",
+    "page_id": "page_6390b099b338",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0d972bda59c0",
+    "page_id": "page_9b757fa84d6c",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_a1ba8cbc6a81",
+    "page_id": "page_714253307069",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  },
+  {
+    "id": "iss_49e090a6836c",
+    "page_id": "page_714253307069",
+    "category": "Indexability",
+    "type": "indexing_restriction",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "title": "Noindex Tag Present",
+    "description": "Page is BLOCKED from search engines - has noindex directive",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8c1dd23f878b",
+    "page_id": "page_90ab5abc667a",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  },
+  {
+    "id": "iss_951776d3eedf",
+    "page_id": "page_90ab5abc667a",
+    "category": "Indexability",
+    "type": "indexing_restriction",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Noindex Tag Present",
+    "description": "Page is BLOCKED from search engines - has noindex directive",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b4d8b45c6b8a",
+    "page_id": "page_444264d425ea",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  }
+]

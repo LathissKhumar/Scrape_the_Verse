@@ -1,0 +1,226 @@
+{
+  "page_id": "page_7001b2272dcf",
+  "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+  "raw_url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+  "status_code": 200,
+  "content_type": "text/html",
+  "depth": 1,
+  "response_time_ms": 2866.93,
+  "render_time_ms": 5977.12,
+  "seo": {
+    "title": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+    "meta_description": "Tijdens uw eerste bezoek aan onze praktijk, zullen wij uw mond onderzoeken en een behandelplan op maat opstellen dat voldoet aan al uw wensen.",
+    "h1": "Patient information",
+    "h2": [
+      "Closure of Prins Hendrikkade location as of November 1, 2025",
+      "Patient information"
+    ],
+    "h3": [
+      "Contact",
+      "Register"
+    ],
+    "word_count": 930
+  },
+  "technical": {
+    "canonical": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    "language": "en-GB",
+    "charset": "UTF-8",
+    "viewport": "width=device-width, initial-scale=1"
+  },
+  "social": {
+    "og_tags": {
+      "locale": "en_GB",
+      "type": "article",
+      "title": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+      "description": "Tijdens uw eerste bezoek aan onze praktijk, zullen wij uw mond onderzoeken en een behandelplan op maat opstellen dat voldoet aan al uw wensen.",
+      "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+      "site_name": "Tandheelkundige Kliniek Atlas",
+      "updated_time": "2024-07-04T17:11:55+02:00"
+    },
+    "twitter_tags": {
+      "card": "summary_large_image",
+      "title": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+      "description": "Tijdens uw eerste bezoek aan onze praktijk, zullen wij uw mond onderzoeken en een behandelplan op maat opstellen dat voldoet aan al uw wensen."
+    }
+  },
+  "schema": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": [
+            "Person",
+            "Organization"
+          ],
+          "@id": "https://www.atlaskliniek.nl/en/#person",
+          "name": "Tandheelkundige Kliniek Atlas"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.atlaskliniek.nl/en/#website",
+          "url": "https://www.atlaskliniek.nl/en",
+          "name": "Tandheelkundige Kliniek Atlas",
+          "publisher": {
+            "@id": "https://www.atlaskliniek.nl/en/#person"
+          },
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#webpage",
+          "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+          "name": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+          "datePublished": "2021-01-25T15:28:50+01:00",
+          "dateModified": "2024-07-04T17:11:55+02:00",
+          "isPartOf": {
+            "@id": "https://www.atlaskliniek.nl/en/#website"
+          },
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "Article",
+          "headline": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+          "datePublished": "2021-01-25T15:28:50+01:00",
+          "dateModified": "2024-07-04T17:11:55+02:00",
+          "publisher": {
+            "@id": "https://www.atlaskliniek.nl/en/#person"
+          },
+          "description": "Tijdens uw eerste bezoek aan onze praktijk, zullen wij uw mond onderzoeken en een behandelplan op maat opstellen dat voldoet aan al uw wensen.",
+          "name": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+          "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#richSnippet",
+          "isPartOf": {
+            "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#webpage"
+          },
+          "inLanguage": "en-GB",
+          "mainEntityOfPage": {
+            "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#webpage"
+          }
+        }
+      ]
+    }
+  ],
+  "analytics": {
+    "google_analytics": true,
+    "gtag": true,
+    "ga4_id": "G-YG05B986E8",
+    "gtm_id": "GTM-N2Z4RLRB",
+    "facebook_pixel": false,
+    "hotjar": false,
+    "mixpanel": false
+  },
+  "images": [
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+      "alt": "",
+      "width": "232",
+      "height": "121"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+      "alt": "",
+      "width": "236",
+      "height": "123"
+    },
+    {
+      "src": "https://www.zorgkaartnederland.nl/bundles/zkncontent/images/elements/logo_zkn.png",
+      "alt": "Zoek, vind en waardeer zorgaanbieders op ZorgkaartNederland.nl",
+      "width": "",
+      "height": ""
+    },
+    {
+      "src": "https://www.zorgkaartnederland.nl/bundles/zkncontent/images/elements/logo_npcf_widget.png",
+      "alt": "Patiëntenfederatie Nederland",
+      "width": "",
+      "height": ""
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+      "alt": "Part of Atlas",
+      "width": "143",
+      "height": "66"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png",
+      "alt": "KNMT",
+      "width": "650",
+      "height": "290"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/sbb-beeldmerk.png",
+      "alt": "SBB logo",
+      "width": "600",
+      "height": "600"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+      "alt": "telefoonknop",
+      "width": "187",
+      "height": "187"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+      "alt": "en_GB",
+      "width": "18",
+      "height": "12"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+      "alt": "nl_NL",
+      "width": "18",
+      "height": "12"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+      "alt": "en_GB",
+      "width": "18",
+      "height": "12"
+    }
+  ],
+  "redirects": [],
+  "linked_from": [
+    "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "https://www.atlaskliniek.nl/patienteninformatie/",
+    "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "https://www.atlaskliniek.nl/en/inschrijven/",
+    "https://www.atlaskliniek.nl/en",
+    "https://www.atlaskliniek.nl/en/behandelingen/",
+    "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "https://www.atlaskliniek.nl/en/over-ons/",
+    "https://www.atlaskliniek.nl/en/ons-team/",
+    "https://www.atlaskliniek.nl/en/tarieven/",
+    "https://www.atlaskliniek.nl/en/werken-bij/",
+    "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "https://www.atlaskliniek.nl/en/nieuws/",
+    "https://www.atlaskliniek.nl/en/spoed/",
+    "https://www.atlaskliniek.nl/en/contact/",
+    "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "https://www.atlaskliniek.nl/en/",
+    "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/sitemap/"
+  ]
+}

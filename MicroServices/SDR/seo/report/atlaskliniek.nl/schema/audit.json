@@ -1,0 +1,31 @@
+{
+  "category": "Structured Data",
+  "score": 90,
+  "status": "passed",
+  "summary": "Schema audit identified 0 schema types across 72 pages. Score: 90/100.",
+  "findings": [
+    {
+      "category": "Schema",
+      "severity": "low",
+      "title": "Missing Brand / Organization Schema",
+      "description": "No Organization or WebSite schema was detected on the root pages.",
+      "impact": "Limits Google Knowledge Graph and official brand entity association.",
+      "recommendation": "Add Organization schema on the homepage detailing company name, logo, social profiles, and contact points.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+        "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+        "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+        "https://www.atlaskliniek.nl/ons-team/",
+        "https://www.atlaskliniek.nl/"
+      ],
+      "evidence": {
+        "detected_types": []
+      }
+    }
+  ],
+  "metrics": {
+    "pages_with_schema": 72,
+    "schema_coverage_percent": 72.0,
+    "schema_types_found": []
+  }
+}

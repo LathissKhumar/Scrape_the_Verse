@@ -1,0 +1,5709 @@
+[
+  {
+    "id": "iss_bba01fa93c96",
+    "page_id": "page_0017d87a20de",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Title Too Long",
+    "description": "Title is 93 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+      "length": 93
+    }
+  },
+  {
+    "id": "iss_46705edd9fda",
+    "page_id": "page_0017d87a20de",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 119 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners.",
+      "length": 119
+    }
+  },
+  {
+    "id": "iss_11b38f3574f9",
+    "page_id": "page_0017d87a20de",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_392cbc9576e4",
+    "page_id": "page_0017d87a20de",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2321.14ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2321.14,
+      "render_time_ms": 6994.7
+    }
+  },
+  {
+    "id": "iss_1f36cad7db61",
+    "page_id": "page_5577d033234f",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 80 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+      "length": 80
+    }
+  },
+  {
+    "id": "iss_fedf64e3adcf",
+    "page_id": "page_5577d033234f",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_67f7083dcadf",
+    "page_id": "page_5577d033234f",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2335.06ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2335.06,
+      "render_time_ms": 8949.18
+    }
+  },
+  {
+    "id": "iss_b44c7bca814b",
+    "page_id": "page_d9a19e274131",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 20 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "We are here for you!",
+      "length": 20
+    }
+  },
+  {
+    "id": "iss_cc12c2fd5c84",
+    "page_id": "page_d9a19e274131",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_a6815384139a",
+    "page_id": "page_d9a19e274131",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "title": "Slow Response Time",
+    "description": "Page took 5690.83ms to respond (recommended: <3000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 5690.83,
+      "render_time_ms": 27010.49
+    }
+  },
+  {
+    "id": "iss_29d73b8d4ee9",
+    "page_id": "page_5346c526bf3e",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/ons-team/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_6575744cafd4",
+    "page_id": "page_5346c526bf3e",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/ons-team/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2144.11ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2144.11,
+      "render_time_ms": 5288.67
+    }
+  },
+  {
+    "id": "iss_e91ab220ffbc",
+    "page_id": "page_7dbb40eeae6a",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/",
+    "title": "Title Too Long",
+    "description": "Title is 95 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "length": 95
+    }
+  },
+  {
+    "id": "iss_1ae488ab38f8",
+    "page_id": "page_7dbb40eeae6a",
+    "category": "Seo",
+    "type": "meta_description_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/",
+    "title": "Meta Description Too Long",
+    "description": "Description is 162 characters (recommended: ≤160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Tandarts Amsterdam nodig? Van harte welkom bij Tandheelkundige Kliniek Amsterdam in Amsterdam. U kunt terecht voor tandheelkunde & orthodontie | ✅ Geen wachtlijst",
+      "length": 162
+    }
+  },
+  {
+    "id": "iss_8e6df3384576",
+    "page_id": "page_7dbb40eeae6a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_6672b7c66f31",
+    "page_id": "page_7dbb40eeae6a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2631.3ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2631.3,
+      "render_time_ms": 5993.75
+    }
+  },
+  {
+    "id": "iss_520a6f6bb98b",
+    "page_id": "page_0e0e229fbd69",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_905d09bc0f34",
+    "page_id": "page_0e0e229fbd69",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1861.7ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1861.7,
+      "render_time_ms": 5104.95
+    }
+  },
+  {
+    "id": "iss_2c486f119a93",
+    "page_id": "page_0bed4e68ae09",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/privacy-policy/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 73 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Hier treft u de privacy verklaring van Tandheelkundige Kliniek Amsterdam.",
+      "length": 73
+    }
+  },
+  {
+    "id": "iss_a3e009aca2c7",
+    "page_id": "page_0bed4e68ae09",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/privacy-policy/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_670d016667ec",
+    "page_id": "page_0bed4e68ae09",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/privacy-policy/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1754.29ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1754.29,
+      "render_time_ms": 4975.22
+    }
+  },
+  {
+    "id": "iss_eb511cf9fe48",
+    "page_id": "page_8a7279d833e5",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/werken-bij/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_573f05063034",
+    "page_id": "page_8a7279d833e5",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/werken-bij/",
+    "title": "Slow Response Time",
+    "description": "Page took 4815.88ms to respond (recommended: <3000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 4815.88,
+      "render_time_ms": 7886.49
+    }
+  },
+  {
+    "id": "iss_6eb7dad02763",
+    "page_id": "page_1f41ffc2f261",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 90 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "length": 90
+    }
+  },
+  {
+    "id": "iss_64d28ce4a139",
+    "page_id": "page_1f41ffc2f261",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 8 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Vacature",
+      "length": 8
+    }
+  },
+  {
+    "id": "iss_1ec3dd7317de",
+    "page_id": "page_1f41ffc2f261",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_86e2f0a4e652",
+    "page_id": "page_1f41ffc2f261",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2435.58ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2435.58,
+      "render_time_ms": 5498.32
+    }
+  },
+  {
+    "id": "iss_eeab610cadb6",
+    "page_id": "page_ebf31af7a77a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/inschrijven/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_baa654a8f0af",
+    "page_id": "page_ebf31af7a77a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/inschrijven/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2470.02ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2470.02,
+      "render_time_ms": 5923.9
+    }
+  },
+  {
+    "id": "iss_ac71e6cf7be0",
+    "page_id": "page_e0529bbc2898",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/over-ons/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_776b7b5dd3ec",
+    "page_id": "page_e0529bbc2898",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/over-ons/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1923.45ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1923.45,
+      "render_time_ms": 5146.73
+    }
+  },
+  {
+    "id": "iss_131ec94cd7e1",
+    "page_id": "page_99abc5dc8b8b",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_38a5a3cb233e",
+    "page_id": "page_99abc5dc8b8b",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2470.83ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2470.83,
+      "render_time_ms": 5528.63
+    }
+  },
+  {
+    "id": "iss_b34e0f3434c7",
+    "page_id": "page_0f239a60bfc9",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandelingen/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_bfe7745e8250",
+    "page_id": "page_0f239a60bfc9",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandelingen/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2848.71ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2848.71,
+      "render_time_ms": 5940.73
+    }
+  },
+  {
+    "id": "iss_7f0a76e3de4c",
+    "page_id": "page_6ffd9afe0965",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_46a7bfd55526",
+    "page_id": "page_6ffd9afe0965",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2487.22ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2487.22,
+      "render_time_ms": 5795.93
+    }
+  },
+  {
+    "id": "iss_de92e07c91a5",
+    "page_id": "page_95ff8896f29c",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/contact/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d4711d4c0e21",
+    "page_id": "page_95ff8896f29c",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/contact/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2730.45ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2730.45,
+      "render_time_ms": 5833.44
+    }
+  },
+  {
+    "id": "iss_f6abe598ccec",
+    "page_id": "page_bb37425d30e3",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/spoed/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_c2d63579a849",
+    "page_id": "page_bb37425d30e3",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/spoed/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2472.49ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2472.49,
+      "render_time_ms": 5530.05
+    }
+  },
+  {
+    "id": "iss_64eab7bca2ad",
+    "page_id": "page_4043720dcb12",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 62 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "length": 62
+    }
+  },
+  {
+    "id": "iss_5ad137e9384c",
+    "page_id": "page_4043720dcb12",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_33ff4fbaffeb",
+    "page_id": "page_4043720dcb12",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_4d289cbcdbdd",
+    "page_id": "page_4043720dcb12",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2449.4ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2449.4,
+      "render_time_ms": 5515.47
+    }
+  },
+  {
+    "id": "iss_55c5948d5da3",
+    "page_id": "page_83528fe0b86c",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "title": "Title Too Long",
+    "description": "Title is 62 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+      "length": 62
+    }
+  },
+  {
+    "id": "iss_db193212d73b",
+    "page_id": "page_83528fe0b86c",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_a563e3d71aab",
+    "page_id": "page_83528fe0b86c",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_df3741859c7e",
+    "page_id": "page_83528fe0b86c",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2618.07ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2618.07,
+      "render_time_ms": 5677.87
+    }
+  },
+  {
+    "id": "iss_2756d5987ab6",
+    "page_id": "page_c329231792eb",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_3f2f23c37a56",
+    "page_id": "page_c329231792eb",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_766ed9ac2eaf",
+    "page_id": "page_c329231792eb",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2505.02ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2505.02,
+      "render_time_ms": 5571.06
+    }
+  },
+  {
+    "id": "iss_da3605a4b812",
+    "page_id": "page_0732664f4e5d",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_7003b1e865ee",
+    "page_id": "page_0732664f4e5d",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1655a1229f02",
+    "page_id": "page_0732664f4e5d",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2448.6ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2448.6,
+      "render_time_ms": 5509.45
+    }
+  },
+  {
+    "id": "iss_b3d60b50d3ac",
+    "page_id": "page_7c786ad07e30",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_b1001ec400d0",
+    "page_id": "page_7c786ad07e30",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_7ad9fde9cd3f",
+    "page_id": "page_7c786ad07e30",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2451.73ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2451.73,
+      "render_time_ms": 5520.34
+    }
+  },
+  {
+    "id": "iss_20218f1c3dac",
+    "page_id": "page_7c30be080f47",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_858dbbd9e308",
+    "page_id": "page_7c30be080f47",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_2da99ff400b9",
+    "page_id": "page_7c30be080f47",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2502.22ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2502.22,
+      "render_time_ms": 5557.3
+    }
+  },
+  {
+    "id": "iss_e9c0d5a184e5",
+    "page_id": "page_00fc6a41a946",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 20 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "We are here for you!",
+      "length": 20
+    }
+  },
+  {
+    "id": "iss_2ded5456c2b0",
+    "page_id": "page_00fc6a41a946",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_92acd7fd0827",
+    "page_id": "page_00fc6a41a946",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2463.43ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2463.43,
+      "render_time_ms": 5526.89
+    }
+  },
+  {
+    "id": "iss_63b24e6247b4",
+    "page_id": "page_3bcdb6673017",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 61 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+      "length": 61
+    }
+  },
+  {
+    "id": "iss_5e47720a80f4",
+    "page_id": "page_3bcdb6673017",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_4d1d8112e01c",
+    "page_id": "page_3bcdb6673017",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d8b787916f68",
+    "page_id": "page_3bcdb6673017",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2768.23ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2768.23,
+      "render_time_ms": 5824.91
+    }
+  },
+  {
+    "id": "iss_0b941489a262",
+    "page_id": "page_d3cc19eafbc6",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_9228e3518a68",
+    "page_id": "page_d3cc19eafbc6",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_bca94d554b56",
+    "page_id": "page_d3cc19eafbc6",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2476.58ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2476.58,
+      "render_time_ms": 5555.1
+    }
+  },
+  {
+    "id": "iss_1d3e4eb99e93",
+    "page_id": "page_b11e0b9a810e",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 63 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "length": 63
+    }
+  },
+  {
+    "id": "iss_be2f4e85702e",
+    "page_id": "page_b11e0b9a810e",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_e317bf207450",
+    "page_id": "page_b11e0b9a810e",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b5122a2b5d13",
+    "page_id": "page_b11e0b9a810e",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2462.52ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2462.52,
+      "render_time_ms": 5540.25
+    }
+  },
+  {
+    "id": "iss_6fccfaf1db67",
+    "page_id": "page_47f7445499ca",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 74 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Hier treft u de algemene voorwaarden van Tandheelkundige Kliniek Amsterdam",
+      "length": 74
+    }
+  },
+  {
+    "id": "iss_fff758a2a26a",
+    "page_id": "page_47f7445499ca",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_056341c07adf",
+    "page_id": "page_47f7445499ca",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2469.28ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2469.28,
+      "render_time_ms": 5540.24
+    }
+  },
+  {
+    "id": "iss_5912459a3f4a",
+    "page_id": "page_56b0fcdc1efc",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 62 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Hier treft u de sitemap van Tandheelkundige Kliniek Amsterdam.",
+      "length": 62
+    }
+  },
+  {
+    "id": "iss_4a861f24d164",
+    "page_id": "page_56b0fcdc1efc",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  },
+  {
+    "id": "iss_39ad2d08cca7",
+    "page_id": "page_56b0fcdc1efc",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_183eb70522f7",
+    "page_id": "page_56b0fcdc1efc",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2587.59ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2587.59,
+      "render_time_ms": 5732.75
+    }
+  },
+  {
+    "id": "iss_7ee6e456af94",
+    "page_id": "page_72e6ee4831da",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuws/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f6bb8d929d08",
+    "page_id": "page_72e6ee4831da",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuws/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2558.47ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2558.47,
+      "render_time_ms": 5625.68
+    }
+  },
+  {
+    "id": "iss_e7eea65e4f86",
+    "page_id": "page_a112dd70ef0f",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/garantie/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_657b67b2d3a4",
+    "page_id": "page_a112dd70ef0f",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/garantie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2497.64ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2497.64,
+      "render_time_ms": 5621.73
+    }
+  },
+  {
+    "id": "iss_1b853877f411",
+    "page_id": "page_3ed8c16ddf95",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_3fd90d4a96d2",
+    "page_id": "page_3ed8c16ddf95",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_77da81a4272c",
+    "page_id": "page_3ed8c16ddf95",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2623.83ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2623.83,
+      "render_time_ms": 5685.03
+    }
+  },
+  {
+    "id": "iss_844d0f51dd7a",
+    "page_id": "page_9c7e29d9a88a",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/tandarts/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_9fd4365970a3",
+    "page_id": "page_9c7e29d9a88a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/tandarts/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_481132a8f6d1",
+    "page_id": "page_9c7e29d9a88a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/tandarts/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2645.47ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2645.47,
+      "render_time_ms": 5698.53
+    }
+  },
+  {
+    "id": "iss_17ba0c25923b",
+    "page_id": "page_248678ddca62",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_83b8acafe459",
+    "page_id": "page_248678ddca62",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1b97eb7a7757",
+    "page_id": "page_248678ddca62",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2471.54ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2471.54,
+      "render_time_ms": 5534.13
+    }
+  },
+  {
+    "id": "iss_edf7bfb24266",
+    "page_id": "page_63ca90cff096",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_2c27873293d2",
+    "page_id": "page_63ca90cff096",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_e1298d3bf1d4",
+    "page_id": "page_63ca90cff096",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2568.15ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2568.15,
+      "render_time_ms": 5623.2
+    }
+  },
+  {
+    "id": "iss_617f889b11da",
+    "page_id": "page_a63d71178079",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/assistent/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_831a23b87bf0",
+    "page_id": "page_a63d71178079",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/assistent/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_138544336b3e",
+    "page_id": "page_a63d71178079",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/assistent/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2424.37ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2424.37,
+      "render_time_ms": 5467.71
+    }
+  },
+  {
+    "id": "iss_1221df148252",
+    "page_id": "page_130cf1c842fa",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_f07dae05bbb0",
+    "page_id": "page_130cf1c842fa",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_db2f0fd03eb6",
+    "page_id": "page_130cf1c842fa",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2483.3ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2483.3,
+      "render_time_ms": 5538.66
+    }
+  },
+  {
+    "id": "iss_6ebf440f3fce",
+    "page_id": "page_5e79383da39a",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_6ff32e20d25c",
+    "page_id": "page_5e79383da39a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d82a12efa89a",
+    "page_id": "page_5e79383da39a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2480.36ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2480.36,
+      "render_time_ms": 5532.8
+    }
+  },
+  {
+    "id": "iss_3a86924ddbd2",
+    "page_id": "page_c83f1504097e",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_77bd7db7da99",
+    "page_id": "page_c83f1504097e",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b660aebfcd04",
+    "page_id": "page_c83f1504097e",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2388.94ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2388.94,
+      "render_time_ms": 5523.67
+    }
+  },
+  {
+    "id": "iss_a13622591475",
+    "page_id": "page_d4dadafe6ed7",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "title": "Title Too Long",
+    "description": "Title is 62 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Niet-praktiserend tandarts - Tandheelkundige Kliniek Amsterdam",
+      "length": 62
+    }
+  },
+  {
+    "id": "iss_fb1e8254a4a9",
+    "page_id": "page_d4dadafe6ed7",
+    "category": "Seo",
+    "type": "missing_meta_description",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "title": "Missing Meta Description",
+    "description": "Page has no meta description",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "",
+      "length": 0
+    }
+  },
+  {
+    "id": "iss_54322f8e2429",
+    "page_id": "page_d4dadafe6ed7",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_489d995fc1a3",
+    "page_id": "page_d4dadafe6ed7",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2508.51ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2508.51,
+      "render_time_ms": 5576.56
+    }
+  },
+  {
+    "id": "iss_4f0f2aebbb2c",
+    "page_id": "page_abb63033bb54",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b2b9f83bc9b6",
+    "page_id": "page_abb63033bb54",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_c1518cd4e127",
+    "page_id": "page_abb63033bb54",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "title": "Slow Response Time",
+    "description": "Page took 3161.53ms to respond (recommended: <3000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 3161.53,
+      "render_time_ms": 6227.56
+    }
+  },
+  {
+    "id": "iss_7605b5a8e6fb",
+    "page_id": "page_0230478a91e0",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_041e35de0307",
+    "page_id": "page_0230478a91e0",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_eb03826c7534",
+    "page_id": "page_0230478a91e0",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2902.05ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2902.05,
+      "render_time_ms": 5944.5
+    }
+  },
+  {
+    "id": "iss_7d3e5558cd9a",
+    "page_id": "page_7998ae689556",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1ccb1b3e1946",
+    "page_id": "page_7998ae689556",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0f2600e34df6",
+    "page_id": "page_7998ae689556",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2512.34ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2512.34,
+      "render_time_ms": 5604.72
+    }
+  },
+  {
+    "id": "iss_2d9ab24ee0b5",
+    "page_id": "page_a63eddcf5b3a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d59ea30b1363",
+    "page_id": "page_a63eddcf5b3a",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b2c4252a451a",
+    "page_id": "page_a63eddcf5b3a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2473.41ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2473.41,
+      "render_time_ms": 5547.56
+    }
+  },
+  {
+    "id": "iss_62613e352886",
+    "page_id": "page_f6b7e1817639",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "title": "Title Too Long",
+    "description": "Title is 61 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Wortelkanaalbehandelingen - Tandheelkundige Kliniek Amsterdam",
+      "length": 61
+    }
+  },
+  {
+    "id": "iss_0e9c7a72a359",
+    "page_id": "page_f6b7e1817639",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ad7b17bcd36e",
+    "page_id": "page_f6b7e1817639",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_403aa485950e",
+    "page_id": "page_f6b7e1817639",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2459.93ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2459.93,
+      "render_time_ms": 5533.48
+    }
+  },
+  {
+    "id": "iss_2cf923fe341a",
+    "page_id": "page_5b2ee780b008",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0a6c7d2f3f28",
+    "page_id": "page_5b2ee780b008",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f1a7c07210f4",
+    "page_id": "page_5b2ee780b008",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2824.94ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2824.94,
+      "render_time_ms": 5950.68
+    }
+  },
+  {
+    "id": "iss_81c5347d2b1b",
+    "page_id": "page_165c3c8d61e1",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_36d70c163ac6",
+    "page_id": "page_165c3c8d61e1",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8409e9c56f6d",
+    "page_id": "page_165c3c8d61e1",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2580.65ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2580.65,
+      "render_time_ms": 5642.75
+    }
+  },
+  {
+    "id": "iss_b59644db4578",
+    "page_id": "page_cb419703430c",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_94f1035ed8fd",
+    "page_id": "page_cb419703430c",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5244c8922670",
+    "page_id": "page_cb419703430c",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2551.93ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2551.93,
+      "render_time_ms": 5607.04
+    }
+  },
+  {
+    "id": "iss_b79f4211f484",
+    "page_id": "page_039db2a82ba2",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_e0a09d5c40e4",
+    "page_id": "page_039db2a82ba2",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1bcd36df7d95",
+    "page_id": "page_039db2a82ba2",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2660.17ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2660.17,
+      "render_time_ms": 5721.29
+    }
+  },
+  {
+    "id": "iss_c6c33b0e240d",
+    "page_id": "page_3e70968777ad",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_2859867850a8",
+    "page_id": "page_3e70968777ad",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1adc7cebc4c1",
+    "page_id": "page_3e70968777ad",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2485.51ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2485.51,
+      "render_time_ms": 5548.19
+    }
+  },
+  {
+    "id": "iss_c266ddb14ca3",
+    "page_id": "page_c4aeaaee360d",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 15 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d8ac587fc941",
+    "page_id": "page_c4aeaaee360d",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_715eb35c38b8",
+    "page_id": "page_c4aeaaee360d",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2481.96ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2481.96,
+      "render_time_ms": 5548.46
+    }
+  },
+  {
+    "id": "iss_a84d7c4c0033",
+    "page_id": "page_c945a406e92e",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ef010dcc6241",
+    "page_id": "page_c945a406e92e",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_54487d38cbfb",
+    "page_id": "page_c945a406e92e",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2540.94ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2540.94,
+      "render_time_ms": 5585.61
+    }
+  },
+  {
+    "id": "iss_4dc27d28178b",
+    "page_id": "page_03f0dbc6dcdb",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_187bf3940d50",
+    "page_id": "page_03f0dbc6dcdb",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_4f577066629c",
+    "page_id": "page_03f0dbc6dcdb",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2539.92ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2539.92,
+      "render_time_ms": 5607.52
+    }
+  },
+  {
+    "id": "iss_f1e9d692d792",
+    "page_id": "page_e91777cac68b",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "title": "Title Too Long",
+    "description": "Title is 95 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "length": 95
+    }
+  },
+  {
+    "id": "iss_99a197ad74e4",
+    "page_id": "page_e91777cac68b",
+    "category": "Seo",
+    "type": "meta_description_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "title": "Meta Description Too Long",
+    "description": "Description is 162 characters (recommended: ≤160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Tandarts Amsterdam nodig? Van harte welkom bij Tandheelkundige Kliniek Amsterdam in Amsterdam. U kunt terecht voor tandheelkunde & orthodontie | ✅ Geen wachtlijst",
+      "length": 162
+    }
+  },
+  {
+    "id": "iss_92c652954363",
+    "page_id": "page_e91777cac68b",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "title": "Canonical URL Different",
+    "description": "Canonical points to: https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "https://www.atlaskliniek.nl/",
+      "url": "https://www.atlaskliniek.nl/2026/02/18/"
+    }
+  },
+  {
+    "id": "iss_f5fc5b8fd719",
+    "page_id": "page_e91777cac68b",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b9d2d3fa3308",
+    "page_id": "page_e91777cac68b",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2259.07ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2259.07,
+      "render_time_ms": 6261.7
+    }
+  },
+  {
+    "id": "iss_4ce74182e4ff",
+    "page_id": "page_700e46a7ef5a",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Title Too Long",
+    "description": "Title is 93 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+      "length": 93
+    }
+  },
+  {
+    "id": "iss_2865df5af9a9",
+    "page_id": "page_700e46a7ef5a",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 119 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners.",
+      "length": 119
+    }
+  },
+  {
+    "id": "iss_7934bc948e1b",
+    "page_id": "page_700e46a7ef5a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0d9e3f4654e8",
+    "page_id": "page_700e46a7ef5a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2572.72ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2572.72,
+      "render_time_ms": 9744.7
+    }
+  },
+  {
+    "id": "iss_780184aa8e5b",
+    "page_id": "page_620892f2b543",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "title": "Title Too Long",
+    "description": "Title is 95 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "length": 95
+    }
+  },
+  {
+    "id": "iss_166ff961cce7",
+    "page_id": "page_620892f2b543",
+    "category": "Seo",
+    "type": "meta_description_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "title": "Meta Description Too Long",
+    "description": "Description is 162 characters (recommended: ≤160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Tandarts Amsterdam nodig? Van harte welkom bij Tandheelkundige Kliniek Amsterdam in Amsterdam. U kunt terecht voor tandheelkunde & orthodontie | ✅ Geen wachtlijst",
+      "length": 162
+    }
+  },
+  {
+    "id": "iss_5454fef5ad01",
+    "page_id": "page_620892f2b543",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "title": "Canonical URL Different",
+    "description": "Canonical points to: https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "https://www.atlaskliniek.nl/",
+      "url": "https://www.atlaskliniek.nl/2023/08/09/"
+    }
+  },
+  {
+    "id": "iss_f78279d02403",
+    "page_id": "page_620892f2b543",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_6fd3de702bab",
+    "page_id": "page_620892f2b543",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2990.44ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2990.44,
+      "render_time_ms": 8242.3
+    }
+  },
+  {
+    "id": "iss_4b614d8866d1",
+    "page_id": "page_88a5be583bb5",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 80 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+      "length": 80
+    }
+  },
+  {
+    "id": "iss_e84c732cd67d",
+    "page_id": "page_88a5be583bb5",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_2e7f8edfef68",
+    "page_id": "page_88a5be583bb5",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2823.24ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2823.24,
+      "render_time_ms": 6072.98
+    }
+  },
+  {
+    "id": "iss_98aca2776268",
+    "page_id": "page_ea39d20c9b92",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_32e512659ca1",
+    "page_id": "page_ea39d20c9b92",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2150.98ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2150.98,
+      "render_time_ms": 5372.72
+    }
+  },
+  {
+    "id": "iss_7f669671a5fb",
+    "page_id": "page_713a2178d032",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en",
+    "title": "Title Too Long",
+    "description": "Title is 95 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "length": 95
+    }
+  },
+  {
+    "id": "iss_ba9b9e008876",
+    "page_id": "page_713a2178d032",
+    "category": "Seo",
+    "type": "meta_description_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en",
+    "title": "Meta Description Too Long",
+    "description": "Description is 162 characters (recommended: ≤160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Tandarts Amsterdam nodig? Van harte welkom bij Tandheelkundige Kliniek Amsterdam in Amsterdam. U kunt terecht voor tandheelkunde & orthodontie | ✅ Geen wachtlijst",
+      "length": 162
+    }
+  },
+  {
+    "id": "iss_659df9843c6e",
+    "page_id": "page_713a2178d032",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en",
+    "title": "Canonical URL Different",
+    "description": "Canonical points to: https://www.atlaskliniek.nl/en/",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "https://www.atlaskliniek.nl/en/",
+      "url": "https://www.atlaskliniek.nl/en"
+    }
+  },
+  {
+    "id": "iss_2a8701af598b",
+    "page_id": "page_713a2178d032",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_afb05bd1eded",
+    "page_id": "page_713a2178d032",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en",
+    "title": "Moderate Response Time",
+    "description": "Page took 2205.95ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2205.95,
+      "render_time_ms": 6498.47
+    }
+  },
+  {
+    "id": "iss_0ef323311972",
+    "page_id": "page_fdfa483fea95",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_545604a91149",
+    "page_id": "page_fdfa483fea95",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2794.59ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2794.59,
+      "render_time_ms": 5862.97
+    }
+  },
+  {
+    "id": "iss_4173e62f0786",
+    "page_id": "page_3188e3ba225d",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_122198e55ecb",
+    "page_id": "page_3188e3ba225d",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d410f84c1007",
+    "page_id": "page_3188e3ba225d",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2116.41ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2116.41,
+      "render_time_ms": 5184.84
+    }
+  },
+  {
+    "id": "iss_4317edcab5fd",
+    "page_id": "page_0265451ed277",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_26069e28acf2",
+    "page_id": "page_0265451ed277",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_294a8f633499",
+    "page_id": "page_0265451ed277",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2114.32ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2114.32,
+      "render_time_ms": 5165.74
+    }
+  },
+  {
+    "id": "iss_0ab31f2e7a2f",
+    "page_id": "page_49c8fae54f04",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_cb8cd98a65b6",
+    "page_id": "page_49c8fae54f04",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_6755eec39926",
+    "page_id": "page_49c8fae54f04",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2734.06ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2734.06,
+      "render_time_ms": 5784.11
+    }
+  },
+  {
+    "id": "iss_c5df05ddad56",
+    "page_id": "page_f198a6cf9f21",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f30cba19b1f5",
+    "page_id": "page_f198a6cf9f21",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ba652490b26a",
+    "page_id": "page_f198a6cf9f21",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2342.62ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2342.62,
+      "render_time_ms": 5388.76
+    }
+  },
+  {
+    "id": "iss_7540e2b9f526",
+    "page_id": "page_089328e054f3",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "title": "Title Too Long",
+    "description": "Title is 61 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Wortelkanaalbehandelingen - Tandheelkundige Kliniek Amsterdam",
+      "length": 61
+    }
+  },
+  {
+    "id": "iss_c9118879c18e",
+    "page_id": "page_089328e054f3",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f2b6a9a3bc8d",
+    "page_id": "page_089328e054f3",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5fcadc0e3a5d",
+    "page_id": "page_089328e054f3",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2124.47ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2124.47,
+      "render_time_ms": 5235.5
+    }
+  },
+  {
+    "id": "iss_a6272d9c7558",
+    "page_id": "page_1aa344c36772",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d6231adb6112",
+    "page_id": "page_1aa344c36772",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1a6e3502187c",
+    "page_id": "page_1aa344c36772",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2709.44ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2709.44,
+      "render_time_ms": 5758.02
+    }
+  },
+  {
+    "id": "iss_9de6fe3c5071",
+    "page_id": "page_04a167df1a57",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_98f935274b9c",
+    "page_id": "page_04a167df1a57",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_3928bd8054c9",
+    "page_id": "page_04a167df1a57",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2637.36ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2637.36,
+      "render_time_ms": 5702.94
+    }
+  },
+  {
+    "id": "iss_c10e93ca83d7",
+    "page_id": "page_f09d5a317b60",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_efcbd2d59a46",
+    "page_id": "page_f09d5a317b60",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_98af6e33d061",
+    "page_id": "page_f09d5a317b60",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2549.91ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2549.91,
+      "render_time_ms": 5680.26
+    }
+  },
+  {
+    "id": "iss_15a9b678ce75",
+    "page_id": "page_04b2c16b2372",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_cdea64e3011e",
+    "page_id": "page_04b2c16b2372",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d633e139a119",
+    "page_id": "page_04b2c16b2372",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2591.77ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2591.77,
+      "render_time_ms": 5653.21
+    }
+  },
+  {
+    "id": "iss_014636e3e473",
+    "page_id": "page_317590d94d87",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 15 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_14021de7d134",
+    "page_id": "page_317590d94d87",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b5894853f602",
+    "page_id": "page_317590d94d87",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2107.73ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2107.73,
+      "render_time_ms": 5188.33
+    }
+  },
+  {
+    "id": "iss_5b490949069b",
+    "page_id": "page_aad42192f664",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5ae4d860bb5a",
+    "page_id": "page_aad42192f664",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_bf34e965bfdf",
+    "page_id": "page_aad42192f664",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2631.33ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2631.33,
+      "render_time_ms": 5704.54
+    }
+  },
+  {
+    "id": "iss_b602a69b384c",
+    "page_id": "page_b7feff077d90",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_759cc3241819",
+    "page_id": "page_b7feff077d90",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_3b91031b8fb7",
+    "page_id": "page_b7feff077d90",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2077.54ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2077.54,
+      "render_time_ms": 5148.62
+    }
+  },
+  {
+    "id": "iss_d815e1db73ef",
+    "page_id": "page_322fd4ec018f",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ffc7692972a9",
+    "page_id": "page_322fd4ec018f",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b6d3584a421c",
+    "page_id": "page_322fd4ec018f",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1989.82ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1989.82,
+      "render_time_ms": 5089.34
+    }
+  },
+  {
+    "id": "iss_aac27205a3c4",
+    "page_id": "page_bba06e058964",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/over-ons/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_3c2ebec3bc19",
+    "page_id": "page_bba06e058964",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/over-ons/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2962.73ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2962.73,
+      "render_time_ms": 6041.32
+    }
+  },
+  {
+    "id": "iss_a129e2653634",
+    "page_id": "page_c1289205a209",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/ons-team/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_73f7f412bedc",
+    "page_id": "page_c1289205a209",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/ons-team/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2719.94ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2719.94,
+      "render_time_ms": 5778.19
+    }
+  },
+  {
+    "id": "iss_eaef1ed990f5",
+    "page_id": "page_f806a218ca7e",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tarieven/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8203215ba43b",
+    "page_id": "page_f806a218ca7e",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tarieven/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1863.22ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1863.22,
+      "render_time_ms": 5111.97
+    }
+  },
+  {
+    "id": "iss_5af2de141494",
+    "page_id": "page_af73b44e73a6",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_3bbba37b3395",
+    "page_id": "page_af73b44e73a6",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2058.57ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2058.57,
+      "render_time_ms": 5108.32
+    }
+  },
+  {
+    "id": "iss_d6042ed873da",
+    "page_id": "page_7001b2272dcf",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1a934cef8d78",
+    "page_id": "page_7001b2272dcf",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2866.93ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2866.93,
+      "render_time_ms": 5977.12
+    }
+  },
+  {
+    "id": "iss_84d40f46a282",
+    "page_id": "page_9ef44c83d051",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_9863f063f23b",
+    "page_id": "page_9ef44c83d051",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1815.24ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1815.24,
+      "render_time_ms": 4951.83
+    }
+  },
+  {
+    "id": "iss_94376dd97e2f",
+    "page_id": "page_9b6c44f7401d",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuws/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_210493aecc38",
+    "page_id": "page_9b6c44f7401d",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuws/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2639.15ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2639.15,
+      "render_time_ms": 5706.69
+    }
+  },
+  {
+    "id": "iss_4688df94dc33",
+    "page_id": "page_c379ea010af6",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/spoed/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ae566f19481f",
+    "page_id": "page_c379ea010af6",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/spoed/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2722.15ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2722.15,
+      "render_time_ms": 5908.8
+    }
+  },
+  {
+    "id": "iss_ceb023c9dcf7",
+    "page_id": "page_a9899ce3c5d5",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/contact/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ec2b7b1aa698",
+    "page_id": "page_a9899ce3c5d5",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/contact/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1923.48ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1923.48,
+      "render_time_ms": 5067.02
+    }
+  },
+  {
+    "id": "iss_65b0da2c9502",
+    "page_id": "page_0fc27f357f15",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 74 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Hier treft u de algemene voorwaarden van Tandheelkundige Kliniek Amsterdam",
+      "length": 74
+    }
+  },
+  {
+    "id": "iss_bc7e2aadf336",
+    "page_id": "page_0fc27f357f15",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_985ab36ed351",
+    "page_id": "page_0fc27f357f15",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2131.0ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2131.0,
+      "render_time_ms": 5172.7
+    }
+  },
+  {
+    "id": "iss_b054e2bc65ed",
+    "page_id": "page_d51a4309c3e8",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 73 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Hier treft u de privacy verklaring van Tandheelkundige Kliniek Amsterdam.",
+      "length": 73
+    }
+  },
+  {
+    "id": "iss_57d22223c9bd",
+    "page_id": "page_d51a4309c3e8",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_57c909471146",
+    "page_id": "page_d51a4309c3e8",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2608.47ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2608.47,
+      "render_time_ms": 5666.34
+    }
+  },
+  {
+    "id": "iss_b210c8561d9d",
+    "page_id": "page_1e5b69e74c0b",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/",
+    "title": "Title Too Long",
+    "description": "Title is 95 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "length": 95
+    }
+  },
+  {
+    "id": "iss_06a1d18460b7",
+    "page_id": "page_1e5b69e74c0b",
+    "category": "Seo",
+    "type": "meta_description_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/",
+    "title": "Meta Description Too Long",
+    "description": "Description is 162 characters (recommended: ≤160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Tandarts Amsterdam nodig? Van harte welkom bij Tandheelkundige Kliniek Amsterdam in Amsterdam. U kunt terecht voor tandheelkunde & orthodontie | ✅ Geen wachtlijst",
+      "length": 162
+    }
+  },
+  {
+    "id": "iss_c0c09ab544b9",
+    "page_id": "page_1e5b69e74c0b",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_29e3ffd2de1b",
+    "page_id": "page_1e5b69e74c0b",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1996.16ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1996.16,
+      "render_time_ms": 5174.13
+    }
+  },
+  {
+    "id": "iss_f9b637f45058",
+    "page_id": "page_bc1d21c8cd2a",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 90 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "length": 90
+    }
+  },
+  {
+    "id": "iss_f617d04957f3",
+    "page_id": "page_bc1d21c8cd2a",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 8 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Vacature",
+      "length": 8
+    }
+  },
+  {
+    "id": "iss_72c86ee1ea4c",
+    "page_id": "page_bc1d21c8cd2a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d59f237370df",
+    "page_id": "page_bc1d21c8cd2a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2816.49ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2816.49,
+      "render_time_ms": 5890.0
+    }
+  },
+  {
+    "id": "iss_39efd28fccdb",
+    "page_id": "page_6390b099b338",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "title": "Canonical URL Different",
+    "description": "Canonical points to: https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+      "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/"
+    }
+  },
+  {
+    "id": "iss_ca97bd7c3492",
+    "page_id": "page_6390b099b338",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8586d068fd31",
+    "page_id": "page_6390b099b338",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_58aadd890521",
+    "page_id": "page_6390b099b338",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2244.03ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2244.03,
+      "render_time_ms": 6277.22
+    }
+  },
+  {
+    "id": "iss_3543712b47a6",
+    "page_id": "page_9b757fa84d6c",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "title": "Canonical URL Different",
+    "description": "Canonical points to: https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+      "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/"
+    }
+  },
+  {
+    "id": "iss_1781d62e3f81",
+    "page_id": "page_9b757fa84d6c",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "title": "Images Without Alt Text",
+    "description": "3 of 12 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0d972bda59c0",
+    "page_id": "page_9b757fa84d6c",
+    "category": "Structured Data",
+    "type": "no_structured_data",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "title": "No Structured Data",
+    "description": "Page has no JSON-LD or Schema.org markup",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f71e2e6d8a5f",
+    "page_id": "page_9b757fa84d6c",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1845.5ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1845.5,
+      "render_time_ms": 6506.31
+    }
+  },
+  {
+    "id": "iss_8e1837ab48f5",
+    "page_id": "page_f8633c8b590b",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 62 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "length": 62
+    }
+  },
+  {
+    "id": "iss_f392e8753607",
+    "page_id": "page_f8633c8b590b",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_f657a59c584a",
+    "page_id": "page_f8633c8b590b",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_c6b4584328b0",
+    "page_id": "page_f8633c8b590b",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2271.68ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2271.68,
+      "render_time_ms": 5460.75
+    }
+  },
+  {
+    "id": "iss_f5fd572cfa96",
+    "page_id": "page_06c49248855f",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "title": "Title Too Long",
+    "description": "Title is 95 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "length": 95
+    }
+  },
+  {
+    "id": "iss_527fffc6c9fb",
+    "page_id": "page_06c49248855f",
+    "category": "Seo",
+    "type": "meta_description_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "title": "Meta Description Too Long",
+    "description": "Description is 162 characters (recommended: ≤160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Tandarts Amsterdam nodig? Van harte welkom bij Tandheelkundige Kliniek Amsterdam in Amsterdam. U kunt terecht voor tandheelkunde & orthodontie | ✅ Geen wachtlijst",
+      "length": 162
+    }
+  },
+  {
+    "id": "iss_5c6fbcf1d6b8",
+    "page_id": "page_06c49248855f",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "title": "Canonical URL Different",
+    "description": "Canonical points to: https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "https://www.atlaskliniek.nl/",
+      "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/"
+    }
+  },
+  {
+    "id": "iss_2b14d1ccc38d",
+    "page_id": "page_06c49248855f",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_a4310a6aa363",
+    "page_id": "page_06c49248855f",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2044.73ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2044.73,
+      "render_time_ms": 6799.62
+    }
+  },
+  {
+    "id": "iss_e0ae1de05ad5",
+    "page_id": "page_a0351e1d1fa8",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "title": "Title Too Long",
+    "description": "Title is 62 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+      "length": 62
+    }
+  },
+  {
+    "id": "iss_9831196f9101",
+    "page_id": "page_a0351e1d1fa8",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_a14434ec6df9",
+    "page_id": "page_a0351e1d1fa8",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d24a61634bb3",
+    "page_id": "page_a0351e1d1fa8",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2332.11ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2332.11,
+      "render_time_ms": 5480.03
+    }
+  },
+  {
+    "id": "iss_b0262b76625e",
+    "page_id": "page_5cdd63297f3a",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_3f19c310f401",
+    "page_id": "page_5cdd63297f3a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_26977a26fe96",
+    "page_id": "page_5cdd63297f3a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1985.86ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1985.86,
+      "render_time_ms": 5118.94
+    }
+  },
+  {
+    "id": "iss_8ff84f4b6b00",
+    "page_id": "page_6d4a8bbbace3",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_a755b4b6f6e1",
+    "page_id": "page_6d4a8bbbace3",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_7743471c80f0",
+    "page_id": "page_6d4a8bbbace3",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 2471.37ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 2471.37,
+      "render_time_ms": 5597.08
+    }
+  },
+  {
+    "id": "iss_2e95731eba13",
+    "page_id": "page_95f337060f9e",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_2a90c80dbde1",
+    "page_id": "page_95f337060f9e",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_86642184b5f4",
+    "page_id": "page_95f337060f9e",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1924.74ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1924.74,
+      "render_time_ms": 5049.48
+    }
+  },
+  {
+    "id": "iss_4e9230a53a5c",
+    "page_id": "page_d853cd0f7ef9",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_e70eca4a1c2e",
+    "page_id": "page_d853cd0f7ef9",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b1812aafd00b",
+    "page_id": "page_d853cd0f7ef9",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1839.09ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1839.09,
+      "render_time_ms": 5003.97
+    }
+  },
+  {
+    "id": "iss_675da5c9363e",
+    "page_id": "page_d7463cb1b0f2",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 61 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+      "length": 61
+    }
+  },
+  {
+    "id": "iss_03343fb3293f",
+    "page_id": "page_d7463cb1b0f2",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_974fea82267e",
+    "page_id": "page_d7463cb1b0f2",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_977e8b70dbfc",
+    "page_id": "page_d7463cb1b0f2",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1964.31ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1964.31,
+      "render_time_ms": 5095.71
+    }
+  },
+  {
+    "id": "iss_2b36e8a2a0b1",
+    "page_id": "page_6e38215e1414",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_941f59b7c815",
+    "page_id": "page_6e38215e1414",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f04aa1145b8d",
+    "page_id": "page_6e38215e1414",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1944.75ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1944.75,
+      "render_time_ms": 5077.34
+    }
+  },
+  {
+    "id": "iss_2d65838e6c69",
+    "page_id": "page_13f4d7973600",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "title": "Title Too Long",
+    "description": "Title is 63 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "length": 63
+    }
+  },
+  {
+    "id": "iss_12d8249633a4",
+    "page_id": "page_13f4d7973600",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 22 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Wij staan voor u klaar",
+      "length": 22
+    }
+  },
+  {
+    "id": "iss_12537b16d136",
+    "page_id": "page_13f4d7973600",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_9f8c32653145",
+    "page_id": "page_13f4d7973600",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1906.64ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1906.64,
+      "render_time_ms": 5049.29
+    }
+  },
+  {
+    "id": "iss_a1ba8cbc6a81",
+    "page_id": "page_714253307069",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  },
+  {
+    "id": "iss_207acf662b84",
+    "page_id": "page_714253307069",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "title": "Missing Canonical URL",
+    "description": "Page has no canonical URL specified",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "",
+      "url": "https://www.atlaskliniek.nl/bedankt-contact/"
+    }
+  },
+  {
+    "id": "iss_bc5e49489014",
+    "page_id": "page_714253307069",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0a1b6951751b",
+    "page_id": "page_714253307069",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1923.72ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1923.72,
+      "render_time_ms": 5047.07
+    }
+  },
+  {
+    "id": "iss_49e090a6836c",
+    "page_id": "page_714253307069",
+    "category": "Indexability",
+    "type": "indexing_restriction",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "title": "Noindex Tag Present",
+    "description": "Page is BLOCKED from search engines - has noindex directive",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_176c7a0fa618",
+    "page_id": "page_90ab5abc667a",
+    "category": "Seo",
+    "type": "title_too_long",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Title Too Long",
+    "description": "Title is 64 characters (recommended: ≤60)",
+    "recommendation": null,
+    "evidence": {
+      "title": "Bedankt Voor Uw Inschrijving | Tandheelkundige Kliniek Amsterdam",
+      "length": 64
+    }
+  },
+  {
+    "id": "iss_8c1dd23f878b",
+    "page_id": "page_90ab5abc667a",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  },
+  {
+    "id": "iss_11c1a62ee7a6",
+    "page_id": "page_90ab5abc667a",
+    "category": "Technical",
+    "type": "canonical_issue",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Missing Canonical URL",
+    "description": "Page has no canonical URL specified",
+    "recommendation": null,
+    "evidence": {
+      "canonical_url": "",
+      "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/"
+    }
+  },
+  {
+    "id": "iss_64c228986142",
+    "page_id": "page_90ab5abc667a",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_60026624823a",
+    "page_id": "page_90ab5abc667a",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1889.69ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1889.69,
+      "render_time_ms": 5009.94
+    }
+  },
+  {
+    "id": "iss_951776d3eedf",
+    "page_id": "page_90ab5abc667a",
+    "category": "Indexability",
+    "type": "indexing_restriction",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "title": "Noindex Tag Present",
+    "description": "Page is BLOCKED from search engines - has noindex directive",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ee1e72c3c239",
+    "page_id": "page_444264d425ea",
+    "category": "Seo",
+    "type": "meta_description_too_short",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "title": "Meta Description Too Short",
+    "description": "Description is 62 characters (recommended: 120-160)",
+    "recommendation": null,
+    "evidence": {
+      "meta_description": "Hier treft u de sitemap van Tandheelkundige Kliniek Amsterdam.",
+      "length": 62
+    }
+  },
+  {
+    "id": "iss_b4d8b45c6b8a",
+    "page_id": "page_444264d425ea",
+    "category": "Seo",
+    "type": "missing_h1",
+    "severity": "high",
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "title": "Missing H1 Tag",
+    "description": "Page has no H1 heading",
+    "recommendation": null,
+    "evidence": {
+      "h1": ""
+    }
+  },
+  {
+    "id": "iss_fa8d148fccb2",
+    "page_id": "page_444264d425ea",
+    "category": "Accessibility",
+    "type": "images_without_alt_text",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "title": "Images Without Alt Text",
+    "description": "2 of 11 images lack alt text",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ef0615cf7c67",
+    "page_id": "page_444264d425ea",
+    "category": "Performance",
+    "type": "slow_response_time",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "title": "Moderate Response Time",
+    "description": "Page took 1868.64ms to respond (recommended: <1000ms)",
+    "recommendation": null,
+    "evidence": {
+      "response_time_ms": 1868.64,
+      "render_time_ms": 5012.5
+    }
+  },
+  {
+    "id": "iss_f053411d51b9",
+    "page_id": "page_0017d87a20de",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 95.4% similar to https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_95348e5c3273",
+    "page_id": "page_700e46a7ef5a",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 95.4% similar to https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d5313568ee4c",
+    "page_id": "page_5577d033234f",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 92.8% similar to https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_6ab1e4a540b9",
+    "page_id": "page_88a5be583bb5",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 92.8% similar to https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_19be80c87a35",
+    "page_id": "page_d9a19e274131",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 98.6% similar to https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1f34d0b543ab",
+    "page_id": "page_00fc6a41a946",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 98.6% similar to https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_c3d9c788d841",
+    "page_id": "page_5346c526bf3e",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/ons-team/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 94.5% similar to https://www.atlaskliniek.nl/en/ons-team/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5418e68d59cb",
+    "page_id": "page_c1289205a209",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/ons-team/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 94.5% similar to https://www.atlaskliniek.nl/ons-team/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_9b213c33069c",
+    "page_id": "page_7dbb40eeae6a",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.4% similar to https://www.atlaskliniek.nl/2026/02/18/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_327dd9027abf",
+    "page_id": "page_e91777cac68b",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.4% similar to https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_534f02a78183",
+    "page_id": "page_620892f2b543",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.4% similar to https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5572fe2b54c3",
+    "page_id": "page_713a2178d032",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 90.0% similar to https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8fe3270bc5df",
+    "page_id": "page_1e5b69e74c0b",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 90.0% similar to https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_3e59cac73a1e",
+    "page_id": "page_06c49248855f",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.4% similar to https://www.atlaskliniek.nl/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_468e2c00ce64",
+    "page_id": "page_0e0e229fbd69",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.4% similar to https://www.atlaskliniek.nl/en/tarieven/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_41081034bde2",
+    "page_id": "page_f806a218ca7e",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tarieven/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.4% similar to https://www.atlaskliniek.nl/tarieven/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_456a73285158",
+    "page_id": "page_0bed4e68ae09",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/privacy-policy/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 95.0% similar to https://www.atlaskliniek.nl/en/privacy-policy/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_90351354b2f8",
+    "page_id": "page_d51a4309c3e8",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 95.0% similar to https://www.atlaskliniek.nl/privacy-policy/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8a8505723092",
+    "page_id": "page_8a7279d833e5",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/werken-bij/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 89.2% similar to https://www.atlaskliniek.nl/en/werken-bij/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_a4e2839b2907",
+    "page_id": "page_af73b44e73a6",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 89.2% similar to https://www.atlaskliniek.nl/werken-bij/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_607b63584be0",
+    "page_id": "page_1f41ffc2f261",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 92.6% similar to https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_9c25d257fa14",
+    "page_id": "page_bc1d21c8cd2a",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 92.6% similar to https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_11520562d244",
+    "page_id": "page_ebf31af7a77a",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/inschrijven/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.9% similar to https://www.atlaskliniek.nl/en/inschrijven/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_bc585f865d63",
+    "page_id": "page_ea39d20c9b92",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.9% similar to https://www.atlaskliniek.nl/inschrijven/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_89570d566253",
+    "page_id": "page_e0529bbc2898",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/over-ons/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 87.3% similar to https://www.atlaskliniek.nl/en/over-ons/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_7979a559fd4e",
+    "page_id": "page_bba06e058964",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/over-ons/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 87.3% similar to https://www.atlaskliniek.nl/over-ons/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d79713de4e12",
+    "page_id": "page_99abc5dc8b8b",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 95.5% similar to https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b312ce945c59",
+    "page_id": "page_7001b2272dcf",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 95.5% similar to https://www.atlaskliniek.nl/patienteninformatie/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_627cf514a63b",
+    "page_id": "page_0f239a60bfc9",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandelingen/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.6% similar to https://www.atlaskliniek.nl/en/behandelingen/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_87e478ceba87",
+    "page_id": "page_fdfa483fea95",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.6% similar to https://www.atlaskliniek.nl/behandelingen/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ebd975b009a4",
+    "page_id": "page_6ffd9afe0965",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 92.5% similar to https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_fd7397da2978",
+    "page_id": "page_9ef44c83d051",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 92.5% similar to https://www.atlaskliniek.nl/klachtenprocedure/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_9d54632e8414",
+    "page_id": "page_95ff8896f29c",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/contact/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.7% similar to https://www.atlaskliniek.nl/en/contact/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8dae4612ad4e",
+    "page_id": "page_a9899ce3c5d5",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/contact/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.7% similar to https://www.atlaskliniek.nl/contact/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_46b5c705f954",
+    "page_id": "page_bb37425d30e3",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/spoed/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.0% similar to https://www.atlaskliniek.nl/en/spoed/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_cee17924c54b",
+    "page_id": "page_c379ea010af6",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/spoed/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.0% similar to https://www.atlaskliniek.nl/spoed/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_7926a11819b3",
+    "page_id": "page_4043720dcb12",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.6% similar to https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_29dbb5048192",
+    "page_id": "page_f8633c8b590b",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.6% similar to https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5b128638f452",
+    "page_id": "page_83528fe0b86c",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 93.7% similar to https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_563354fbd6ca",
+    "page_id": "page_c329231792eb",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 93.7% similar to https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_12f2dda9c339",
+    "page_id": "page_a0351e1d1fa8",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 94.1% similar to https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b14880e75c6e",
+    "page_id": "page_5cdd63297f3a",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.7% similar to https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_c4134da68da2",
+    "page_id": "page_d853cd0f7ef9",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.1% similar to https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_505bb741f03d",
+    "page_id": "page_0732664f4e5d",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 87.9% similar to https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_7e6703a5e9ce",
+    "page_id": "page_7c30be080f47",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.7% similar to https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d899f4807ca8",
+    "page_id": "page_b11e0b9a810e",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 87.3% similar to https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ba3148eb603d",
+    "page_id": "page_d3cc19eafbc6",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.0% similar to https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5866d8598f3d",
+    "page_id": "page_7c786ad07e30",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.9% similar to https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_aae12162c2f4",
+    "page_id": "page_95f337060f9e",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 99.9% similar to https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_2264d7a42a7b",
+    "page_id": "page_3bcdb6673017",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 90.3% similar to https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f1f07d282853",
+    "page_id": "page_d7463cb1b0f2",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 90.0% similar to https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_3b534e54410f",
+    "page_id": "page_6e38215e1414",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.6% similar to https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b8e16fa413b3",
+    "page_id": "page_13f4d7973600",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.9% similar to https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_27950c74b81d",
+    "page_id": "page_47f7445499ca",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.8% similar to https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_e68ddc00dd94",
+    "page_id": "page_0fc27f357f15",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.8% similar to https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_57d476efa5d3",
+    "page_id": "page_72e6ee4831da",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/nieuws/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 91.0% similar to https://www.atlaskliniek.nl/en/nieuws/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_caf96fd5c996",
+    "page_id": "page_9b6c44f7401d",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/nieuws/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 91.0% similar to https://www.atlaskliniek.nl/nieuws/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b34775b987dd",
+    "page_id": "page_abb63033bb54",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.2% similar to https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_c6eaa7b3a159",
+    "page_id": "page_3188e3ba225d",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.2% similar to https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_57ab23304921",
+    "page_id": "page_0230478a91e0",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.5% similar to https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_82ea1d2a6d21",
+    "page_id": "page_0265451ed277",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.5% similar to https://www.atlaskliniek.nl/behandeling/facings/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_7e2791826128",
+    "page_id": "page_7998ae689556",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 100.0% similar to https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_9ae72796eeaa",
+    "page_id": "page_6390b099b338",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 100.0% similar to https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_a3aa618e96d4",
+    "page_id": "page_a63eddcf5b3a",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 90.2% similar to https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_96727d1b29b9",
+    "page_id": "page_f198a6cf9f21",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 90.2% similar to https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_254f9a4a46b6",
+    "page_id": "page_f6b7e1817639",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.8% similar to https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_1f14066b1de2",
+    "page_id": "page_089328e054f3",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.8% similar to https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d7b3dee7559b",
+    "page_id": "page_5b2ee780b008",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.7% similar to https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_dad0bc37bea5",
+    "page_id": "page_1aa344c36772",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 88.7% similar to https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0d22c5c53e60",
+    "page_id": "page_165c3c8d61e1",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.1% similar to https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_29614bbeb70f",
+    "page_id": "page_04a167df1a57",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.1% similar to https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_0cef673eabd7",
+    "page_id": "page_cb419703430c",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 94.4% similar to https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_b03c7977b763",
+    "page_id": "page_f09d5a317b60",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 94.4% similar to https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_84f2bd7301f9",
+    "page_id": "page_9b757fa84d6c",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 100.0% similar to https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_ab324562055d",
+    "page_id": "page_039db2a82ba2",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 94.6% similar to https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_8131b3190d90",
+    "page_id": "page_04b2c16b2372",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 94.6% similar to https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_11326c12a985",
+    "page_id": "page_3e70968777ad",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.6% similar to https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f01f1b1a389a",
+    "page_id": "page_aad42192f664",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.6% similar to https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_e389abd143d8",
+    "page_id": "page_c4aeaaee360d",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.3% similar to https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_d191061f9266",
+    "page_id": "page_317590d94d87",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 85.3% similar to https://www.atlaskliniek.nl/behandeling/protheses/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_5a9ba447f4a5",
+    "page_id": "page_c945a406e92e",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 97.4% similar to https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f6263f00144b",
+    "page_id": "page_b7feff077d90",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 97.4% similar to https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_32731a97d671",
+    "page_id": "page_49c8fae54f04",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 87.8% similar to https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  },
+  {
+    "id": "iss_f10afe261010",
+    "page_id": "page_6d4a8bbbace3",
+    "category": "Duplication",
+    "type": "duplicate_content_detected",
+    "severity": "medium",
+    "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "title": "Duplicate Content Detected",
+    "description": "Content is 86.0% similar to https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "recommendation": null,
+    "evidence": {
+      "status_code": 200
+    }
+  }
+]

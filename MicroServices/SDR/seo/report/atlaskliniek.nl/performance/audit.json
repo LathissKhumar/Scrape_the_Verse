@@ -1,0 +1,36 @@
+{
+  "category": "Performance",
+  "score": 70,
+  "status": "warning",
+  "summary": "Performance audit analyzed 112 pages (Average TTFB: 2455.3ms). Score: 70/100.",
+  "findings": [
+    {
+      "category": "Performance",
+      "severity": "critical",
+      "title": "Severe Server Response Delay (> 1.5s)",
+      "description": "100 page(s) took longer than 1500ms to respond.",
+      "impact": "Drastically increases bounce rate and fails Google Core Web Vitals thresholds.",
+      "recommendation": "Optimize database queries, enable server-side caching (Redis/Varnish), and use a CDN.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+        "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+        "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+        "https://www.atlaskliniek.nl/ons-team/",
+        "https://www.atlaskliniek.nl/",
+        "https://www.atlaskliniek.nl/tarieven/",
+        "https://www.atlaskliniek.nl/privacy-policy/",
+        "https://www.atlaskliniek.nl/werken-bij/",
+        "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+        "https://www.atlaskliniek.nl/inschrijven/"
+      ],
+      "evidence": {
+        "slow_page_count": 100,
+        "max_response_ms": 5690.83
+      }
+    }
+  ],
+  "metrics": {
+    "average_response_time_ms": 2455.3,
+    "slow_pages_count": 100
+  }
+}

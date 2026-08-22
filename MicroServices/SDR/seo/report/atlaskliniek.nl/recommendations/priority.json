@@ -1,0 +1,101 @@
+[
+  {
+    "priority": 1,
+    "category": "Performance",
+    "title": "Severe Server Response Delay (> 1.5s)",
+    "action": "Optimize database queries, enable server-side caching (Redis/Varnish), and use a CDN.",
+    "estimated_effort": "medium",
+    "impact_score": 10,
+    "affected_count": 10
+  },
+  {
+    "priority": 2,
+    "category": "On-Page",
+    "title": "Missing H1 Headings",
+    "action": "Ensure every page has exactly one descriptive `<h1>` matching the page intent.",
+    "estimated_effort": "medium",
+    "impact_score": 8,
+    "affected_count": 4
+  },
+  {
+    "priority": 2,
+    "category": "Content",
+    "title": "Duplicate Page Titles Detected",
+    "action": "Assign distinct, specific titles reflecting the unique value proposition of each URL.",
+    "estimated_effort": "medium",
+    "impact_score": 8,
+    "affected_count": 10
+  },
+  {
+    "priority": 3,
+    "category": "Technical",
+    "title": "Missing Canonical Tags",
+    "action": "Add a self-referential `<link rel='canonical' href='...' />` tag in the `<head>` of each page.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 2
+  },
+  {
+    "priority": 3,
+    "category": "Technical",
+    "title": "No XML Sitemap Discovered",
+    "action": "Generate an XML sitemap, place it in the root directory, and specify its URL in robots.txt.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 0
+  },
+  {
+    "priority": 3,
+    "category": "On-Page",
+    "title": "Title Tags Truncated in SERP (>60 chars)",
+    "action": "Trim title tags to 50-60 characters and move primary keywords to the beginning.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 10
+  },
+  {
+    "priority": 3,
+    "category": "On-Page",
+    "title": "Missing Meta Descriptions",
+    "action": "Write unique, persuasive meta descriptions (120-160 characters) with a clear call to action.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 9
+  },
+  {
+    "priority": 3,
+    "category": "On-Page",
+    "title": "Images Missing Alt Text",
+    "action": "Add meaningful `alt='...'` descriptions to all informational images.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 10
+  },
+  {
+    "priority": 4,
+    "category": "Schema",
+    "title": "Missing Brand / Organization Schema",
+    "action": "Add Organization schema on the homepage detailing company name, logo, social profiles, and contact points.",
+    "estimated_effort": "low",
+    "impact_score": 4,
+    "affected_count": 5
+  },
+  {
+    "priority": 5,
+    "category": "Technical",
+    "title": "Noindex Directives Present",
+    "action": "Verify that no crucial landing pages or revenue-generating content are blocked by noindex tags.",
+    "estimated_effort": "low",
+    "impact_score": 2,
+    "affected_count": 2
+  },
+  {
+    "priority": 5,
+    "category": "Local",
+    "title": "LocalBusiness Schema Not Detected",
+    "action": "If this is a physical business or local service, implement LocalBusiness schema with address and telephone.",
+    "estimated_effort": "low",
+    "impact_score": 2,
+    "affected_count": 3
+  }
+]
