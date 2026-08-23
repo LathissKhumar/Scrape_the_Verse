@@ -3,59 +3,77 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { GradientText } from '@/components/ui/GradientText'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Globe, Dna, Bot, Satellite, Gem, Sparkles, Waves, Zap, Paintbrush } from 'lucide-react'
 
 const GRID_CARDS = [
   {
-    emoji: '🌐',
+    icon: Globe,
+    iconBg: 'from-sky-500/30 to-cyan-400/20 border-sky-400/40',
+    iconColor: 'text-sky-300',
     title: 'Nebula Stream Engine',
     desc: 'Real-time WebSocket event ingestion pipeline streaming 50M+ structural changes per day with sub-16ms latency.',
     tech: 'Rust · WebSockets · Edge',
   },
   {
-    emoji: '🧬',
+    icon: Dna,
+    iconBg: 'from-emerald-500/30 to-teal-400/20 border-emerald-400/40',
+    iconColor: 'text-emerald-300',
     title: 'DOM Genome Mapper',
     desc: 'Deep hierarchical element fingerprinting that traces selector ancestry across responsive breakpoints.',
     tech: 'Vision AI · Tree Matching',
   },
   {
-    emoji: '🤖',
+    icon: Bot,
+    iconBg: 'from-indigo-500/30 to-blue-400/20 border-indigo-400/40',
+    iconColor: 'text-indigo-300',
     title: 'AgentFlow Orchestrator',
     desc: 'Autonomous multi-agent DAG builder that converts raw extraction feeds directly into enriched CRM opportunities.',
     tech: 'AI Agents · TypeScript · Queue',
   },
   {
-    emoji: '🛰️',
+    icon: Satellite,
+    iconBg: 'from-violet-500/30 to-purple-400/20 border-violet-400/40',
+    iconColor: 'text-violet-300',
     title: 'Orbit Proxy Constellation',
     desc: 'Dynamic rotating residential IP mesh operating across 195 countries with automatic captcha resolution.',
     tech: 'Bright Data · TLS Fingerprint',
   },
   {
-    emoji: '💎',
+    icon: Gem,
+    iconBg: 'from-cyan-500/30 to-sky-400/20 border-cyan-400/40',
+    iconColor: 'text-cyan-300',
     title: 'Prism Schema Engine',
     desc: 'Self-adapting JSON-LD and microdata normalizer with automated duplicate entity deduplication.',
     tech: 'Vector Search · Embeddings',
   },
   {
-    emoji: '🔮',
+    icon: Sparkles,
+    iconBg: 'from-fuchsia-500/30 to-pink-400/20 border-fuchsia-400/40',
+    iconColor: 'text-fuchsia-300',
     title: 'Spectra Vision Inspector',
     desc: 'Visual LLM inspection that evaluates screenshots to extract unindexed pricing cards and hidden canvas menus.',
     tech: 'Gemini Vision · OCR · D3',
   },
   {
-    emoji: '🌊',
+    icon: Waves,
+    iconBg: 'from-teal-500/30 to-emerald-400/20 border-teal-400/40',
+    iconColor: 'text-teal-300',
     title: 'FlowState Rate Balancer',
     desc: 'Adaptive machine-learning throttler that predicts server limits and scales request pools without triggering 429s.',
     tech: 'Dynamic EBPF · Go · Redis',
   },
   {
-    emoji: '⚡',
+    icon: Zap,
+    iconBg: 'from-amber-500/30 to-yellow-400/20 border-amber-400/40',
+    iconColor: 'text-amber-300',
     title: 'Volt Anomaly Radar',
     desc: 'Continuous real-time sentinel alerting teams instantly when target website structural shifts cross error thresholds.',
     tech: 'ClickHouse · Vector Logs',
   },
   {
-    emoji: '🎨',
+    icon: Paintbrush,
+    iconBg: 'from-rose-500/30 to-pink-400/20 border-rose-400/40',
+    iconColor: 'text-rose-300',
     title: 'Synthetic Landing Studio',
     desc: 'Instant generation of personalized enterprise pitch decks and dynamic micro-sites for hot discovered leads.',
     tech: 'Next.js 16 · Tailwind · Canvas',
@@ -128,6 +146,8 @@ function TiltProjectCard({
     setIsHovered(false)
   }
 
+  const IconComponent = card.icon
+
   return (
     <motion.div
       ref={cardRef}
@@ -196,7 +216,13 @@ function TiltProjectCard({
 
       {/* Card Header & Content */}
       <div className="relative z-10 space-y-3">
-        <span className="text-4xl select-none block leading-none">{card.emoji}</span>
+        {/* Icon Square */}
+        <div
+          className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${card.iconBg} border backdrop-blur-md flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
+        >
+          <IconComponent className={`w-7 h-7 ${card.iconColor}`} strokeWidth={1.5} />
+        </div>
+
         <h3 className="text-xl font-bold font-display text-text-primary group-hover:text-sky-300 transition-colors">
           {card.title}
         </h3>

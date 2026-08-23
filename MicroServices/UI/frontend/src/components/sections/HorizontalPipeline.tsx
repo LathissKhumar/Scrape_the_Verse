@@ -72,16 +72,12 @@ export function HorizontalPipeline() {
         </p>
       </div>
 
-      {/* Continuously Moving Horizontal Marquee Track (Right to Left) */}
-      <div
-        className="relative w-full overflow-hidden mt-6"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
+      {/* Continuously Moving Horizontal Marquee Track */}
+      <div className="relative w-full overflow-hidden mt-6">
         <motion.div
           className="flex items-stretch gap-6 w-max will-change-transform py-3 px-6"
           animate={{
-            x: isPaused ? undefined : ['0%', '-50%'],
+            x: ['0%', '-50%'],
           }}
           transition={{
             x: {

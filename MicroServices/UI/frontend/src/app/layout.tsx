@@ -10,10 +10,16 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'SCRAPE-VERSE — Self-Healing Web Intelligence Platform',
+  title: 'AgencyOS — Self-Healing Web Intelligence Platform',
   description:
     'Self-healing web intelligence for discovering, understanding, and converting business opportunities across the web.',
+  icons: {
+    icon: '/images/AgencyOS_Logo.png',
+    shortcut: '/images/AgencyOS_Logo.png',
+    apple: '/images/AgencyOS_Logo.png',
+  },
   keywords: [
+    'AgencyOS',
     'web scraping',
     'self-healing scrapers',
     'Bright Data',

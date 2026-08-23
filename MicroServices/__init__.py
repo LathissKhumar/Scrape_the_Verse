@@ -1,1 +1,0 @@
-"""MicroServices package namespace."""

@@ -4,166 +4,129 @@ import { motion } from 'framer-motion'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { GradientText } from '@/components/ui/GradientText'
 import {
-  Palette,
+  Globe,
+  Dna,
+  Bot,
+  Satellite,
+  Gem,
+  Sparkles,
+  Waves,
   Zap,
-  GitBranch,
-  Radio,
-  Database,
-  ShieldCheck,
-  Search,
-  Layers,
-  BrainCircuit,
-  Server,
-  Cpu,
+  Paintbrush,
 } from 'lucide-react'
 
-interface TechStackItem {
+interface ModuleItem {
   num: string
   title: string
   tag: string
   icon: React.ReactNode
   desc: string
   glow: string
-  badgeColor: string
 }
 
-const TECH_STACK: TechStackItem[] = [
+const NINE_MODULES: ModuleItem[] = [
   {
     num: '01',
-    title: 'React & Tailwind CSS',
-    tag: 'Frontend Layer',
-    icon: <Palette className="w-5 h-5 text-sky-400" />,
-    desc: 'Dynamic liquid glassmorphic user interface, reactive real-time telemetry dashboards, and client-side controls styled with Tailwind CSS.',
+    title: 'Nebula Stream Engine',
+    tag: 'Rust · WebSockets · Edge',
+    icon: <Globe className="w-5 h-5 text-sky-400" />,
+    desc: 'Real-time WebSocket event ingestion pipeline streaming 50M+ structural changes per day with sub-16ms latency.',
     glow: 'radial-gradient(ellipse at top left, rgba(56, 189, 248, 0.25) 0%, transparent 65%)',
-    badgeColor: 'text-sky-300 bg-sky-950/70 border-sky-500/30',
   },
   {
     num: '02',
-    title: 'FastAPI Backend',
-    tag: 'Backend Services',
-    icon: <Zap className="w-5 h-5 text-emerald-400" />,
-    desc: 'High-throughput asynchronous Python REST backend orchestrating scraper pipelines, webhook queues, and streaming data endpoints.',
+    title: 'DOM Genome Mapper',
+    tag: 'Vision AI · Tree Matching',
+    icon: <Dna className="w-5 h-5 text-emerald-400" />,
+    desc: 'Deep hierarchical element fingerprinting that traces selector ancestry across responsive breakpoints.',
     glow: 'radial-gradient(ellipse at top right, rgba(52, 211, 153, 0.25) 0%, transparent 65%)',
-    badgeColor: 'text-emerald-300 bg-emerald-950/70 border-emerald-500/30',
   },
   {
     num: '03',
-    title: 'LangGraph Orchestrator',
-    tag: 'Orchestration',
-    icon: <GitBranch className="w-5 h-5 text-indigo-400" />,
-    desc: 'Stateful multi-agent DAG orchestration managing complex cyclic workflows, extraction checkpoints, and decision routing.',
+    title: 'AgentFlow Orchestrator',
+    tag: 'AI Agents · TypeScript · Queue',
+    icon: <Bot className="w-5 h-5 text-indigo-400" />,
+    desc: 'Autonomous multi-agent DAG builder that converts raw extraction feeds directly into enriched CRM opportunities.',
     glow: 'radial-gradient(ellipse at bottom left, rgba(129, 140, 248, 0.25) 0%, transparent 65%)',
-    badgeColor: 'text-indigo-300 bg-indigo-950/70 border-indigo-500/30',
   },
   {
     num: '04',
-    title: 'A2A Communication',
-    tag: 'Agent-to-Agent Protocol',
-    icon: <Radio className="w-5 h-5 text-cyan-300" />,
-    desc: 'Decoupled Agent-to-Agent message passing and structured event bus enabling autonomous inter-service collaboration.',
-    glow: 'radial-gradient(ellipse at center, rgba(56, 189, 248, 0.22) 0%, transparent 65%)',
-    badgeColor: 'text-cyan-300 bg-cyan-950/70 border-cyan-500/30',
+    title: 'Orbit Proxy Constellation',
+    tag: 'Bright Data · TLS Fingerprint',
+    icon: <Satellite className="w-5 h-5 text-violet-400" />,
+    desc: 'Dynamic rotating residential IP mesh operating across 195 countries with automatic captcha resolution.',
+    glow: 'radial-gradient(ellipse at center, rgba(168, 85, 247, 0.25) 0%, transparent 65%)',
   },
   {
     num: '05',
-    title: 'Bright Data Scraper Studio',
-    tag: 'Web Data Ingestion',
-    icon: <Database className="w-5 h-5 text-blue-400" />,
-    desc: 'Industrial-grade web collection across business registries and maps with rotating residential IP mesh and anti-bot resolution.',
-    glow: 'radial-gradient(ellipse at top left, rgba(96, 165, 250, 0.25) 0%, transparent 65%)',
-    badgeColor: 'text-blue-300 bg-blue-950/70 border-blue-500/30',
+    title: 'Prism Schema Engine',
+    tag: 'Vector Search · Embeddings',
+    icon: <Gem className="w-5 h-5 text-cyan-400" />,
+    desc: 'Self-adapting JSON-LD and microdata normalizer with automated duplicate entity deduplication.',
+    glow: 'radial-gradient(ellipse at top left, rgba(34, 211, 238, 0.25) 0%, transparent 65%)',
   },
   {
     num: '06',
-    title: 'Bright Data Auto-Healing',
-    tag: 'Self-Healing Engine',
-    icon: <ShieldCheck className="w-5 h-5 text-violet-400" />,
-    desc: 'Automated collector resilience that detects DOM structural breaks, synthesizes new extraction paths, and prevents downtime.',
-    glow: 'radial-gradient(ellipse at bottom right, rgba(168, 85, 247, 0.22) 0%, transparent 65%)',
-    badgeColor: 'text-violet-300 bg-violet-950/70 border-violet-500/30',
+    title: 'Spectra Vision Inspector',
+    tag: 'Gemini Vision · OCR · D3',
+    icon: <Sparkles className="w-5 h-5 text-fuchsia-400" />,
+    desc: 'Visual LLM inspection that evaluates screenshots to extract unindexed pricing cards and hidden canvas menus.',
+    glow: 'radial-gradient(ellipse at bottom right, rgba(232, 121, 249, 0.25) 0%, transparent 65%)',
   },
   {
     num: '07',
-    title: 'Screaming Frog + Crawler',
-    tag: 'Deep Website Audit',
-    icon: <Search className="w-5 h-5 text-amber-400" />,
-    desc: 'Comprehensive website technical audits with automated open-source crawler fallback to evaluate digital presence and SEO signals.',
-    glow: 'radial-gradient(ellipse at center, rgba(245, 158, 11, 0.22) 0%, transparent 65%)',
-    badgeColor: 'text-amber-300 bg-amber-950/70 border-amber-500/30',
+    title: 'FlowState Rate Balancer',
+    tag: 'Dynamic EBPF · Go · Redis',
+    icon: <Waves className="w-5 h-5 text-teal-400" />,
+    desc: 'Adaptive machine-learning throttler that predicts server limits and scales request pools without triggering 429s.',
+    glow: 'radial-gradient(ellipse at center, rgba(45, 212, 191, 0.25) 0%, transparent 65%)',
   },
   {
     num: '08',
-    title: 'Chroma Vector DB',
-    tag: 'RAG / Evidence Store',
-    icon: <Layers className="w-5 h-5 text-rose-400" />,
-    desc: 'High-density embedding store for retrieval-augmented generation (RAG), verifying lead evidence, and entity deduplication.',
-    glow: 'radial-gradient(ellipse at top right, rgba(251, 113, 133, 0.22) 0%, transparent 65%)',
-    badgeColor: 'text-rose-300 bg-rose-950/70 border-rose-500/30',
+    title: 'Volt Anomaly Radar',
+    tag: 'ClickHouse · Vector Logs',
+    icon: <Zap className="w-5 h-5 text-amber-400" />,
+    desc: 'Continuous real-time sentinel alerting teams instantly when target website structural shifts cross error thresholds.',
+    glow: 'radial-gradient(ellipse at top right, rgba(251, 191, 36, 0.25) 0%, transparent 65%)',
   },
   {
     num: '09',
-    title: 'Gemini API + Ollama',
-    tag: 'LLM Reasoning & Fallback',
-    icon: <BrainCircuit className="w-5 h-5 text-sky-400" />,
-    desc: 'Primary cloud intelligence via Google Gemini API paired with offline Ollama local LLM fallback for uninterrupted inference.',
-    glow: 'radial-gradient(ellipse at bottom left, rgba(56, 189, 248, 0.25) 0%, transparent 65%)',
-    badgeColor: 'text-sky-300 bg-sky-950/70 border-sky-500/30',
-  },
-  {
-    num: '10',
-    title: 'SQLite & PostgreSQL',
-    tag: 'Database Persistence',
-    icon: <Server className="w-5 h-5 text-emerald-400" />,
-    desc: 'Zero-config SQLite for swift local development with seamless migration path to PostgreSQL for production deployments.',
-    glow: 'radial-gradient(ellipse at top right, rgba(52, 211, 153, 0.22) 0%, transparent 65%)',
-    badgeColor: 'text-emerald-300 bg-emerald-950/70 border-emerald-500/30',
-  },
-  {
-    num: '11',
-    title: 'Local-First Deployment',
-    tag: 'Free-Tier & Local-First',
-    icon: <Cpu className="w-5 h-5 text-indigo-400" />,
-    desc: 'Cost-effective deployment architecture prioritizing local-first execution with free-tier cloud deployment where strictly necessary.',
-    glow: 'radial-gradient(ellipse at center, rgba(129, 140, 248, 0.25) 0%, transparent 65%)',
-    badgeColor: 'text-indigo-300 bg-indigo-950/70 border-indigo-500/30',
+    title: 'Synthetic Landing Studio',
+    tag: 'Next.js 16 · Tailwind · Canvas',
+    icon: <Paintbrush className="w-5 h-5 text-rose-400" />,
+    desc: 'Instant generation of personalized enterprise pitch decks and dynamic micro-sites for hot discovered leads.',
+    glow: 'radial-gradient(ellipse at bottom left, rgba(251, 113, 133, 0.25) 0%, transparent 65%)',
   },
 ]
 
 // Duplicate for continuous seamless marquee loop
-const MARQUEE_ITEMS = [...TECH_STACK, ...TECH_STACK]
+const MARQUEE_ITEMS = [...NINE_MODULES, ...NINE_MODULES]
 
 export function PinnedHorizontalPillars() {
-  const [isPaused, setIsPaused] = useState(false)
-
   return (
     <section
       id="tech-stack-marquee"
       className="py-8 md:py-12 relative border-b border-white/10 bg-transparent font-body overflow-hidden"
-      aria-label="Technology Stack and Architecture"
+      aria-label="Modular Architecture Subsystems"
     >
       {/* Header bar */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
           <div>
-            <SectionLabel label="Integrated Technology Stack" />
+            <SectionLabel stage="04" label="Modular Architecture" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display tracking-tight text-text-primary mt-1.5">
-              Enterprise Tech Stack. <GradientText>Complete System Blueprint.</GradientText>
+              Nine Modules. <GradientText>Infinite Coverage.</GradientText>
             </h2>
           </div>
           <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            <span className="text-slate-300">11 Integrated Technologies</span>
-            <span className="text-slate-500 hidden sm:inline">(Hover to pause)</span>
+            <span className="text-slate-300">9 Core Subsystems</span>
           </div>
         </div>
       </div>
 
       {/* Continuously Moving Horizontal Marquee Track */}
-      <div
-        className="relative w-full overflow-hidden"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
+      <div className="relative w-full overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           {[...Array(28)].map((_, i) => (
             <span
@@ -185,7 +148,7 @@ export function PinnedHorizontalPillars() {
         <motion.div
           className="flex items-center gap-6 w-max will-change-transform py-2"
           animate={{
-            x: isPaused ? undefined : ['0%', '-50%'],
+            x: ['-50%', '0%'],
           }}
           transition={{
             x: {
