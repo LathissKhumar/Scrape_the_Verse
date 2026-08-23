@@ -10,8 +10,9 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
+!MicroServices/UI/frontend/src/lib/**
 parts/
 sdist/
 var/
@@ -91,6 +92,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -120,3 +122,5 @@ htmlcov/
 # Outputs
 outputs/
 business_analysis_agent/outputs/
+.agents/
+.github/

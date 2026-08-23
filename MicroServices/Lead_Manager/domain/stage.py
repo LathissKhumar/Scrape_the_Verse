@@ -1,0 +1,101 @@
+"""
+Enums for Lead Management Lifecycle, Tasks, Activities, and Communication Intents.
+"""
+
+from enum import Enum
+
+
+class LeadStage(str, Enum):
+    DISCOVERED = "DISCOVERED"
+    QUALIFIED = "QUALIFIED"
+    RESEARCHED = "RESEARCHED"
+    OPPORTUNITY_IDENTIFIED = "OPPORTUNITY_IDENTIFIED"
+    PROPOSAL_READY = "PROPOSAL_READY"
+    HUMAN_APPROVAL = "HUMAN_APPROVAL"
+    CONTACT_READY = "CONTACT_READY"
+    CONTACTED = "CONTACTED"
+    ENGAGED = "ENGAGED"
+    NOT_INTERESTED = "NOT_INTERESTED"
+    REQUEST_INFO = "REQUEST_INFO"
+    MEETING_REQUESTED = "MEETING_REQUESTED"
+    MEETING_SCHEDULED = "MEETING_SCHEDULED"
+    NEGOTIATION = "NEGOTIATION"
+    WON = "WON"
+    LOST = "LOST"
+    DISQUALIFIED = "DISQUALIFIED"
+
+
+class TaskType(str, Enum):
+    RESEARCH_LEAD = "RESEARCH_LEAD"
+    AUDIT_WEBSITE = "AUDIT_WEBSITE"
+    GENERATE_PROPOSAL = "GENERATE_PROPOSAL"
+    REVIEW_PROPOSAL = "REVIEW_PROPOSAL"
+    SEND_OUTREACH = "SEND_OUTREACH"
+    RESPOND_TO_PROSPECT = "RESPOND_TO_PROSPECT"
+    SCHEDULE_MEETING = "SCHEDULE_MEETING"
+    PREPARE_NEGOTIATION = "PREPARE_NEGOTIATION"
+    FOLLOW_UP = "FOLLOW_UP"
+    CUSTOM = "CUSTOM"
+
+
+class TaskStatus(str, Enum):
+    PENDING = "PENDING"
+    IN_PROGRESS = "IN_PROGRESS"
+    COMPLETED = "COMPLETED"
+    CANCELLED = "CANCELLED"
+    FAILED = "FAILED"
+
+
+class OpportunityType(str, Enum):
+    WEBSITE_REDESIGN = "WEBSITE_REDESIGN"
+    LOCAL_SEO = "LOCAL_SEO"
+    CONVERSION_OPTIMIZATION = "CONVERSION_OPTIMIZATION"
+    SPEED_PERFORMANCE = "SPEED_PERFORMANCE"
+    CONTENT_STRATEGY = "CONTENT_STRATEGY"
+    REPUTATION_MANAGEMENT = "REPUTATION_MANAGEMENT"
+    CUSTOM = "CUSTOM"
+
+
+class MeetingStatus(str, Enum):
+    REQUESTED = "REQUESTED"
+    PROPOSED = "PROPOSED"
+    CONFIRMED = "CONFIRMED"
+    CANCELLED = "CANCELLED"
+    COMPLETED = "COMPLETED"
+
+
+class ActivityType(str, Enum):
+    LEAD_DISCOVERED = "lead.discovered"
+    LEAD_QUALIFIED = "lead.qualified"
+    LEAD_DISQUALIFIED = "lead.disqualified"
+    LEAD_RESEARCHED = "lead.researched"
+    WEBSITE_AUDITED = "website.audited"
+    OPPORTUNITY_CREATED = "opportunity.created"
+    PROPOSAL_GENERATED = "proposal.generated"
+    PROPOSAL_APPROVED = "proposal.approved"
+    PROPOSAL_REJECTED = "proposal.rejected"
+    EMAIL_SENT = "email.sent"
+    EMAIL_RECEIVED = "email.received"
+    INTENT_DETECTED = "email.intent_detected"
+    MEETING_REQUESTED = "meeting.requested"
+    MEETING_SCHEDULED = "meeting.scheduled"
+    MEETING_COMPLETED = "meeting.completed"
+    MEETING_CANCELLED = "meeting.cancelled"
+    STAGE_CHANGED = "stage.changed"
+    TASK_CREATED = "task.created"
+    TASK_COMPLETED = "task.completed"
+    FOLLOWUP_TRIGGERED = "followup.triggered"
+    NOTE_ADDED = "note.added"
+
+
+class EmailIntent(str, Enum):
+    REQUEST_MEETING = "REQUEST_MEETING"
+    REQUEST_PRICING = "REQUEST_PRICING"
+    REQUEST_MORE_INFO = "REQUEST_MORE_INFO"
+    INTERESTED = "INTERESTED"
+    NEGOTIATING = "NEGOTIATING"
+    NOT_INTERESTED = "NOT_INTERESTED"
+    OUT_OF_OFFICE = "OUT_OF_OFFICE"
+    BOUNCE = "BOUNCE"
+    UNSUBSCRIBE = "UNSUBSCRIBE"
+    AMBIGUOUS = "AMBIGUOUS"

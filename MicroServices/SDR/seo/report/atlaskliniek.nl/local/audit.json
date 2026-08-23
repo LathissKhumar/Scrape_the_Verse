@@ -1,0 +1,27 @@
+{
+  "category": "Local SEO",
+  "score": 100,
+  "status": "passed",
+  "summary": "Local SEO analysis completed. Local signals audited across 112 pages.",
+  "findings": [
+    {
+      "category": "Local",
+      "severity": "info",
+      "title": "LocalBusiness Schema Not Detected",
+      "description": "No LocalBusiness schema found on the website.",
+      "impact": "Relevant only if targeting local geographical searchers (Google Maps & Local Pack).",
+      "recommendation": "If this is a physical business or local service, implement LocalBusiness schema with address and telephone.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+        "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+        "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png"
+      ],
+      "evidence": {
+        "has_local_schema": false
+      }
+    }
+  ],
+  "metrics": {
+    "has_local_schema": false
+  }
+}

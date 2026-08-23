@@ -1,0 +1,36 @@
+{
+  "category": "Content Quality",
+  "score": 80,
+  "status": "warning",
+  "summary": "Content audit evaluated 100 pages (Average: 941.9 words/page). Score: 80/100.",
+  "findings": [
+    {
+      "category": "Content",
+      "severity": "high",
+      "title": "Duplicate Page Titles Detected",
+      "description": "41 title(s) are shared across 88 distinct URLs.",
+      "impact": "Causes keyword cannibalization and confuses search bots regarding which page to index.",
+      "recommendation": "Assign distinct, specific titles reflecting the unique value proposition of each URL.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+        "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+        "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+        "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+        "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+        "https://www.atlaskliniek.nl/dentist-amsterdam/",
+        "https://www.atlaskliniek.nl/ons-team/",
+        "https://www.atlaskliniek.nl/en/ons-team/",
+        "https://www.atlaskliniek.nl/",
+        "https://www.atlaskliniek.nl/2026/02/18/"
+      ],
+      "evidence": {
+        "duplicate_title_groups": 41
+      }
+    }
+  ],
+  "metrics": {
+    "average_word_count": 941.9,
+    "thin_pages_count": 0,
+    "duplicate_title_groups": 41
+  }
+}

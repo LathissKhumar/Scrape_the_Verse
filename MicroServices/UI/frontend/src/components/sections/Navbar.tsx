@@ -1,6 +1,8 @@
 'use client'
 import { Layers } from 'lucide-react'
 
+import Link from 'next/link'
+
 const NAV_LINKS = [
   { label: 'Product', href: '#hero' },
   { label: 'How It Works', href: '#pipeline' },
@@ -17,7 +19,7 @@ export function Navbar() {
     >
       <div className="w-full px-6 sm:px-10 lg:px-14 py-3.5 sm:py-4 flex items-center justify-between">
         {/* Far Left Component: Brand Logo */}
-        <a href="#" className="flex items-center gap-3 group shrink-0" id="nav-logo">
+        <Link href="/" className="flex items-center gap-3 group shrink-0" id="nav-logo">
           <div
             className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105"
             style={{
@@ -29,7 +31,7 @@ export function Navbar() {
           <span className="font-extrabold text-lg sm:text-xl tracking-tight font-display text-white">
             SCRAPE-VERSE
           </span>
-        </a>
+        </Link>
 
         {/* Center Aligned Middle Components: Navigation Links */}
         <ul className="hidden md:flex items-center justify-center gap-8 lg:gap-11 mx-auto" role="list">
@@ -44,24 +46,24 @@ export function Navbar() {
             </li>
           ))}
           <li>
-            <a
-              href="#hero"
-              className="text-sm font-medium text-white/80 hover:text-white transition-colors duration-200"
+            <Link
+              href="/dashboard"
+              className="text-sm font-semibold text-sky-400 hover:text-sky-300 transition-colors duration-200"
             >
-              Sign In
-            </a>
+              AI Dashboard
+            </Link>
           </li>
         </ul>
 
         {/* Far Right Component: Solid White CTA Button */}
         <div className="shrink-0">
-          <a
-            href="#hero"
+          <Link
+            href="/dashboard"
             id="nav-cta"
             className="inline-flex items-center justify-center px-5 py-2 rounded-full text-xs sm:text-sm font-bold font-body transition-all duration-200 shadow-lg hover:opacity-95 text-[#07090D] bg-white hover:bg-slate-100 hover:shadow-sky-500/20"
           >
-            Get Started
-          </a>
+            Launch Console
+          </Link>
         </div>
       </div>
     </header>

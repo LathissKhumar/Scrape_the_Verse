@@ -4,6 +4,7 @@ import { motion, useScroll } from 'framer-motion'
 import { ArrowRight, ShieldCheck, Sparkles, Activity } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
+import Link from 'next/link'
 
 const GLYPHS = '!<>-_\\/[]{}=+*^?#01~%'
 
@@ -14,7 +15,7 @@ export function Hero() {
 
   // 1. Text Scramble Effect
   useEffect(() => {
-    const target = 'BEYOND LIMITS'
+    const target = 'YOUR AI TEAM'
     let frame = 0
     const totalFrames = 36
     let animId: number
@@ -111,14 +112,14 @@ export function Hero() {
     }
   }, [scrollYProgress])
 
-  const subtitleWords = 'Scrape-Verse continuously discovers, researches and monitors businesses across the web while self-healing in real-time.'.split(
+  const subtitleWords = 'Scrape-Verse is built for web and SEO agencies who are tired of manual lead research. It discovers businesses, audits their websites, analyzes their market, and tells you exactly what to sell — then generates an implementation-ready website specification.'.split(
     ' '
   )
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-6 lg:px-12 overflow-hidden border-b border-white/10 bg-transparent font-body"
+      className="relative min-h-[85vh] flex items-center justify-center pt-28 pb-20 px-6 lg:px-12 overflow-hidden border-b border-white/10 bg-transparent font-body"
       aria-label="Hero — Scrape-Verse web intelligence"
     >
       {/* Background Interactive Canvas Particles with Scroll Implosion */}
@@ -149,11 +150,6 @@ export function Hero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-sky-400/60 bg-white/15 text-xs font-mono font-bold text-white backdrop-blur-xl shadow-lg shadow-sky-500/20" data-cursor-hover>
-            <ShieldCheck className="w-4 h-4 text-sky-400" />
-            <span className="tracking-wider text-slate-100 uppercase">Self-Healing Web Intelligence</span>
-          </div>
-
           <div className="space-y-2">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -166,10 +162,10 @@ export function Hero() {
             </motion.div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-bold font-display leading-[1.08] tracking-tight text-text-primary">
-              The web changes.
+              Your Agency&apos;s
               <br />
               <GradientText className="py-0.5">
-                Your intelligence adapts.
+                AI-Powered Business Development Team
               </GradientText>
             </h1>
           </div>
@@ -195,23 +191,27 @@ export function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap items-center gap-3.5 pt-2">
-            <Button
-              id="hero-cta-primary"
-              variant="primary"
-              className="!text-sm !px-6 !py-3 shadow-xl shadow-sky-500/25 flex items-center gap-2"
-              data-cursor-hover
-            >
-              <span>Explore Intelligence Engine</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-            <Button
-              id="hero-cta-secondary"
-              variant="secondary"
-              className="!text-sm !px-6 !py-3"
-              data-cursor-hover
-            >
-              See How It Works
-            </Button>
+            <Link href="/dashboard">
+              <Button
+                id="hero-cta-primary"
+                variant="primary"
+                className="!text-sm !px-6 !py-3 shadow-xl shadow-sky-500/25 flex items-center gap-2 cursor-pointer"
+                data-cursor-hover
+              >
+                <span>Explore Intelligence Engine</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+            <a href="#pipeline">
+              <Button
+                id="hero-cta-secondary"
+                variant="secondary"
+                className="!text-sm !px-6 !py-3 cursor-pointer"
+                data-cursor-hover
+              >
+                See How It Works
+              </Button>
+            </a>
           </div>
         </motion.div>
 

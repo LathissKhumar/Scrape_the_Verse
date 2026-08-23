@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { ArrowRight, Calendar, Sparkles } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
+import Link from 'next/link'
 
 export function FinalCTA() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -67,7 +68,7 @@ export function FinalCTA() {
     <section
       id="final-cta"
       ref={sectionRef}
-      className="py-36 md:py-48 relative overflow-hidden bg-transparent border-b border-white/5 font-body"
+      className="py-20 md:py-28 relative overflow-hidden bg-transparent border-b border-white/5 font-body"
       aria-label="Final Call to Action"
     >
       {/* Ambient Glow */}
@@ -102,54 +103,58 @@ export function FinalCTA() {
             data-cursor-hover
           >
             <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-            <span>ENTERPRISE WEB INTELLIGENCE</span>
+            <span>BUILT FOR HACKATHON 2026</span>
           </div>
 
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-display leading-[1.1] tracking-tight text-text-primary">
-            The web changes.
+            We don&apos;t stop at finding leads.
             <br />
-            <GradientText>Your intelligence adapts.</GradientText>
+            <GradientText>We tell you what they need, what to sell, and what to build.</GradientText>
           </h2>
 
           <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
-            Scrape-Verse continuously discovers, researches and monitors businesses across the web — while self-healing when websites change.
+            Scrape-Verse is the AI-powered lead-to-opportunity engine for web and SEO agencies. Discover leads, audit sites, detect opportunities, generate specs, and close deals — automatically.
           </p>
 
           {/* Magnetic CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-6 pt-4">
             {/* Magnetic Button Container */}
             <div ref={magneticWrapRef} className="relative inline-block">
-              <button
-                ref={magneticBtnRef}
-                id="final-cta-primary"
-                data-cursor-hover
-                className="relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-display font-bold text-base text-white bg-[#07090D] shadow-2xl shadow-sky-500/30 transition-all duration-300 group cursor-none will-change-transform overflow-hidden"
-              >
-                {/* Rotating Conic Gradient Border */}
-                <span
-                  className="absolute -inset-[2px] rounded-full z-[-1] animate-spin"
-                  style={{
-                    background:
-                      'conic-gradient(from 0deg, #38BDF8, #818CF8, #34D399, #38BDF8)',
-                    animationDuration: '3.5s',
-                  }}
-                />
-                {/* Button Inner Surface */}
-                <span className="absolute inset-[1.5px] rounded-full bg-[#0B0F19] z-[-1] backdrop-blur-md group-hover:bg-[#121B2A] transition-colors" />
+              <Link href="/dashboard">
+                <button
+                  ref={magneticBtnRef}
+                  id="final-cta-primary"
+                  data-cursor-hover
+                  className="relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-display font-bold text-base text-white bg-[#07090D] shadow-2xl shadow-sky-500/30 transition-all duration-300 group cursor-pointer will-change-transform overflow-hidden"
+                >
+                  {/* Rotating Conic Gradient Border */}
+                  <span
+                    className="absolute -inset-[2px] rounded-full z-[-1] animate-spin"
+                    style={{
+                      background:
+                        'conic-gradient(from 0deg, #38BDF8, #818CF8, #34D399, #38BDF8)',
+                      animationDuration: '3.5s',
+                    }}
+                  />
+                  {/* Button Inner Surface */}
+                  <span className="absolute inset-[1.5px] rounded-full bg-[#0B0F19] z-[-1] backdrop-blur-md group-hover:bg-[#121B2A] transition-colors" />
 
-                <span className="relative z-10 tracking-wide">Start a Project</span>
-                <ArrowRight className="w-5 h-5 text-cyan-300 relative z-10 group-hover:translate-x-1 transition-transform" />
-              </button>
+                  <span className="relative z-10 tracking-wide">Launch Command Center</span>
+                  <ArrowRight className="w-5 h-5 text-cyan-300 relative z-10 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
             </div>
 
-            <button
-              id="final-cta-secondary"
-              data-cursor-hover
-              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-base font-semibold text-slate-200 bg-white/10 hover:bg-white/15 border border-white/25 hover:border-sky-400/50 backdrop-blur-xl shadow-xl transition-all"
-            >
-              <Calendar className="w-4 h-4 text-sky-400" />
-              <span>Schedule Architecture Demo</span>
-            </button>
+            <Link href="/dashboard">
+              <button
+                id="final-cta-secondary"
+                data-cursor-hover
+                className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-base font-semibold text-slate-200 bg-white/10 hover:bg-white/15 border border-white/25 hover:border-sky-400/50 backdrop-blur-xl shadow-xl transition-all cursor-pointer"
+              >
+                <Calendar className="w-4 h-4 text-sky-400" />
+                <span>Explore Live Hubs</span>
+              </button>
+            </Link>
           </div>
         </motion.div>
       </div>

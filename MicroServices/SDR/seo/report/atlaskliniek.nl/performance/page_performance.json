@@ -1,0 +1,674 @@
+[
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/sbb-beeldmerk.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "response_time_ms": 2321.14,
+    "render_time_ms": 6994.7,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "response_time_ms": 2335.06,
+    "render_time_ms": 8949.18,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "response_time_ms": 5690.83,
+    "render_time_ms": 27010.49,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/ons-team/",
+    "response_time_ms": 2144.11,
+    "render_time_ms": 5288.67,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/",
+    "response_time_ms": 2631.3,
+    "render_time_ms": 5993.75,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "response_time_ms": 1861.7,
+    "render_time_ms": 5104.95,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/privacy-policy/",
+    "response_time_ms": 1754.29,
+    "render_time_ms": 4975.22,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/werken-bij/",
+    "response_time_ms": 4815.88,
+    "render_time_ms": 7886.49,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "response_time_ms": 2435.58,
+    "render_time_ms": 5498.32,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/inschrijven/",
+    "response_time_ms": 2470.02,
+    "render_time_ms": 5923.9,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/over-ons/",
+    "response_time_ms": 1923.45,
+    "render_time_ms": 5146.73,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+    "response_time_ms": 2470.83,
+    "render_time_ms": 5528.63,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandelingen/",
+    "response_time_ms": 2848.71,
+    "render_time_ms": 5940.73,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+    "response_time_ms": 2487.22,
+    "render_time_ms": 5795.93,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/contact/",
+    "response_time_ms": 2730.45,
+    "render_time_ms": 5833.44,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/spoed/",
+    "response_time_ms": 2472.49,
+    "render_time_ms": 5530.05,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "response_time_ms": 2449.4,
+    "render_time_ms": 5515.47,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "response_time_ms": 2618.07,
+    "render_time_ms": 5677.87,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "response_time_ms": 2505.02,
+    "render_time_ms": 5571.06,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "response_time_ms": 2448.6,
+    "render_time_ms": 5509.45,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "response_time_ms": 2451.73,
+    "render_time_ms": 5520.34,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "response_time_ms": 2502.22,
+    "render_time_ms": 5557.3,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "response_time_ms": 2463.43,
+    "render_time_ms": 5526.89,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "response_time_ms": 2768.23,
+    "render_time_ms": 5824.91,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "response_time_ms": 2476.58,
+    "render_time_ms": 5555.1,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "response_time_ms": 2462.52,
+    "render_time_ms": 5540.25,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "response_time_ms": 2469.28,
+    "render_time_ms": 5540.24,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "response_time_ms": 2587.59,
+    "render_time_ms": 5732.75,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuws/",
+    "response_time_ms": 2558.47,
+    "render_time_ms": 5625.68,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/garantie/",
+    "response_time_ms": 2497.64,
+    "render_time_ms": 5621.73,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "response_time_ms": 2623.83,
+    "render_time_ms": 5685.03,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/tandarts/",
+    "response_time_ms": 2645.47,
+    "render_time_ms": 5698.53,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "response_time_ms": 2471.54,
+    "render_time_ms": 5534.13,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "response_time_ms": 2568.15,
+    "render_time_ms": 5623.2,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/assistent/",
+    "response_time_ms": 2424.37,
+    "render_time_ms": 5467.71,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "response_time_ms": 2483.3,
+    "render_time_ms": 5538.66,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "response_time_ms": 2480.36,
+    "render_time_ms": 5532.8,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "response_time_ms": 2388.94,
+    "render_time_ms": 5523.67,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "response_time_ms": 2508.51,
+    "render_time_ms": 5576.56,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "response_time_ms": 3161.53,
+    "render_time_ms": 6227.56,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "response_time_ms": 2902.05,
+    "render_time_ms": 5944.5,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "response_time_ms": 2512.34,
+    "render_time_ms": 5604.72,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "response_time_ms": 2473.41,
+    "render_time_ms": 5547.56,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "response_time_ms": 2459.93,
+    "render_time_ms": 5533.48,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "response_time_ms": 2824.94,
+    "render_time_ms": 5950.68,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "response_time_ms": 2580.65,
+    "render_time_ms": 5642.75,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "response_time_ms": 2551.93,
+    "render_time_ms": 5607.04,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "response_time_ms": 2660.17,
+    "render_time_ms": 5721.29,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "response_time_ms": 2485.51,
+    "render_time_ms": 5548.19,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/gedeeltelijke-gebitsprothese-amsterdam-removebg-300x225.png",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2024/04/gebitsprothese-tandarts-amsterdam.jpg",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/volledige-gebitsprothese-amsterdam-300x225.jpg",
+    "response_time_ms": 0.0,
+    "render_time_ms": null,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "response_time_ms": 2481.96,
+    "render_time_ms": 5548.46,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "response_time_ms": 2540.94,
+    "render_time_ms": 5585.61,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+    "response_time_ms": 2539.92,
+    "render_time_ms": 5607.52,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "response_time_ms": 2259.07,
+    "render_time_ms": 6261.7,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "response_time_ms": 2572.72,
+    "render_time_ms": 9744.7,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "response_time_ms": 2990.44,
+    "render_time_ms": 8242.3,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "response_time_ms": 2823.24,
+    "render_time_ms": 6072.98,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+    "response_time_ms": 2150.98,
+    "render_time_ms": 5372.72,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en",
+    "response_time_ms": 2205.95,
+    "render_time_ms": 6498.47,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "response_time_ms": 2794.59,
+    "render_time_ms": 5862.97,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "response_time_ms": 2116.41,
+    "render_time_ms": 5184.84,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "response_time_ms": 2114.32,
+    "render_time_ms": 5165.74,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "response_time_ms": 2734.06,
+    "render_time_ms": 5784.11,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "response_time_ms": 2342.62,
+    "render_time_ms": 5388.76,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "response_time_ms": 2124.47,
+    "render_time_ms": 5235.5,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "response_time_ms": 2709.44,
+    "render_time_ms": 5758.02,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "response_time_ms": 2637.36,
+    "render_time_ms": 5702.94,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "response_time_ms": 2549.91,
+    "render_time_ms": 5680.26,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "response_time_ms": 2591.77,
+    "render_time_ms": 5653.21,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "response_time_ms": 2107.73,
+    "render_time_ms": 5188.33,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "response_time_ms": 2631.33,
+    "render_time_ms": 5704.54,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "response_time_ms": 2077.54,
+    "render_time_ms": 5148.62,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "response_time_ms": 1989.82,
+    "render_time_ms": 5089.34,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/over-ons/",
+    "response_time_ms": 2962.73,
+    "render_time_ms": 6041.32,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/ons-team/",
+    "response_time_ms": 2719.94,
+    "render_time_ms": 5778.19,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tarieven/",
+    "response_time_ms": 1863.22,
+    "render_time_ms": 5111.97,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+    "response_time_ms": 2058.57,
+    "render_time_ms": 5108.32,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "response_time_ms": 2866.93,
+    "render_time_ms": 5977.12,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "response_time_ms": 1815.24,
+    "render_time_ms": 4951.83,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuws/",
+    "response_time_ms": 2639.15,
+    "render_time_ms": 5706.69,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/spoed/",
+    "response_time_ms": 2722.15,
+    "render_time_ms": 5908.8,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/contact/",
+    "response_time_ms": 1923.48,
+    "render_time_ms": 5067.02,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "response_time_ms": 2131.0,
+    "render_time_ms": 5172.7,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "response_time_ms": 2608.47,
+    "render_time_ms": 5666.34,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/",
+    "response_time_ms": 1996.16,
+    "render_time_ms": 5174.13,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "response_time_ms": 2816.49,
+    "render_time_ms": 5890.0,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "response_time_ms": 2244.03,
+    "render_time_ms": 6277.22,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "response_time_ms": 1845.5,
+    "render_time_ms": 6506.31,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "response_time_ms": 2271.68,
+    "render_time_ms": 5460.75,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "response_time_ms": 2044.73,
+    "render_time_ms": 6799.62,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "response_time_ms": 2332.11,
+    "render_time_ms": 5480.03,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "response_time_ms": 1985.86,
+    "render_time_ms": 5118.94,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "response_time_ms": 2471.37,
+    "render_time_ms": 5597.08,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "response_time_ms": 1924.74,
+    "render_time_ms": 5049.48,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "response_time_ms": 1839.09,
+    "render_time_ms": 5003.97,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "response_time_ms": 1964.31,
+    "render_time_ms": 5095.71,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "response_time_ms": 1944.75,
+    "render_time_ms": 5077.34,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "response_time_ms": 1906.64,
+    "render_time_ms": 5049.29,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "response_time_ms": 1923.72,
+    "render_time_ms": 5047.07,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "response_time_ms": 1889.69,
+    "render_time_ms": 5009.94,
+    "status_code": 200
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "response_time_ms": 1868.64,
+    "render_time_ms": 5012.5,
+    "status_code": 200
+  }
+]
