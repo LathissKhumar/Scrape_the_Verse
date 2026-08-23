@@ -7,7 +7,7 @@ import { formatNumber } from '@/lib/utils'
 const HEALTH_COLOR: Record<string, string> = {
   healthy: '#34D399',
   running: '#38BDF8',
-  healing: '#8B5CF6',
+  healing: '#818CF8',
   failed: '#FB7185',
 }
 
@@ -16,15 +16,13 @@ export function CollectorCard({ collector }: { collector: CollectorStatus }) {
 
   return (
     <motion.div
-      className="glass-card p-6 space-y-5 flex flex-col justify-between h-full relative overflow-hidden group"
+      className="p-6 space-y-5 flex flex-col justify-between h-full relative overflow-hidden group rounded-3xl border border-white/18 bg-white/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.35),inset_0_1px_1px_rgba(255,255,255,0.22)] backdrop-blur-3xl hover:border-white/30 hover:bg-white/[0.12] transition-all"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{
         y: -4,
         scale: 1.01,
-        borderColor: 'rgba(56, 189, 248, 0.4)',
-        boxShadow: '0 16px 48px rgba(56, 189, 248, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.15)',
       }}
     >
       {/* Top Ambient Glow */}
