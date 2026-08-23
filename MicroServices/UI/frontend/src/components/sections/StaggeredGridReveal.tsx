@@ -131,12 +131,45 @@ function TiltProjectCard({
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, rotateY: 90, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, rotateY: 0, scale: 1 } : {}}
+      initial={{ opacity: 0, rotateY: 82, rotateX: -8, scale: 0.94 }}
+      animate={
+        isInView
+          ? {
+              opacity: 1,
+              rotateY: [0, 15, 0, -15, 0],
+              rotateX: [0, -7, 0, 7, 0],
+              y: [0, -8, 0],
+              scale: 1,
+            }
+          : { opacity: 0, rotateY: 82, rotateX: -8, scale: 0.94 }
+      }
       transition={{
-        duration: 0.7,
-        delay: (index % 3) * 0.12 + Math.floor(index / 3) * 0.14,
-        ease: [0.16, 1, 0.3, 1],
+        opacity: { duration: 0.7, delay: (index % 3) * 0.2 + Math.floor(index / 3) * 0.2 },
+        rotateY: {
+          duration: 10,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: (index % 3) * 0.25 + Math.floor(index / 3) * 0.18,
+        },
+        rotateX: {
+          duration: 12,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: (index % 3) * 0.3 + Math.floor(index / 3) * 0.22,
+        },
+        y: {
+          duration: 7,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: (index % 3) * 0.2,
+        },
+        scale: { duration: 0.8, delay: (index % 3) * 0.18 + Math.floor(index / 3) * 0.2 },
+      }}
+      whileHover={{
+        scale: 1.02,
+        y: -10,
+        rotateY: 0,
+        rotateX: 0,
       }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}

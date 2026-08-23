@@ -6,6 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger)
 
@@ -26,6 +28,33 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     // Sync Lenis scroll with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update)
+
+    if (!prefersReducedMotion) {
+      const revealEls = document.querySelectorAll('[data-scroll-reveal]')
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        {
+          threshold: 0.14,
+          rootMargin: '0px 0px -10% 0px',
+        }
+      )
+
+      revealEls.forEach((el) => observer.observe(el))
+
+      return () => {
+        observer.disconnect()
+        gsap.ticker.remove(updateGsapTicker)
+        lenis.destroy()
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      }
+    }
 
     // Trigger initial refresh
     ScrollTrigger.refresh()

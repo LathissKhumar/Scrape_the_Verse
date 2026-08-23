@@ -229,10 +229,10 @@ function StatProgressCard({
         </svg>
 
         {/* Center counter */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-mono text-3xl sm:text-4xl font-black text-white tabular-nums">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="font-mono text-3xl sm:text-4xl font-black text-white tabular-nums leading-none whitespace-nowrap">
             {count}
-            <span className="text-sky-400 text-2xl sm:text-3xl">{stat.suffix}</span>
+            <span className="text-sky-400 text-2xl sm:text-3xl align-middle">{stat.suffix}</span>
           </span>
         </div>
       </div>

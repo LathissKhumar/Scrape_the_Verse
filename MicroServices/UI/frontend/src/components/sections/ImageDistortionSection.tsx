@@ -17,25 +17,8 @@ export function ImageDistortionSection() {
   const textX = useTransform(scrollYProgress, [0, 0.5], [60, 0])
   const textOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1])
 
-  // Morphing clip-path from circle(0%) -> circle(75%) -> polygon(star) -> inset(0%)
-  const clipPath = useTransform(scrollYProgress, (p: number) => {
-    if (p < 0.3) {
-      const r = (p / 0.3) * 75
-      return `circle(${r}% at 50% 50%)`
-    } else if (p < 0.65) {
-      const local = (p - 0.3) / 0.35
-      if (local > 0.5) {
-        return 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'
-      }
-      return 'circle(75% at 50% 50%)'
-    } else {
-      const local = (p - 0.65) / 0.35
-      if (local > 0.5) {
-        return 'inset(0% 0% 0% 0% round 24px)'
-      }
-      return 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'
-    }
-  })
+  // Force a true square glass panel with no star polygon.
+  const clipPath = useTransform(scrollYProgress, () => 'inset(0% 0% 0% 0% round 0px)')
 
   return (
     <section

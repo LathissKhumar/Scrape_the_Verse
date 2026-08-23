@@ -164,6 +164,24 @@ export function PinnedHorizontalPillars() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+          {[...Array(28)].map((_, i) => (
+            <span
+              key={i}
+              className="absolute block rounded-full bg-sky-200/80 shadow-[0_0_12px_rgba(125,211,252,0.8)]"
+              style={{
+                width: `${(i % 4) + 2}px`,
+                height: `${(i % 4) + 2}px`,
+                left: `${(i * 11.7) % 100}%`,
+                top: `${(i * 17.3) % 100}%`,
+                opacity: 0.2 + (i % 5) * 0.12,
+                animation: `glitterFloat ${4 + (i % 6)}s ease-in-out infinite`,
+                animationDelay: `${(i % 7) * 0.6}s`,
+              }}
+            />
+          ))}
+        </div>
+
         {/* Subtle Edge Fade Gradients */}
         <div className="absolute left-0 top-0 bottom-0 w-16 md:w-20 bg-gradient-to-r from-black/25 to-transparent z-20 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-16 md:w-20 bg-gradient-to-l from-black/25 to-transparent z-20 pointer-events-none" />
@@ -207,7 +225,7 @@ export function PinnedHorizontalPillars() {
                 <span className="text-4xl sm:text-5xl font-black font-mono tracking-tighter bg-gradient-to-br from-white via-sky-300 to-indigo-400 bg-clip-text text-transparent opacity-90">
                   {card.num}
                 </span>
-                <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border backdrop-blur-md shadow-sm ${card.badgeColor}`}>
+                <span className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border border-sky-300/35 bg-sky-500/10 text-sky-100 backdrop-blur-md shadow-sm shadow-sky-500/10">
                   {card.tag}
                 </span>
               </div>
