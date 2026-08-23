@@ -70,41 +70,17 @@ export function Architecture() {
 
         {/* Circular Orbit Ring Viewport — Generous height & radius so cards and center NEVER overlap */}
         <div className="relative w-full min-h-[720px] sm:min-h-[840px] md:min-h-[920px] flex items-center justify-center my-4 py-8">
-          {/* Static Central Engine Core — Simple & Clean Orb */}
-          <div className="absolute z-30 flex flex-col items-center justify-center pointer-events-auto">
+          {/* Static Center Project Logo (Frameless) */}
+          <div className="absolute z-30 flex items-center justify-center pointer-events-none">
             <motion.div
-              animate={{ scale: [1, 1.04, 1] }}
+              animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="relative w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full glass-level-3 border-2 border-sky-400/60 shadow-[0_0_50px_rgba(56,189,248,0.5)] backdrop-blur-3xl flex flex-col items-center justify-center text-center p-3 overflow-hidden group"
-              style={{
-                boxShadow:
-                  '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.5)',
-              }}
             >
-              {/* Glow Accent */}
-              <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 via-indigo-500/10 to-transparent pointer-events-none" />
-
-              {/* Status Pulse */}
-              <div className="relative z-10 flex items-center gap-1 mb-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span className="text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-wider">
-                  ACTIVE
-                </span>
-              </div>
-
-              {/* Brand Logo in Center */}
-              <div className="relative z-10 py-0.5">
-                <img
-                  src="/images/Main_logo_vibrant.png"
-                  alt="AgencyOS Logo"
-                  className="h-6 sm:h-7 md:h-8 object-contain filter drop-shadow-[0_2px_10px_rgba(56,189,248,0.6)] saturate-[1.2]"
-                />
-              </div>
-
-              {/* Simple Bottom Label */}
-              <div className="relative z-10 text-[9px] sm:text-[10px] font-mono text-cyan-300 font-bold uppercase tracking-widest mt-1">
-                CORE ENGINE
-              </div>
+              <img
+                src="/images/Main_logo_vibrant.png"
+                alt="AgencyOS Main Logo"
+                className="w-44 sm:w-56 md:w-64 h-auto object-contain filter drop-shadow-[0_10px_35px_rgba(56,189,248,0.75)] saturate-[1.85] contrast-[1.15]"
+              />
             </motion.div>
           </div>
 
