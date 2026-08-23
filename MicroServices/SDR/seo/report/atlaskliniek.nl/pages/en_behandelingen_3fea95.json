@@ -1,0 +1,253 @@
+{
+  "page_id": "page_fdfa483fea95",
+  "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+  "raw_url": "https://www.atlaskliniek.nl/en/behandelingen/",
+  "status_code": 200,
+  "content_type": "text/html",
+  "depth": 1,
+  "response_time_ms": 2794.59,
+  "render_time_ms": 5862.97,
+  "seo": {
+    "title": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+    "meta_description": "U bent van harte welkom bij Tandheelkundige Kliniek Amsterdam. Wij bieden een breed scala aan behandelingen aan om uw gebit mooi en gezond te houden.",
+    "h1": "Treatments",
+    "h2": [
+      "Closure of Prins Hendrikkade location as of November 1, 2025",
+      "Our treatments"
+    ],
+    "h3": [
+      "Contact",
+      "Register"
+    ],
+    "word_count": 942
+  },
+  "technical": {
+    "canonical": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    "language": "en-GB",
+    "charset": "UTF-8",
+    "viewport": "width=device-width, initial-scale=1"
+  },
+  "social": {
+    "og_tags": {
+      "locale": "en_GB",
+      "type": "article",
+      "title": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+      "description": "U bent van harte welkom bij Tandheelkundige Kliniek Amsterdam. Wij bieden een breed scala aan behandelingen aan om uw gebit mooi en gezond te houden.",
+      "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+      "site_name": "Tandheelkundige Kliniek Atlas",
+      "updated_time": "2023-10-27T12:54:52+02:00",
+      "image": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit.png",
+      "image:secure_url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit.png",
+      "image:width": "415",
+      "image:height": "267",
+      "image:alt": "Allesoverhetgebit.nl",
+      "image:type": "image/png"
+    },
+    "twitter_tags": {
+      "card": "summary_large_image",
+      "title": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+      "description": "U bent van harte welkom bij Tandheelkundige Kliniek Amsterdam. Wij bieden een breed scala aan behandelingen aan om uw gebit mooi en gezond te houden.",
+      "image": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit.png"
+    }
+  },
+  "schema": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": [
+            "Person",
+            "Organization"
+          ],
+          "@id": "https://www.atlaskliniek.nl/en/#person",
+          "name": "Tandheelkundige Kliniek Atlas"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.atlaskliniek.nl/en/#website",
+          "url": "https://www.atlaskliniek.nl/en",
+          "name": "Tandheelkundige Kliniek Atlas",
+          "publisher": {
+            "@id": "https://www.atlaskliniek.nl/en/#person"
+          },
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "ImageObject",
+          "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+          "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+          "width": "200",
+          "height": "200",
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.atlaskliniek.nl/en/behandelingen/#webpage",
+          "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+          "name": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+          "datePublished": "2021-05-31T15:48:33+02:00",
+          "dateModified": "2023-10-27T12:54:52+02:00",
+          "isPartOf": {
+            "@id": "https://www.atlaskliniek.nl/en/#website"
+          },
+          "primaryImageOfPage": {
+            "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png"
+          },
+          "inLanguage": "en-GB"
+        },
+        {
+          "@type": "Article",
+          "headline": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+          "datePublished": "2021-05-31T15:48:33+02:00",
+          "dateModified": "2023-10-27T12:54:52+02:00",
+          "publisher": {
+            "@id": "https://www.atlaskliniek.nl/en/#person"
+          },
+          "description": "U bent van harte welkom bij Tandheelkundige Kliniek Amsterdam. Wij bieden een breed scala aan behandelingen aan om uw gebit mooi en gezond te houden.",
+          "name": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+          "@id": "https://www.atlaskliniek.nl/en/behandelingen/#richSnippet",
+          "isPartOf": {
+            "@id": "https://www.atlaskliniek.nl/en/behandelingen/#webpage"
+          },
+          "image": {
+            "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png"
+          },
+          "inLanguage": "en-GB",
+          "mainEntityOfPage": {
+            "@id": "https://www.atlaskliniek.nl/en/behandelingen/#webpage"
+          }
+        }
+      ]
+    }
+  ],
+  "analytics": {
+    "google_analytics": true,
+    "gtag": true,
+    "ga4_id": "G-YG05B986E8",
+    "gtm_id": "GTM-N2Z4RLRB",
+    "facebook_pixel": false,
+    "hotjar": false,
+    "mixpanel": false
+  },
+  "images": [
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+      "alt": "",
+      "width": "232",
+      "height": "121"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+      "alt": "",
+      "width": "236",
+      "height": "123"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+      "alt": "Allesoverhetgebit.nl",
+      "width": "300",
+      "height": "193"
+    },
+    {
+      "src": "https://www.zorgkaartnederland.nl/bundles/zkncontent/images/elements/logo_zkn.png",
+      "alt": "Zoek, vind en waardeer zorgaanbieders op ZorgkaartNederland.nl",
+      "width": "",
+      "height": ""
+    },
+    {
+      "src": "https://www.zorgkaartnederland.nl/bundles/zkncontent/images/elements/logo_npcf_widget.png",
+      "alt": "Patiëntenfederatie Nederland",
+      "width": "",
+      "height": ""
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+      "alt": "Part of Atlas",
+      "width": "143",
+      "height": "66"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png",
+      "alt": "KNMT",
+      "width": "650",
+      "height": "290"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/sbb-beeldmerk.png",
+      "alt": "SBB logo",
+      "width": "600",
+      "height": "600"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+      "alt": "telefoonknop",
+      "width": "187",
+      "height": "187"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+      "alt": "en_GB",
+      "width": "18",
+      "height": "12"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+      "alt": "nl_NL",
+      "width": "18",
+      "height": "12"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+      "alt": "en_GB",
+      "width": "18",
+      "height": "12"
+    }
+  ],
+  "redirects": [],
+  "linked_from": [
+    "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "https://www.atlaskliniek.nl/behandelingen/",
+    "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "https://www.atlaskliniek.nl/en/inschrijven/",
+    "https://www.atlaskliniek.nl/en",
+    "https://www.atlaskliniek.nl/en/behandelingen/",
+    "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "https://www.atlaskliniek.nl/en/over-ons/",
+    "https://www.atlaskliniek.nl/en/ons-team/",
+    "https://www.atlaskliniek.nl/en/tarieven/",
+    "https://www.atlaskliniek.nl/en/werken-bij/",
+    "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "https://www.atlaskliniek.nl/en/nieuws/",
+    "https://www.atlaskliniek.nl/en/spoed/",
+    "https://www.atlaskliniek.nl/en/contact/",
+    "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "https://www.atlaskliniek.nl/en/",
+    "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "https://www.atlaskliniek.nl/en/sitemap/"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "domain": "atlaskliniek.nl",
+  "base_url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+  "overall_score": 72,
+  "category_scores": {
+    "Technical SEO": 86,
+    "On-Page SEO": 43,
+    "Content Quality": 80,
+    "Performance": 70,
+    "Structured Data": 90,
+    "Local SEO": 100
+  },
+  "pages_crawled": 112,
+  "links_analyzed": 4895,
+  "issues_detected": 395,
+  "images_cataloged": 1010,
+  "duration_seconds": 297.92,
+  "timestamp": "2026-08-22T11:15:52.129688+00:00"
+}

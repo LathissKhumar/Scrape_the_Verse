@@ -1,0 +1,42 @@
+{
+  "page_id": "page_7da5878a7580",
+  "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/volledige-gebitsprothese-amsterdam-300x225.jpg",
+  "raw_url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/volledige-gebitsprothese-amsterdam-300x225.jpg",
+  "status_code": 200,
+  "content_type": "image/jpeg",
+  "depth": 2,
+  "response_time_ms": 0.0,
+  "render_time_ms": null,
+  "seo": {
+    "title": null,
+    "meta_description": null,
+    "h1": null,
+    "h2": [],
+    "h3": [],
+    "word_count": 0
+  },
+  "technical": {
+    "canonical": null,
+    "robots": null,
+    "language": null,
+    "charset": null,
+    "viewport": null
+  },
+  "social": {
+    "og_tags": {},
+    "twitter_tags": {}
+  },
+  "schema": [],
+  "analytics": {
+    "google_analytics": false,
+    "gtag": false,
+    "ga4_id": "",
+    "gtm_id": "",
+    "facebook_pixel": false,
+    "hotjar": false,
+    "mixpanel": false
+  },
+  "images": [],
+  "redirects": [],
+  "linked_from": []
+}

@@ -68,7 +68,7 @@ export function FinalCTA() {
     <section
       id="final-cta"
       ref={sectionRef}
-      className="py-36 md:py-48 relative overflow-hidden bg-transparent border-b border-white/5 font-body"
+      className="py-20 md:py-28 relative overflow-hidden bg-transparent border-b border-white/5 font-body"
       aria-label="Final Call to Action"
     >
       {/* Ambient Glow */}
@@ -103,17 +103,17 @@ export function FinalCTA() {
             data-cursor-hover
           >
             <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-            <span>ENTERPRISE WEB INTELLIGENCE</span>
+            <span>BUILT FOR HACKATHON 2026</span>
           </div>
 
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-display leading-[1.1] tracking-tight text-text-primary">
-            The web changes.
+            We don&apos;t stop at finding leads.
             <br />
-            <GradientText>Your intelligence adapts.</GradientText>
+            <GradientText>We tell you what they need, what to sell, and what to build.</GradientText>
           </h2>
 
           <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
-            Scrape-Verse continuously discovers, researches and monitors businesses across the web — while self-healing when websites change.
+            Scrape-Verse is the AI-powered lead-to-opportunity engine for web and SEO agencies. Discover leads, audit sites, detect opportunities, generate specs, and close deals — automatically.
           </p>
 
           {/* Magnetic CTA Buttons */}

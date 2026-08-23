@@ -1,0 +1,100 @@
+{
+  "category": "On-Page SEO",
+  "score": 43,
+  "status": "failed",
+  "summary": "On-page audit inspected 100 indexable pages. Discovered 4 issues with score 43/100.",
+  "findings": [
+    {
+      "category": "On-Page",
+      "severity": "medium",
+      "title": "Title Tags Truncated in SERP (>60 chars)",
+      "description": "24 page(s) have title tags exceeding 60 characters.",
+      "impact": "Search engines will truncate the title with ellipses ('...'), reducing click-through rates.",
+      "recommendation": "Trim title tags to 50-60 characters and move primary keywords to the beginning.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+        "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+        "https://www.atlaskliniek.nl/",
+        "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+        "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+        "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+        "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+        "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+        "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+        "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/"
+      ],
+      "evidence": {
+        "long_title_count": 24
+      }
+    },
+    {
+      "category": "On-Page",
+      "severity": "medium",
+      "title": "Missing Meta Descriptions",
+      "description": "9 page(s) have no meta description.",
+      "impact": "Search engines will generate arbitrary text snippets from page content, hurting SERP CTR.",
+      "recommendation": "Write unique, persuasive meta descriptions (120-160 characters) with a clear call to action.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/category/uncategorized/",
+        "https://www.atlaskliniek.nl/category/tandarts/",
+        "https://www.atlaskliniek.nl/category/mondhygienist/",
+        "https://www.atlaskliniek.nl/category/preventieassistent/",
+        "https://www.atlaskliniek.nl/category/assistent/",
+        "https://www.atlaskliniek.nl/category/ondersteunend/",
+        "https://www.atlaskliniek.nl/category/tandprotheticus/",
+        "https://www.atlaskliniek.nl/category/implantoloog/",
+        "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/"
+      ],
+      "evidence": {
+        "missing_description_count": 9
+      }
+    },
+    {
+      "category": "On-Page",
+      "severity": "high",
+      "title": "Missing H1 Headings",
+      "description": "4 page(s) are missing a main `<h1>` heading tag.",
+      "impact": "Users and search engines rely on H1 to understand the primary topic of the page.",
+      "recommendation": "Ensure every page has exactly one descriptive `<h1>` matching the page intent.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/sitemap/",
+        "https://www.atlaskliniek.nl/bedankt-contact/",
+        "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+        "https://www.atlaskliniek.nl/en/sitemap/"
+      ],
+      "evidence": {
+        "missing_h1_count": 4
+      }
+    },
+    {
+      "category": "On-Page",
+      "severity": "medium",
+      "title": "Images Missing Alt Text",
+      "description": "Detected 230 image(s) lacking descriptive alt attributes across 100 page(s).",
+      "impact": "Harms accessibility (screen readers) and prevents images from indexing in Google Image search.",
+      "recommendation": "Add meaningful `alt='...'` descriptions to all informational images.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+        "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+        "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+        "https://www.atlaskliniek.nl/ons-team/",
+        "https://www.atlaskliniek.nl/",
+        "https://www.atlaskliniek.nl/tarieven/",
+        "https://www.atlaskliniek.nl/privacy-policy/",
+        "https://www.atlaskliniek.nl/werken-bij/",
+        "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+        "https://www.atlaskliniek.nl/inschrijven/"
+      ],
+      "evidence": {
+        "images_missing_alt": 230
+      }
+    }
+  ],
+  "metrics": {
+    "indexable_pages": 100,
+    "missing_titles": 0,
+    "missing_meta_descriptions": 9,
+    "missing_h1": 4,
+    "images_missing_alt": 230
+  }
+}

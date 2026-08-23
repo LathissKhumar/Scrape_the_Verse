@@ -1,0 +1,42 @@
+{
+  "page_id": "page_3c30eadaed0d",
+  "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+  "raw_url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+  "status_code": 200,
+  "content_type": "image/png",
+  "depth": 1,
+  "response_time_ms": 0.0,
+  "render_time_ms": null,
+  "seo": {
+    "title": null,
+    "meta_description": null,
+    "h1": null,
+    "h2": [],
+    "h3": [],
+    "word_count": 0
+  },
+  "technical": {
+    "canonical": null,
+    "robots": null,
+    "language": null,
+    "charset": null,
+    "viewport": null
+  },
+  "social": {
+    "og_tags": {},
+    "twitter_tags": {}
+  },
+  "schema": [],
+  "analytics": {
+    "google_analytics": false,
+    "gtag": false,
+    "ga4_id": "",
+    "gtm_id": "",
+    "facebook_pixel": false,
+    "hotjar": false,
+    "mixpanel": false
+  },
+  "images": [],
+  "redirects": [],
+  "linked_from": []
+}

@@ -33,8 +33,9 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="text-xs font-mono text-muted">
-          © 2026 Scrape-Verse Inc. Self-Healing Web Intelligence Platform.
+        <div className="text-xs font-mono text-muted text-center space-y-1">
+          <p>AI-powered lead-to-opportunity engine for web and SEO agencies.</p>
+          <p>© 2026 Scrape-Verse · Built for Hackathon 2026</p>
         </div>
       </div>
     </footer>

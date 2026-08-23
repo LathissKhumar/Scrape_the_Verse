@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+.env
+outputs/
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
