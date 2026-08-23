@@ -1,0 +1,57 @@
+"""
+Lead Pipeline Client for Lead Finder.
+Dispatches discovered targets to SDR (:8081) and Lead Manager (:8082).
+"""
+
+from typing import Any, Dict, List, Optional
+import httpx
+
+
+class LeadPipelineClient:
+    def __init__(
+        self,
+        sdr_url: str = "http://127.0.0.1:8081",
+        lead_manager_url: str = "http://127.0.0.1:8082",
+    ):
+        self.sdr_url = sdr_url.rstrip("/")
+        self.lead_manager_url = lead_manager_url.rstrip("/")
+
+    async def audit_and_forward_to_lead_manager(
+        self,
+        company_name: str,
+        website_url: str,
+        campaign_id: Optional[str] = None,
+        primary_contact_name: Optional[str] = None,
+        primary_contact_email: Optional[str] = None,
+        primary_contact_phone: Optional[str] = None,
+        industry: Optional[str] = None,
+        location: Optional[str] = None,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Sends discovered company to SDR (:8081) for website crawl + SEO audit.
+        SDR automatically packages opportunities and persists the Lead in Lead Manager (:8082).
+        """
+        payload = {
+            "company_name": company_name,
+            "website_url": website_url,
+            "campaign_id": campaign_id,
+            "primary_contact_name": primary_contact_name,
+            "primary_contact_email": primary_contact_email,
+            "primary_contact_phone": primary_contact_phone,
+            "industry": industry,
+            "location": location,
+            "source": "leadfinder",
+            "metadata": metadata or {},
+        }
+
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            resp = await client.post(
+                f"{self.sdr_url}/api/v1/audit/dispatch-to-lead-manager",
+                json=payload,
+            )
+            if resp.status_code != 200:
+                raise RuntimeError(
+                    f"SDR audit & dispatch failed ({resp.status_code}): {resp.text}"
+                )
+            return resp.json()
