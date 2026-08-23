@@ -4,6 +4,7 @@ import { motion, useScroll } from 'framer-motion'
 import { ArrowRight, ShieldCheck, Sparkles, Activity } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
+import Link from 'next/link'
 
 const GLYPHS = '!<>-_\\/[]{}=+*^?#01~%'
 
@@ -195,23 +196,27 @@ export function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap items-center gap-3.5 pt-2">
-            <Button
-              id="hero-cta-primary"
-              variant="primary"
-              className="!text-sm !px-6 !py-3 shadow-xl shadow-sky-500/25 flex items-center gap-2"
-              data-cursor-hover
-            >
-              <span>Explore Intelligence Engine</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-            <Button
-              id="hero-cta-secondary"
-              variant="secondary"
-              className="!text-sm !px-6 !py-3"
-              data-cursor-hover
-            >
-              See How It Works
-            </Button>
+            <Link href="/dashboard">
+              <Button
+                id="hero-cta-primary"
+                variant="primary"
+                className="!text-sm !px-6 !py-3 shadow-xl shadow-sky-500/25 flex items-center gap-2 cursor-pointer"
+                data-cursor-hover
+              >
+                <span>Explore Intelligence Engine</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+            <a href="#pipeline">
+              <Button
+                id="hero-cta-secondary"
+                variant="secondary"
+                className="!text-sm !px-6 !py-3 cursor-pointer"
+                data-cursor-hover
+              >
+                See How It Works
+              </Button>
+            </a>
           </div>
         </motion.div>
 
