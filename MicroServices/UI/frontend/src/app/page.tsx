@@ -3,20 +3,25 @@
 import {
   Navbar,
   Hero,
+  ProblemSection,
+  HorizontalPipeline,
   PinnedHorizontalPillars,
   WebDatabase,
   Pipeline,
   LeadDiscovery,
   ParallelResearch,
   ImageDistortionSection,
+  LiveExample,
   StaggeredGridReveal,
   SelfHealingDemo,
   SelfHealingCI,
   StructuredData,
   SalesAutomation,
+  LeadScoring,
   Monitoring,
   ScraperControlCenter,
   Architecture,
+  TechStackSection,
   WhyScrapeVerse,
   FinalCTA,
   Footer,
@@ -156,7 +161,17 @@ export default function Home() {
               <Hero />
             </div>
 
-            {/* §2 Core Pillars Continuous Stream */}
+            {/* §2 The Problem — Two-Column Comparison */}
+            <div data-scroll-reveal className="reveal-panel">
+              <ProblemSection />
+            </div>
+
+            {/* §3 Horizontal Scroll Pipeline Overview */}
+            <div data-scroll-reveal className="reveal-panel">
+              <HorizontalPipeline />
+            </div>
+
+            {/* §4 Core Pillars Continuous Stream */}
             <div data-scroll-reveal className="reveal-panel">
               <PinnedHorizontalPillars />
             </div>
@@ -191,6 +206,11 @@ export default function Home() {
               <ImageDistortionSection />
             </div>
 
+            {/* §6 Live Example — Atlas Kliniek Walkthrough */}
+            <div data-scroll-reveal className="reveal-panel">
+              <LiveExample />
+            </div>
+
             {/* Interactive Self-Healing Demo */}
             <div data-scroll-reveal className="reveal-panel">
               <SelfHealingDemo />
@@ -211,7 +231,12 @@ export default function Home() {
               <SalesAutomation />
             </div>
 
-            {/* §4 Counter / Stats with Animated SVG Progress Rings */}
+            {/* §7 Lead Scoring */}
+            <div data-scroll-reveal className="reveal-panel">
+              <LeadScoring />
+            </div>
+
+            {/* §8 Counter / Stats with Animated SVG Progress Rings */}
             <div data-scroll-reveal className="reveal-panel">
               <Monitoring />
             </div>
@@ -226,7 +251,12 @@ export default function Home() {
               <Architecture />
             </div>
 
-            {/* §3 Kinetic Typography Manifesto (Word-by-word reveal) */}
+            {/* Tech Stack Section */}
+            <div data-scroll-reveal className="reveal-panel">
+              <TechStackSection />
+            </div>
+
+            {/* §9 Kinetic Typography Manifesto (Word-by-word reveal) */}
             <div data-scroll-reveal className="reveal-panel">
               <WhyScrapeVerse />
             </div>

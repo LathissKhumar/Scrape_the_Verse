@@ -41,8 +41,8 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
           })
         },
         {
-          threshold: 0.14,
-          rootMargin: '0px 0px -10% 0px',
+          threshold: 0.01,
+          rootMargin: '100px 0px 100px 0px',
         }
       )
 

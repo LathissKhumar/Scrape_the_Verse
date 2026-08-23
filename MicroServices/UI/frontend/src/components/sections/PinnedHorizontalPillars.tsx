@@ -138,7 +138,7 @@ export function PinnedHorizontalPillars() {
   return (
     <section
       id="tech-stack-marquee"
-      className="py-14 md:py-18 relative border-b border-white/10 bg-transparent font-body overflow-hidden"
+      className="py-8 md:py-12 relative border-b border-white/10 bg-transparent font-body overflow-hidden"
       aria-label="Technology Stack and Architecture"
     >
       {/* Header bar */}
@@ -182,10 +182,6 @@ export function PinnedHorizontalPillars() {
           ))}
         </div>
 
-        {/* Subtle Edge Fade Gradients */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-20 bg-gradient-to-r from-black/25 to-transparent z-20 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-20 bg-gradient-to-l from-black/25 to-transparent z-20 pointer-events-none" />
-
         <motion.div
           className="flex items-center gap-6 w-max will-change-transform py-2"
           animate={{
@@ -202,10 +198,10 @@ export function PinnedHorizontalPillars() {
         >
           {MARQUEE_ITEMS.map((card, idx) => (
             <motion.div
-              key={`${card.num}-${idx}`}
+              key={`${card.title}-${idx}`}
               whileHover={{ y: -4, scale: 1.02 }}
               data-cursor-hover
-              className="w-[320px] sm:w-[360px] md:w-[390px] h-[280px] rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden shrink-0 glass-liquid border border-white/25 shadow-xl backdrop-blur-2xl transition-all duration-300 group"
+              className="w-[300px] sm:w-[340px] md:w-[360px] h-[200px] sm:h-[210px] rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden shrink-0 glass-liquid border border-white/25 shadow-xl backdrop-blur-2xl transition-all duration-300 group"
               style={{
                 boxShadow:
                   '0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)',
@@ -220,32 +216,29 @@ export function PinnedHorizontalPillars() {
               {/* Top spec shine */}
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />
 
-              {/* Card Header */}
-              <div className="relative z-10 flex items-center justify-between">
-                <span className="text-4xl sm:text-5xl font-black font-mono tracking-tighter bg-gradient-to-br from-white via-sky-300 to-indigo-400 bg-clip-text text-transparent opacity-90">
-                  {card.num}
-                </span>
-                <span className="inline-block px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border border-sky-300/35 bg-sky-500/10 text-sky-100 backdrop-blur-md shadow-sm shadow-sky-500/10">
-                  {card.tag}
-                </span>
-              </div>
-
-              {/* Card Body with Techstack Logo alongside its Name */}
-              <div className="relative z-10 space-y-2.5">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-white/10 border border-white/20 backdrop-blur-md shadow-md group-hover:border-sky-400/60 group-hover:bg-white/15 transition-all shrink-0 flex items-center justify-center">
+              {/* Card Header & Title with Techstack Icon */}
+              <div className="relative z-10 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="p-1.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-md shadow-md group-hover:border-sky-400/60 group-hover:bg-white/15 transition-all shrink-0 flex items-center justify-center">
                     {card.icon}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold font-display text-white group-hover:text-sky-300 transition-colors leading-tight">
-                    {card.title}
-                  </h3>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border border-sky-300/35 bg-sky-500/10 text-sky-100 backdrop-blur-md shadow-sm">
+                    {card.tag}
+                  </span>
                 </div>
+                <h3 className="text-base sm:text-lg font-bold font-display text-white group-hover:text-sky-300 transition-colors leading-tight">
+                  {card.title}
+                </h3>
+              </div>
+
+              {/* Card Body with Typewriter text */}
+              <div className="relative z-10">
                 <TypewriterDescription text={card.desc} />
               </div>
 
               {/* Card Footer Indicator */}
-              <div className="relative z-10 pt-2.5 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                <span className="flex items-center gap-1 text-emerald-400">
+              <div className="relative z-10 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                <span className="flex items-center gap-1 text-emerald-400 font-semibold">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   ACTIVE STACK
                 </span>
@@ -279,7 +272,6 @@ function TypewriterDescription({ text }: { text: string }) {
       }
 
       const rect = el.getBoundingClientRect()
-      // Triggers typing as soon as the card enters within the website frame / viewport
       const isInFrame = rect.right > 0 && rect.left < window.innerWidth
 
       if (isInFrame && !hasStartedRef.current) {
@@ -298,7 +290,6 @@ function TypewriterDescription({ text }: { text: string }) {
           }
         }, 75)
       } else if (!hasStartedRef.current) {
-        // Keep checking on next frame until the card reaches the frame
         animFrame = requestAnimationFrame(checkPosition)
       }
     }
@@ -312,11 +303,11 @@ function TypewriterDescription({ text }: { text: string }) {
   }, [text])
 
   return (
-    <div ref={containerRef} className="min-h-[60px] sm:min-h-[66px] flex items-start">
-      <p className="text-xs sm:text-sm font-body leading-relaxed text-slate-300/95 line-clamp-3">
+    <div ref={containerRef} className="min-h-[44px] flex items-start">
+      <p className="text-xs font-body leading-relaxed text-slate-300/95 line-clamp-2">
         <span>{displayedText}</span>
         <motion.span
-          className="inline-block w-[2px] h-3.5 ml-1 align-middle bg-cyan-400 shadow-[0_0_8px_#38bdf8]"
+          className="inline-block w-[2px] h-3 ml-0.5 align-middle bg-cyan-400 shadow-[0_0_8px_#38bdf8]"
           animate={{ opacity: isDone ? [1, 0, 1] : 1 }}
           transition={{ duration: 0.7, repeat: Infinity, ease: 'easeInOut' }}
         />

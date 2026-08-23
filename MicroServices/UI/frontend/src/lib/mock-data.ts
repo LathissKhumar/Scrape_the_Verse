@@ -10,38 +10,93 @@ import type {
 export const PIPELINE_STAGES: PipelineStage[] = [
   {
     stage: '01',
-    title: 'Lead Discovery',
+    roleBadge: 'DISCOVERY',
+    title: 'Lead Finder Agent',
+    subtitle: 'The entry point. Finds the prospects.',
     description:
-      'Sweeps maps, business directories, and review sites to identify targeted prospects.',
+      'Scrapes and discovers business listings from IndiaMART, Yelp, Google Maps, Avvo, and other directories. Extracts structured lead data — company name, location, category, website URL, contact details — and passes it downstream. It doesn\'t need to understand the business deeply. It just needs to find it.',
+    output: 'Structured business lead with source metadata',
     icon: 'search',
   },
   {
     stage: '02',
-    title: 'Parallel Research',
+    roleBadge: 'NORMALIZATION',
+    title: 'Lead Normalizer',
+    subtitle: 'One schema to rule them all.',
     description:
-      'Four concurrent collectors evaluate website quality, customer sentiment, competitors, and social footprint.',
+      'IndiaMART gives you company_name and gstin. Yelp gives you rating and reviews_count. Avvo gives you avvo_rating and practice_areas. The Lead Normalizer maps every source schema into a single unified business profile so all downstream agents work the same way regardless of where the lead came from.',
+    output: 'Unified lead object: business_name, industry, location, website, contact, source',
     icon: 'zap',
   },
   {
     stage: '03',
-    title: 'Self-Healing Engine',
+    roleBadge: 'WEBSITE INTELLIGENCE',
+    title: 'Website & SEO Analysis Agent',
+    subtitle: 'The digital audit engine.',
     description:
-      'When target site layouts change, AI agents automatically regenerate extraction rules in real time.',
+      'Crawls the business website and runs a full technical and content audit. Finds the real problems — not just a score. Reports exactly what is broken, what is missing, and what is costing the business visibility and leads.',
+    subAgents: [
+      { name: 'Crawl Agent', desc: 'checks crawlability, indexability, redirects, robots, sitemap' },
+      { name: 'On-Page SEO Agent', desc: 'audits titles, meta descriptions, H1 tags, heading structure' },
+      { name: 'Content Agent', desc: 'identifies thin content, missing service pages, content gaps' },
+      { name: 'Local SEO Agent', desc: 'checks local search signals and location-specific opportunities' },
+      { name: 'Performance Agent', desc: 'flags performance-related findings affecting SEO' },
+    ],
+    output: 'SEO report: score, specific page-level problems, missing pages, content gaps',
     icon: 'shield-check',
   },
   {
     stage: '04',
-    title: 'Structured Intelligence',
+    roleBadge: 'BUSINESS INTELLIGENCE',
+    title: 'Business Analysis Agent',
+    subtitle: 'The research team. All in one agent.',
     description:
-      'Raw web payload normalizes into structured JSON and feeds directly into Gemini AI models.',
+      'Understands the business from the outside in — who they are, who their customers are, what the market looks like, who their competitors are, and what they actually sell. This is the layer that turns a website audit into a business opportunity.',
+    subAgents: [
+      { name: 'Business Profile Agent', desc: 'identifies industry, business model, services, positioning, scale' },
+      { name: 'Market Analysis Agent', desc: 'maps local market conditions, digital demand, search behavior' },
+      { name: 'Customer Analysis Agent', desc: 'profiles customer segments, pain points, needs, decision factors' },
+      { name: 'Competitor Analysis Agent', desc: 'identifies competitors, their digital presence, positioning gaps' },
+      { name: 'Service Analysis Agent', desc: 'maps business services against website visibility' },
+    ],
+    output: 'Full business context: profile, market, customers, competitors, services',
     icon: 'brain-circuit',
   },
   {
     stage: '05',
-    title: 'Autonomous Sales Action',
+    roleBadge: 'OPPORTUNITY DETECTION',
+    title: 'Opportunity Engine',
+    subtitle: 'Where research becomes revenue.',
     description:
-      'Proposals, outreach emails, voice calls, and re-engagement triggers execute automatically.',
+      'Takes the SEO findings and business context and asks one question: What problem exists here, and what opportunity does it represent? Every output includes a problem, the evidence behind it, the customer need it affects, and the digital service that addresses it. No hallucinations. No generic advice. Evidence-backed opportunities only.',
+    subAgents: [
+      { name: 'Business Problem Agent', desc: 'identifies problems from website and business evidence' },
+      { name: 'Opportunity Agent', desc: 'maps problems to digital service opportunities' },
+      { name: 'Business Scoring Agent', desc: 'scores each lead across 5 dimensions and assigns priority' },
+    ],
+    output: 'Opportunity brief: problem + evidence + customer need + recommended service + priority score',
+    icon: 'zap',
+  },
+  {
+    stage: '06',
+    roleBadge: 'IMPLEMENTATION',
+    title: 'Prompt Generation Agent',
+    subtitle: 'The bridge between research and execution.',
+    description:
+      'Takes everything the system knows about the business and generates a complete, implementation-ready website specification. Not a summary of the SEO report. Not a generic template. A structured prompt that tells an AI website builder exactly what to build, who it\'s for, what pages to create, what content to include, and what SEO rules to follow — built from verified business data only.',
+    compatibleWith: 'Lovable · v0 · Bolt · Firebase Studio · Claude Code · Cursor · OpenCode',
+    output: 'Website implementation prompt: architecture, pages, content, SEO, UX, conversion flow',
     icon: 'rocket',
+  },
+  {
+    stage: '07',
+    roleBadge: 'OUTREACH',
+    title: 'Outreach & Lead Management Agent',
+    subtitle: 'From opportunity to conversation.',
+    description:
+      'Uses the business context and opportunity brief to generate a personalized, evidence-backed outreach message. Not a cold template — a pitch built from what the agent actually found. Then tracks every lead through the pipeline: contacted, interested, proposal sent, meeting booked, won or lost.',
+    output: 'Personalized outreach draft + lead status tracking + follow-up queue',
+    icon: 'search',
   },
 ]
 

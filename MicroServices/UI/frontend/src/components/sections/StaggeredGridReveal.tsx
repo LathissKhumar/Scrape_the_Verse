@@ -70,7 +70,7 @@ export function StaggeredGridReveal() {
     <section
       id="grid-reveal"
       ref={ref}
-      className="py-32 md:py-44 relative border-b border-white/10 bg-transparent font-body overflow-hidden"
+      className="py-16 md:py-24 relative border-b border-white/10 bg-transparent font-body overflow-hidden"
       aria-label="3x3 Staggered Grid Intelligence Modules"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-20">

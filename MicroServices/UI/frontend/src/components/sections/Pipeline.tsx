@@ -38,7 +38,8 @@ export function Pipeline() {
       // ─────────────────────────────────────────────────────────────
       // 1. TIMELINE LINE ANIMATION (SVG stroke-dashoffset + Pulse Dot)
       // ─────────────────────────────────────────────────────────────
-      const pathLength = linePath.getTotalLength() || 1200
+      // Use exact container offsetHeight so strokeDasharray covers the entire 7-agent timeline height
+      const pathLength = container.offsetHeight || 3500
       
       // Initialize main vertical line
       gsap.set(linePath, {
@@ -56,24 +57,25 @@ export function Pipeline() {
       // Animate line drawing & moving pulse dot tied to scroll
       ScrollTrigger.create({
         trigger: container,
-        start: 'top 75%',
-        end: 'bottom 85%',
-        scrub: 1,
+        start: 'top 70%',
+        end: 'bottom 80%',
+        scrub: 0.5,
         onUpdate: (self) => {
           const progress = self.progress
-          // Animate stroke-dashoffset from pathLength down to 0
+          const currentLength = container.offsetHeight || pathLength
+          // Animate stroke-dashoffset from currentLength down to 0
           gsap.to(linePath, {
-            strokeDashoffset: pathLength * (1 - progress),
+            strokeDashoffset: currentLength * (1 - progress),
             duration: 0.1,
             overwrite: 'auto',
           })
 
           // Animate pulse dot down the vertical line
-          const currentY = progress * container.offsetHeight
+          const currentY = progress * currentLength
           gsap.to(pulseDot, {
             y: currentY,
-            opacity: progress > 0.02 && progress < 0.98 ? 1 : 0,
-            scale: progress > 0.02 && progress < 0.98 ? 1 : 0,
+            opacity: progress > 0.01 && progress < 0.99 ? 1 : 0,
+            scale: progress > 0.01 && progress < 0.99 ? 1 : 0,
             duration: 0.1,
             overwrite: 'auto',
           })
@@ -91,12 +93,15 @@ export function Pipeline() {
         const nodeIcon = row.querySelector<HTMLElement>('.node-icon')
         const card = row.querySelector<HTMLElement>('.timeline-card')
         const connector = row.querySelector<SVGLineElement>('.timeline-connector-line')
+        const subAgents = row.querySelectorAll<HTMLElement>('.sub-agent-item')
+        const compatibleBox = row.querySelector<HTMLElement>('.compatible-box')
+        const producesBox = row.querySelector<HTMLElement>('.produces-box')
         const activeChars = row.querySelectorAll<HTMLElement>('.active-char')
         const readyLabel = row.querySelector<HTMLElement>('.ready-label')
         const stageHeading = row.querySelector<HTMLElement>('.stage-heading')
         const stageTitle = row.querySelector<HTMLElement>('.card-title')
 
-        // ── Performance: initialize will-change and starting transforms ──
+        // ── Performance: initialize starting transforms ──
         if (node) {
           gsap.set(node, {
             scale: 0,
@@ -124,6 +129,18 @@ export function Pipeline() {
           })
         }
 
+        if (subAgents.length) {
+          gsap.set(subAgents, { x: -15, opacity: 0 })
+        }
+
+        if (compatibleBox) {
+          gsap.set(compatibleBox, { y: 10, opacity: 0 })
+        }
+
+        if (producesBox) {
+          gsap.set(producesBox, { scale: 0.95, opacity: 0 })
+        }
+
         if (activeChars.length) {
           gsap.set(activeChars, { opacity: 0 })
         }
@@ -140,7 +157,7 @@ export function Pipeline() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: row,
-            start: 'top 75%',
+            start: 'top 78%',
             toggleActions: 'play none none none',
           },
         })
@@ -185,7 +202,7 @@ export function Pipeline() {
           )
         }
 
-        // 4. Alternating Liquid Glass Card Entry (Staggered 0.15s)
+        // 4. Alternating Liquid Glass Card Entry
         if (card) {
           tl.to(
             card,
@@ -215,7 +232,7 @@ export function Pipeline() {
           })
         }
 
-        // 6. Card Interior: Staggered Stage Number and Title Slide-Up
+        // 6. Card Interior: Stage Number and Title Slide-Up
         if (stageHeading && stageTitle) {
           tl.to(
             [stageHeading, stageTitle],
@@ -230,7 +247,50 @@ export function Pipeline() {
           )
         }
 
-        // 7. Card Interior: "ACTIVE PIPELINE NODE" Letter-by-Letter Stagger Reveal
+        // 7. Sub-agent chips stagger entrance
+        if (subAgents.length) {
+          tl.to(
+            subAgents,
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.35,
+              stagger: 0.07,
+              ease: 'power2.out',
+            },
+            '-=0.3'
+          )
+        }
+
+        // 8. Compatible tools box entrance
+        if (compatibleBox) {
+          tl.to(
+            compatibleBox,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.3,
+              ease: 'power2.out',
+            },
+            '-=0.2'
+          )
+        }
+
+        // 9. Produces output box entrance
+        if (producesBox) {
+          tl.to(
+            producesBox,
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.4,
+              ease: 'back.out(1.5)',
+            },
+            '-=0.2'
+          )
+        }
+
+        // 10. Card Interior: "ACTIVE PIPELINE NODE" Letter Stagger
         if (activeChars.length) {
           tl.to(
             activeChars,
@@ -244,7 +304,7 @@ export function Pipeline() {
           )
         }
 
-        // 8. Card Interior: "READY →" Slide-in from Right (+0.3s delay)
+        // 11. Card Interior: "READY →" Slide-in
         if (readyLabel) {
           tl.to(
             readyLabel,
@@ -258,6 +318,11 @@ export function Pipeline() {
           )
         }
       })
+
+      // Sync trigger points
+      setTimeout(() => {
+        ScrollTrigger.refresh()
+      }, 300)
     }, section)
 
     return () => ctx.revert()
@@ -267,18 +332,18 @@ export function Pipeline() {
     <section
       id="pipeline"
       ref={sectionRef}
-      className="py-24 md:py-32 relative border-b border-white/5 bg-transparent font-body overflow-hidden"
+      className="py-10 md:py-14 relative border-b border-white/5 bg-transparent font-body overflow-hidden"
       aria-label="Vertical 5-Stage Pipeline Timeline"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-20 space-y-3">
-          <SectionLabel label="Continuous Pipeline Architecture" />
+          <SectionLabel label="THE PIPELINE" />
           <h2 className="text-3xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
-            <GradientText>Five Autonomous Stages.</GradientText> End-to-End Extraction.
+            Meet the Agents <GradientText>Behind the Automation</GradientText>
           </h2>
-          <p className="text-sm sm:text-base text-text-secondary max-w-2xl mx-auto font-body">
-            Watch live extraction data ascend through each processing phase in real time with scroll-driven precision.
+          <p className="text-sm sm:text-base text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
+            Scrape-Verse is not one AI — it is a pipeline of specialized agents, each with a defined role, working in sequence to convert a raw business listing into a complete, evidence-backed sales opportunity.
           </p>
         </div>
 
@@ -294,6 +359,17 @@ export function Pipeline() {
               className="w-full h-full"
               style={{ filter: 'drop-shadow(0 0 6px #00d4ff)' }}
             >
+              {/* Background Ambient Line Track — Always visible connecting all agent nodes */}
+              <line
+                x1="50%"
+                y1="0%"
+                x2="50%"
+                y2="100%"
+                stroke="rgba(0, 212, 255, 0.3)"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              {/* Active Scroll-Driven Progress Line */}
               <line
                 ref={linePathRef}
                 x1="50%"
@@ -301,7 +377,7 @@ export function Pipeline() {
                 x2="50%"
                 y2="100%"
                 stroke="#00d4ff"
-                strokeWidth="2.5"
+                strokeWidth="3"
                 strokeLinecap="round"
                 className="timeline-line"
               />
@@ -318,7 +394,7 @@ export function Pipeline() {
             }}
           />
 
-          {/* 3. Five Vertical Timeline Stages (Alternating Left & Right) */}
+          {/* 3. Seven Vertical Timeline Agent Stages (Alternating Left & Right) */}
           <div className="flex flex-col gap-16 lg:gap-24 relative z-10">
             {PIPELINE_STAGES.map((stage, idx) => {
               const isEven = idx % 2 === 0
@@ -341,7 +417,7 @@ export function Pipeline() {
                     <div
                       className={`timeline-card ${
                         isEven ? 'card-left' : 'card-right'
-                      } glass-liquid p-6 sm:p-7 inline-block w-full max-w-lg text-left space-y-3 rounded-2xl border border-white/30 hover:border-sky-400/80 shadow-2xl backdrop-blur-2xl transition-all duration-300 group relative overflow-hidden`}
+                      } glass-liquid p-6 sm:p-7 inline-block w-full max-w-lg text-left space-y-3.5 rounded-2xl border border-white/30 hover:border-sky-400/80 shadow-2xl backdrop-blur-2xl transition-all duration-300 group relative overflow-hidden`}
                       style={{
                         boxShadow:
                           '0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)',
@@ -353,24 +429,76 @@ export function Pipeline() {
 
                       {/* Header Badge */}
                       <div className="stage-heading flex items-center justify-between">
-                        <span className="stage-label text-xs font-mono font-bold tracking-widest text-sky-400 flex items-center gap-1.5">
-                          <span className="timeline-bullet-active w-2 h-2 rounded-full bg-sky-400" />
-                          STAGE {stage.stage}
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="stage-label text-xs font-mono font-bold tracking-widest text-sky-400 flex items-center gap-1.5">
+                            <span className="timeline-bullet-active w-2 h-2 rounded-full bg-sky-400" />
+                            Agent {stage.stage}
+                          </span>
+                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-sky-400/30 bg-sky-500/10 text-sky-300">
+                            {stage.roleBadge}
+                          </span>
+                        </div>
                         <span className="lg:hidden p-1.5 rounded-lg bg-white/10">
                           {STAGE_ICONS[stage.icon]}
                         </span>
                       </div>
 
-                      {/* Title */}
-                      <h3 className="card-title text-xl sm:text-2xl font-bold font-display text-text-primary group-hover:text-sky-300 transition-colors">
-                        {stage.title}
-                      </h3>
+                      {/* Title & Subtitle */}
+                      <div>
+                        <h3 className="card-title text-xl sm:text-2xl font-bold font-display text-text-primary group-hover:text-sky-300 transition-colors">
+                          {stage.title}
+                        </h3>
+                        {stage.subtitle && (
+                          <p className="text-xs font-mono text-cyan-300 font-semibold mt-0.5">
+                            {stage.subtitle}
+                          </p>
+                        )}
+                      </div>
 
                       {/* Description */}
                       <p className="card-description text-xs sm:text-sm font-body leading-relaxed text-slate-200/90">
                         {stage.description}
                       </p>
+
+                      {/* Nested Sub-agents Chips (if present) */}
+                      {stage.subAgents && stage.subAgents.length > 0 && (
+                        <div className="space-y-1.5 pt-1">
+                          <span className="text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
+                            Sub-agents:
+                          </span>
+                          <div className="flex flex-col gap-1">
+                            {stage.subAgents.map((sub, sIdx) => (
+                              <div
+                                key={sIdx}
+                                className="text-[11px] font-body bg-white/5 border border-white/10 rounded-lg p-1.5 text-slate-300 flex items-start gap-1.5"
+                              >
+                                <span className="text-sky-400 font-mono">→</span>
+                                <div>
+                                  <strong className="text-white font-semibold">{sub.name}</strong> — {sub.desc}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Compatible With list (if present) */}
+                      {stage.compatibleWith && (
+                        <div className="text-[11px] font-mono bg-white/5 border border-sky-400/20 rounded-lg p-2 text-cyan-300">
+                          <span className="text-slate-400">Compatible with: </span>
+                          <span className="font-semibold">{stage.compatibleWith}</span>
+                        </div>
+                      )}
+
+                      {/* Output Section */}
+                      <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-[11px] font-mono space-y-0.5">
+                        <span className="text-emerald-400 font-bold tracking-wider uppercase block">
+                          Produces →
+                        </span>
+                        <span className="text-slate-200 block font-sans">
+                          {stage.output}
+                        </span>
+                      </div>
 
                       {/* Card Bottom Meta Bar with SplitText Stagger */}
                       <div className="pt-3 flex items-center justify-between text-[10px] font-mono border-t border-white/15">

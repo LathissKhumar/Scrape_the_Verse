@@ -23,7 +23,7 @@ export function ImageDistortionSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-32 md:py-44 relative border-b border-white/10 bg-transparent font-body overflow-hidden"
+      className="py-16 md:py-24 relative border-b border-white/10 bg-transparent font-body overflow-hidden"
       aria-label="Vision Meets Intelligence Distortion"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">

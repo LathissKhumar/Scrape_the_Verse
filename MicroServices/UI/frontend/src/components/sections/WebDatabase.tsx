@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
 const STORY = [
-  { text: '"The web is where your next opportunity is hiding."', color: '#F5F7FA', size: 'text-4xl md:text-6xl', weight: 'font-bold', delay: 0 },
+  { text: '"The web is where your next opportunity is hiding."', color: '#38BDF8', size: 'text-4xl md:text-6xl', weight: 'font-bold', delay: 0 },
   { text: "Unstructured signals published across maps, reviews, directories, and social platforms.", color: '#A7AFBD', size: 'text-xl md:text-2xl', weight: 'font-normal', delay: 0.25 },
 ]
 
@@ -18,7 +18,7 @@ export function WebDatabase() {
     <section
       id="web-database"
       ref={ref}
-      className="relative py-32 md:py-40 overflow-hidden border-b border-white/5 bg-transparent font-body"
+      className="relative py-12 md:py-16 overflow-hidden border-b border-white/5 bg-transparent font-body"
       aria-label="Web Intelligence Graph"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">

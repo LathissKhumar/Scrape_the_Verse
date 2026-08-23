@@ -44,7 +44,7 @@ export function Monitoring() {
     <section
       id="monitoring"
       ref={ref}
-      className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden"
+      className="py-12 md:py-16 relative border-b border-white/5 bg-transparent font-body overflow-hidden"
       aria-label="Post-Outreach Monitoring"
     >
       {/* SVG Definitions for SVG Rings */}

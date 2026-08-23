@@ -37,8 +37,13 @@ export interface SelfHealEvent {
 
 export interface PipelineStage {
   stage: string
+  roleBadge: string
   title: string
+  subtitle: string
   description: string
+  subAgents?: { name: string; desc: string }[]
+  output: string
+  compatibleWith?: string
   icon: string
 }
 
