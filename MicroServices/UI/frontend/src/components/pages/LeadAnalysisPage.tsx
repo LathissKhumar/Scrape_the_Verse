@@ -30,6 +30,7 @@ import {
 import { LeadRecord, DashboardTab, SEOMetric } from './types';
 import { mockLeads, mockSEOMetrics, mockBusinessAnalysis } from './mockData';
 import { auditWebsite, executeFullSdrPipeline, WebsiteAuditResult } from '@/lib/api/sdr';
+import { AutonomousProposalPDFModal } from '@/components/ui/AutonomousProposalPDFModal';
 
 interface LeadAnalysisPageProps {
   selectedLead?: LeadRecord;
@@ -46,6 +47,7 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
   const [isAuditing, setIsAuditing] = useState(false);
   const [liveAuditResult, setLiveAuditResult] = useState<WebsiteAuditResult | null>(null);
   const [auditStatusMessage, setAuditStatusMessage] = useState<string | null>(null);
+  const [showPdfModal, setShowPdfModal] = useState(false);
 
   const defaultSeo = mockSEOMetrics[activeLead.id] || mockSEOMetrics['lead-001'];
   const bizData = mockBusinessAnalysis[activeLead.id] || mockBusinessAnalysis['lead-001'];
@@ -414,6 +416,14 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
 
         <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
           <button
+            onClick={() => setShowPdfModal(true)}
+            className="px-5 py-3 rounded-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/30 text-sky-300 font-bold text-xs flex items-center gap-2 transition cursor-pointer backdrop-blur-xl"
+          >
+            <FileText className="w-4 h-4 text-sky-400" />
+            <span>Preview Autonomous Proposal PDF</span>
+          </button>
+
+          <button
             onClick={() => onNavigateTab('proposals', activeLead.id)}
             className="px-6 py-3 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white font-bold text-xs flex items-center gap-2 transition cursor-pointer backdrop-blur-xl shadow-sm"
           >
@@ -422,6 +432,13 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Autonomous PDF Modal */}
+      <AutonomousProposalPDFModal
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+        lead={activeLead}
+      />
     </div>
   );
 };

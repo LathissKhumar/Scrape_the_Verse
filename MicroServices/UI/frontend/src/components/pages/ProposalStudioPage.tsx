@@ -25,6 +25,7 @@ import {
 import { LeadRecord, DashboardTab, Proposal } from './types';
 import { mockLeads, mockProposals } from './mockData';
 import { approveLeadProposal, getLeadOpportunities, OpportunityEntity } from '@/lib/api/leadManager';
+import { AutonomousProposalPDFModal } from '@/components/ui/AutonomousProposalPDFModal';
 
 interface ProposalStudioPageProps {
   selectedLead?: LeadRecord;
@@ -46,6 +47,7 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
   const [isApproving, setIsApproving] = useState(false);
   const [approvalStatus, setApprovalStatus] = useState<string | null>(null);
   const [liveOpps, setLiveOpps] = useState<OpportunityEntity[]>([]);
+  const [showPdfModal, setShowPdfModal] = useState(false);
 
   useEffect(() => {
     async function loadOpps() {
@@ -153,8 +155,16 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
             </p>
           </div>
 
-          {/* Action Buttons: Copy Link & Human Approve */}
+          {/* Action Buttons: Preview PDF, Copy Link & Human Approve */}
           <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => setShowPdfModal(true)}
+              className="px-4 py-2 rounded-full bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-bold text-sky-300 flex items-center gap-2 transition cursor-pointer backdrop-blur-xl shadow-lg shadow-sky-500/10"
+            >
+              <FileText className="w-3.5 h-3.5 text-sky-400" />
+              <span>Preview Autonomous PDF</span>
+            </button>
+
             <button
               onClick={handleCopyLink}
               className="px-4 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.14] text-xs font-medium text-white flex items-center gap-2 transition cursor-pointer backdrop-blur-xl"
@@ -296,16 +306,33 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
               Valid for 14 business days from generation date.
             </div>
 
-            <button
-              onClick={() => onNavigateTab('calls', activeLead.id)}
-              className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer backdrop-blur-xl shadow-sm"
-            >
-              <span>Schedule AI Review Call</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowPdfModal(true)}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/30 text-sky-300 text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer backdrop-blur-xl"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Open Autonomous PDF</span>
+              </button>
+
+              <button
+                onClick={() => onNavigateTab('calls', activeLead.id)}
+                className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer backdrop-blur-xl shadow-sm"
+              >
+                <span>Schedule AI Review Call</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Autonomous PDF Previewer Modal */}
+      <AutonomousProposalPDFModal
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+        lead={activeLead}
+      />
     </div>
   );
 };

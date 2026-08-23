@@ -37,6 +37,9 @@ export const VoiceAgentPage: React.FC<VoiceAgentPageProps> = ({ onNavigateTab })
   const [calls, setCalls] = useState<CallLog[]>(mockCallLogs);
   const [selectedCall, setSelectedCall] = useState<CallLog>(mockCallLogs[0]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [activeTranscriptIdx, setActiveTranscriptIdx] = useState<number | null>(null);
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
+  const [playbackTime, setPlaybackTime] = useState<number>(0);
   const [testPhoneNumber, setTestPhoneNumber] = useState('+91 98860 99881');
   const [isDialing, setIsDialing] = useState(false);
   const [dialStatus, setDialStatus] = useState<string | null>(null);
@@ -54,8 +57,102 @@ export const VoiceAgentPage: React.FC<VoiceAgentPageProps> = ({ onNavigateTab })
     loadConfig();
   }, []);
 
+  // Web Speech Synthesis (TTS) Engine for multi-turn transcript playback
+  useEffect(() => {
+    if (!isPlaying) {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setActiveTranscriptIdx(null);
+      return;
+    }
+
+    if (!selectedCall.transcript || selectedCall.transcript.length === 0) return;
+
+    let isCancelled = false;
+
+    const playTurn = (idx: number) => {
+      if (isCancelled || !isPlaying) return;
+      if (idx >= selectedCall.transcript.length) {
+        setIsPlaying(false);
+        setActiveTranscriptIdx(null);
+        setPlaybackTime(0);
+        return;
+      }
+
+      setActiveTranscriptIdx(idx);
+      const turn = selectedCall.transcript[idx];
+
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(turn.text);
+        utterance.rate = playbackSpeed;
+
+        // Custom pitch & voice profile for agent vs prospect
+        if (turn.speaker === 'AI SDR Agent') {
+          utterance.pitch = 1.05;
+          utterance.volume = 0.95;
+        } else {
+          utterance.pitch = 0.92;
+          utterance.volume = 0.9;
+        }
+
+        utterance.onend = () => {
+          if (!isCancelled) {
+            setTimeout(() => {
+              playTurn(idx + 1);
+            }, 400);
+          }
+        };
+
+        utterance.onerror = () => {
+          if (!isCancelled) {
+            playTurn(idx + 1);
+          }
+        };
+
+        window.speechSynthesis.speak(utterance);
+      }
+    };
+
+    playTurn(0);
+
+    // Simulated playback timer
+    const timer = setInterval(() => {
+      setPlaybackTime((prev) => prev + 1);
+    }, 1000);
+
+    return () => {
+      isCancelled = true;
+      clearInterval(timer);
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [isPlaying, selectedCall, playbackSpeed]);
+
   const toggleAudio = () => {
-    setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      setIsPlaying(false);
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    } else {
+      setPlaybackTime(0);
+      setIsPlaying(true);
+    }
+  };
+
+  const handleSelectCall = (call: CallLog) => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+    setSelectedCall(call);
+    setActiveTranscriptIdx(null);
+    setPlaybackTime(0);
   };
 
   const handleTestCall = async (e: React.FormEvent) => {
@@ -195,7 +292,7 @@ export const VoiceAgentPage: React.FC<VoiceAgentPageProps> = ({ onNavigateTab })
               return (
                 <div
                   key={call.id}
-                  onClick={() => setSelectedCall(call)}
+                  onClick={() => handleSelectCall(call)}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer space-y-2 backdrop-blur-xl ${
                     isSelected
                       ? 'bg-white/[0.13] border-white/[0.30] shadow-[0_16px_48px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.28)] scale-[1.01]'
@@ -248,38 +345,91 @@ export const VoiceAgentPage: React.FC<VoiceAgentPageProps> = ({ onNavigateTab })
             </button>
           </div>
 
-          {/* Audio Player - Apple Liquid Glass Sub-card */}
-          <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl space-y-3">
-            <div className="flex items-center justify-between">
+          {/* Interactive Speech & Audio Waveform Player - Apple Liquid Glass */}
+          <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl space-y-4 shadow-lg shadow-black/20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <button
                   onClick={toggleAudio}
-                  className="w-10 h-10 rounded-full bg-white/[0.18] hover:bg-white/[0.28] border border-white/[0.28] text-white flex items-center justify-center shadow-sm transition cursor-pointer backdrop-blur-xl"
+                  className={`w-11 h-11 rounded-full border flex items-center justify-center transition cursor-pointer backdrop-blur-xl shadow-md ${
+                    isPlaying
+                      ? 'bg-sky-500 text-slate-950 border-sky-400 shadow-sky-500/30 scale-105 animate-pulse'
+                      : 'bg-white/[0.18] hover:bg-white/[0.28] border-white/[0.28] text-white'
+                  }`}
                 >
                   {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
                 </button>
                 <div>
-                  <div className="text-xs font-bold text-white">Call Recording & Audio Playback</div>
-                  <div className="text-[10px] font-mono text-white/50">{isPlaying ? 'Playing call audio...' : 'Click to listen to conversation'}</div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-white">Live Voice Speech Player</span>
+                    {isPlaying && (
+                      <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[10px] font-mono font-bold border border-sky-400/30">
+                        <Radio className="w-2.5 h-2.5 text-sky-400 animate-ping" />
+                        <span>
+                          {activeTranscriptIdx !== null && selectedCall.transcript?.[activeTranscriptIdx]
+                            ? selectedCall.transcript[activeTranscriptIdx].speaker
+                            : 'Speaking'}
+                        </span>
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[10px] font-mono text-white/50 mt-0.5">
+                    {isPlaying
+                      ? `Turn ${(activeTranscriptIdx || 0) + 1} of ${selectedCall.transcript?.length || 1} (${formatDuration(playbackTime)})`
+                      : 'Click Play to hear the conversation via browser speech synthesis'}
+                  </div>
                 </div>
               </div>
 
-              <Volume2 className="w-4 h-4 text-sky-300" />
+              {/* Speed Switcher */}
+              <div className="flex items-center gap-1.5 self-end sm:self-center">
+                {[1.0, 1.25, 1.5].map((spd) => (
+                  <button
+                    key={spd}
+                    onClick={() => setPlaybackSpeed(spd)}
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition cursor-pointer ${
+                      playbackSpeed === spd
+                        ? 'bg-sky-500 text-slate-950 shadow-sm shadow-sky-500/20'
+                        : 'bg-white/[0.06] text-white/60 hover:text-white border border-white/10'
+                    }`}
+                  >
+                    {spd}x
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Audio Waveform Bars */}
-            <div className="flex items-center gap-1 h-8 pt-2">
-              {Array.from({ length: 42 }).map((_, i) => (
-                <div
-                  key={i}
-                  className={`flex-1 rounded-full transition-all duration-200 ${
-                    isPlaying ? 'bg-gradient-to-t from-sky-400 to-emerald-400' : 'bg-white/20'
-                  }`}
-                  style={{
-                    height: isPlaying ? `${Math.max(15, (Math.sin(i * 0.5) * 0.5 + 0.5) * 100)}%` : '20%',
-                  }}
-                />
-              ))}
+            {/* Glowing 44-Bar Animated Frequency Equalizer */}
+            <div className="flex items-center gap-1 h-10 px-2 py-1 rounded-xl bg-black/30 border border-white/[0.06]">
+              {Array.from({ length: 44 }).map((_, i) => {
+                const heightPercent = isPlaying
+                  ? Math.max(
+                      18,
+                      Math.abs(Math.sin((i * 0.45) + (playbackTime * 4))) * 85 +
+                      Math.cos((i * 0.2) + (playbackTime * 2)) * 15
+                    )
+                  : (i % 3 === 0 ? 25 : i % 2 === 0 ? 15 : 35);
+
+                const isAgentSpeaking =
+                  activeTranscriptIdx !== null &&
+                  selectedCall.transcript?.[activeTranscriptIdx]?.speaker === 'AI SDR Agent';
+
+                return (
+                  <div
+                    key={i}
+                    className={`flex-1 rounded-full transition-all duration-150 ${
+                      isPlaying
+                        ? isAgentSpeaking
+                          ? 'bg-gradient-to-t from-sky-500 via-cyan-400 to-sky-200 shadow-[0_0_8px_rgba(56,189,248,0.5)]'
+                          : 'bg-gradient-to-t from-amber-500 via-yellow-400 to-amber-200 shadow-[0_0_8px_rgba(251,191,36,0.5)]'
+                        : 'bg-white/15'
+                    }`}
+                    style={{
+                      height: `${heightPercent}%`,
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
 
@@ -295,22 +445,59 @@ export const VoiceAgentPage: React.FC<VoiceAgentPageProps> = ({ onNavigateTab })
             )}
           </div>
 
-          {/* Transcript Viewer */}
+          {/* Real-Time Highlighted Transcript Viewer */}
           {selectedCall.transcript && selectedCall.transcript.length > 0 && (
-            <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl space-y-3 max-h-48 overflow-y-auto no-scrollbar">
-              <h4 className="text-xs font-mono uppercase text-sky-400 font-bold flex items-center gap-1.5">
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span>Conversation Transcript</span>
-              </h4>
+            <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl space-y-3 max-h-56 overflow-y-auto custom-scrollbar">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-mono uppercase text-sky-400 font-bold flex items-center gap-1.5">
+                  <MessageSquare className="w-3.5 h-3.5" />
+                  <span>Conversation Transcript</span>
+                </h4>
+                <span className="text-[10px] font-mono text-white/40">
+                  {selectedCall.transcript.length} turns
+                </span>
+              </div>
+
               <div className="space-y-2 text-xs">
-                {selectedCall.transcript.map((t, idx) => (
-                  <div key={idx} className="flex gap-2">
-                    <span className={`font-bold font-mono text-[10px] shrink-0 ${t.speaker === 'AI SDR Agent' ? 'text-sky-300' : 'text-amber-300'}`}>
-                      [{t.speaker}]:
-                    </span>
-                    <span className="text-white/80">{t.text}</span>
-                  </div>
-                ))}
+                {selectedCall.transcript.map((t, idx) => {
+                  const isCurrent = activeTranscriptIdx === idx;
+                  const isAgent = t.speaker === 'AI SDR Agent';
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-2.5 rounded-xl border transition-all flex items-start gap-2.5 ${
+                        isCurrent
+                          ? 'bg-sky-500/15 border-sky-400/50 shadow-md shadow-sky-500/10 scale-[1.01]'
+                          : 'bg-white/[0.02] border-transparent hover:border-white/10'
+                      }`}
+                    >
+                      <div className="shrink-0 mt-0.5">
+                        {isAgent ? (
+                          <div className="w-5 h-5 rounded-full bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400">
+                            <Bot className="w-3 h-3" />
+                          </div>
+                        ) : (
+                          <div className="w-5 h-5 rounded-full bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-400">
+                            <User className="w-3 h-3" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1 space-y-0.5">
+                        <div className="flex items-center justify-between">
+                          <span className={`font-bold font-mono text-[10px] ${isAgent ? 'text-sky-300' : 'text-amber-300'}`}>
+                            {t.speaker}
+                          </span>
+                          <span className="text-[10px] font-mono text-white/40">{t.timestamp}</span>
+                        </div>
+                        <p className={`text-[12px] leading-relaxed ${isCurrent ? 'text-white font-medium' : 'text-white/80'}`}>
+                          {t.text}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
