@@ -5,9 +5,10 @@ import { type ReactNode } from 'react'
 interface ButtonProps {
   children: ReactNode
   variant?: 'primary' | 'secondary' | 'ghost'
-  onClick?: () => void
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
   className?: string
   id?: string
+  'data-cursor-hover'?: boolean
 }
 
 export function Button({
@@ -16,6 +17,7 @@ export function Button({
   onClick,
   className = '',
   id,
+  'data-cursor-hover': dataCursorHover,
 }: ButtonProps) {
   const base =
     'relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full font-body font-bold text-sm tracking-wide transition-all duration-300 cursor-pointer overflow-hidden outline-none group'
@@ -44,6 +46,7 @@ export function Button({
   return (
     <motion.button
       id={id}
+      data-cursor-hover={dataCursorHover}
       className={`${base} ${className}`}
       style={styles[variant]}
       onClick={onClick}

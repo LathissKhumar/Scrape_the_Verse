@@ -4,6 +4,7 @@ import { motion, useScroll } from 'framer-motion'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
+import Link from 'next/link'
 
 const GLYPHS = '!<>-_\\/[]{}=+*^?#01~%'
 

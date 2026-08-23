@@ -10,15 +10,18 @@ export function Footer() {
           <span className="font-bold text-xl tracking-tight font-display text-white">
             AgencyOS
           </span>
-        </div>
+        </Link>
 
         {/* Links */}
         <div className="text-xs font-mono text-text-secondary flex flex-wrap justify-center gap-6">
           <a href="#hero" className="hover:text-text-primary transition-colors">Product</a>
-          <a href="#pipeline" className="hover:text-text-primary transition-colors">The Agents</a>
-          <a href="#tech-stack-marquee" className="hover:text-text-primary transition-colors">Tech Stack</a>
-          <a href="#lead-scoring" className="hover:text-text-primary transition-colors">Lead Scoring</a>
-          <a href="#final-cta" className="hover:text-text-primary transition-colors">Get Started</a>
+          <a href="#pipeline" className="hover:text-text-primary transition-colors">How It Works</a>
+          <a href="#self-healing" className="hover:text-text-primary transition-colors">Self-Healing</a>
+          <a href="#scraper-control" className="hover:text-text-primary transition-colors">Platform</a>
+          <a href="#architecture" className="hover:text-text-primary transition-colors">Developers</a>
+          <Link href="/dashboard" className="text-sky-400 hover:text-sky-300 font-bold transition-colors">
+            AI Dashboard →
+          </Link>
         </div>
 
         {/* Copyright */}

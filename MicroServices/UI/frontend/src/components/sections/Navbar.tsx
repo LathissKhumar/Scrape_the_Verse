@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 const NAV_LINKS = [
   { label: 'Product', href: '#hero' },
   { label: 'How It Works', href: '#pipeline' },
@@ -21,7 +23,7 @@ export function Navbar() {
           <span className="font-extrabold text-lg sm:text-xl tracking-tight font-display text-white">
             AgencyOS
           </span>
-        </a>
+        </Link>
 
         {/* Center Aligned Middle Components: Navigation Links */}
         <ul className="hidden md:flex items-center justify-center gap-8 lg:gap-11 mx-auto" role="list">
@@ -36,24 +38,24 @@ export function Navbar() {
             </li>
           ))}
           <li>
-            <a
-              href="#hero"
-              className="text-sm font-medium text-white/80 hover:text-white transition-colors duration-200"
+            <Link
+              href="/dashboard"
+              className="text-sm font-semibold text-sky-400 hover:text-sky-300 transition-colors duration-200"
             >
-              Sign In
-            </a>
+              AI Dashboard
+            </Link>
           </li>
         </ul>
 
         {/* Far Right Component: Solid White CTA Button */}
         <div className="shrink-0">
-          <a
-            href="#hero"
+          <Link
+            href="/dashboard"
             id="nav-cta"
             className="inline-flex items-center justify-center px-5 py-2 rounded-full text-xs sm:text-sm font-bold font-body transition-all duration-200 shadow-lg hover:opacity-95 text-[#07090D] bg-white hover:bg-slate-100 hover:shadow-sky-500/20"
           >
-            Get Started
-          </a>
+            Launch Console
+          </Link>
         </div>
       </div>
     </header>
