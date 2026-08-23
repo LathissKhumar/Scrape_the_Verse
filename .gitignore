@@ -121,3 +121,5 @@ htmlcov/
 # Outputs
 outputs/
 business_analysis_agent/outputs/
+.agents/
+.github/
