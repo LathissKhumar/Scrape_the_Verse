@@ -1,0 +1,58 @@
+{
+  "category": "Technical SEO",
+  "score": 86,
+  "status": "passed",
+  "summary": "Technical audit analyzed 112 pages and 4895 links. Identified 3 key findings with score 86/100.",
+  "findings": [
+    {
+      "category": "Technical",
+      "severity": "medium",
+      "title": "Missing Canonical Tags",
+      "description": "2 indexable page(s) lack a canonical URL tag.",
+      "impact": "Vulnerability to duplicate content penalties if URLs are accessible with query parameters or trailing slashes.",
+      "recommendation": "Add a self-referential `<link rel='canonical' href='...' />` tag in the `<head>` of each page.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/bedankt-contact/",
+        "https://www.atlaskliniek.nl/bedankt-inschrijven/"
+      ],
+      "evidence": {
+        "missing_count": 2
+      }
+    },
+    {
+      "category": "Technical",
+      "severity": "info",
+      "title": "Noindex Directives Present",
+      "description": "2 page(s) have a 'noindex' directive.",
+      "impact": "These pages will be deliberately omitted from search engine result pages.",
+      "recommendation": "Verify that no crucial landing pages or revenue-generating content are blocked by noindex tags.",
+      "affected_urls": [
+        "https://www.atlaskliniek.nl/bedankt-contact/",
+        "https://www.atlaskliniek.nl/bedankt-inschrijven/"
+      ],
+      "evidence": {
+        "noindex_count": 2
+      }
+    },
+    {
+      "category": "Technical",
+      "severity": "medium",
+      "title": "No XML Sitemap Discovered",
+      "description": "Crawler did not discover a standard sitemap at /sitemap.xml or referenced in robots.txt.",
+      "impact": "Search engines may take longer to discover and index new or updated URLs.",
+      "recommendation": "Generate an XML sitemap, place it in the root directory, and specify its URL in robots.txt.",
+      "affected_urls": [],
+      "evidence": {
+        "sitemaps_found": 0
+      }
+    }
+  ],
+  "metrics": {
+    "total_pages": 112,
+    "server_errors": 0,
+    "client_errors": 0,
+    "missing_canonicals": 2,
+    "deep_pages": 0,
+    "sitemaps_discovered": 0
+  }
+}

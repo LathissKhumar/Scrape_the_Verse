@@ -1,0 +1,192 @@
+{
+  "page_id": "page_0017d87a20de",
+  "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+  "raw_url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+  "status_code": 200,
+  "content_type": "text/html",
+  "depth": 0,
+  "response_time_ms": 2321.14,
+  "render_time_ms": 6994.7,
+  "seo": {
+    "title": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+    "meta_description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners.",
+    "h1": "Nieuwe technologie in onze praktijk: intra-orale scanners",
+    "h2": [
+      "Sluiting locatie Prins Hendrikkade per 1 november 2025",
+      "Belangrijke mededeling"
+    ],
+    "h3": [
+      "Contact",
+      "Inschrijven"
+    ],
+    "word_count": 880
+  },
+  "technical": {
+    "canonical": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    "language": "nl-NL",
+    "charset": "UTF-8",
+    "viewport": "width=device-width, initial-scale=1"
+  },
+  "social": {
+    "og_tags": {
+      "locale": "nl_NL",
+      "type": "article",
+      "title": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+      "description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners.",
+      "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+      "site_name": "Tandheelkundige Kliniek Atlas",
+      "updated_time": "2026-02-18T13:07:06+01:00"
+    },
+    "twitter_tags": {
+      "card": "summary_large_image",
+      "title": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+      "description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners."
+    }
+  },
+  "schema": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": [
+            "Person",
+            "Organization"
+          ],
+          "@id": "https://www.atlaskliniek.nl/#person",
+          "name": "Tandheelkundige Kliniek Atlas"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.atlaskliniek.nl/#website",
+          "url": "https://www.atlaskliniek.nl",
+          "name": "Tandheelkundige Kliniek Atlas",
+          "publisher": {
+            "@id": "https://www.atlaskliniek.nl/#person"
+          },
+          "inLanguage": "nl-NL"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage",
+          "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+          "name": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+          "datePublished": "2026-02-18T13:06:26+01:00",
+          "dateModified": "2026-02-18T13:07:06+01:00",
+          "isPartOf": {
+            "@id": "https://www.atlaskliniek.nl/#website"
+          },
+          "inLanguage": "nl-NL"
+        },
+        {
+          "@type": "BlogPosting",
+          "headline": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+          "datePublished": "2026-02-18T13:06:26+01:00",
+          "dateModified": "2026-02-18T13:07:06+01:00",
+          "articleSection": "Uncategorized",
+          "publisher": {
+            "@id": "https://www.atlaskliniek.nl/#person"
+          },
+          "description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners.",
+          "name": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+          "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#richSnippet",
+          "isPartOf": {
+            "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage"
+          },
+          "inLanguage": "nl-NL",
+          "mainEntityOfPage": {
+            "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage"
+          }
+        }
+      ]
+    }
+  ],
+  "analytics": {
+    "google_analytics": true,
+    "gtag": true,
+    "ga4_id": "G-YG05B986E8",
+    "gtm_id": "GTM-N2Z4RLRB",
+    "facebook_pixel": false,
+    "hotjar": false,
+    "mixpanel": false
+  },
+  "images": [
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+      "alt": "",
+      "width": "232",
+      "height": "121"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+      "alt": "",
+      "width": "236",
+      "height": "123"
+    },
+    {
+      "src": "https://www.zorgkaartnederland.nl/bundles/zkncontent/images/elements/logo_zkn.png",
+      "alt": "Zoek, vind en waardeer zorgaanbieders op ZorgkaartNederland.nl",
+      "width": "",
+      "height": ""
+    },
+    {
+      "src": "https://www.zorgkaartnederland.nl/bundles/zkncontent/images/elements/logo_npcf_widget.png",
+      "alt": "Patiëntenfederatie Nederland",
+      "width": "",
+      "height": ""
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+      "alt": "Part of Atlas",
+      "width": "143",
+      "height": "66"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png",
+      "alt": "KNMT",
+      "width": "650",
+      "height": "290"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/sbb-beeldmerk.png",
+      "alt": "SBB logo",
+      "width": "600",
+      "height": "600"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+      "alt": "telefoonknop",
+      "width": "187",
+      "height": "187"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+      "alt": "nl_NL",
+      "width": "18",
+      "height": "12"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+      "alt": "en_GB",
+      "width": "18",
+      "height": "12"
+    },
+    {
+      "src": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+      "alt": "nl_NL",
+      "width": "18",
+      "height": "12"
+    }
+  ],
+  "redirects": [],
+  "linked_from": [
+    "https://www.atlaskliniek.nl/",
+    "https://www.atlaskliniek.nl/sitemap/",
+    "https://www.atlaskliniek.nl/nieuws/",
+    "https://www.atlaskliniek.nl/category/uncategorized/",
+    "https://www.atlaskliniek.nl/2026/02/18/",
+    "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "https://www.atlaskliniek.nl/2023/08/09/",
+    "https://www.atlaskliniek.nl/behandeling/klikgebit/"
+  ]
+}

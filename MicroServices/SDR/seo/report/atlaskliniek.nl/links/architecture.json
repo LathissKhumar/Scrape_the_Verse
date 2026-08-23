@@ -1,0 +1,98 @@
+{
+  "total_links": 4895,
+  "internal_links_count": 3743,
+  "external_links_count": 1152,
+  "broken_links_count": 0,
+  "orphan_pages": [
+    "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "https://www.atlaskliniek.nl/category/tandarts/",
+    "https://www.atlaskliniek.nl/category/assistent/",
+    "https://www.atlaskliniek.nl/category/implantoloog/",
+    "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "https://www.atlaskliniek.nl/category/preventieassistent/"
+  ],
+  "top_linked_pages": [
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/sbb-beeldmerk.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+      "inbound_links": 102
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/",
+      "inbound_links": 60
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/inschrijven/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandelingen/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+      "inbound_links": 59
+    },
+    {
+      "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+      "inbound_links": 59
+    }
+  ]
+}

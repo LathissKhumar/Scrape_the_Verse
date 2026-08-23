@@ -1,30 +1,82 @@
+'use client'
+
 import {
   Navbar,
   Hero,
+  ProblemSection,
+  HorizontalPipeline,
   PinnedHorizontalPillars,
   WebDatabase,
   Pipeline,
   LeadDiscovery,
   ParallelResearch,
   ImageDistortionSection,
+  LiveExample,
   StaggeredGridReveal,
   SelfHealingDemo,
   SelfHealingCI,
   StructuredData,
   SalesAutomation,
+  LeadScoring,
   Monitoring,
   ScraperControlCenter,
   Architecture,
+  TechStackSection,
   WhyScrapeVerse,
   FinalCTA,
   Footer,
 } from '@/components/sections'
 import { CustomCursor } from '@/components/ui'
 import { SmoothScrollProvider } from '@/components/providers'
+import { useEffect, useState } from 'react'
+
+function ScrollProgressBar() {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
+    let rafId = 0
+
+    const updateProgress = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.body.scrollHeight - window.innerHeight
+      const next = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
+      setProgress(Math.min(Math.max(next, 0), 100))
+    }
+
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(updateProgress)
+    }
+
+    updateProgress()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
+  }, [])
+
+  return (
+    <div className="fixed inset-x-0 top-0 z-[9999] h-[3px] w-full bg-transparent">
+      <div
+        id="scroll-progress-bar"
+        className="h-full bg-gradient-to-r from-sky-400 via-cyan-300 to-indigo-400 shadow-[0_0_18px_rgba(56,189,248,0.8)] transition-[width] duration-150 ease-out"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  )
+}
 
 export default function Home() {
   return (
     <SmoothScrollProvider>
+      <ScrollProgressBar />
       <div className="relative min-h-screen bg-[#07090D] text-text-primary selection:bg-sky-400 selection:text-[#07090D] font-body overflow-x-hidden">
         {/* Custom Lagging Magnetic Cursor */}
         <CustomCursor />
@@ -105,55 +157,114 @@ export default function Home() {
         <div className="relative z-10 w-full max-w-[1780px] mx-auto px-4 sm:px-8 lg:px-12 pt-3 pb-16">
           <main className="w-full">
             {/* §1 Hero with Horizontal Text Scramble + Particle Collapse */}
-            <Hero />
+            <div data-scroll-reveal className="reveal-panel">
+              <Hero />
+            </div>
 
-            {/* §2 Core Pillars Continuous Stream */}
-            <PinnedHorizontalPillars />
+            {/* §2 The Problem — Two-Column Comparison */}
+            <div data-scroll-reveal className="reveal-panel">
+              <ProblemSection />
+            </div>
+
+            {/* §3 Horizontal Scroll Pipeline Overview */}
+            <div data-scroll-reveal className="reveal-panel">
+              <HorizontalPipeline />
+            </div>
+
+            {/* §4 Core Pillars Continuous Stream */}
+            <div data-scroll-reveal className="reveal-panel">
+              <PinnedHorizontalPillars />
+            </div>
 
             {/* Web Database Showcase */}
-            <WebDatabase />
+            <div data-scroll-reveal className="reveal-panel">
+              <WebDatabase />
+            </div>
 
             {/* Pipeline Architecture (Continuous Upward Stream) */}
-            <Pipeline />
+            <div data-scroll-reveal className="reveal-panel">
+              <Pipeline />
+            </div>
 
             {/* §6 3x3 Staggered Grid with 3D Flip & Tilt */}
-            <StaggeredGridReveal />
+            <div data-scroll-reveal className="reveal-panel">
+              <StaggeredGridReveal />
+            </div>
 
             {/* Lead Discovery Console */}
-            <LeadDiscovery />
+            <div data-scroll-reveal className="reveal-panel">
+              <LeadDiscovery />
+            </div>
 
             {/* Parallel Research Fleet */}
-            <ParallelResearch />
+            <div data-scroll-reveal className="reveal-panel">
+              <ParallelResearch />
+            </div>
 
             {/* §5 Scroll-Driven Image Distortion (Clip-Path Circle -> Star -> Inset) */}
-            <ImageDistortionSection />
+            <div data-scroll-reveal className="reveal-panel">
+              <ImageDistortionSection />
+            </div>
+
+            {/* §6 Live Example — Atlas Kliniek Walkthrough */}
+            <div data-scroll-reveal className="reveal-panel">
+              <LiveExample />
+            </div>
 
             {/* Interactive Self-Healing Demo */}
-            <SelfHealingDemo />
+            <div data-scroll-reveal className="reveal-panel">
+              <SelfHealingDemo />
+            </div>
 
             {/* Self-Healing CI Logic */}
-            <SelfHealingCI />
+            <div data-scroll-reveal className="reveal-panel">
+              <SelfHealingCI />
+            </div>
 
             {/* Structured Data Extraction */}
-            <StructuredData />
+            <div data-scroll-reveal className="reveal-panel">
+              <StructuredData />
+            </div>
 
             {/* Sales Automation */}
-            <SalesAutomation />
+            <div data-scroll-reveal className="reveal-panel">
+              <SalesAutomation />
+            </div>
 
-            {/* §4 Counter / Stats with Animated SVG Progress Rings */}
-            <Monitoring />
+            {/* §7 Lead Scoring */}
+            <div data-scroll-reveal className="reveal-panel">
+              <LeadScoring />
+            </div>
+
+            {/* §8 Counter / Stats with Animated SVG Progress Rings */}
+            <div data-scroll-reveal className="reveal-panel">
+              <Monitoring />
+            </div>
 
             {/* Scraper Control Center */}
-            <ScraperControlCenter />
+            <div data-scroll-reveal className="reveal-panel">
+              <ScraperControlCenter />
+            </div>
 
             {/* Architecture Overview */}
-            <Architecture />
+            <div data-scroll-reveal className="reveal-panel">
+              <Architecture />
+            </div>
 
-            {/* §3 Kinetic Typography Manifesto (Word-by-word reveal) */}
-            <WhyScrapeVerse />
+            {/* Tech Stack Section */}
+            <div data-scroll-reveal className="reveal-panel">
+              <TechStackSection />
+            </div>
+
+            {/* §9 Kinetic Typography Manifesto (Word-by-word reveal) */}
+            <div data-scroll-reveal className="reveal-panel">
+              <WhyScrapeVerse />
+            </div>
 
             {/* §7 Footer Parallax + Magnetic Conic-Gradient CTA Button */}
-            <FinalCTA />
+            <div data-scroll-reveal className="reveal-panel">
+              <FinalCTA />
+            </div>
           </main>
 
           {/* Footer */}

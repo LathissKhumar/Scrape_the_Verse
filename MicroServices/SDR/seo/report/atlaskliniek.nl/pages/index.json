@@ -1,0 +1,1013 @@
+{
+  "total_pages": 112,
+  "pages": [
+    {
+      "page_id": "page_15fd6792aa1e",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2023_08_Logo-Atlas-kliniek-Wit_png_92aa1e.json"
+    },
+    {
+      "page_id": "page_5d2d5e646a91",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2021_07_partofatlas_png_646a91.json"
+    },
+    {
+      "page_id": "page_3d62b721723c",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2021_07_KNMT-logo_png_21723c.json"
+    },
+    {
+      "page_id": "page_3c30eadaed0d",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2023_08_Logo-Atlas-kliniek_png_daed0d.json"
+    },
+    {
+      "page_id": "page_8d47dbcd7481",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/sbb-beeldmerk.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2021_07_sbb-beeldmerk_png_cd7481.json"
+    },
+    {
+      "page_id": "page_4b3412d8d847",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2021_07_telefoonknop-1_png_d8d847.json"
+    },
+    {
+      "page_id": "page_d1ecbdf6ecbf",
+      "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_plugins_translatepress-multilingual_assets_images_flags_nl_NL_png_f6ecbf.json"
+    },
+    {
+      "page_id": "page_1c7ff39a7d62",
+      "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_plugins_translatepress-multilingual_assets_images_flags_en_GB_png_9a7d62.json"
+    },
+    {
+      "page_id": "page_0017d87a20de",
+      "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 880,
+      "file": "pages/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners_7a20de.json"
+    },
+    {
+      "page_id": "page_5577d033234f",
+      "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 788,
+      "file": "pages/nieuwe-website-tandheelkundige-kliniek-amsterdam_33234f.json"
+    },
+    {
+      "page_id": "page_d9a19e274131",
+      "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 967,
+      "file": "pages/en_dentist-amsterdam_274131.json"
+    },
+    {
+      "page_id": "page_5346c526bf3e",
+      "url": "https://www.atlaskliniek.nl/ons-team/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 775,
+      "file": "pages/ons-team_26bf3e.json"
+    },
+    {
+      "page_id": "page_7dbb40eeae6a",
+      "url": "https://www.atlaskliniek.nl/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "word_count": 1050,
+      "file": "pages/homepage_eeae6a.json"
+    },
+    {
+      "page_id": "page_0e0e229fbd69",
+      "url": "https://www.atlaskliniek.nl/tarieven/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1641,
+      "file": "pages/tarieven_9fbd69.json"
+    },
+    {
+      "page_id": "page_0bed4e68ae09",
+      "url": "https://www.atlaskliniek.nl/privacy-policy/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 2462,
+      "file": "pages/privacy-policy_68ae09.json"
+    },
+    {
+      "page_id": "page_8a7279d833e5",
+      "url": "https://www.atlaskliniek.nl/werken-bij/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 878,
+      "file": "pages/werken-bij_d833e5.json"
+    },
+    {
+      "page_id": "page_1f41ffc2f261",
+      "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1028,
+      "file": "pages/gezocht-big-geregistreerde-tandarts-amsterdam_c2f261.json"
+    },
+    {
+      "page_id": "page_ebf31af7a77a",
+      "url": "https://www.atlaskliniek.nl/inschrijven/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 806,
+      "file": "pages/inschrijven_f7a77a.json"
+    },
+    {
+      "page_id": "page_e0529bbc2898",
+      "url": "https://www.atlaskliniek.nl/over-ons/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 992,
+      "file": "pages/over-ons_bc2898.json"
+    },
+    {
+      "page_id": "page_99abc5dc8b8b",
+      "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 903,
+      "file": "pages/patienteninformatie_dc8b8b.json"
+    },
+    {
+      "page_id": "page_4b90f1641d61",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+      "status_code": 200,
+      "depth": 1,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2021_06_logo-gebit-300x193_png_641d61.json"
+    },
+    {
+      "page_id": "page_0f239a60bfc9",
+      "url": "https://www.atlaskliniek.nl/behandelingen/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 905,
+      "file": "pages/behandelingen_60bfc9.json"
+    },
+    {
+      "page_id": "page_6ffd9afe0965",
+      "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1016,
+      "file": "pages/klachtenprocedure_fe0965.json"
+    },
+    {
+      "page_id": "page_95ff8896f29c",
+      "url": "https://www.atlaskliniek.nl/contact/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Contact | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 764,
+      "file": "pages/contact_96f29c.json"
+    },
+    {
+      "page_id": "page_bb37425d30e3",
+      "url": "https://www.atlaskliniek.nl/spoed/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Spoed | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 779,
+      "file": "pages/spoed_5d30e3.json"
+    },
+    {
+      "page_id": "page_4043720dcb12",
+      "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 835,
+      "file": "pages/tanden-bleken-in-amsterdam_0dcb12.json"
+    },
+    {
+      "page_id": "page_83528fe0b86c",
+      "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 929,
+      "file": "pages/tandarts-amsterdam-centrum_e0b86c.json"
+    },
+    {
+      "page_id": "page_c329231792eb",
+      "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 910,
+      "file": "pages/tandarts-amsterdam_1792eb.json"
+    },
+    {
+      "page_id": "page_0732664f4e5d",
+      "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 885,
+      "file": "pages/spoed-tandarts-amsterdam_4f4e5d.json"
+    },
+    {
+      "page_id": "page_7c786ad07e30",
+      "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1124,
+      "file": "pages/invisalign-amsterdam_d07e30.json"
+    },
+    {
+      "page_id": "page_7c30be080f47",
+      "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 862,
+      "file": "pages/implantaten-amsterdam_080f47.json"
+    },
+    {
+      "page_id": "page_00fc6a41a946",
+      "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 834,
+      "file": "pages/dentist-amsterdam_41a946.json"
+    },
+    {
+      "page_id": "page_3bcdb6673017",
+      "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 857,
+      "file": "pages/cosmetische-tandheelkunde-in-amsterdam_673017.json"
+    },
+    {
+      "page_id": "page_d3cc19eafbc6",
+      "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 859,
+      "file": "pages/cosmetische-tandarts_eafbc6.json"
+    },
+    {
+      "page_id": "page_b11e0b9a810e",
+      "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 905,
+      "file": "pages/angst-tandarts-amsterdam_9a810e.json"
+    },
+    {
+      "page_id": "page_47f7445499ca",
+      "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1008,
+      "file": "pages/algemene-voorwaarden_5499ca.json"
+    },
+    {
+      "page_id": "page_56b0fcdc1efc",
+      "url": "https://www.atlaskliniek.nl/sitemap/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 726,
+      "file": "pages/sitemap_dc1efc.json"
+    },
+    {
+      "page_id": "page_72e6ee4831da",
+      "url": "https://www.atlaskliniek.nl/nieuws/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 724,
+      "file": "pages/nieuws_4831da.json"
+    },
+    {
+      "page_id": "page_a112dd70ef0f",
+      "url": "https://www.atlaskliniek.nl/garantie/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Garantie | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 839,
+      "file": "pages/garantie_70ef0f.json"
+    },
+    {
+      "page_id": "page_3ed8c16ddf95",
+      "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Uncategorized - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 738,
+      "file": "pages/category_uncategorized_6ddf95.json"
+    },
+    {
+      "page_id": "page_9c7e29d9a88a",
+      "url": "https://www.atlaskliniek.nl/category/tandarts/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Tandarts - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 646,
+      "file": "pages/category_tandarts_d9a88a.json"
+    },
+    {
+      "page_id": "page_248678ddca62",
+      "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Mondhygiënist - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 646,
+      "file": "pages/category_mondhygienist_ddca62.json"
+    },
+    {
+      "page_id": "page_63ca90cff096",
+      "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Preventieassistent - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 646,
+      "file": "pages/category_preventieassistent_cff096.json"
+    },
+    {
+      "page_id": "page_a63d71178079",
+      "url": "https://www.atlaskliniek.nl/category/assistent/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Assistent - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 646,
+      "file": "pages/category_assistent_178079.json"
+    },
+    {
+      "page_id": "page_130cf1c842fa",
+      "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Ondersteunend - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 646,
+      "file": "pages/category_ondersteunend_c842fa.json"
+    },
+    {
+      "page_id": "page_5e79383da39a",
+      "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Tandprotheticus - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 646,
+      "file": "pages/category_tandprotheticus_3da39a.json"
+    },
+    {
+      "page_id": "page_c83f1504097e",
+      "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Implantoloog - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 646,
+      "file": "pages/category_implantoloog_04097e.json"
+    },
+    {
+      "page_id": "page_d4dadafe6ed7",
+      "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+      "status_code": 200,
+      "depth": 0,
+      "title": "Niet-praktiserend tandarts - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 650,
+      "file": "pages/category_niet-praktiserend-tandarts_fe6ed7.json"
+    },
+    {
+      "page_id": "page_abb63033bb54",
+      "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Angst tandarts - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1046,
+      "file": "pages/behandeling_angst-tandarts_33bb54.json"
+    },
+    {
+      "page_id": "page_0230478a91e0",
+      "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Facings - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 888,
+      "file": "pages/behandeling_facings_8a91e0.json"
+    },
+    {
+      "page_id": "page_7998ae689556",
+      "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandartscontroles - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 939,
+      "file": "pages/behandeling_tandartscontroles_689556.json"
+    },
+    {
+      "page_id": "page_a63eddcf5b3a",
+      "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Kronen en bruggen - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 929,
+      "file": "pages/behandeling_kronen-en-bruggen_cf5b3a.json"
+    },
+    {
+      "page_id": "page_f6b7e1817639",
+      "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Wortelkanaalbehandelingen - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 911,
+      "file": "pages/behandeling_wortelkanaalbehandeling_817639.json"
+    },
+    {
+      "page_id": "page_5b2ee780b008",
+      "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Mondhygiëne - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 807,
+      "file": "pages/behandeling_mondhygienist_80b008.json"
+    },
+    {
+      "page_id": "page_165c3c8d61e1",
+      "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Verstandskies trekken - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 812,
+      "file": "pages/behandeling_verstandskies-trekken_8d61e1.json"
+    },
+    {
+      "page_id": "page_cb419703430c",
+      "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Preventieassistentie - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 802,
+      "file": "pages/behandeling_preventieassistentie_03430c.json"
+    },
+    {
+      "page_id": "page_039db2a82ba2",
+      "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Implantaten - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 843,
+      "file": "pages/behandeling_implantaten_a82ba2.json"
+    },
+    {
+      "page_id": "page_3e70968777ad",
+      "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tanden bleken - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 853,
+      "file": "pages/behandeling_tanden-bleken_8777ad.json"
+    },
+    {
+      "page_id": "page_95c5ec89e054",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/gedeeltelijke-gebitsprothese-amsterdam-removebg-300x225.png",
+      "status_code": 200,
+      "depth": 2,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2023_08_gedeeltelijke-gebitsprothese-amsterdam-removebg-300x2_89e054.json"
+    },
+    {
+      "page_id": "page_a1aa90a5c3ce",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2024/04/gebitsprothese-tandarts-amsterdam.jpg",
+      "status_code": 200,
+      "depth": 2,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2024_04_gebitsprothese-tandarts-amsterdam_jpg_a5c3ce.json"
+    },
+    {
+      "page_id": "page_7da5878a7580",
+      "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/volledige-gebitsprothese-amsterdam-300x225.jpg",
+      "status_code": 200,
+      "depth": 2,
+      "title": null,
+      "word_count": 0,
+      "file": "pages/wp-content_uploads_2023_08_volledige-gebitsprothese-amsterdam-300x225_jpg_8a7580.json"
+    },
+    {
+      "page_id": "page_c4aeaaee360d",
+      "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Prothese Plaatsen Amsterdam? | Tandheelkundige Kliniek Atlas",
+      "word_count": 1710,
+      "file": "pages/behandeling_protheses_ee360d.json"
+    },
+    {
+      "page_id": "page_c945a406e92e",
+      "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Orthodontie - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1097,
+      "file": "pages/behandeling_orthodontie_06e92e.json"
+    },
+    {
+      "page_id": "page_03f0dbc6dcdb",
+      "url": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Kindertandheelkunde - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1094,
+      "file": "pages/behandeling_kindertandheelkunde_c6dcdb.json"
+    },
+    {
+      "page_id": "page_e91777cac68b",
+      "url": "https://www.atlaskliniek.nl/2026/02/18/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "word_count": 990,
+      "file": "pages/2026_02_18_cac68b.json"
+    },
+    {
+      "page_id": "page_700e46a7ef5a",
+      "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 787,
+      "file": "pages/en_nieuwe-technologie-in-onze-praktijk-intra-orale-scanners_a7ef5a.json"
+    },
+    {
+      "page_id": "page_620892f2b543",
+      "url": "https://www.atlaskliniek.nl/2023/08/09/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "word_count": 990,
+      "file": "pages/2023_08_09_f2b543.json"
+    },
+    {
+      "page_id": "page_88a5be583bb5",
+      "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 703,
+      "file": "pages/en_nieuwe-website-tandheelkundige-kliniek-amsterdam_583bb5.json"
+    },
+    {
+      "page_id": "page_ea39d20c9b92",
+      "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 838,
+      "file": "pages/en_inschrijven_0c9b92.json"
+    },
+    {
+      "page_id": "page_713a2178d032",
+      "url": "https://www.atlaskliniek.nl/en",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "word_count": 1007,
+      "file": "pages/en_78d032.json"
+    },
+    {
+      "page_id": "page_fdfa483fea95",
+      "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 942,
+      "file": "pages/en_behandelingen_3fea95.json"
+    },
+    {
+      "page_id": "page_3188e3ba225d",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Angst tandarts - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1088,
+      "file": "pages/en_behandeling_angst-tandarts_ba225d.json"
+    },
+    {
+      "page_id": "page_0265451ed277",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Facings - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 911,
+      "file": "pages/en_behandeling_facings_1ed277.json"
+    },
+    {
+      "page_id": "page_49c8fae54f04",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandartscontroles - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 962,
+      "file": "pages/en_behandeling_tandartscontroles_e54f04.json"
+    },
+    {
+      "page_id": "page_f198a6cf9f21",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Kronen en bruggen - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 935,
+      "file": "pages/en_behandeling_kronen-en-bruggen_cf9f21.json"
+    },
+    {
+      "page_id": "page_089328e054f3",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Wortelkanaalbehandelingen - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 943,
+      "file": "pages/en_behandeling_wortelkanaalbehandeling_e054f3.json"
+    },
+    {
+      "page_id": "page_1aa344c36772",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Mondhygiëne - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 826,
+      "file": "pages/en_behandeling_mondhygienist_c36772.json"
+    },
+    {
+      "page_id": "page_04a167df1a57",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Verstandskies trekken - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 838,
+      "file": "pages/en_behandeling_verstandskies-trekken_df1a57.json"
+    },
+    {
+      "page_id": "page_f09d5a317b60",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Preventieassistentie - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 824,
+      "file": "pages/en_behandeling_preventieassistentie_317b60.json"
+    },
+    {
+      "page_id": "page_04b2c16b2372",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Implantaten - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 856,
+      "file": "pages/en_behandeling_implantaten_6b2372.json"
+    },
+    {
+      "page_id": "page_317590d94d87",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Prothese Plaatsen Amsterdam? | Tandheelkundige Kliniek Atlas",
+      "word_count": 1706,
+      "file": "pages/en_behandeling_protheses_d94d87.json"
+    },
+    {
+      "page_id": "page_aad42192f664",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tanden bleken - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 859,
+      "file": "pages/en_behandeling_tanden-bleken_92f664.json"
+    },
+    {
+      "page_id": "page_b7feff077d90",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Orthodontie - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1098,
+      "file": "pages/en_behandeling_orthodontie_077d90.json"
+    },
+    {
+      "page_id": "page_322fd4ec018f",
+      "url": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Kindertandheelkunde - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1117,
+      "file": "pages/en_behandeling_kindertandheelkunde_ec018f.json"
+    },
+    {
+      "page_id": "page_bba06e058964",
+      "url": "https://www.atlaskliniek.nl/en/over-ons/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1009,
+      "file": "pages/en_over-ons_058964.json"
+    },
+    {
+      "page_id": "page_c1289205a209",
+      "url": "https://www.atlaskliniek.nl/en/ons-team/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 734,
+      "file": "pages/en_ons-team_05a209.json"
+    },
+    {
+      "page_id": "page_f806a218ca7e",
+      "url": "https://www.atlaskliniek.nl/en/tarieven/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1619,
+      "file": "pages/en_tarieven_18ca7e.json"
+    },
+    {
+      "page_id": "page_af73b44e73a6",
+      "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 899,
+      "file": "pages/en_werken-bij_4e73a6.json"
+    },
+    {
+      "page_id": "page_7001b2272dcf",
+      "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 930,
+      "file": "pages/en_patienteninformatie_272dcf.json"
+    },
+    {
+      "page_id": "page_9ef44c83d051",
+      "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1061,
+      "file": "pages/en_klachtenprocedure_83d051.json"
+    },
+    {
+      "page_id": "page_9b6c44f7401d",
+      "url": "https://www.atlaskliniek.nl/en/nieuws/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 737,
+      "file": "pages/en_nieuws_f7401d.json"
+    },
+    {
+      "page_id": "page_c379ea010af6",
+      "url": "https://www.atlaskliniek.nl/en/spoed/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Spoed | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 801,
+      "file": "pages/en_spoed_010af6.json"
+    },
+    {
+      "page_id": "page_a9899ce3c5d5",
+      "url": "https://www.atlaskliniek.nl/en/contact/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Contact | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 787,
+      "file": "pages/en_contact_e3c5d5.json"
+    },
+    {
+      "page_id": "page_0fc27f357f15",
+      "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1030,
+      "file": "pages/en_algemene-voorwaarden_357f15.json"
+    },
+    {
+      "page_id": "page_d51a4309c3e8",
+      "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 2499,
+      "file": "pages/en_privacy-policy_09c3e8.json"
+    },
+    {
+      "page_id": "page_1e5b69e74c0b",
+      "url": "https://www.atlaskliniek.nl/en/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "word_count": 1007,
+      "file": "pages/en_e74c0b.json"
+    },
+    {
+      "page_id": "page_bc1d21c8cd2a",
+      "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1078,
+      "file": "pages/en_gezocht-big-geregistreerde-tandarts-amsterdam_c8cd2a.json"
+    },
+    {
+      "page_id": "page_6390b099b338",
+      "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandartscontroles - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 939,
+      "file": "pages/behandeling_tandartscontrole_99b338.json"
+    },
+    {
+      "page_id": "page_9b757fa84d6c",
+      "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Preventieassistentie - Tandheelkundige Kliniek Amsterdam",
+      "word_count": 802,
+      "file": "pages/behandeling_preventie-assistentie_a84d6c.json"
+    },
+    {
+      "page_id": "page_f8633c8b590b",
+      "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 846,
+      "file": "pages/en_tanden-bleken-in-amsterdam_8b590b.json"
+    },
+    {
+      "page_id": "page_06c49248855f",
+      "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+      "word_count": 990,
+      "file": "pages/behandeling_klikgebit_48855f.json"
+    },
+    {
+      "page_id": "page_a0351e1d1fa8",
+      "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 956,
+      "file": "pages/en_tandarts-amsterdam-centrum_1d1fa8.json"
+    },
+    {
+      "page_id": "page_5cdd63297f3a",
+      "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 935,
+      "file": "pages/en_tandarts-amsterdam_297f3a.json"
+    },
+    {
+      "page_id": "page_6d4a8bbbace3",
+      "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 902,
+      "file": "pages/en_spoed-tandarts-amsterdam_bbace3.json"
+    },
+    {
+      "page_id": "page_95f337060f9e",
+      "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 1139,
+      "file": "pages/en_invisalign-amsterdam_060f9e.json"
+    },
+    {
+      "page_id": "page_d853cd0f7ef9",
+      "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 886,
+      "file": "pages/en_implantaten-amsterdam_0f7ef9.json"
+    },
+    {
+      "page_id": "page_d7463cb1b0f2",
+      "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 880,
+      "file": "pages/en_cosmetische-tandheelkunde-in-amsterdam_b1b0f2.json"
+    },
+    {
+      "page_id": "page_6e38215e1414",
+      "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 880,
+      "file": "pages/en_cosmetische-tandarts_5e1414.json"
+    },
+    {
+      "page_id": "page_13f4d7973600",
+      "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 928,
+      "file": "pages/en_angst-tandarts-amsterdam_973600.json"
+    },
+    {
+      "page_id": "page_714253307069",
+      "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Bedankt Voor Uw Bericht | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 683,
+      "file": "pages/bedankt-contact_307069.json"
+    },
+    {
+      "page_id": "page_90ab5abc667a",
+      "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Bedankt Voor Uw Inschrijving | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 694,
+      "file": "pages/bedankt-inschrijven_bc667a.json"
+    },
+    {
+      "page_id": "page_444264d425ea",
+      "url": "https://www.atlaskliniek.nl/en/sitemap/",
+      "status_code": 200,
+      "depth": 1,
+      "title": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+      "word_count": 748,
+      "file": "pages/en_sitemap_d425ea.json"
+    }
+  ]
+}

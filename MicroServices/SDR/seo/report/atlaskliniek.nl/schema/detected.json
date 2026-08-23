@@ -1,0 +1,4028 @@
+[
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage",
+            "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+            "name": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2026-02-18T13:06:26+01:00",
+            "dateModified": "2026-02-18T13:07:06+01:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2026-02-18T13:06:26+01:00",
+            "dateModified": "2026-02-18T13:07:06+01:00",
+            "articleSection": "Uncategorized",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners.",
+            "name": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+            "name": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-09T08:35:25+02:00",
+            "dateModified": "2023-08-11T15:30:45+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-09T08:35:25+02:00",
+            "dateModified": "2023-08-11T15:30:45+02:00",
+            "articleSection": "Uncategorized",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Heugelijk nieuws, de nieuwe website van Tandheelkundige Kliniek Atlas is in de lucht! In samenwerking met TopPraktijk is deze website op maat voor ons",
+            "name": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/dentist-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+            "name": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:54:50+02:00",
+            "dateModified": "2023-08-14T15:42:32+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:54:50+02:00",
+            "dateModified": "2023-08-14T15:42:32+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "We are here for you!",
+            "name": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/dentist-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/dentist-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/dentist-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/ons-team/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/ons-team/#webpage",
+            "url": "https://www.atlaskliniek.nl/ons-team/",
+            "name": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:15:22+01:00",
+            "dateModified": "2026-08-11T13:53:54+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:15:22+01:00",
+            "dateModified": "2026-08-11T13:53:54+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Maak kennis met ons team van specialisten dat op elke doordeweekse dag voor u klaar staat om u te begeleiden naar een goede mondgezondheid.",
+            "name": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/ons-team/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/ons-team/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/ons-team/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.atlaskliniek.nl/?s={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/#webpage",
+            "url": "https://www.atlaskliniek.nl/",
+            "name": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+            "datePublished": "2021-05-31T14:23:21+02:00",
+            "dateModified": "2024-07-15T16:09:47+02:00",
+            "about": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png",
+            "url": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png",
+            "width": "200",
+            "height": "200",
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/tarieven/#webpage",
+            "url": "https://www.atlaskliniek.nl/tarieven/",
+            "name": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T11:33:18+01:00",
+            "dateModified": "2026-01-06T14:39:12+01:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T11:33:18+01:00",
+            "dateModified": "2026-01-06T14:39:12+01:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Bekijk hier de tarieven die wij hanteren voor de diverse behandelingen die wij aanbieden. Voor vragen kunt u ons altijd bellen. Wij helpen u graag.",
+            "name": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/tarieven/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/tarieven/#webpage"
+            },
+            "image": {
+              "@id": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/tarieven/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/privacy-policy/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/privacy-policy/#webpage",
+            "url": "https://www.atlaskliniek.nl/privacy-policy/",
+            "name": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-02T12:02:15+01:00",
+            "dateModified": "2025-07-24T09:42:58+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-02T12:02:15+01:00",
+            "dateModified": "2025-07-24T09:42:58+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Hier treft u de privacy verklaring van Tandheelkundige Kliniek Amsterdam.",
+            "name": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/privacy-policy/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/privacy-policy/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/privacy-policy/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/werken-bij/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/werken-bij/#webpage",
+            "url": "https://www.atlaskliniek.nl/werken-bij/",
+            "name": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:27:41+01:00",
+            "dateModified": "2025-06-02T14:16:10+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:27:41+01:00",
+            "dateModified": "2025-06-02T14:16:10+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Bekijk hier al onze vacatures. Staat er een vacature tussen waarin u geïnteresseerd bent? Stuur dan uw CV op. Wij komen graag met u in contact.",
+            "name": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/werken-bij/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/werken-bij/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/werken-bij/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+            "name": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2025-05-07T15:29:09+02:00",
+            "dateModified": "2025-05-07T15:30:50+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2025-05-07T15:29:09+02:00",
+            "dateModified": "2025-05-07T15:30:50+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Vacature",
+            "name": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/inschrijven/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/inschrijven/#webpage",
+            "url": "https://www.atlaskliniek.nl/inschrijven/",
+            "name": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:06:48+01:00",
+            "dateModified": "2024-11-27T09:22:15+01:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:06:48+01:00",
+            "dateModified": "2024-11-27T09:22:15+01:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "U kunt zich online inschrijven door het inschrijfformulier op onze website in te vullen, waarna wij op korte termijn contact met u zullen opnemen.",
+            "name": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/inschrijven/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/inschrijven/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/inschrijven/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/over-ons/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/over-ons/#webpage",
+            "url": "https://www.atlaskliniek.nl/over-ons/",
+            "name": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:19:38+01:00",
+            "dateModified": "2024-08-27T10:15:49+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:19:38+01:00",
+            "dateModified": "2024-08-27T10:15:49+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Van harte welkom bij Tandheelkundige Kliniek Amsterdam, dé tandartspraktijk in Amsterdam voor jong en oud waar u terecht kunt voor diverse behandelingen.",
+            "name": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/over-ons/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/over-ons/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/over-ons/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/patienteninformatie/#webpage",
+            "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+            "name": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T15:28:50+01:00",
+            "dateModified": "2024-07-04T17:11:55+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T15:28:50+01:00",
+            "dateModified": "2024-07-04T17:11:55+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Tijdens uw eerste bezoek aan onze praktijk, zullen wij uw mond onderzoeken en een behandelplan op maat opstellen dat voldoet aan al uw wensen.",
+            "name": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/patienteninformatie/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/patienteninformatie/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/patienteninformatie/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandelingen/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+            "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+            "width": "200",
+            "height": "200",
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/behandelingen/#webpage",
+            "url": "https://www.atlaskliniek.nl/behandelingen/",
+            "name": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T15:48:33+02:00",
+            "dateModified": "2023-10-27T12:54:52+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T15:48:33+02:00",
+            "dateModified": "2023-10-27T12:54:52+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "U bent van harte welkom bij Tandheelkundige Kliniek Amsterdam. Wij bieden een breed scala aan behandelingen aan om uw gebit mooi en gezond te houden.",
+            "name": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/behandelingen/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/behandelingen/#webpage"
+            },
+            "image": {
+              "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/behandelingen/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/klachtenprocedure/#webpage",
+            "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+            "name": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-29T08:55:32+01:00",
+            "dateModified": "2023-10-16T12:16:26+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-29T08:55:32+01:00",
+            "dateModified": "2023-10-16T12:16:26+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Heeft u onverhoopt een klacht? Laat het ons vooral weten. Wij komen graag met u in contact, zodat wij onze dienstverlening kunnen verbeteren.",
+            "name": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/klachtenprocedure/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/klachtenprocedure/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/klachtenprocedure/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/contact/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/contact/#webpage",
+            "url": "https://www.atlaskliniek.nl/contact/",
+            "name": "Contact | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T09:15:50+01:00",
+            "dateModified": "2023-09-18T10:47:46+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Contact | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T09:15:50+01:00",
+            "dateModified": "2023-09-18T10:47:46+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Heeft u een vraag? Neem dan gerust contact met ons op door het contactformulier op onze website in te vullen of te bellen naar: ☎️ (018) 268 6800.",
+            "name": "Contact | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/contact/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/contact/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/contact/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/spoed/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/spoed/#webpage",
+            "url": "https://www.atlaskliniek.nl/spoed/",
+            "name": "Spoed | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:34:34+01:00",
+            "dateModified": "2023-08-17T16:18:03+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Spoed | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:34:34+01:00",
+            "dateModified": "2023-08-17T16:18:03+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Neem in het geval van spoed direct telefonisch contact met ons op. Wij staan op elke doordeweekse dag klaar om u te helpen. | ☎️ (020) 751 - 2717",
+            "name": "Spoed | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/spoed/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/spoed/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/spoed/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+            "name": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:08:01+02:00",
+            "dateModified": "2023-08-14T16:14:16+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:08:01+02:00",
+            "dateModified": "2023-08-14T16:14:16+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/#webpage",
+            "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+            "name": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:51:13+02:00",
+            "dateModified": "2023-08-14T16:13:39+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:51:13+02:00",
+            "dateModified": "2023-08-14T16:13:39+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+            "name": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:12:36+02:00",
+            "dateModified": "2023-08-14T15:52:10+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:12:36+02:00",
+            "dateModified": "2023-08-14T15:52:10+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+            "name": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:04:40+02:00",
+            "dateModified": "2023-08-14T15:51:08+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:04:40+02:00",
+            "dateModified": "2023-08-14T15:51:08+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/invisalign-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+            "name": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:16:50+02:00",
+            "dateModified": "2023-08-14T15:45:08+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:16:50+02:00",
+            "dateModified": "2023-08-14T15:45:08+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/invisalign-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/invisalign-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/invisalign-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/implantaten-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+            "name": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:59:08+02:00",
+            "dateModified": "2023-08-14T15:44:10+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:59:08+02:00",
+            "dateModified": "2023-08-14T15:44:10+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/implantaten-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/implantaten-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/implantaten-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/dentist-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+            "name": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:54:50+02:00",
+            "dateModified": "2023-08-14T15:42:32+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:54:50+02:00",
+            "dateModified": "2023-08-14T15:42:32+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "We are here for you!",
+            "name": "Dentist Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/dentist-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/dentist-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/dentist-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+            "name": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:20:42+02:00",
+            "dateModified": "2023-08-14T15:36:03+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:20:42+02:00",
+            "dateModified": "2023-08-14T15:36:03+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/cosmetische-tandarts/#webpage",
+            "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+            "name": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:01:25+02:00",
+            "dateModified": "2023-08-14T15:34:32+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:01:25+02:00",
+            "dateModified": "2023-08-14T15:34:32+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/cosmetische-tandarts/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/cosmetische-tandarts/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/cosmetische-tandarts/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+            "name": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T09:57:58+02:00",
+            "dateModified": "2023-08-14T15:30:25+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T09:57:58+02:00",
+            "dateModified": "2023-08-14T15:30:25+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/algemene-voorwaarden/#webpage",
+            "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+            "name": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T16:01:47+02:00",
+            "dateModified": "2023-08-14T15:29:15+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T16:01:47+02:00",
+            "dateModified": "2023-08-14T15:29:15+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Hier treft u de algemene voorwaarden van Tandheelkundige Kliniek Amsterdam",
+            "name": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/algemene-voorwaarden/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/algemene-voorwaarden/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/algemene-voorwaarden/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/sitemap/#webpage",
+            "url": "https://www.atlaskliniek.nl/sitemap/",
+            "name": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-26T11:03:23+01:00",
+            "dateModified": "2023-08-14T15:22:47+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-26T11:03:23+01:00",
+            "dateModified": "2023-08-14T15:22:47+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Hier treft u de sitemap van Tandheelkundige Kliniek Amsterdam.",
+            "name": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/sitemap/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/sitemap/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/sitemap/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuws/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/nieuws/#webpage",
+            "url": "https://www.atlaskliniek.nl/nieuws/",
+            "name": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T08:43:27+01:00",
+            "dateModified": "2023-08-14T15:21:08+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T08:43:27+01:00",
+            "dateModified": "2023-08-14T15:21:08+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Hier leest u al het nieuws omtrent onze tandartspraktijk, gevestigd aan de Herengracht in Amsterdam. Neem voor meer informatie gerust contact op.",
+            "name": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/nieuws/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/nieuws/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/nieuws/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/garantie/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/garantie/#webpage",
+            "url": "https://www.atlaskliniek.nl/garantie/",
+            "name": "Garantie | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-29T08:57:07+01:00",
+            "dateModified": "2023-08-14T15:19:23+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Garantie | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-29T08:57:07+01:00",
+            "dateModified": "2023-08-14T15:19:23+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Bij kroon- en brugwerk krijgt u vijf jaar garantie waarbij ieder jaar 20% minder vergoed wordt. Bekijk de site voor meer informatie en de voorwaarden.",
+            "name": "Garantie | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/garantie/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/garantie/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/garantie/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/uncategorized/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+            "name": "Uncategorized - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/tandarts/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/tandarts/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/tandarts/",
+            "name": "Tandarts - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/mondhygienist/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+            "name": "Mondhygiënist - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/preventieassistent/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+            "name": "Preventieassistent - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/assistent/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/assistent/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/assistent/",
+            "name": "Assistent - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/ondersteunend/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+            "name": "Ondersteunend - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/tandprotheticus/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+            "name": "Tandprotheticus - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/implantoloog/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+            "name": "Implantoloog - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "CollectionPage",
+            "@id": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/#webpage",
+            "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+            "name": "Niet-praktiserend tandarts - Tandheelkundige Kliniek Amsterdam",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.atlaskliniek.nl/?s={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/#webpage",
+            "url": "https://www.atlaskliniek.nl/",
+            "name": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+            "datePublished": "2021-05-31T14:23:21+02:00",
+            "dateModified": "2024-07-15T16:09:47+02:00",
+            "about": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+            "name": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2026-02-18T13:06:26+01:00",
+            "dateModified": "2026-02-18T13:07:06+01:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2026-02-18T13:06:26+01:00",
+            "dateModified": "2026-02-18T13:07:06+01:00",
+            "articleSection": "Uncategorized",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Om het comfort voor onze patiënten verder te vergroten, hebben wij recent geïnvesteerd in moderne intra-orale scanners.",
+            "name": "Nieuwe technologie in onze praktijk: intra-orale scanners - Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.atlaskliniek.nl/?s={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/#webpage",
+            "url": "https://www.atlaskliniek.nl/",
+            "name": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+            "datePublished": "2021-05-31T14:23:21+02:00",
+            "dateModified": "2024-07-15T16:09:47+02:00",
+            "about": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+            "name": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-09T08:35:25+02:00",
+            "dateModified": "2023-08-11T15:30:45+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-09T08:35:25+02:00",
+            "dateModified": "2023-08-11T15:30:45+02:00",
+            "articleSection": "Uncategorized",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Heugelijk nieuws, de nieuwe website van Tandheelkundige Kliniek Atlas is in de lucht! In samenwerking met TopPraktijk is deze website op maat voor ons",
+            "name": "Nieuwe website Tandheelkundige Kliniek Atlas - Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/inschrijven/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+            "name": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:06:48+01:00",
+            "dateModified": "2024-11-27T09:22:15+01:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:06:48+01:00",
+            "dateModified": "2024-11-27T09:22:15+01:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "U kunt zich online inschrijven door het inschrijfformulier op onze website in te vullen, waarna wij op korte termijn contact met u zullen opnemen.",
+            "name": "Inschrijven | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/inschrijven/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/inschrijven/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/inschrijven/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.atlaskliniek.nl/en/?s={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/",
+            "name": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+            "datePublished": "2021-05-31T14:23:21+02:00",
+            "dateModified": "2024-07-15T16:09:47+02:00",
+            "about": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+            "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+            "width": "200",
+            "height": "200",
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/behandelingen/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+            "name": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T15:48:33+02:00",
+            "dateModified": "2023-10-27T12:54:52+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T15:48:33+02:00",
+            "dateModified": "2023-10-27T12:54:52+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "U bent van harte welkom bij Tandheelkundige Kliniek Amsterdam. Wij bieden een breed scala aan behandelingen aan om uw gebit mooi en gezond te houden.",
+            "name": "Behandelingen | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/behandelingen/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/behandelingen/#webpage"
+            },
+            "image": {
+              "@id": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/behandelingen/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/over-ons/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/over-ons/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/over-ons/",
+            "name": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:19:38+01:00",
+            "dateModified": "2024-08-27T10:15:49+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:19:38+01:00",
+            "dateModified": "2024-08-27T10:15:49+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Van harte welkom bij Tandheelkundige Kliniek Amsterdam, dé tandartspraktijk in Amsterdam voor jong en oud waar u terecht kunt voor diverse behandelingen.",
+            "name": "Over Ons | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/over-ons/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/over-ons/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/over-ons/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/ons-team/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/ons-team/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/ons-team/",
+            "name": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:15:22+01:00",
+            "dateModified": "2026-08-11T13:53:54+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T14:15:22+01:00",
+            "dateModified": "2026-08-11T13:53:54+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Maak kennis met ons team van specialisten dat op elke doordeweekse dag voor u klaar staat om u te begeleiden naar een goede mondgezondheid.",
+            "name": "Ons Team | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/ons-team/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/ons-team/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/ons-team/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tarieven/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png",
+            "url": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png",
+            "width": "200",
+            "height": "200",
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/tarieven/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/tarieven/",
+            "name": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T11:33:18+01:00",
+            "dateModified": "2026-01-06T14:39:12+01:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T11:33:18+01:00",
+            "dateModified": "2026-01-06T14:39:12+01:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Bekijk hier de tarieven die wij hanteren voor de diverse behandelingen die wij aanbieden. Voor vragen kunt u ons altijd bellen. Wij helpen u graag.",
+            "name": "Tarieven | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/tarieven/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/tarieven/#webpage"
+            },
+            "image": {
+              "@id": "https://reinierentandarts.nl/wp-content/uploads/2021/02/download.png"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/tarieven/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/werken-bij/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+            "name": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:27:41+01:00",
+            "dateModified": "2025-06-02T14:16:10+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:27:41+01:00",
+            "dateModified": "2025-06-02T14:16:10+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Bekijk hier al onze vacatures. Staat er een vacature tussen waarin u geïnteresseerd bent? Stuur dan uw CV op. Wij komen graag met u in contact.",
+            "name": "Vacatures | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/werken-bij/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/werken-bij/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/werken-bij/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+            "name": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T15:28:50+01:00",
+            "dateModified": "2024-07-04T17:11:55+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T15:28:50+01:00",
+            "dateModified": "2024-07-04T17:11:55+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Tijdens uw eerste bezoek aan onze praktijk, zullen wij uw mond onderzoeken en een behandelplan op maat opstellen dat voldoet aan al uw wensen.",
+            "name": "Patiënten Informatie | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/patienteninformatie/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/klachtenprocedure/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+            "name": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-29T08:55:32+01:00",
+            "dateModified": "2023-10-16T12:16:26+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-29T08:55:32+01:00",
+            "dateModified": "2023-10-16T12:16:26+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Heeft u onverhoopt een klacht? Laat het ons vooral weten. Wij komen graag met u in contact, zodat wij onze dienstverlening kunnen verbeteren.",
+            "name": "Klachtenprocedure | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/klachtenprocedure/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/klachtenprocedure/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/klachtenprocedure/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuws/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/nieuws/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/nieuws/",
+            "name": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T08:43:27+01:00",
+            "dateModified": "2023-08-14T15:21:08+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T08:43:27+01:00",
+            "dateModified": "2023-08-14T15:21:08+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Hier leest u al het nieuws omtrent onze tandartspraktijk, gevestigd aan de Herengracht in Amsterdam. Neem voor meer informatie gerust contact op.",
+            "name": "Nieuws | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/nieuws/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/nieuws/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/nieuws/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/spoed/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/spoed/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/spoed/",
+            "name": "Spoed | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:34:34+01:00",
+            "dateModified": "2023-08-17T16:18:03+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Spoed | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-25T16:34:34+01:00",
+            "dateModified": "2023-08-17T16:18:03+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Neem in het geval van spoed direct telefonisch contact met ons op. Wij staan op elke doordeweekse dag klaar om u te helpen. | ☎️ (020) 751 - 2717",
+            "name": "Spoed | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/spoed/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/spoed/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/spoed/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/contact/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/contact/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/contact/",
+            "name": "Contact | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T09:15:50+01:00",
+            "dateModified": "2023-09-18T10:47:46+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Contact | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-01-26T09:15:50+01:00",
+            "dateModified": "2023-09-18T10:47:46+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Heeft u een vraag? Neem dan gerust contact met ons op door het contactformulier op onze website in te vullen of te bellen naar: ☎️ (018) 268 6800.",
+            "name": "Contact | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/contact/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/contact/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/contact/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+            "name": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T16:01:47+02:00",
+            "dateModified": "2023-08-14T15:29:15+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-05-31T16:01:47+02:00",
+            "dateModified": "2023-08-14T15:29:15+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Hier treft u de algemene voorwaarden van Tandheelkundige Kliniek Amsterdam",
+            "name": "Algemene Voorwaarden | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/privacy-policy/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+            "name": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-02T12:02:15+01:00",
+            "dateModified": "2025-07-24T09:42:58+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-02T12:02:15+01:00",
+            "dateModified": "2025-07-24T09:42:58+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Hier treft u de privacy verklaring van Tandheelkundige Kliniek Amsterdam.",
+            "name": "Privacy Verklaring | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/privacy-policy/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/privacy-policy/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/privacy-policy/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.atlaskliniek.nl/en/?s={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/",
+            "name": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+            "datePublished": "2021-05-31T14:23:21+02:00",
+            "dateModified": "2024-07-15T16:09:47+02:00",
+            "about": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+            "name": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2025-05-07T15:29:09+02:00",
+            "dateModified": "2025-05-07T15:30:50+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2025-05-07T15:29:09+02:00",
+            "dateModified": "2025-05-07T15:30:50+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Vacature",
+            "name": "Gezocht: BIG geregistreerde ervaren tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+            "name": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:08:01+02:00",
+            "dateModified": "2023-08-14T16:14:16+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:08:01+02:00",
+            "dateModified": "2023-08-14T16:14:16+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Tanden bleken in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://www.atlaskliniek.nl/?s={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/#webpage",
+            "url": "https://www.atlaskliniek.nl/",
+            "name": "Tandheelkundige Kliniek Amsterdam nodig? | Tandheelkundige Kliniek Amsterdam | Van Harte Welkom",
+            "datePublished": "2021-05-31T14:23:21+02:00",
+            "dateModified": "2024-07-15T16:09:47+02:00",
+            "about": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+            "name": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:51:13+02:00",
+            "dateModified": "2023-08-14T16:13:39+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:51:13+02:00",
+            "dateModified": "2023-08-14T16:13:39+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Tandarts Amsterdam-Centrum | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+            "name": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:12:36+02:00",
+            "dateModified": "2023-08-14T15:52:10+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:12:36+02:00",
+            "dateModified": "2023-08-14T15:52:10+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+            "name": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:04:40+02:00",
+            "dateModified": "2023-08-14T15:51:08+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:04:40+02:00",
+            "dateModified": "2023-08-14T15:51:08+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Spoed Tandarts Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+            "name": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:16:50+02:00",
+            "dateModified": "2023-08-14T15:45:08+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:16:50+02:00",
+            "dateModified": "2023-08-14T15:45:08+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Invisalign Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+            "name": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:59:08+02:00",
+            "dateModified": "2023-08-14T15:44:10+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:59:08+02:00",
+            "dateModified": "2023-08-14T15:44:10+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Implantaten Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+            "name": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:20:42+02:00",
+            "dateModified": "2023-08-14T15:36:03+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T11:20:42+02:00",
+            "dateModified": "2023-08-14T15:36:03+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Cosmetische Tandheelkunde | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+            "name": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:01:25+02:00",
+            "dateModified": "2023-08-14T15:34:32+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T10:01:25+02:00",
+            "dateModified": "2023-08-14T15:34:32+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Cosmetische Tandarts | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+            "name": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T09:57:58+02:00",
+            "dateModified": "2023-08-14T15:30:25+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2023-08-08T09:57:58+02:00",
+            "dateModified": "2023-08-14T15:30:25+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Wij staan voor u klaar",
+            "name": "Angst Tandarts in Amsterdam | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/bedankt-contact/#webpage",
+            "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+            "name": "Bedankt Voor Uw Bericht | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-08T13:09:34+01:00",
+            "dateModified": "2023-10-02T16:48:43+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Bedankt Voor Uw Bericht | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-08T13:09:34+01:00",
+            "dateModified": "2023-10-02T16:48:43+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Bedankt voor het invullen van het contactformulier. Uw bericht is in goede orde ontvangen. Indien nodig zullen wij zo snel mogelijk contact opnemen.",
+            "name": "Bedankt Voor Uw Bericht | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/bedankt-contact/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/bedankt-contact/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/bedankt-contact/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/#website",
+            "url": "https://www.atlaskliniek.nl",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/bedankt-inschrijven/#webpage",
+            "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+            "name": "Bedankt Voor Uw Inschrijving | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-02T15:44:30+01:00",
+            "dateModified": "2023-10-02T16:48:38+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/#website"
+            },
+            "inLanguage": "nl-NL"
+          },
+          {
+            "@type": "Article",
+            "headline": "Bedankt Voor Uw Inschrijving | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-02T15:44:30+01:00",
+            "dateModified": "2023-10-02T16:48:38+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/#person"
+            },
+            "description": "Bedankt voor het invullen van het inschrijfformulier. Wij zullen contact met u opnemen om uw inschrijving te bevestigen en een afspraak te maken.",
+            "name": "Bedankt Voor Uw Inschrijving | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/bedankt-inschrijven/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/bedankt-inschrijven/#webpage"
+            },
+            "inLanguage": "nl-NL",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/bedankt-inschrijven/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": [
+              "Person",
+              "Organization"
+            ],
+            "@id": "https://www.atlaskliniek.nl/en/#person",
+            "name": "Tandheelkundige Kliniek Atlas"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.atlaskliniek.nl/en/#website",
+            "url": "https://www.atlaskliniek.nl/en",
+            "name": "Tandheelkundige Kliniek Atlas",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.atlaskliniek.nl/en/sitemap/#webpage",
+            "url": "https://www.atlaskliniek.nl/en/sitemap/",
+            "name": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-26T11:03:23+01:00",
+            "dateModified": "2023-08-14T15:22:47+02:00",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/#website"
+            },
+            "inLanguage": "en-GB"
+          },
+          {
+            "@type": "Article",
+            "headline": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+            "datePublished": "2021-02-26T11:03:23+01:00",
+            "dateModified": "2023-08-14T15:22:47+02:00",
+            "publisher": {
+              "@id": "https://www.atlaskliniek.nl/en/#person"
+            },
+            "description": "Hier treft u de sitemap van Tandheelkundige Kliniek Amsterdam.",
+            "name": "Sitemap | Tandheelkundige Kliniek Amsterdam",
+            "@id": "https://www.atlaskliniek.nl/en/sitemap/#richSnippet",
+            "isPartOf": {
+              "@id": "https://www.atlaskliniek.nl/en/sitemap/#webpage"
+            },
+            "inLanguage": "en-GB",
+            "mainEntityOfPage": {
+              "@id": "https://www.atlaskliniek.nl/en/sitemap/#webpage"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

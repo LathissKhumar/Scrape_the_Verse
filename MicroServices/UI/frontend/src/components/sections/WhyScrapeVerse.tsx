@@ -4,30 +4,30 @@ import { useRef } from 'react'
 import { Zap, ShieldCheck, BrainCircuit, Rocket, Sparkles } from 'lucide-react'
 
 const MANIFESTO_WORDS =
-  'We believe web intelligence should feel alive. Not just brittle extractors that break overnight — but resilient, self-healing, unforgettably fast autonomous pipelines. Every site Scrape-Verse monitors is parsed, understood, and transformed into continuous business growth.'.split(
+  'Every agency is leaving money on the table. Not because they lack skill — but because finding the right lead, understanding the problem, and knowing what to pitch takes hours they don’t have. Scrape-Verse gives your team an unfair advantage. Automated. Evidence-backed. End-to-end.'.split(
     ' '
   )
 
 const REASONS = [
   {
     icon: <Zap className="w-6 h-6 text-sky-400" />,
-    title: 'Parallel Ingestion Fleet',
-    description: 'Executes multi-source collectors simultaneously for 10x faster market coverage.',
+    title: 'Automated Lead Discovery',
+    description: 'Finds businesses from IndiaMART, Yelp, Google Maps, and Avvo — no manual directory browsing required.',
   },
   {
     icon: <ShieldCheck className="w-6 h-6 text-emerald-400" />,
-    title: 'Autonomous Self-Healing',
-    description: 'Eliminates scraper maintenance overhead with automated LLM DOM repair.',
+    title: 'Full-Stack SEO Audit',
+    description: 'Crawls websites and surfaces real problems — missing pages, broken titles, thin content, local SEO gaps — instantly.',
   },
   {
     icon: <BrainCircuit className="w-6 h-6 text-indigo-400" />,
-    title: 'Structured Intent Scoring',
-    description: 'Normalizes unstructured web noise into actionable lead opportunity metrics.',
+    title: 'Evidence-Backed Opportunities',
+    description: 'Maps business intelligence to specific digital service opportunities. No guesswork — every recommendation comes with proof.',
   },
   {
     icon: <Rocket className="w-6 h-6 text-cyan-300" />,
-    title: 'End-to-End Sales Suite',
-    description: 'Generates custom micro-sites, outreach copy, and voice scripts instantly.',
+    title: 'Implementation-Ready Output',
+    description: 'Generates a complete website specification ready to paste into Lovable, v0, Claude Code, Cursor, or Bolt.',
   },
 ]
 
@@ -42,7 +42,7 @@ export function WhyScrapeVerse() {
     <section
       id="why-scrape-verse"
       ref={sectionRef}
-      className="py-32 md:py-44 relative border-b border-white/5 font-body overflow-hidden bg-transparent"
+      className="py-16 md:py-24 relative border-b border-white/5 font-body overflow-hidden bg-transparent"
       aria-label="Why Scrape-Verse — Kinetic Typography Manifesto"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-24">
@@ -50,7 +50,7 @@ export function WhyScrapeVerse() {
         <div className="max-w-5xl mx-auto space-y-8">
           <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-cyan-400 uppercase font-bold">
             <Sparkles className="w-4 h-4" />
-            <span>— The Intelligence Manifesto</span>
+            <span>— The Agency Advantage</span>
           </div>
 
           <div className="flex flex-wrap gap-x-3 gap-y-2">

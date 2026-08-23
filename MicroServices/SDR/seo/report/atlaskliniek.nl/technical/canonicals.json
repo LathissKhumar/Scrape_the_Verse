@@ -1,0 +1,562 @@
+[
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek-Wit.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/partofatlas.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/KNMT-logo.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/Logo-Atlas-kliniek.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/sbb-beeldmerk.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/07/telefoonknop-1.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/nl_NL.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/plugins/translatepress-multilingual/assets/images/flags/en_GB.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "canonical": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/dentist-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/ons-team/",
+    "canonical": "https://www.atlaskliniek.nl/ons-team/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/",
+    "canonical": "https://www.atlaskliniek.nl/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tarieven/",
+    "canonical": "https://www.atlaskliniek.nl/tarieven/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/privacy-policy/",
+    "canonical": "https://www.atlaskliniek.nl/privacy-policy/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/werken-bij/",
+    "canonical": "https://www.atlaskliniek.nl/werken-bij/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/inschrijven/",
+    "canonical": "https://www.atlaskliniek.nl/inschrijven/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/over-ons/",
+    "canonical": "https://www.atlaskliniek.nl/over-ons/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/patienteninformatie/",
+    "canonical": "https://www.atlaskliniek.nl/patienteninformatie/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2021/06/logo-gebit-300x193.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandelingen/",
+    "canonical": "https://www.atlaskliniek.nl/behandelingen/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/klachtenprocedure/",
+    "canonical": "https://www.atlaskliniek.nl/klachtenprocedure/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/contact/",
+    "canonical": "https://www.atlaskliniek.nl/contact/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/spoed/",
+    "canonical": "https://www.atlaskliniek.nl/spoed/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/tanden-bleken-in-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "canonical": "https://www.atlaskliniek.nl/tandarts-amsterdam-centrum/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/spoed-tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/invisalign-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/implantaten-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/dentist-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/cosmetische-tandheelkunde-in-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "canonical": "https://www.atlaskliniek.nl/cosmetische-tandarts/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/angst-tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "canonical": "https://www.atlaskliniek.nl/algemene-voorwaarden/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/sitemap/",
+    "canonical": "https://www.atlaskliniek.nl/sitemap/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuws/",
+    "canonical": "https://www.atlaskliniek.nl/nieuws/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/garantie/",
+    "canonical": "https://www.atlaskliniek.nl/garantie/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "canonical": "https://www.atlaskliniek.nl/category/uncategorized/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/tandarts/",
+    "canonical": "https://www.atlaskliniek.nl/category/tandarts/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "canonical": "https://www.atlaskliniek.nl/category/mondhygienist/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "canonical": "https://www.atlaskliniek.nl/category/preventieassistent/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/assistent/",
+    "canonical": "https://www.atlaskliniek.nl/category/assistent/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "canonical": "https://www.atlaskliniek.nl/category/ondersteunend/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "canonical": "https://www.atlaskliniek.nl/category/tandprotheticus/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "canonical": "https://www.atlaskliniek.nl/category/implantoloog/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "canonical": "https://www.atlaskliniek.nl/category/niet-praktiserend-tandarts/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/angst-tandarts/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/facings/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/kronen-en-bruggen/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/wortelkanaalbehandeling/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/mondhygienist/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/verstandskies-trekken/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/implantaten/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/tanden-bleken/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/gedeeltelijke-gebitsprothese-amsterdam-removebg-300x225.png",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2024/04/gebitsprothese-tandarts-amsterdam.jpg",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/wp-content/uploads/2023/08/volledige-gebitsprothese-amsterdam-300x225.jpg",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/protheses/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/orthodontie/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/kindertandheelkunde/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/2026/02/18/",
+    "canonical": "https://www.atlaskliniek.nl/",
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "canonical": "https://www.atlaskliniek.nl/en/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/2023/08/09/",
+    "canonical": "https://www.atlaskliniek.nl/",
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/inschrijven/",
+    "canonical": "https://www.atlaskliniek.nl/en/inschrijven/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en",
+    "canonical": "https://www.atlaskliniek.nl/en/",
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandelingen/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/angst-tandarts/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/facings/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/tandartscontroles/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/kronen-en-bruggen/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/wortelkanaalbehandeling/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/mondhygienist/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/verstandskies-trekken/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/preventieassistentie/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/implantaten/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/protheses/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/tanden-bleken/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/orthodontie/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "canonical": "https://www.atlaskliniek.nl/en/behandeling/kindertandheelkunde/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/over-ons/",
+    "canonical": "https://www.atlaskliniek.nl/en/over-ons/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/ons-team/",
+    "canonical": "https://www.atlaskliniek.nl/en/ons-team/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tarieven/",
+    "canonical": "https://www.atlaskliniek.nl/en/tarieven/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/werken-bij/",
+    "canonical": "https://www.atlaskliniek.nl/en/werken-bij/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "canonical": "https://www.atlaskliniek.nl/en/patienteninformatie/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "canonical": "https://www.atlaskliniek.nl/en/klachtenprocedure/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/nieuws/",
+    "canonical": "https://www.atlaskliniek.nl/en/nieuws/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/spoed/",
+    "canonical": "https://www.atlaskliniek.nl/en/spoed/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/contact/",
+    "canonical": "https://www.atlaskliniek.nl/en/contact/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "canonical": "https://www.atlaskliniek.nl/en/algemene-voorwaarden/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "canonical": "https://www.atlaskliniek.nl/en/privacy-policy/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/",
+    "canonical": "https://www.atlaskliniek.nl/en/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/gezocht-big-geregistreerde-tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/tandartscontrole/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/tandartscontroles/",
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/preventie-assistentie/",
+    "canonical": "https://www.atlaskliniek.nl/behandeling/preventieassistentie/",
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/tanden-bleken-in-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/behandeling/klikgebit/",
+    "canonical": "https://www.atlaskliniek.nl/",
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "canonical": "https://www.atlaskliniek.nl/en/tandarts-amsterdam-centrum/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/spoed-tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/invisalign-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/implantaten-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/cosmetische-tandheelkunde-in-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "canonical": "https://www.atlaskliniek.nl/en/cosmetische-tandarts/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "canonical": "https://www.atlaskliniek.nl/en/angst-tandarts-amsterdam/",
+    "is_self_referential": true
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/bedankt-contact/",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/bedankt-inschrijven/",
+    "canonical": null,
+    "is_self_referential": false
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/en/sitemap/",
+    "canonical": "https://www.atlaskliniek.nl/en/sitemap/",
+    "is_self_referential": true
+  }
+]

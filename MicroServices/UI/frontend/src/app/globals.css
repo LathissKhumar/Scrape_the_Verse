@@ -240,6 +240,52 @@ button, input, select, textarea {
   }
 }
 
+@keyframes glitterFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate3d(12px, -18px, 0) scale(1.4);
+    opacity: 0.9;
+  }
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-panel {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#scroll-progress-bar {
+  width: 0%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-panel {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .timeline-pulse-dot {
   animation: timelinePulseDot 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
 }
@@ -253,3 +299,58 @@ button, input, select, textarea {
   animation: timelineBulletPulse 2s infinite ease-in-out;
 }
 
+/* ── MICRO-INTERACTIONS ── */
+
+/* Button hover scale + shadow, active press */
+button, [role="button"], a[class*="btn"], .btn {
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+button:hover, [role="button"]:hover {
+  transform: scale(1.03);
+}
+button:active, [role="button"]:active {
+  transform: scale(0.97);
+}
+
+/* Card hover lift */
+.glass-card, .glass-liquid, .glass-level-2, .glass-level-3 {
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.glass-card:hover, .glass-liquid:hover {
+  transform: translateY(-4px);
+}
+
+/* Nav link underline slide-in from left */
+nav a {
+  position: relative;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: #38BDF8;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms ease;
+}
+nav a:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── FULL REDUCED MOTION SAFETY ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal-panel {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

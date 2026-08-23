@@ -23,15 +23,16 @@ export function Footer() {
         {/* Links */}
         <div className="text-xs font-mono text-text-secondary flex flex-wrap justify-center gap-6">
           <a href="#hero" className="hover:text-text-primary transition-colors">Product</a>
-          <a href="#pipeline" className="hover:text-text-primary transition-colors">How It Works</a>
-          <a href="#self-healing" className="hover:text-text-primary transition-colors">Self-Healing</a>
-          <a href="#scraper-control" className="hover:text-text-primary transition-colors">Platform</a>
-          <a href="#architecture" className="hover:text-text-primary transition-colors">Developers</a>
+          <a href="#pipeline" className="hover:text-text-primary transition-colors">The Agents</a>
+          <a href="#tech-stack-marquee" className="hover:text-text-primary transition-colors">Tech Stack</a>
+          <a href="#lead-scoring" className="hover:text-text-primary transition-colors">Lead Scoring</a>
+          <a href="#final-cta" className="hover:text-text-primary transition-colors">Get Started</a>
         </div>
 
         {/* Copyright */}
-        <div className="text-xs font-mono text-muted">
-          © 2026 Scrape-Verse Inc. Self-Healing Web Intelligence Platform.
+        <div className="text-xs font-mono text-muted text-center space-y-1">
+          <p>AI-powered lead-to-opportunity engine for web and SEO agencies.</p>
+          <p>© 2026 Scrape-Verse · Built for Hackathon 2026</p>
         </div>
       </div>
     </footer>

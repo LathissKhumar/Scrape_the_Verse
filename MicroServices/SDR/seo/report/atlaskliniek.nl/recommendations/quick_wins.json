@@ -1,0 +1,47 @@
+[
+  {
+    "priority": 3,
+    "category": "Technical",
+    "title": "Missing Canonical Tags",
+    "action": "Add a self-referential `<link rel='canonical' href='...' />` tag in the `<head>` of each page.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 2
+  },
+  {
+    "priority": 3,
+    "category": "Technical",
+    "title": "No XML Sitemap Discovered",
+    "action": "Generate an XML sitemap, place it in the root directory, and specify its URL in robots.txt.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 0
+  },
+  {
+    "priority": 3,
+    "category": "On-Page",
+    "title": "Title Tags Truncated in SERP (>60 chars)",
+    "action": "Trim title tags to 50-60 characters and move primary keywords to the beginning.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 10
+  },
+  {
+    "priority": 3,
+    "category": "On-Page",
+    "title": "Missing Meta Descriptions",
+    "action": "Write unique, persuasive meta descriptions (120-160 characters) with a clear call to action.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 9
+  },
+  {
+    "priority": 3,
+    "category": "On-Page",
+    "title": "Images Missing Alt Text",
+    "action": "Add meaningful `alt='...'` descriptions to all informational images.",
+    "estimated_effort": "low",
+    "impact_score": 6,
+    "affected_count": 10
+  }
+]

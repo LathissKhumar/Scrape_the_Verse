@@ -1,0 +1,17 @@
+[
+  {
+    "url": "https://www.atlaskliniek.nl/",
+    "status": "unavailable",
+    "reason": "API returned status 429"
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-technologie-in-onze-praktijk-intra-orale-scanners/",
+    "status": "unavailable",
+    "reason": "API returned status 429"
+  },
+  {
+    "url": "https://www.atlaskliniek.nl/nieuwe-website-tandheelkundige-kliniek-amsterdam/",
+    "status": "unavailable",
+    "reason": "API returned status 429"
+  }
+]
