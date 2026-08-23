@@ -1,5 +1,4 @@
 'use client'
-import { Layers } from 'lucide-react'
 
 const NAV_LINKS = [
   { label: 'Product', href: '#hero' },
@@ -18,16 +17,9 @@ export function Navbar() {
       <div className="w-full px-6 sm:px-10 lg:px-14 py-3.5 sm:py-4 flex items-center justify-between">
         {/* Far Left Component: Brand Logo */}
         <a href="#" className="flex items-center gap-3 group shrink-0" id="nav-logo">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105"
-            style={{
-              background: 'linear-gradient(135deg, #0284C7 0%, #38BDF8 50%, #60A5FA 100%)',
-            }}
-          >
-            <Layers className="w-4 h-4 text-white" />
-          </div>
+          <img src="/images/AgencyOS_Logo.png" alt="AgencyOS Logo" className="w-8 h-8 object-contain transition-transform group-hover:scale-105" />
           <span className="font-extrabold text-lg sm:text-xl tracking-tight font-display text-white">
-            SCRAPE-VERSE
+            AgencyOS
           </span>
         </a>
 

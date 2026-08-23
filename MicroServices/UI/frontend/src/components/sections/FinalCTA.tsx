@@ -112,7 +112,7 @@ export function FinalCTA() {
           </h2>
 
           <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
-            Scrape-Verse is the AI-powered lead-to-opportunity engine for web and SEO agencies. Discover leads, audit sites, detect opportunities, generate specs, and close deals — automatically.
+            AgencyOS is the AI-powered lead-to-opportunity engine for web and SEO agencies. Discover leads, audit sites, detect opportunities, generate specs, and close deals — automatically.
           </p>
 
           {/* Magnetic CTA Buttons */}

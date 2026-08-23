@@ -1,5 +1,4 @@
 'use client'
-import { Layers } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -7,16 +6,9 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
         {/* Brand in Solid White */}
         <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-md shadow-violet-accent/20"
-            style={{
-              background: 'linear-gradient(135deg, #0284C7 0%, #38BDF8 50%, #60A5FA 100%)',
-            }}
-          >
-            <Layers className="w-4 h-4 text-white" />
-          </div>
+          <img src="/images/AgencyOS_Logo.png" alt="AgencyOS Logo" className="w-8 h-8 object-contain" />
           <span className="font-bold text-xl tracking-tight font-display text-white">
-            SCRAPE-VERSE
+            AgencyOS
           </span>
         </div>
 
@@ -32,7 +24,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="text-xs font-mono text-muted text-center space-y-1">
           <p>AI-powered lead-to-opportunity engine for web and SEO agencies.</p>
-          <p>© 2026 Scrape-Verse · Built for Hackathon 2026</p>
+          <p>© 2026 AgencyOS · Built for Hackathon 2026</p>
         </div>
       </div>
     </footer>

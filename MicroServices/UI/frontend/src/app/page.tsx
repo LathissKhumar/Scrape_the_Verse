@@ -10,9 +10,6 @@ import {
   Pipeline,
   LeadDiscovery,
   ParallelResearch,
-  ImageDistortionSection,
-  LiveExample,
-  StaggeredGridReveal,
   SelfHealingDemo,
   SelfHealingCI,
   StructuredData,
@@ -86,7 +83,7 @@ export default function Home() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat filter brightness-110 saturate-[1.2]"
             style={{
-              backgroundImage: "url('/images/cold_theme_background.png')",
+              backgroundImage: "url('/images/custom_bg.jpeg')",
             }}
           />
           {/* Subtle translucent dark overlay for contrast */}
@@ -120,7 +117,7 @@ export default function Home() {
           </defs>
           {/* Pixel-perfect synchronized full-viewport background image rendered ONLY in the margins */}
           <image
-            href="/images/cold_theme_background.png"
+            href="/images/custom_bg.jpeg"
             width="100%"
             height="100%"
             preserveAspectRatio="xMidYMid slice"
@@ -186,10 +183,6 @@ export default function Home() {
               <Pipeline />
             </div>
 
-            {/* §6 3x3 Staggered Grid with 3D Flip & Tilt */}
-            <div data-scroll-reveal className="reveal-panel">
-              <StaggeredGridReveal />
-            </div>
 
             {/* Lead Discovery Console */}
             <div data-scroll-reveal className="reveal-panel">
@@ -201,15 +194,7 @@ export default function Home() {
               <ParallelResearch />
             </div>
 
-            {/* §5 Scroll-Driven Image Distortion (Clip-Path Circle -> Star -> Inset) */}
-            <div data-scroll-reveal className="reveal-panel">
-              <ImageDistortionSection />
-            </div>
 
-            {/* §6 Live Example — Atlas Kliniek Walkthrough */}
-            <div data-scroll-reveal className="reveal-panel">
-              <LiveExample />
-            </div>
 
             {/* Interactive Self-Healing Demo */}
             <div data-scroll-reveal className="reveal-panel">

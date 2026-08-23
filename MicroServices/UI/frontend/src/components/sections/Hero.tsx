@@ -1,20 +1,20 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll } from 'framer-motion'
-import { ArrowRight, ShieldCheck, Sparkles, Activity } from 'lucide-react'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { GradientText } from '@/components/ui/GradientText'
 import { Button } from '@/components/ui/Button'
 
 const GLYPHS = '!<>-_\\/[]{}=+*^?#01~%'
 
 export function Hero() {
-  const [headingText, setHeadingText] = useState('SCRAPE-VERSE')
+  const [headingText, setHeadingText] = useState('AGENCYOS')
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { scrollYProgress } = useScroll()
 
   // 1. Text Scramble Effect
   useEffect(() => {
-    const target = 'YOUR AI TEAM'
+    const target = 'AGENCYOS'
     let frame = 0
     const totalFrames = 36
     let animId: number
@@ -111,7 +111,7 @@ export function Hero() {
     }
   }, [scrollYProgress])
 
-  const subtitleWords = 'Scrape-Verse is built for web and SEO agencies who are tired of manual lead research. It discovers businesses, audits their websites, analyzes their market, and tells you exactly what to sell — then generates an implementation-ready website specification.'.split(
+  const subtitleWords = 'Stop manually hunting clients and crafting pitches. Scrape the Verse deploys resilient, self-healing scrapers that never break on DOM updates, autonomously audits target websites for critical SEO and UI flaws, and outputs instant AI-builder prompts (v0, Lovable, Bolt, Cursor) along with hyper-personalized proposals to close $3k–$10k freelance retainers on autopilot.'.split(
     ' '
   )
 
@@ -134,43 +134,52 @@ export function Hero() {
           background: 'radial-gradient(circle, #38BDF8 0%, #818CF8 50%, transparent 75%)',
         }}
         animate={{
-          scale: [1, 1.08, 1],
-          opacity: [0.2, 0.3, 0.2],
+          scale: [1, 1.15, 1],
+          opacity: [0.2, 0.35, 0.2],
         }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Hero Content Grid */}
-      <div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full my-auto">
-        {/* Left Column */}
+      {/* Hero Content — Clean Centered Layout */}
+      <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center justify-center space-y-6 w-full my-auto">
         <motion.div
-          className="lg:col-span-5 space-y-6"
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
+          className="space-y-6 flex flex-col items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="space-y-2">
+          <div className="space-y-4 flex flex-col items-center">
+            {/* Main Brand Logo */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="mb-1"
+            >
+              <img
+                src="/images/Main_logo_vibrant.png"
+                alt="AgencyOS Main Logo"
+                className="w-72 sm:w-[420px] md:w-[500px] lg:w-[560px] h-auto object-contain filter drop-shadow-[0_15px_40px_rgba(56,189,248,0.6)] saturate-[1.85] contrast-[1.15] transition-transform hover:scale-[1.03] duration-300"
+              />
+            </motion.div>
+
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xs font-mono tracking-[0.35em] text-cyan-400 uppercase font-bold flex items-center gap-2"
+              className="text-xs font-mono tracking-[0.35em] text-cyan-400 uppercase font-bold flex items-center gap-2 justify-center"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>{headingText}</span>
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-bold font-display leading-[1.08] tracking-tight text-text-primary">
-              Your Agency&apos;s
-              <br />
-              <GradientText className="py-0.5">
-                AI-Powered Business Development Team
-              </GradientText>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display leading-[1.12] tracking-tight text-text-primary max-w-4xl">
+              Zero-Maintenance Self-Healing Scrapers That Find Broken Websites, Audit Their SEO, and <GradientText className="py-0.5">Generate Ready-to-Build Client Prompts.</GradientText>
             </h1>
           </div>
 
           {/* Subtitle with staggered word entrance */}
-          <div className="flex flex-wrap gap-x-1.5 gap-y-1 text-sm sm:text-base font-body leading-relaxed text-text-secondary max-w-lg">
+          <div className="flex flex-wrap justify-center gap-x-1.5 gap-y-1 text-sm sm:text-base font-body leading-relaxed text-text-secondary max-w-3xl mx-auto">
             {subtitleWords.map((word, i) => (
               <motion.span
                 key={i}
@@ -189,7 +198,7 @@ export function Hero() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-3.5 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2">
             <Button
               id="hero-cta-primary"
               variant="primary"
@@ -208,84 +217,6 @@ export function Hero() {
               Explore the Agents →
             </Button>
           </div>
-        </motion.div>
-
-        {/* Right Column — Cold Tech Animated Developer Workspace */}
-        <motion.div
-          className="lg:col-span-7 lg:pl-2"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <motion.div
-            className="glass-level-3 p-2.5 sm:p-3 relative overflow-hidden group rounded-2xl border border-white/25 shadow-2xl w-full"
-            animate={{
-              y: [0, -4, 0],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            whileHover={{
-              scale: 1.01,
-              borderColor: 'rgba(56, 189, 248, 0.6)',
-              boxShadow: '0 25px 70px rgba(56, 189, 248, 0.3)',
-            }}
-            data-cursor-hover
-          >
-            {/* Top Specular Shine Accent */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent z-30" />
-
-            {/* Cold Animated Desktop Container */}
-            <div className="relative rounded-xl overflow-hidden h-[340px] sm:h-[400px] lg:h-[430px] w-full border border-sky-400/25 bg-black/40 shadow-inner">
-              {/* Cold Tech Workspace Image */}
-              <img
-                src="/images/cold_tech_desktop_workspace.jpg"
-                alt="Cold Tech Developer Desktop with Multi-Monitor Real-Time Web Intelligence Scraper"
-                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 filter brightness-105"
-              />
-
-              {/* 1. Live Animated Scanner Laser Beam */}
-              <motion.div
-                className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00d4ff] z-20 pointer-events-none opacity-80"
-                animate={{
-                  top: ['0%', '100%', '0%'],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-              />
-
-              {/* 2. Top-Left Live Telemetry HUD Chip */}
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-[#07090D]/80 border border-sky-400/40 backdrop-blur-xl shadow-lg flex items-center gap-2 font-mono text-[11px] text-slate-100"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span className="font-bold text-cyan-300">LIVE ENGINE</span>
-                <span className="text-slate-400">· 500M+ EPS</span>
-              </motion.div>
-
-              {/* 3. Bottom-Right Live Diagnostics Chip */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-                className="absolute bottom-4 right-4 z-20 px-3 py-1.5 rounded-xl bg-[#07090D]/80 border border-indigo-400/40 backdrop-blur-xl shadow-lg flex items-center gap-2 font-mono text-[11px] text-slate-200"
-              >
-                <Activity className="w-3 h-3 text-sky-400 animate-pulse" />
-                <span>AI: <strong className="text-emerald-400">OPTIMAL</strong></span>
-              </motion.div>
-
-              {/* 4. Ambient Cyan Vignette */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,189,248,0.2)_0%,transparent_60%)] pointer-events-none z-10" />
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>

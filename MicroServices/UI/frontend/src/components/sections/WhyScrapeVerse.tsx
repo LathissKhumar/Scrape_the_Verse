@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { Zap, ShieldCheck, BrainCircuit, Rocket, Sparkles } from 'lucide-react'
 
 const MANIFESTO_WORDS =
-  'Every agency is leaving money on the table. Not because they lack skill — but because finding the right lead, understanding the problem, and knowing what to pitch takes hours they don’t have. Scrape-Verse gives your team an unfair advantage. Automated. Evidence-backed. End-to-end.'.split(
+  'Every agency is leaving money on the table. Not because they lack skill — but because finding the right lead, understanding the problem, and knowing what to pitch takes hours they don’t have. AgencyOS gives your team an unfair advantage. Automated. Evidence-backed. End-to-end.'.split(
     ' '
   )
 
@@ -43,7 +43,7 @@ export function WhyScrapeVerse() {
       id="why-scrape-verse"
       ref={sectionRef}
       className="py-16 md:py-24 relative border-b border-white/5 font-body overflow-hidden bg-transparent"
-      aria-label="Why Scrape-Verse — Kinetic Typography Manifesto"
+      aria-label="Why AgencyOS — Kinetic Typography Manifesto"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-24">
         {/* Kinetic Typography Manifesto */}
