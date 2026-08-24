@@ -1,6 +1,6 @@
 import json
 import re
-from typing import Any, Optional
+from typing import Any
 from uuid import uuid4
 
 from leadfinder.agents.base import BaseAgent
@@ -83,7 +83,10 @@ def sanitize_constraints(items: list[str], user_query: str) -> list[str]:
             continue
         item_lower = item.lower().strip()
         # If it's a known generic boilerplate hallucination and not in query, drop it
-        if any(h in item_lower for h in GENERIC_HALLUCINATIONS) and item_lower not in user_lower:
+        if (
+            any(h in item_lower for h in GENERIC_HALLUCINATIONS)
+            and item_lower not in user_lower
+        ):
             continue
         if item.strip():
             cleaned.append(item.strip())
@@ -97,7 +100,9 @@ class ScrapingPlannerAgent(BaseAgent):
         super().__init__(name="PLANNER")
         self.llm_client = llm_client
 
-    def _build_user_prompt(self, request: ScrapingRequest, known_urls: list[str]) -> str:
+    def _build_user_prompt(
+        self, request: ScrapingRequest, known_urls: list[str]
+    ) -> str:
         prompt_lines = [
             f"User Query: {request.query}",
         ]
@@ -177,7 +182,20 @@ class ScrapingPlannerAgent(BaseAgent):
         source_requirements = sanitize_constraints(raw_source_reqs, request.query)
 
         query_lower = request.query.lower()
-        is_list = any(w in query_lower for w in ["list", "products", "items", "all", "each", "catalog", "books", "quotes", "articles"])
+        is_list = any(
+            w in query_lower
+            for w in [
+                "list",
+                "products",
+                "items",
+                "all",
+                "each",
+                "catalog",
+                "books",
+                "quotes",
+                "articles",
+            ]
+        )
         min_records = None
         num_match = re.search(r"\b(\d+)\b", request.query)
         if num_match:
@@ -205,7 +223,13 @@ class ScrapingPlannerAgent(BaseAgent):
                 search_keyword = m.group(1).strip()
                 break
 
-        deep_crawl = bool(is_search or any(d in query_lower for d in ["spec", "detail", "review", "feature", "deep", "description"]))
+        deep_crawl = bool(
+            is_search
+            or any(
+                d in query_lower
+                for d in ["spec", "detail", "review", "feature", "deep", "description"]
+            )
+        )
         max_detail_pages = max_records or 20
 
         task = ScrapingTask(
@@ -232,10 +256,10 @@ class ScrapingPlannerAgent(BaseAgent):
 
     async def plan_async(
         self,
-        request: Optional[ScrapingRequest] = None,
-        task_id: Optional[str] = None,
-        query: Optional[str] = None,
-        target_urls: Optional[list[str]] = None,
+        request: ScrapingRequest | None = None,
+        task_id: str | None = None,
+        query: str | None = None,
+        target_urls: list[str] | None = None,
     ) -> ScrapingTask:
         """Asynchronously plan and generate a ScrapingTask from a ScrapingRequest or query parameters."""
         effective_task_id = task_id or str(uuid4())
@@ -245,7 +269,9 @@ class ScrapingPlannerAgent(BaseAgent):
                 target_urls=target_urls or [],
             )
 
-        self.logger.debug(f"Planning scraping task asynchronously for task_id: {effective_task_id}")
+        self.logger.debug(
+            f"Planning scraping task asynchronously for task_id: {effective_task_id}"
+        )
 
         query_urls = extract_urls_from_text(request.query)
         known_urls = list(request.target_urls)
@@ -256,7 +282,9 @@ class ScrapingPlannerAgent(BaseAgent):
         user_prompt = self._build_user_prompt(request, known_urls)
 
         # Handle both invoke and invoke_async on LLMClient
-        if hasattr(self.llm_client, "invoke_async") and "invoke_async" in getattr(self.llm_client, "__dict__", {}):
+        if hasattr(self.llm_client, "invoke_async") and "invoke_async" in getattr(
+            self.llm_client, "__dict__", {}
+        ):
             raw_output = await self.llm_client.invoke_async(
                 prompt=user_prompt,
                 system=PLANNER_SYSTEM_PROMPT,
@@ -278,14 +306,16 @@ class ScrapingPlannerAgent(BaseAgent):
             raise AttributeError("LLMClient does not support invoke or invoke_async.")
 
         parsed_data = self._parse_llm_json(raw_output)
-        return self._create_task_from_parsed_data(request, parsed_data, query_urls, effective_task_id)
+        return self._create_task_from_parsed_data(
+            request, parsed_data, query_urls, effective_task_id
+        )
 
     def plan(
         self,
-        request: Optional[ScrapingRequest] = None,
-        task_id: Optional[str] = None,
-        query: Optional[str] = None,
-        target_urls: Optional[list[str]] = None,
+        request: ScrapingRequest | None = None,
+        task_id: str | None = None,
+        query: str | None = None,
+        target_urls: list[str] | None = None,
     ) -> ScrapingTask:
         """Synchronously plan and generate a ScrapingTask from a ScrapingRequest or query parameters."""
         effective_task_id = task_id or str(uuid4())
@@ -295,7 +325,9 @@ class ScrapingPlannerAgent(BaseAgent):
                 target_urls=target_urls or [],
             )
 
-        self.logger.debug(f"Planning scraping task synchronously for task_id: {effective_task_id}")
+        self.logger.debug(
+            f"Planning scraping task synchronously for task_id: {effective_task_id}"
+        )
 
         query_urls = extract_urls_from_text(request.query)
         known_urls = list(request.target_urls)
@@ -312,5 +344,6 @@ class ScrapingPlannerAgent(BaseAgent):
         )
 
         parsed_data = self._parse_llm_json(raw_output)
-        return self._create_task_from_parsed_data(request, parsed_data, query_urls, effective_task_id)
-
+        return self._create_task_from_parsed_data(
+            request, parsed_data, query_urls, effective_task_id
+        )

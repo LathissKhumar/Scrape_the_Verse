@@ -1,11 +1,15 @@
 """Tests for conversation thread correlation."""
+
 import pytest
 from app.parser.mime import MIMEParser
 from app.threads.correlator import ThreadCorrelator, normalize_subject
 
 
 def test_normalize_subject():
-    assert normalize_subject("Re: Re: Fwd: Website Design Proposal") == "Website Design Proposal"
+    assert (
+        normalize_subject("Re: Re: Fwd: Website Design Proposal")
+        == "Website Design Proposal"
+    )
     assert normalize_subject("Aw: Pricing quote") == "Pricing quote"
 
 

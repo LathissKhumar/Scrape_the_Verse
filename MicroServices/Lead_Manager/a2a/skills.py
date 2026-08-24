@@ -2,7 +2,8 @@
 A2A Skills execution handler for Lead Manager.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any
+
 from ..domain.lead import Lead
 from ..domain.stage import LeadStage
 from ..events.handlers import handle_incoming_event
@@ -12,7 +13,7 @@ from ..repository.leads import LeadRepository
 
 class A2ASkillsHandler:
     @staticmethod
-    async def create_lead(params: Dict[str, Any]) -> Dict[str, Any]:
+    async def create_lead(params: dict[str, Any]) -> dict[str, Any]:
         db = get_db_manager()
         repo = LeadRepository(db)
         lead = Lead(
@@ -29,7 +30,7 @@ class A2ASkillsHandler:
         return saved.to_dict()
 
     @staticmethod
-    async def ingest_event(params: Dict[str, Any]) -> Dict[str, Any]:
+    async def ingest_event(params: dict[str, Any]) -> dict[str, Any]:
         event_type = params.get("event_type")
         lead_id = params.get("lead_id")
         actor = params.get("actor", "a2a_caller")
@@ -44,7 +45,7 @@ class A2ASkillsHandler:
         return result
 
     @staticmethod
-    async def get_lead_status(params: Dict[str, Any]) -> Dict[str, Any]:
+    async def get_lead_status(params: dict[str, Any]) -> dict[str, Any]:
         db = get_db_manager()
         repo = LeadRepository(db)
         lead_id = params.get("lead_id")

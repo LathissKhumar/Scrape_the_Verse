@@ -7,21 +7,21 @@ import os
 import sys
 
 # Ensure workspace root (for LibreCrawl) and WebAuditAgent (for seo) are importable
-_tests_dir = os.path.dirname(os.path.abspath(__file__))         # .../WebAuditAgent/seo/tests
-_seo_dir = os.path.dirname(_tests_dir)                          # .../WebAuditAgent/seo
-_webaudit_dir = os.path.dirname(_seo_dir)                       # .../WebAuditAgent
-_workspace_root = os.path.dirname(_webaudit_dir)                # .../Scrape_the_Verse
+_tests_dir = os.path.dirname(os.path.abspath(__file__))  # .../WebAuditAgent/seo/tests
+_seo_dir = os.path.dirname(_tests_dir)  # .../WebAuditAgent/seo
+_webaudit_dir = os.path.dirname(_seo_dir)  # .../WebAuditAgent
+_workspace_root = os.path.dirname(_webaudit_dir)  # .../Scrape_the_Verse
 for _p in (_webaudit_dir, _workspace_root):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-import pytest
-from typing import List, Dict, Any
+from typing import Any
 
+import pytest
 
 
 @pytest.fixture
-def sample_pages() -> List[Dict[str, Any]]:
+def sample_pages() -> list[dict[str, Any]]:
     """Returns a list of crawled pages representing both healthy and problematic SEO states."""
     return [
         {
@@ -44,11 +44,17 @@ def sample_pages() -> List[Dict[str, Any]]:
             "viewport": "width=device-width, initial-scale=1",
             "og_tags": {"title": "Example Brand", "type": "website"},
             "twitter_tags": {"card": "summary_large_image"},
-            "json_ld": [{"@type": "Organization", "name": "Example Corp", "url": "https://example.com"}],
+            "json_ld": [
+                {
+                    "@type": "Organization",
+                    "name": "Example Corp",
+                    "url": "https://example.com",
+                }
+            ],
             "analytics": {"ga4_id": "G-12345"},
             "images": [{"src": "/logo.png", "alt": "Example Corp Logo"}],
             "redirects": [],
-            "linked_from": []
+            "linked_from": [],
         },
         {
             "url": "https://example.com/about",
@@ -74,7 +80,7 @@ def sample_pages() -> List[Dict[str, Any]]:
             "analytics": {},
             "images": [{"src": "/team.jpg", "alt": ""}],  # Missing alt
             "redirects": [],
-            "linked_from": ["https://example.com/"]
+            "linked_from": ["https://example.com/"],
         },
         {
             "url": "https://example.com/products/very-deeply-nested-item",
@@ -100,7 +106,7 @@ def sample_pages() -> List[Dict[str, Any]]:
             "analytics": {},
             "images": [],
             "redirects": [],
-            "linked_from": ["https://example.com/about"]
+            "linked_from": ["https://example.com/about"],
         },
         {
             "url": "https://example.com/old-page",
@@ -126,13 +132,13 @@ def sample_pages() -> List[Dict[str, Any]]:
             "analytics": {},
             "images": [],
             "redirects": [],
-            "linked_from": ["https://example.com/"]
-        }
+            "linked_from": ["https://example.com/"],
+        },
     ]
 
 
 @pytest.fixture
-def sample_links() -> List[Dict[str, Any]]:
+def sample_links() -> list[dict[str, Any]]:
     """Returns sample link graph records."""
     return [
         {
@@ -142,7 +148,7 @@ def sample_links() -> List[Dict[str, Any]]:
             "internal": True,
             "status_code": 200,
             "target_domain": "example.com",
-            "placement": "header"
+            "placement": "header",
         },
         {
             "source_url": "https://example.com/",
@@ -151,7 +157,7 @@ def sample_links() -> List[Dict[str, Any]]:
             "internal": True,
             "status_code": 404,
             "target_domain": "example.com",
-            "placement": "footer"
+            "placement": "footer",
         },
         {
             "source_url": "https://example.com/about",
@@ -160,7 +166,7 @@ def sample_links() -> List[Dict[str, Any]]:
             "internal": True,
             "status_code": 200,
             "target_domain": "example.com",
-            "placement": "body"
+            "placement": "body",
         },
         {
             "source_url": "https://example.com/",
@@ -169,13 +175,13 @@ def sample_links() -> List[Dict[str, Any]]:
             "internal": False,
             "status_code": 200,
             "target_domain": "twitter.com",
-            "placement": "footer"
-        }
+            "placement": "footer",
+        },
     ]
 
 
 @pytest.fixture
-def sample_issues() -> List[Dict[str, Any]]:
+def sample_issues() -> list[dict[str, Any]]:
     """Returns sample issue evidence list."""
     return [
         {
@@ -185,7 +191,7 @@ def sample_issues() -> List[Dict[str, Any]]:
             "url": "https://example.com/about",
             "issue": "Missing Meta Description",
             "details": "Page has no meta description",
-            "evidence": {"meta_description": None}
+            "evidence": {"meta_description": None},
         },
         {
             "type": "missing_h1",
@@ -194,7 +200,7 @@ def sample_issues() -> List[Dict[str, Any]]:
             "url": "https://example.com/about",
             "issue": "Missing H1 Tag",
             "details": "Page has no H1 heading",
-            "evidence": {"h1": None}
+            "evidence": {"h1": None},
         },
         {
             "type": "broken_link",
@@ -203,7 +209,7 @@ def sample_issues() -> List[Dict[str, Any]]:
             "url": "https://example.com/old-page",
             "issue": "404 Page Not Found",
             "details": "URL returned HTTP 404 status",
-            "evidence": {"status_code": 404}
+            "evidence": {"status_code": 404},
         },
         {
             "type": "slow_response_time",
@@ -212,15 +218,12 @@ def sample_issues() -> List[Dict[str, Any]]:
             "url": "https://example.com/products/very-deeply-nested-item",
             "issue": "Slow Server Response",
             "details": "Response time 1800ms exceeds threshold",
-            "evidence": {"response_time_ms": 1800.0}
-        }
+            "evidence": {"response_time_ms": 1800.0},
+        },
     ]
 
 
 @pytest.fixture
-def sample_sitemaps() -> Dict[str, Any]:
+def sample_sitemaps() -> dict[str, Any]:
     """Returns sample sitemap metadata."""
-    return {
-        "discovered": ["https://example.com/sitemap.xml"],
-        "urls_found": 3
-    }
+    return {"discovered": ["https://example.com/sitemap.xml"], "urls_found": 3}

@@ -3,10 +3,9 @@ DuckDuckGo Web Search Client for Business & Competitor Intelligence.
 Zero-budget, no-API-key web search scraper with structured results.
 """
 
-import json
-import re
 import urllib.parse
-from typing import Any, Dict, List
+from typing import Any
+
 import httpx
 from bs4 import BeautifulSoup
 
@@ -28,17 +27,23 @@ class DuckDuckGoSearchClient:
     }
 
     @classmethod
-    async def search(cls, query: str, max_results: int = 5, timeout: float = 10.0) -> List[Dict[str, str]]:
+    async def search(
+        cls, query: str, max_results: int = 5, timeout: float = 10.0
+    ) -> list[dict[str, str]]:
         """
         Executes query on DuckDuckGo HTML search and returns list of {title, snippet, link}.
         """
-        results: List[Dict[str, str]] = []
+        results: list[dict[str, str]] = []
         encoded_query = urllib.parse.quote_plus(query)
         url = f"https://html.duckduckgo.com/html/?q={encoded_query}"
 
         try:
-            async with httpx.AsyncClient(headers=cls.HEADERS, timeout=timeout, follow_redirects=True) as client:
-                response = await client.post("https://html.duckduckgo.com/html/", data={"q": query})
+            async with httpx.AsyncClient(
+                headers=cls.HEADERS, timeout=timeout, follow_redirects=True
+            ) as client:
+                response = await client.post(
+                    "https://html.duckduckgo.com/html/", data={"q": query}
+                )
                 if response.status_code != 200:
                     # Fallback to GET
                     response = await client.get(url)
@@ -54,29 +59,37 @@ class DuckDuckGoSearchClient:
                             raw_link = title_el.get("href", "")
                             # Parse actual destination URL from DDG redirect if needed
                             if "uddg=" in raw_link:
-                                parsed = urllib.parse.parse_qs(urllib.parse.urlparse(raw_link).query)
+                                parsed = urllib.parse.parse_qs(
+                                    urllib.parse.urlparse(raw_link).query
+                                )
                                 link = parsed.get("uddg", [raw_link])[0]
                             else:
                                 link = raw_link
 
-                            snippet = snippet_el.get_text(strip=True) if snippet_el else ""
+                            snippet = (
+                                snippet_el.get_text(strip=True) if snippet_el else ""
+                            )
                             if title and link:
-                                results.append({
-                                    "title": title,
-                                    "snippet": snippet,
-                                    "link": link,
-                                })
-        except Exception as e:
+                                results.append(
+                                    {
+                                        "title": title,
+                                        "snippet": snippet,
+                                        "link": link,
+                                    }
+                                )
+        except Exception:
             # Non-fatal: if web search is blocked or network unavailable, return fallback
             pass
 
         # Fallback simulation if network/scraping was blocked
         if not results:
-            results.append({
-                "title": f"{query} - Local Business & Reviews",
-                "snippet": f"Leading business providing services in local market. Customer reviews indicate demand for modern booking and fast response times.",
-                "link": f"https://duckduckgo.com/?q={encoded_query}",
-            })
+            results.append(
+                {
+                    "title": f"{query} - Local Business & Reviews",
+                    "snippet": "Leading business providing services in local market. Customer reviews indicate demand for modern booking and fast response times.",
+                    "link": f"https://duckduckgo.com/?q={encoded_query}",
+                }
+            )
 
         return results
 
@@ -86,7 +99,7 @@ class DuckDuckGoSearchClient:
         company_name: str,
         location: Optional[str] = None,
         industry: Optional[str] = None,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Runs targeted searches for company profile, competitor intelligence, and customer sentiment.
         """
@@ -105,9 +118,13 @@ class DuckDuckGoSearchClient:
             "company_mentions": company_results,
             "competitor_landscape": competitor_results,
             "raw_context_text": (
-                f"Company Web Presence:\n" +
-                "\n".join([f"- {r['title']}: {r['snippet']}" for r in company_results]) +
-                f"\n\nCompetitor Landscape:\n" +
-                "\n".join([f"- {r['title']}: {r['snippet']}" for r in competitor_results])
+                "Company Web Presence:\n"
+                + "\n".join(
+                    [f"- {r['title']}: {r['snippet']}" for r in company_results]
+                )
+                + "\n\nCompetitor Landscape:\n"
+                + "\n".join(
+                    [f"- {r['title']}: {r['snippet']}" for r in competitor_results]
+                )
             ),
         }

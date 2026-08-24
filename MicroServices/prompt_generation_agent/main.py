@@ -3,10 +3,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from config import settings
 from graph import graph
 from state import PromptGenerationState
 from utils import setup_logging
-from config import settings
 
 
 def print_header():
@@ -26,13 +26,21 @@ def print_completion(state: PromptGenerationState):
     print()
     print(f"Company: {state.get('company_name', 'N/A')}")
     print(f"Prompt Type: {state.get('prompt_type', 'N/A')}")
-    print(f"SEO Report: {Path(state.get('seo_report_path', '')).name if state.get('seo_report_path') else 'NOT FOUND'}")
-    print(f"Business Analysis: {Path(state.get('business_report_path', '')).name if state.get('business_report_path') else 'NOT FOUND'}")
+    print(
+        f"SEO Report: {Path(state.get('seo_report_path', '')).name if state.get('seo_report_path') else 'NOT FOUND'}"
+    )
+    print(
+        f"Business Analysis: {Path(state.get('business_report_path', '')).name if state.get('business_report_path') else 'NOT FOUND'}"
+    )
     print()
     if state.get("generated_prompt"):
         print("Generated Prompt:")
         print("-" * 40)
-        print(state["generated_prompt"][:500] + "..." if len(state["generated_prompt"]) > 500 else state["generated_prompt"])
+        print(
+            state["generated_prompt"][:500] + "..."
+            if len(state["generated_prompt"]) > 500
+            else state["generated_prompt"]
+        )
         print("-" * 40)
     print()
     if state.get("output_json_path"):

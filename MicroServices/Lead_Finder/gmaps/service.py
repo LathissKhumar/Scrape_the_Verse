@@ -1,7 +1,7 @@
 """Service layer for Google Maps lead extraction and task execution."""
 
 import time
-from typing import Any, Optional
+from typing import Any
 from uuid import uuid4
 
 from leadfinder.brightdata.client import BrightDataClient
@@ -18,13 +18,15 @@ class GoogleMapsService:
 
     def __init__(
         self,
-        settings: Optional[Settings] = None,
-        client: Optional[BrightDataClient] = None,
-        pipeline: Optional[GoogleMapsPipeline] = None,
+        settings: Settings | None = None,
+        client: BrightDataClient | None = None,
+        pipeline: GoogleMapsPipeline | None = None,
     ) -> None:
         self._settings = settings or get_settings()
         self.client = client or BrightDataClient(settings=self._settings)
-        self.pipeline = pipeline or GoogleMapsPipeline(client=self.client, settings=self._settings)
+        self.pipeline = pipeline or GoogleMapsPipeline(
+            client=self.client, settings=self._settings
+        )
 
     @property
     def is_enabled(self) -> bool:
@@ -34,7 +36,7 @@ class GoogleMapsService:
     async def get_local_leads(
         self,
         query: str,
-        location: Optional[str] = None,
+        location: str | None = None,
     ) -> list[dict[str, Any]]:
         """Discover local business leads matching search query and geographic location."""
         return await self.pipeline.search_leads(query=query, location=location)
@@ -43,7 +45,9 @@ class GoogleMapsService:
         """Execute a ScrapingTask specifically targeted at Google Maps endpoints."""
         task_id = task.task_id or str(uuid4())
         start_time = time.time()
-        logger.info(f"task_id={task_id} Executing Google Maps scraping task: '{task.objective}'")
+        logger.info(
+            f"task_id={task_id} Executing Google Maps scraping task: '{task.objective}'"
+        )
 
         all_leads: list[dict[str, Any]] = []
         for url in task.target_urls:
@@ -65,4 +69,3 @@ class GoogleMapsService:
                 "elapsed_ms": elapsed_ms,
             },
         )
-

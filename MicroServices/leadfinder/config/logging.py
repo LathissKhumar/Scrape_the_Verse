@@ -1,7 +1,9 @@
 import logging
 import sys
-from typing import Optional
-from colorama import Fore, Style, init as colorama_init
+
+from colorama import Fore, Style
+from colorama import init as colorama_init
+
 from leadfinder.config.settings import get_settings
 
 colorama_init(autoreset=True)
@@ -43,7 +45,9 @@ class AgentConsoleFormatter(logging.Formatter):
         color = AGENT_COLORS.get(name) or AGENT_COLORS.get(agent_name) or Fore.WHITE
 
         if record.levelno >= logging.ERROR:
-            tag = f"{Fore.RED}[ERROR]{Style.RESET_ALL}   [{color}{name}{Style.RESET_ALL}]"
+            tag = (
+                f"{Fore.RED}[ERROR]{Style.RESET_ALL}   [{color}{name}{Style.RESET_ALL}]"
+            )
         elif record.levelno >= logging.WARNING:
             tag = f"{Fore.YELLOW}[WARNING]{Style.RESET_ALL} [{color}{name}{Style.RESET_ALL}]"
         else:
@@ -64,7 +68,11 @@ def setup_logging(verbose: bool = False, is_cli: bool = False) -> None:
         _is_cli_mode = True
 
     settings = get_settings()
-    log_level = logging.DEBUG if verbose else getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO)
+    log_level = (
+        logging.DEBUG
+        if verbose
+        else getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO)
+    )
 
     root_logger = logging.getLogger()
     root_logger.setLevel(log_level)
@@ -75,7 +83,9 @@ def setup_logging(verbose: bool = False, is_cli: bool = False) -> None:
         logging.getLogger(noisy).setLevel(third_party_level)
 
     effective_cli = is_cli or _is_cli_mode
-    formatter = AgentConsoleFormatter() if effective_cli else logging.Formatter(LOG_FORMAT)
+    formatter = (
+        AgentConsoleFormatter() if effective_cli else logging.Formatter(LOG_FORMAT)
+    )
 
     if not root_logger.handlers:
         handler = logging.StreamHandler(sys.stdout)
@@ -94,5 +104,3 @@ def get_logger(name: str) -> logging.Logger:
     if not _logging_configured:
         setup_logging(is_cli=_is_cli_mode)
     return logging.getLogger(name)
-
-

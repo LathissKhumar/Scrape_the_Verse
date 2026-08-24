@@ -1,11 +1,13 @@
 """Local LLM-based intent classifier using Ollama and Qwen."""
+
 import json
 import logging
-from typing import Optional
+
 import httpx
+
+from app.classification.rules import RuleClassifier
 from app.config import get_settings
 from app.persistence.models import ClassificationRecord
-from app.classification.rules import RuleClassifier
 
 logger = logging.getLogger(__name__)
 
@@ -45,13 +47,13 @@ Respond ONLY with valid JSON in this exact structure:
 
 
 class LLMClassifier:
-    def __init__(self, base_url: Optional[str] = None, model: Optional[str] = None):
+    def __init__(self, base_url: str | None = None, model: str | None = None):
         settings = get_settings()
         self.base_url = (base_url or settings.OLLAMA_BASE_URL).rstrip("/")
         self.model = model or settings.OLLAMA_MODEL
 
     async def classify_message(
-        self, message_id: str, subject: Optional[str], body: Optional[str]
+        self, message_id: str, subject: str | None, body: str | None
     ) -> ClassificationRecord:
         """First runs fast deterministic rules; if ambiguous, queries local Ollama."""
         rule_result = RuleClassifier.classify(message_id, subject, body)
@@ -62,9 +64,11 @@ class LLMClassifier:
         return await self._call_ollama(message_id, subject, body)
 
     async def _call_ollama(
-        self, message_id: str, subject: Optional[str], body: Optional[str]
+        self, message_id: str, subject: str | None, body: str | None
     ) -> ClassificationRecord:
-        email_content = f"Subject: {subject or 'No Subject'}\n\nBody:\n{body or 'No Body'}"
+        email_content = (
+            f"Subject: {subject or 'No Subject'}\n\nBody:\n{body or 'No Body'}"
+        )
         prompt = f"Classify this email:\n\n{email_content}"
 
         try:
@@ -104,9 +108,13 @@ class LLMClassifier:
                         model=f"ollama/{self.model}",
                     )
                 else:
-                    logger.warning(f"Ollama returned status {response.status_code}: {response.text}")
+                    logger.warning(
+                        f"Ollama returned status {response.status_code}: {response.text}"
+                    )
         except Exception as e:
-            logger.info(f"Ollama local model unavailable or timed out: {e}. Falling back to default.")
+            logger.info(
+                f"Ollama local model unavailable or timed out: {e}. Falling back to default."
+            )
 
         # Fallback if Ollama is not currently running
         return ClassificationRecord(

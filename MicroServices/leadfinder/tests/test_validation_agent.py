@@ -1,4 +1,5 @@
 import pytest
+
 from leadfinder.agents.validation import ValidationAgent
 from leadfinder.models.schemas import ScrapingTask
 

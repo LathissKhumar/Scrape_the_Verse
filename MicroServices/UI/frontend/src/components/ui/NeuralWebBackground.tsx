@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
 interface Node {
   x: number;
@@ -12,7 +12,7 @@ interface Node {
   radius: number;
   layer: number; // 0 = far, 1 = mid, 2 = near
   baseAlpha: number;
-  colorType: 'white' | 'cyan' | 'blue';
+  colorType: "white" | "cyan" | "blue";
   phase: number;
   phaseSpeed: number;
 }
@@ -22,18 +22,18 @@ interface Pulse {
   toIdx: number;
   progress: number;
   speed: number;
-  colorType: 'cyan' | 'white';
+  colorType: "cyan" | "white";
 }
 
 interface NeuralWebBackgroundProps {
   className?: string;
-  intensity?: 'subtle' | 'medium' | 'vibrant';
+  intensity?: "subtle" | "medium" | "vibrant";
   interactive?: boolean;
 }
 
 export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
-  className = '',
-  intensity = 'subtle',
+  className = "",
+  intensity = "subtle",
   interactive = true,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,7 +43,7 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -56,10 +56,17 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
     let nextPulseSpawn = 60; // frames until next pulse attempt
 
     // Smooth interpolated mouse position
-    const mouse = { x: -9999, y: -9999, targetX: -9999, targetY: -9999, active: false };
+    const mouse = {
+      x: -9999,
+      y: -9999,
+      targetX: -9999,
+      targetY: -9999,
+      active: false,
+    };
 
     // Multipliers based on intensity prop
-    const intensityMultiplier = intensity === 'vibrant' ? 1.4 : intensity === 'medium' ? 1.15 : 1.0;
+    const intensityMultiplier =
+      intensity === "vibrant" ? 1.4 : intensity === "medium" ? 1.15 : 1.0;
 
     // Resize and initialize node matrix
     const handleResize = () => {
@@ -96,29 +103,29 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
         let radius = 1.0;
         let speed = 0.12;
         let baseAlpha = 0.22;
-        let colorType: 'white' | 'cyan' | 'blue' = 'white';
+        let colorType: "white" | "cyan" | "blue" = "white";
 
-        if (rand < 0.50) {
+        if (rand < 0.5) {
           // Far layer (tiny, faint, very slow drift)
           layer = 0;
           radius = 0.75 + Math.random() * 0.5;
           speed = 0.06 + Math.random() * 0.08;
-          baseAlpha = 0.16 + Math.random() * 0.10;
-          colorType = 'white';
+          baseAlpha = 0.16 + Math.random() * 0.1;
+          colorType = "white";
         } else if (rand < 0.85) {
           // Middle layer (moderate size and opacity)
           layer = 1;
           radius = 1.2 + Math.random() * 0.6;
           speed = 0.12 + Math.random() * 0.14;
           baseAlpha = 0.28 + Math.random() * 0.16;
-          colorType = Math.random() < 0.3 ? 'cyan' : 'white';
+          colorType = Math.random() < 0.3 ? "cyan" : "white";
         } else {
           // Near layer (spatial accent points, soft glow)
           layer = 2;
           radius = 1.8 + Math.random() * 0.8;
-          speed = 0.18 + Math.random() * 0.20;
+          speed = 0.18 + Math.random() * 0.2;
           baseAlpha = 0.45 + Math.random() * 0.22;
-          colorType = Math.random() < 0.6 ? 'cyan' : 'blue';
+          colorType = Math.random() < 0.6 ? "cyan" : "blue";
         }
 
         const angle = Math.random() * Math.PI * 2;
@@ -157,10 +164,10 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
       mouse.targetY = -9999;
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     if (interactive) {
-      window.addEventListener('mousemove', handleMouseMove, { passive: true });
-      document.addEventListener('mouseleave', handleMouseLeave);
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+      document.addEventListener("mouseleave", handleMouseLeave);
     }
 
     // Visibility API to pause rendering when tab is unfocused
@@ -168,7 +175,7 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
     const handleVisibilityChange = () => {
       isTabVisible = !document.hidden;
     };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     handleResize();
 
@@ -240,7 +247,10 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
           const n2 = nodes[j];
 
           // Max distance allowed between these two nodes
-          const maxDist = Math.max(maxDistanceByLayer[n1.layer], maxDistanceByLayer[n2.layer]);
+          const maxDist = Math.max(
+            maxDistanceByLayer[n1.layer],
+            maxDistanceByLayer[n2.layer],
+          );
           const dx = n1.x - n2.x;
           const dy = n1.y - n2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
@@ -260,7 +270,9 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
             if (mouse.active) {
               const midX = (n1.x + n2.x) / 2;
               const midY = (n1.y + n2.y) / 2;
-              const dMouse = Math.sqrt((midX - mouse.x) ** 2 + (midY - mouse.y) ** 2);
+              const dMouse = Math.sqrt(
+                (midX - mouse.x) ** 2 + (midY - mouse.y) ** 2,
+              );
               if (dMouse < 140) {
                 const mouseBoost = (1 - dMouse / 140) * 0.08;
                 alpha += mouseBoost;
@@ -273,9 +285,9 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
               ctx.lineTo(n2.x, n2.y);
 
               // Use subtle cyan line for near/mid layer nodes, white for others
-              if (n1.colorType === 'cyan' || n2.colorType === 'cyan') {
+              if (n1.colorType === "cyan" || n2.colorType === "cyan") {
                 ctx.strokeStyle = `rgba(56, 189, 248, ${Math.min(0.28, alpha * 1.15).toFixed(3)})`;
-              } else if (n1.colorType === 'blue' || n2.colorType === 'blue') {
+              } else if (n1.colorType === "blue" || n2.colorType === "blue") {
                 ctx.strokeStyle = `rgba(96, 165, 250, ${Math.min(0.25, alpha).toFixed(3)})`;
               } else {
                 ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(0.22, alpha).toFixed(3)})`;
@@ -295,15 +307,22 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
 
       // 3. SPAWN & DRAW NEURAL PULSE PACKETS (Infrequent subtle data flow pulses)
       nextPulseSpawn--;
-      if (nextPulseSpawn <= 0 && activeConnections.length > 0 && pulses.length < 5) {
+      if (
+        nextPulseSpawn <= 0 &&
+        activeConnections.length > 0 &&
+        pulses.length < 5
+      ) {
         // Pick a random active connection
-        const randomConn = activeConnections[Math.floor(Math.random() * activeConnections.length)];
+        const randomConn =
+          activeConnections[
+            Math.floor(Math.random() * activeConnections.length)
+          ];
         pulses.push({
           fromIdx: randomConn.i,
           toIdx: randomConn.j,
           progress: 0,
           speed: 0.009 + Math.random() * 0.012, // Slow, elegant pulse speed
-          colorType: Math.random() < 0.75 ? 'cyan' : 'white',
+          colorType: Math.random() < 0.75 ? "cyan" : "white",
         });
         nextPulseSpawn = 120 + Math.floor(Math.random() * 160); // Next pulse in ~2-4.5 seconds
       }
@@ -329,15 +348,18 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
         const currentY = n1.y + (n2.y - n1.y) * pulse.progress;
 
         // Pulse alpha bell curve (fades in, peaks at center, fades out)
-        const pulseAlpha = Math.sin(pulse.progress * Math.PI) * (pulse.colorType === 'cyan' ? 0.75 : 0.6);
+        const pulseAlpha =
+          Math.sin(pulse.progress * Math.PI) *
+          (pulse.colorType === "cyan" ? 0.75 : 0.6);
 
         // Draw glowing pulse dot
         ctx.beginPath();
         ctx.arc(currentX, currentY, 1.8, 0, Math.PI * 2);
-        ctx.fillStyle = pulse.colorType === 'cyan' 
-          ? `rgba(56, 189, 248, ${pulseAlpha.toFixed(3)})`
-          : `rgba(255, 255, 255, ${pulseAlpha.toFixed(3)})`;
-        ctx.shadowColor = 'rgba(56, 189, 248, 0.8)';
+        ctx.fillStyle =
+          pulse.colorType === "cyan"
+            ? `rgba(56, 189, 248, ${pulseAlpha.toFixed(3)})`
+            : `rgba(255, 255, 255, ${pulseAlpha.toFixed(3)})`;
+        ctx.shadowColor = "rgba(56, 189, 248, 0.8)";
         ctx.shadowBlur = 6;
         ctx.fill();
         ctx.shadowBlur = 0; // reset shadow
@@ -350,17 +372,33 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
         // Soft radial glow for near and mid layers
         if (n.layer >= 1) {
           const glowRadius = n.radius * (n.layer === 2 ? 3.5 : 2.5);
-          const glowGrad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowRadius);
-          
-          if (n.colorType === 'cyan') {
-            glowGrad.addColorStop(0, `rgba(56, 189, 248, ${(n.baseAlpha * 0.45).toFixed(3)})`);
-            glowGrad.addColorStop(1, 'rgba(56, 189, 248, 0)');
-          } else if (n.colorType === 'blue') {
-            glowGrad.addColorStop(0, `rgba(96, 165, 250, ${(n.baseAlpha * 0.40).toFixed(3)})`);
-            glowGrad.addColorStop(1, 'rgba(96, 165, 250, 0)');
+          const glowGrad = ctx.createRadialGradient(
+            n.x,
+            n.y,
+            0,
+            n.x,
+            n.y,
+            glowRadius,
+          );
+
+          if (n.colorType === "cyan") {
+            glowGrad.addColorStop(
+              0,
+              `rgba(56, 189, 248, ${(n.baseAlpha * 0.45).toFixed(3)})`,
+            );
+            glowGrad.addColorStop(1, "rgba(56, 189, 248, 0)");
+          } else if (n.colorType === "blue") {
+            glowGrad.addColorStop(
+              0,
+              `rgba(96, 165, 250, ${(n.baseAlpha * 0.4).toFixed(3)})`,
+            );
+            glowGrad.addColorStop(1, "rgba(96, 165, 250, 0)");
           } else {
-            glowGrad.addColorStop(0, `rgba(255, 255, 255, ${(n.baseAlpha * 0.35).toFixed(3)})`);
-            glowGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            glowGrad.addColorStop(
+              0,
+              `rgba(255, 255, 255, ${(n.baseAlpha * 0.35).toFixed(3)})`,
+            );
+            glowGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
           }
 
           ctx.beginPath();
@@ -373,10 +411,10 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
 
-        if (n.colorType === 'cyan') {
+        if (n.colorType === "cyan") {
           ctx.fillStyle = `rgba(186, 230, 253, ${Math.min(0.85, n.baseAlpha * 1.4).toFixed(3)})`;
-        } else if (n.colorType === 'blue') {
-          ctx.fillStyle = `rgba(191, 219, 254, ${Math.min(0.80, n.baseAlpha * 1.3).toFixed(3)})`;
+        } else if (n.colorType === "blue") {
+          ctx.fillStyle = `rgba(191, 219, 254, ${Math.min(0.8, n.baseAlpha * 1.3).toFixed(3)})`;
         } else {
           ctx.fillStyle = `rgba(255, 255, 255, ${n.baseAlpha.toFixed(3)})`;
         }
@@ -391,12 +429,12 @@ export const NeuralWebBackground: React.FC<NeuralWebBackgroundProps> = ({
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       if (interactive) {
-        window.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseleave', handleMouseLeave);
+        window.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseleave", handleMouseLeave);
       }
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [intensity, interactive]);
 

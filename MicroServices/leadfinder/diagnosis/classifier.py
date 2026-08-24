@@ -1,4 +1,5 @@
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.diagnosis.schemas import (
     AffectedStage,
     DiagnosisResult,
@@ -16,7 +17,7 @@ class RuleBasedClassifier:
         self,
         evidence: dict[str, Any],
         validation_result: ValidationResult,
-    ) -> Optional[DiagnosisResult]:
+    ) -> DiagnosisResult | None:
         """Attempt deterministic rule-based classification. Returns None if ambiguous."""
         raw_available = evidence.get("raw_content_available", False)
         record_count = evidence.get("record_count", 0)
@@ -31,19 +32,38 @@ class RuleBasedClassifier:
         is_bot_blocked = (
             status_code in (403, 429, 503)
             or blocked_flag
-            or any(sig in sample_html for sig in ["cs_503_link", "dogsofamazon", "validatecaptcha", "cf-browser-verification", "captcha", "cloudflare", "access denied"])
+            or any(
+                sig in sample_html
+                for sig in [
+                    "cs_503_link",
+                    "dogsofamazon",
+                    "validatecaptcha",
+                    "cf-browser-verification",
+                    "captcha",
+                    "cloudflare",
+                    "access denied",
+                ]
+            )
         )
         if is_bot_blocked:
             return DiagnosisResult(
                 diagnosis_status="diagnosed",
-                root_cause=RootCause.BOT_BLOCKED if status_code != 429 else RootCause.RATE_LIMITED,
+                root_cause=RootCause.BOT_BLOCKED
+                if status_code != 429
+                else RootCause.RATE_LIMITED,
                 confidence=0.99,
                 failure_category="BOT_BLOCKED",
                 affected_stage=AffectedStage.SCRAPER_EXECUTION,
                 affected_fields=evidence.get("requested_fields", []),
-                evidence=[f"Anti-bot WAF, CAPTCHA challenge, or 503 block detected (HTTP {status_code}, blocked={blocked_flag})."],
+                evidence=[
+                    f"Anti-bot WAF, CAPTCHA challenge, or 503 block detected (HTTP {status_code}, blocked={blocked_flag})."
+                ],
                 repair_strategy=RepairStrategy.SWITCH_COLLECTOR_PROVIDER,
-                repair_targets=["scraper_transport", "proxy_configuration", "dca_cloud_scraper"],
+                repair_targets=[
+                    "scraper_transport",
+                    "proxy_configuration",
+                    "dca_cloud_scraper",
+                ],
                 recommended_action=RecommendedAction.SWITCH_PROXIES,
             )
 
@@ -56,7 +76,9 @@ class RuleBasedClassifier:
                 failure_category=FailureTaxonomy.SCRAPER_OUTPUT_MISSING.value,
                 affected_stage=AffectedStage.SCRAPER_EXECUTION,
                 affected_fields=evidence.get("requested_fields", []),
-                evidence=["Scraper returned empty raw content or encountered transport blocking/timeout."],
+                evidence=[
+                    "Scraper returned empty raw content or encountered transport blocking/timeout."
+                ],
                 repair_strategy=RepairStrategy.RETRY_SAME_CONFIGURATION,
                 repair_targets=["scraper_transport", "proxy_configuration"],
                 recommended_action=RecommendedAction.RETRY_SCRAPER,
@@ -71,7 +93,9 @@ class RuleBasedClassifier:
                 failure_category=FailureTaxonomy.EXTRACTION_DEGRADATION.value,
                 affected_stage=AffectedStage.CSS_EXTRACTION,
                 affected_fields=evidence.get("requested_fields", []),
-                evidence=["Raw page content was successfully fetched, but the extraction engine produced 0 records."],
+                evidence=[
+                    "Raw page content was successfully fetched, but the extraction engine produced 0 records."
+                ],
                 repair_strategy=RepairStrategy.SWITCH_EXTRACTION_STRATEGY,
                 repair_targets=["extraction_selectors", "extraction_strategy"],
                 recommended_action=RecommendedAction.FALLBACK_TO_LLM_EXTRACTION,
@@ -87,7 +111,9 @@ class RuleBasedClassifier:
                 failure_category=FailureTaxonomy.SCHEMA_MISMATCH.value,
                 affected_stage=AffectedStage.SCHEMA_VALIDATION,
                 affected_fields=missing,
-                evidence=[f"Missing mandatory fields in extraction schema: {', '.join(missing)}"],
+                evidence=[
+                    f"Missing mandatory fields in extraction schema: {', '.join(missing)}"
+                ],
                 repair_strategy=RepairStrategy.REPAIR_EXTRACTION_SCHEMA,
                 repair_targets=missing,
                 recommended_action=RecommendedAction.REPAIR_EXTRACTION_SCHEMA,
@@ -102,7 +128,9 @@ class RuleBasedClassifier:
                 failure_category=FailureTaxonomy.HIGH_DUPLICATE_RATE.value,
                 affected_stage=AffectedStage.SCRAPER_EXECUTION,
                 affected_fields=[],
-                evidence=[f"High duplicate rate ({evidence.get('duplicate_rate', 0.0) * 100:.1f}%) suggests pagination loop or repeated content."],
+                evidence=[
+                    f"High duplicate rate ({evidence.get('duplicate_rate', 0.0) * 100:.1f}%) suggests pagination loop or repeated content."
+                ],
                 repair_strategy=RepairStrategy.ADJUST_CONTENT_CHUNKING,
                 repair_targets=["pagination_parameters", "deduplication_keys"],
                 recommended_action=RecommendedAction.RETRY_SCRAPER,

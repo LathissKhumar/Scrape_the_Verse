@@ -1,9 +1,8 @@
+from unittest.mock import AsyncMock, patch
+
 import pytest
 from httpx import ASGITransport, AsyncClient
-from unittest.mock import AsyncMock, patch
-from leadfinder.agents.healing import HealingAgent
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
-from leadfinder.healing.schemas import PerformanceSnapshot, RepairEvaluation, RepairType
+
 from leadfinder.main import app
 from leadfinder.models.schemas import ScrapingResult
 
@@ -49,7 +48,9 @@ async def test_scrape_endpoint_returns_self_healed_metadata():
         },
     )
 
-    with patch("leadfinder.main.workflow.ainvoke", new_callable=AsyncMock) as mock_invoke:
+    with patch(
+        "leadfinder.main.workflow.ainvoke", new_callable=AsyncMock
+    ) as mock_invoke:
         mock_invoke.return_value = {"final_output": mock_result}
 
         async with AsyncClient(transport=transport, base_url="http://test") as client:
@@ -89,7 +90,9 @@ async def test_scrape_endpoint_returns_escalated_metadata():
         error="Unable to recover scraper after bounded repair attempts",
     )
 
-    with patch("leadfinder.main.workflow.ainvoke", new_callable=AsyncMock) as mock_invoke:
+    with patch(
+        "leadfinder.main.workflow.ainvoke", new_callable=AsyncMock
+    ) as mock_invoke:
         mock_invoke.return_value = {"final_output": mock_result}
 
         async with AsyncClient(transport=transport, base_url="http://test") as client:

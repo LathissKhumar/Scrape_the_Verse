@@ -1,13 +1,11 @@
-import pytest
-from pydantic import ValidationError
 from leadfinder.healing.schemas import (
-    RepairType,
-    RepairStatus,
     PerformanceSnapshot,
-    RepairPlan,
     RepairCandidate,
     RepairEvaluation,
     RepairMemoryRecord,
+    RepairPlan,
+    RepairStatus,
+    RepairType,
 )
 
 

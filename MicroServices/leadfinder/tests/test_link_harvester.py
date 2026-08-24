@@ -10,7 +10,9 @@ def test_link_harvester_extracts_product_detail_links():
     </body></html>
     """
     harvester = LinkHarvesterEngine()
-    links = harvester.harvest_detail_links(html, base_url="https://www.flipkart.com", max_links=10)
+    links = harvester.harvest_detail_links(
+        html, base_url="https://www.flipkart.com", max_links=10
+    )
     assert len(links) == 2
     assert "https://www.flipkart.com/redmi-13c/p/itm123" in links
     assert "https://www.flipkart.com/redmi-note-13/p/itm456" in links
@@ -26,7 +28,9 @@ def test_link_harvester_respects_max_links():
     </body></html>
     """
     harvester = LinkHarvesterEngine()
-    links = harvester.harvest_detail_links(html, base_url="https://www.amazon.com", max_links=2)
+    links = harvester.harvest_detail_links(
+        html, base_url="https://www.amazon.com", max_links=2
+    )
     assert len(links) == 2
     assert "https://www.amazon.com/item-1/dp/B001" in links
     assert "https://www.amazon.com/item-2/dp/B002" in links

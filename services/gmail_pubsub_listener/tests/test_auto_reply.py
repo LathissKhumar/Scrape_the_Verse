@@ -1,8 +1,10 @@
 """Tests for the Auto-Responder engine."""
+
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
-from unittest.mock import MagicMock, AsyncMock
 from app.events.models import CommunicationEvent, EventTypes
-from app.persistence.models import EmailMessage, ClassificationRecord
+from app.persistence.models import ClassificationRecord, EmailMessage
 from app.responder.engine import AutoResponder
 
 
@@ -58,4 +60,7 @@ async def test_auto_responder_triggers_reply(temp_db):
     call_args = mock_sender.send.call_args[0][0]
     assert call_args.to == ["prospect@store.com"]
     assert call_args.thread_id == "thread_test_01"
-    assert "https://cal.com/agencyos-demo" in call_args.body_text or "connecting" in call_args.body_text.lower()
+    assert (
+        "https://cal.com/agencyos-demo" in call_args.body_text
+        or "connecting" in call_args.body_text.lower()
+    )

@@ -4,11 +4,15 @@ import hashlib
 import json
 import os
 import time
-from typing import Any, Optional, Union
+from typing import Any
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 from uuid import uuid4
 
-from leadfinder.brightdata.schemas import CollectorRecord, CollectorStatus, FieldDefinition
+from leadfinder.brightdata.schemas import (
+    CollectorRecord,
+    CollectorStatus,
+    FieldDefinition,
+)
 from leadfinder.config.logging import get_logger
 from leadfinder.config.settings import get_settings
 from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
@@ -74,7 +78,9 @@ def normalize_url(raw_url: str) -> str:
     return urlunparse((scheme, netloc, path, "", clean_query, ""))
 
 
-def compute_schema_hash(normalized_url: str, fields: list[Union[FieldDefinition, dict[str, Any]]]) -> str:
+def compute_schema_hash(
+    normalized_url: str, fields: list[FieldDefinition | dict[str, Any]]
+) -> str:
     """Compute a deterministic SHA-256 hash representing the target URL and requested extraction schema."""
     canonical_fields: list[dict[str, str]] = []
     for f in fields:
@@ -99,9 +105,11 @@ def compute_schema_hash(normalized_url: str, fields: list[Union[FieldDefinition,
 class ScraperRegistry:
     """Thread-safe SQLite repository tracking created Bright Data Collectors."""
 
-    def __init__(self, db_path: Optional[str] = None) -> None:
+    def __init__(self, db_path: str | None = None) -> None:
         settings = get_settings()
-        path = db_path or getattr(settings, "BRIGHTDATA_REGISTRY_DB_PATH", ".brightdata_registry.sqlite")
+        path = db_path or getattr(
+            settings, "BRIGHTDATA_REGISTRY_DB_PATH", ".brightdata_registry.sqlite"
+        )
         if not os.path.exists(path) and os.path.exists(os.path.join("app", path)):
             path = os.path.join("app", path)
         self.db_path = path
@@ -166,7 +174,9 @@ class ScraperRegistry:
             last_error=row[12],
         )
 
-    def find_compatible(self, normalized_url: str, schema_hash: str) -> Optional[CollectorRecord]:
+    def find_compatible(
+        self, normalized_url: str, schema_hash: str
+    ) -> CollectorRecord | None:
         """Find an existing compatible collector matching target URL and schema hash.
 
         Returns READY collectors first; if none, returns in-flight CREATING/RUNNING/HEALING collectors
@@ -216,7 +226,7 @@ class ScraperRegistry:
     def create_record(
         self,
         target_url: str,
-        fields: list[Union[FieldDefinition, dict[str, Any]]],
+        fields: list[FieldDefinition | dict[str, Any]],
         description: str = "",
     ) -> CollectorRecord:
         """Create and persist a new scraper record with CREATING status."""
@@ -242,10 +252,21 @@ class ScraperRegistry:
                  schema_hash, description, status, created_at, updated_at)
                 VALUES (?, NULL, ?, ?, ?, ?, ?, 'CREATING', ?, ?)
                 """,
-                (rec_id, target_url, norm_url, schema_json, s_hash, description, now, now),
+                (
+                    rec_id,
+                    target_url,
+                    norm_url,
+                    schema_json,
+                    s_hash,
+                    description,
+                    now,
+                    now,
+                ),
             )
 
-        logger.info(f"Created scraper registry record id={rec_id} for target='{norm_url}'")
+        logger.info(
+            f"Created scraper registry record id={rec_id} for target='{norm_url}'"
+        )
         return CollectorRecord(
             id=rec_id,
             collector_id=None,
@@ -263,9 +284,9 @@ class ScraperRegistry:
         self,
         record_id: str,
         status: CollectorStatus,
-        collector_id: Optional[str] = None,
-        error: Optional[str] = None,
-    ) -> Optional[CollectorRecord]:
+        collector_id: str | None = None,
+        error: str | None = None,
+    ) -> CollectorRecord | None:
         """Update collector status and optional collector_id or error message."""
         now = time.time()
         with safe_sqlite_transaction(self.db_path) as conn:
@@ -294,7 +315,7 @@ class ScraperRegistry:
         self,
         collector_id: str,
         last_run_status: str,
-        error: Optional[str] = None,
+        error: str | None = None,
     ) -> None:
         """Update execution metadata upon collector run."""
         now = time.time()
@@ -308,7 +329,7 @@ class ScraperRegistry:
                 (now, last_run_status, error, now, collector_id),
             )
 
-    def get_record_by_id(self, record_id: str) -> Optional[CollectorRecord]:
+    def get_record_by_id(self, record_id: str) -> CollectorRecord | None:
         """Fetch collector record by internal ID."""
         conn = get_sqlite_connection(self.db_path)
         try:
@@ -328,7 +349,7 @@ class ScraperRegistry:
         finally:
             conn.close()
 
-    def get_record_by_collector_id(self, collector_id: str) -> Optional[CollectorRecord]:
+    def get_record_by_collector_id(self, collector_id: str) -> CollectorRecord | None:
         """Fetch collector record by Bright Data Collector ID."""
         conn = get_sqlite_connection(self.db_path)
         try:
@@ -352,7 +373,7 @@ class ScraperRegistry:
     def list_records(
         self,
         limit: int = 50,
-        status: Optional[CollectorStatus] = None,
+        status: CollectorStatus | None = None,
     ) -> list[CollectorRecord]:
         """List tracked collector records with optional status filter."""
         conn = get_sqlite_connection(self.db_path)

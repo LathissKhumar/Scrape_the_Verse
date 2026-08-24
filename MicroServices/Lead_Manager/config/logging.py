@@ -4,6 +4,7 @@ Logging setup for Lead Manager.
 
 import logging
 import sys
+
 from .settings import get_settings
 
 

@@ -1,30 +1,39 @@
 """
 Email service for sending verification emails
 """
-import smtplib
+
 import os
-from email.mime.text import MIMEText
+import smtplib
 from email.mime.multipart import MIMEMultipart
-from typing import Optional, Tuple
+from email.mime.text import MIMEText
+
 
 # Load environment variables
-def get_env(key: str, default: str = '') -> str:
+def get_env(key: str, default: str = "") -> str:
     """Get environment variable with fallback"""
     return os.getenv(key, default)
 
+
 # Email configuration
-SMTP_HOST = get_env('SMTP_HOST', 'smtp.gmail.com')
-SMTP_PORT = int(get_env('SMTP_PORT', '587'))
-SMTP_USER = get_env('SMTP_USER', '')
-SMTP_PASSWORD = get_env('SMTP_PASSWORD', '')
-SMTP_FROM = get_env('SMTP_FROM', 'noreply@librecrawl.com')
-SMTP_FROM_NAME = get_env('SMTP_FROM_NAME', 'LibreCrawl')
+SMTP_HOST = get_env("SMTP_HOST", "smtp.gmail.com")
+SMTP_PORT = int(get_env("SMTP_PORT", "587"))
+SMTP_USER = get_env("SMTP_USER", "")
+SMTP_PASSWORD = get_env("SMTP_PASSWORD", "")
+SMTP_FROM = get_env("SMTP_FROM", "noreply@librecrawl.com")
+SMTP_FROM_NAME = get_env("SMTP_FROM_NAME", "LibreCrawl")
 
 # App URLs
-MAIN_APP_URL = get_env('MAIN_APP_URL', 'https://crawl.librecrawl.com')
-WORKSHOP_APP_URL = get_env('WORKSHOP_APP_URL', 'https://workshop.librecrawl.com')
+MAIN_APP_URL = get_env("MAIN_APP_URL", "https://crawl.librecrawl.com")
+WORKSHOP_APP_URL = get_env("WORKSHOP_APP_URL", "https://workshop.librecrawl.com")
 
-def send_verification_email(to_email: str, username: str, token: str, app_source: str = 'main', is_resend: bool = False) -> Tuple[bool, str]:
+
+def send_verification_email(
+    to_email: str,
+    username: str,
+    token: str,
+    app_source: str = "main",
+    is_resend: bool = False,
+) -> tuple[bool, str]:
     """
     Send verification email to user
 
@@ -44,7 +53,7 @@ def send_verification_email(to_email: str, username: str, token: str, app_source
 
     try:
         # Determine which app to link to
-        if app_source == 'workshop':
+        if app_source == "workshop":
             app_name = "LibreCrawl Plugin Workshop"
             app_url = WORKSHOP_APP_URL
             verify_url = f"{WORKSHOP_APP_URL}/verify?token={token}"
@@ -54,10 +63,10 @@ def send_verification_email(to_email: str, username: str, token: str, app_source
             verify_url = f"{MAIN_APP_URL}/verify?token={token}"
 
         # Create message
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = f'Verify your {app_name} account'
-        msg['From'] = f'{SMTP_FROM_NAME} <{SMTP_FROM}>'
-        msg['To'] = to_email
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = f"Verify your {app_name} account"
+        msg["From"] = f"{SMTP_FROM_NAME} <{SMTP_FROM}>"
+        msg["To"] = to_email
 
         # Plain text version
         if is_resend:
@@ -99,7 +108,7 @@ The LibreCrawl Team
 
         # HTML version
         if is_resend:
-            resend_notice = f"""
+            resend_notice = """
         <div style="background: #fef3c7; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
             <strong>Note:</strong> We received a new registration request for this email address. Since your previous registration was not verified, we've updated your account with the new username and password you provided.
         </div>"""
@@ -157,7 +166,7 @@ The LibreCrawl Team
     <div class="content">
         <h2>Hello {username}!</h2>
         {resend_notice}
-        <p>{'Thank you for registering' if not is_resend else 'Please verify your email address'} with {app_name}.</p>
+        <p>{"Thank you for registering" if not is_resend else "Please verify your email address"} with {app_name}.</p>
         <p>Please verify your email address by clicking the button below:</p>
         <center>
             <a href="{verify_url}" class="button">Verify Email Address</a>
@@ -168,7 +177,7 @@ The LibreCrawl Team
         </p>
         <div class="footer">
             <p>This link will expire in 24 hours.</p>
-            <p>If you did not {'create this account' if not is_resend else 'request this'}, please ignore this email.</p>
+            <p>If you did not {"create this account" if not is_resend else "request this"}, please ignore this email.</p>
         </div>
     </div>
 </body>
@@ -176,8 +185,8 @@ The LibreCrawl Team
 """
 
         # Attach both versions
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
+        part1 = MIMEText(text, "plain")
+        part2 = MIMEText(html, "html")
         msg.attach(part1)
         msg.attach(part2)
 
@@ -194,9 +203,12 @@ The LibreCrawl Team
 
     except Exception as e:
         print(f"Error sending email: {e}")
-        return False, f"Failed to send email: {str(e)}"
+        return False, f"Failed to send email: {e!s}"
 
-def send_welcome_email(to_email: str, username: str, app_source: str = 'main') -> Tuple[bool, str]:
+
+def send_welcome_email(
+    to_email: str, username: str, app_source: str = "main"
+) -> tuple[bool, str]:
     """
     Send welcome email after verification
 
@@ -213,7 +225,7 @@ def send_welcome_email(to_email: str, username: str, app_source: str = 'main') -
 
     try:
         # Determine which app
-        if app_source == 'workshop':
+        if app_source == "workshop":
             app_name = "LibreCrawl Plugin Workshop"
             app_url = WORKSHOP_APP_URL
         else:
@@ -221,10 +233,10 @@ def send_welcome_email(to_email: str, username: str, app_source: str = 'main') -
             app_url = MAIN_APP_URL
 
         # Create message
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = f'Welcome to {app_name}!'
-        msg['From'] = f'{SMTP_FROM_NAME} <{SMTP_FROM}>'
-        msg['To'] = to_email
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = f"Welcome to {app_name}!"
+        msg["From"] = f"{SMTP_FROM_NAME} <{SMTP_FROM}>"
+        msg["To"] = to_email
 
         # Plain text version
         text = f"""
@@ -294,8 +306,8 @@ The LibreCrawl Team
 """
 
         # Attach both versions
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
+        part1 = MIMEText(text, "plain")
+        part2 = MIMEText(html, "html")
         msg.attach(part1)
         msg.attach(part2)
 
@@ -311,4 +323,4 @@ The LibreCrawl Team
 
     except Exception as e:
         print(f"Error sending welcome email: {e}")
-        return False, f"Failed to send email: {str(e)}"
+        return False, f"Failed to send email: {e!s}"

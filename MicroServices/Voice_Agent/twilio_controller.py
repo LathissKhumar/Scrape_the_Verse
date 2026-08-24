@@ -5,9 +5,11 @@ Built strictly adhering to Twilio Python SDK documentation & best practices.
 
 import logging
 import re
-from typing import Any, Dict, Optional
+from typing import Any
+
 from twilio.rest import Client
-from twilio.twiml.voice_response import Gather, Hangup, Say, VoiceResponse
+from twilio.twiml.voice_response import Gather, Hangup, VoiceResponse
+
 from .config.settings import get_voice_settings
 
 logger = logging.getLogger("TwilioController")
@@ -19,7 +21,7 @@ class TwilioController:
     """
 
     def __init__(self):
-        self._pending_calls: Dict[str, Dict[str, Any]] = {}
+        self._pending_calls: dict[str, dict[str, Any]] = {}
 
     def is_configured(self) -> bool:
         """Check whether valid Twilio credentials exist in the environment."""
@@ -30,7 +32,7 @@ class TwilioController:
             and settings.TWILIO_PHONE_NUMBER
         )
 
-    def get_twilio_client(self) -> Optional[Client]:
+    def get_twilio_client(self) -> Client | None:
         """Initializes and returns the official Twilio REST Client."""
         settings = get_voice_settings()
         if settings.TWILIO_ACCOUNT_SID and settings.TWILIO_AUTH_TOKEN:
@@ -59,12 +61,12 @@ class TwilioController:
             return f"+{cleaned}"
         return f"+{cleaned}"
 
-    def register_pending_call(self, phone: str, data: Dict[str, Any]) -> None:
+    def register_pending_call(self, phone: str, data: dict[str, Any]) -> None:
         """Stores lead and prospect metadata for retrieval when Twilio hits the webhook."""
         normalized = self.normalize_phone_number(phone)
         self._pending_calls[normalized] = data
 
-    def get_pending_call(self, phone: str) -> Optional[Dict[str, Any]]:
+    def get_pending_call(self, phone: str) -> dict[str, Any] | None:
         """Retrieves prospect metadata for a given phone number."""
         normalized = self.normalize_phone_number(phone)
         return self._pending_calls.get(normalized)
@@ -91,7 +93,11 @@ class TwilioController:
         response.append(gather)
 
         # Fallback if no speech is detected after timeout
-        response.say("Thank you for your time. Have a wonderful day!", voice="alice", language="en-US")
+        response.say(
+            "Thank you for your time. Have a wonderful day!",
+            voice="alice",
+            language="en-US",
+        )
         response.append(Hangup())
         return str(response)
 
@@ -113,9 +119,9 @@ class TwilioController:
 
     def generate_twiml_response(
         self,
-        lead_id: Optional[str] = None,
-        company_name: Optional[str] = None,
-        contact_name: Optional[str] = None,
+        lead_id: str | None = None,
+        company_name: str | None = None,
+        contact_name: str | None = None,
         has_website: bool = True,
     ) -> str:
         """
@@ -130,16 +136,18 @@ class TwilioController:
             f"I'm reaching out because we noticed {company_name or 'your company'} does not currently have a mobile-verified website. "
             f"Do you have 30 seconds to speak with me?"
         )
-        return self.generate_twiml_greeting(speech_text=greeting, turn_action_url=turn_url)
+        return self.generate_twiml_greeting(
+            speech_text=greeting, turn_action_url=turn_url
+        )
 
     def initiate_outbound_call(
         self,
         to_phone: str,
-        lead_id: Optional[str] = None,
-        company_name: Optional[str] = None,
-        contact_name: Optional[str] = None,
+        lead_id: str | None = None,
+        company_name: str | None = None,
+        contact_name: str | None = None,
         has_website: bool = True,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Creates and dispatches an outbound call via Twilio REST API.
         """
@@ -165,13 +173,16 @@ class TwilioController:
 
         # Build high-reliability Twilio-hosted multi-turn conversation URL
         from .twimlet_builder import build_conversation_tree
+
         twiml_url = build_conversation_tree(
             company_name=company_name or "Apex Roofing Solutions",
             contact_name=contact_name or "Valued Business",
             has_website=has_website,
         )
 
-        logger.info(f"Initiating outbound call to {target_phone} via Twimlet Tree (len={len(twiml_url)})")
+        logger.info(
+            f"Initiating outbound call to {target_phone} via Twimlet Tree (len={len(twiml_url)})"
+        )
         try:
             call = client.calls.create(
                 to=target_phone,

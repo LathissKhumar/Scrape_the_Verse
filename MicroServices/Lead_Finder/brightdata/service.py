@@ -1,7 +1,7 @@
 """High-Level Service and Scraper Orchestrator for Bright Data Scraper Studio execution."""
 
 import time
-from typing import Any, Optional
+from typing import Any
 from uuid import uuid4
 
 from leadfinder.brightdata.client import BrightDataClient
@@ -18,10 +18,10 @@ from leadfinder.brightdata.schemas import (
     CollectorStatus,
     FieldDefinition,
     ResolveAction,
-    ScrapeTargetRequest,
     ScraperHealResponse,
     ScraperResolveResponse,
     ScraperRunResponse,
+    ScrapeTargetRequest,
 )
 from leadfinder.config.logging import get_logger
 from leadfinder.config.settings import Settings, get_settings
@@ -39,15 +39,17 @@ class BrightDataService:
 
     def __init__(
         self,
-        settings: Optional[Settings] = None,
-        client: Optional[BrightDataClient] = None,
-        pipeline: Optional[BrightDataLeadPipeline] = None,
-        registry: Optional[ScraperRegistry] = None,
-        jobs: Optional[ScraperJobManager] = None,
+        settings: Settings | None = None,
+        client: BrightDataClient | None = None,
+        pipeline: BrightDataLeadPipeline | None = None,
+        registry: ScraperRegistry | None = None,
+        jobs: ScraperJobManager | None = None,
     ) -> None:
         self._settings = settings or get_settings()
         self.client = client or BrightDataClient(settings=self._settings)
-        self.pipeline = pipeline or BrightDataLeadPipeline(client=self.client, settings=self._settings)
+        self.pipeline = pipeline or BrightDataLeadPipeline(
+            client=self.client, settings=self._settings
+        )
         self.registry = registry or default_scraper_registry
         self.jobs = jobs or default_job_manager
 
@@ -67,12 +69,21 @@ class BrightDataService:
             parts.append(description.strip())
 
         if fields:
-            field_lines = [f"- {f.name}: {f.description}" if f.description else f"- {f.name}" for f in fields]
+            field_lines = [
+                f"- {f.name}: {f.description}" if f.description else f"- {f.name}"
+                for f in fields
+            ]
             parts.append("Extract the following fields:\n" + "\n".join(field_lines))
 
-        return "\n\n".join(parts) if parts else "Extract structured records from this page."
+        return (
+            "\n\n".join(parts)
+            if parts
+            else "Extract structured records from this page."
+        )
 
-    async def resolve_scraper(self, request: ScrapeTargetRequest) -> ScraperResolveResponse:
+    async def resolve_scraper(
+        self, request: ScrapeTargetRequest
+    ) -> ScraperResolveResponse:
         """Determine whether to reuse an existing collector or initiate asynchronous creation.
 
         Idempotent: Identical requests with in-flight creation jobs reuse the existing job.
@@ -81,10 +92,16 @@ class BrightDataService:
         s_hash = compute_schema_hash(norm_url, request.fields)
 
         logger.info(f"SCRAPER_LOOKUP target_url='{norm_url}' schema_hash='{s_hash}'")
-        existing: Optional[CollectorRecord] = self.registry.find_compatible(norm_url, s_hash)
+        existing: CollectorRecord | None = self.registry.find_compatible(
+            norm_url, s_hash
+        )
 
         # 1. Fast Path: Compatible ready collector exists
-        if existing and existing.status == CollectorStatus.READY and existing.collector_id:
+        if (
+            existing
+            and existing.status == CollectorStatus.READY
+            and existing.collector_id
+        ):
             logger.info(
                 f"SCRAPER_REUSED scraper_id={existing.id} collector_id={existing.collector_id} target='{norm_url}'"
             )
@@ -96,7 +113,11 @@ class BrightDataService:
             )
 
         # 2. In-Flight: Creation is already underway for this schema
-        if existing and existing.status in (CollectorStatus.CREATING, CollectorStatus.RUNNING, CollectorStatus.HEALING):
+        if existing and existing.status in (
+            CollectorStatus.CREATING,
+            CollectorStatus.RUNNING,
+            CollectorStatus.HEALING,
+        ):
             active_job = self.jobs.find_active_job_for_scraper(existing.id)
             job_id = active_job.job_id if active_job else f"job_{existing.id}"
             logger.info(
@@ -116,7 +137,9 @@ class BrightDataService:
             description=request.description,
         )
         job = self.jobs.create_job(scraper_id=record.id)
-        extraction_desc = self._build_extraction_description(request.description, request.fields)
+        extraction_desc = self._build_extraction_description(
+            request.description, request.fields
+        )
 
         self.jobs.start_creation_worker(
             job_id=job.job_id,
@@ -192,11 +215,15 @@ class BrightDataService:
         failure_description: str,
     ) -> ScraperHealResponse:
         """Trigger self-healing for an unhealthy or broken collector."""
-        logger.info(f"COLLECTOR_HEAL_STARTED collector_id={collector_id} issue='{failure_description}'")
+        logger.info(
+            f"COLLECTOR_HEAL_STARTED collector_id={collector_id} issue='{failure_description}'"
+        )
 
         rec = self.registry.get_record_by_collector_id(collector_id)
         if rec:
-            self.registry.update_status(record_id=rec.id, status=CollectorStatus.HEALING)
+            self.registry.update_status(
+                record_id=rec.id, status=CollectorStatus.HEALING
+            )
 
         try:
             res = await self.client.heal_scraper(
@@ -204,7 +231,9 @@ class BrightDataService:
                 failure_description=failure_description,
             )
             if rec:
-                self.registry.update_status(record_id=rec.id, status=CollectorStatus.READY)
+                self.registry.update_status(
+                    record_id=rec.id, status=CollectorStatus.READY
+                )
 
             logger.info(f"COLLECTOR_HEAL_COMPLETED collector_id={collector_id}")
             return ScraperHealResponse(
@@ -220,7 +249,9 @@ class BrightDataService:
                     status=CollectorStatus.UNHEALTHY,
                     error=err_msg,
                 )
-            logger.error(f"COLLECTOR_HEAL_FAILED collector_id={collector_id} error={err_msg}")
+            logger.error(
+                f"COLLECTOR_HEAL_FAILED collector_id={collector_id} error={err_msg}"
+            )
             return ScraperHealResponse(
                 collector_id=collector_id,
                 status="failed",
@@ -232,14 +263,20 @@ class BrightDataService:
         """Fast-path execution of a ScrapingTask using Bright Data Scraper Studio."""
         task_id = task.task_id or str(uuid4())
         start_time = time.time()
-        logger.info(f"task_id={task_id} Executing fast-path Bright Data scraping for {len(task.target_urls)} URL(s)")
+        logger.info(
+            f"task_id={task_id} Executing fast-path Bright Data scraping for {len(task.target_urls)} URL(s)"
+        )
 
         if not task.target_urls:
             return ScrapingResult(
                 task_id=task_id,
                 status="failed",
                 records=[],
-                metadata={"task_id": task_id, "record_count": 0, "scraper_provider": "brightdata"},
+                metadata={
+                    "task_id": task_id,
+                    "record_count": 0,
+                    "scraper_provider": "brightdata",
+                },
                 error="No target URLs provided in ScrapingTask.",
             )
 
@@ -248,7 +285,11 @@ class BrightDataService:
 
         for url in task.target_urls:
             try:
-                if "search" in url.lower() or "ss=" in url.lower() or "/impcat/" in url.lower():
+                if (
+                    "search" in url.lower()
+                    or "ss=" in url.lower()
+                    or "/impcat/" in url.lower()
+                ):
                     records = await self.pipeline.run_discovery(url)
                 elif "profile" in url.lower() or "aboutus" in url.lower():
                     record = await self.pipeline.enrich_company(url)
@@ -258,8 +299,10 @@ class BrightDataService:
 
                 all_records.extend(records)
             except Exception as error:
-                logger.error(f"task_id={task_id} Error scraping '{url}' via Bright Data: {error}")
-                errors.append(f"{url}: {str(error)}")
+                logger.error(
+                    f"task_id={task_id} Error scraping '{url}' via Bright Data: {error}"
+                )
+                errors.append(f"{url}: {error!s}")
 
         elapsed_ms = round((time.time() - start_time) * 1000, 2)
         status_str = "success" if all_records else ("failed" if errors else "empty")
@@ -299,4 +342,3 @@ class BrightDataService:
     async def get_company_profile(self, company_url: str) -> dict[str, Any]:
         """Perform a direct lookup for a single company profile/catalog URL."""
         return await self.pipeline.enrich_company(company_url)
-

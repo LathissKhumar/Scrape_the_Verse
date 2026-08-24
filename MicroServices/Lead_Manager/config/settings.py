@@ -3,7 +3,7 @@ Lead Manager Configuration & Settings.
 """
 
 from functools import lru_cache
-from typing import Optional
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
     APP_ENV: str = "development"
     LOG_LEVEL: str = "INFO"
-    API_SECRET_KEY: Optional[str] = None
+    API_SECRET_KEY: str | None = None
 
     LEAD_MANAGER_API_PORT: int = 8082
     SDR_API_PORT: int = 8081
@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     OLLAMA_MODEL: str = "qwen3:8b"
     OLLAMA_TIMEOUT_SECONDS: float = 120.0
 
-    GEMINI_API_KEY: Optional[str] = None
+    GEMINI_API_KEY: str | None = None
     GEMINI_MODEL: str = "gemini-2.0-flash"
 
     FOLLOWUP_CHECK_INTERVAL_SECONDS: int = 3600
@@ -40,9 +40,9 @@ class Settings(BaseSettings):
     # Twenty CRM Integration
     TWENTY_CRM_ENABLED: bool = True
     TWENTY_CRM_BASE_URL: str = "http://localhost:3000"
-    TWENTY_CRM_API_KEY: Optional[str] = None
+    TWENTY_CRM_API_KEY: str | None = None
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     return Settings()

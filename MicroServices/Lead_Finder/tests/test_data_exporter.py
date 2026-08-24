@@ -1,5 +1,5 @@
 import json
-import pytest
+
 from leadfinder.export.exporter import DataExporter
 
 

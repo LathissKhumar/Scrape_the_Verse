@@ -3,7 +3,8 @@ Voice Activity Detection (VAD) & Barge-In Interruption Engine.
 Processes streaming 20ms audio frames, detects speech onset/offset, and triggers barge-in events.
 """
 
-from typing import Callable, Optional
+from collections.abc import Callable
+
 from .audio_utils import AudioUtils
 
 
@@ -15,9 +16,9 @@ class VoiceActivityDetector:
     def __init__(
         self,
         energy_threshold: float = 450.0,
-        speech_onset_frames: int = 3,      # ~60ms of speech to trigger onset
-        silence_cutoff_frames: int = 18,    # ~360ms of silence to trigger end-of-turn
-        on_barge_in: Optional[Callable[[], None]] = None,
+        speech_onset_frames: int = 3,  # ~60ms of speech to trigger onset
+        silence_cutoff_frames: int = 18,  # ~360ms of silence to trigger end-of-turn
+        on_barge_in: Callable[[], None] | None = None,
     ):
         self.energy_threshold = energy_threshold
         self.speech_onset_frames = speech_onset_frames
@@ -62,7 +63,10 @@ class VoiceActivityDetector:
             self.accumulated_pcm_speech.extend(pcm16)
 
             # Check if caller speech onset reached
-            if not self.is_speaking and self.consecutive_speech_frames >= self.speech_onset_frames:
+            if (
+                not self.is_speaking
+                and self.consecutive_speech_frames >= self.speech_onset_frames
+            ):
                 self.is_speaking = True
                 speech_started = True
 

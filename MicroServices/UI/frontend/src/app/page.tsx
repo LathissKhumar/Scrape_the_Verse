@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   Navbar,
@@ -22,42 +22,44 @@ import {
   WhyScrapeVerse,
   FinalCTA,
   Footer,
-} from '@/components/sections'
-import { CustomCursor } from '@/components/ui'
-import { SmoothScrollProvider } from '@/components/providers'
-import { useEffect, useState } from 'react'
+} from "@/components/sections";
+import { CustomCursor } from "@/components/ui";
+import { SmoothScrollProvider } from "@/components/providers";
+import { useEffect, useState } from "react";
 
 function ScrollProgressBar() {
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReducedMotion) return;
 
-    let rafId = 0
+    let rafId = 0;
 
     const updateProgress = () => {
-      const scrollTop = window.scrollY
-      const docHeight = document.body.scrollHeight - window.innerHeight
-      const next = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
-      setProgress(Math.min(Math.max(next, 0), 100))
-    }
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const next = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setProgress(Math.min(Math.max(next, 0), 100));
+    };
 
     const handleScroll = () => {
-      cancelAnimationFrame(rafId)
-      rafId = requestAnimationFrame(updateProgress)
-    }
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateProgress);
+    };
 
-    updateProgress()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll, { passive: true })
+    updateProgress();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
 
     return () => {
-      cancelAnimationFrame(rafId)
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
-    }
-  }, [])
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
 
   return (
     <div className="fixed inset-x-0 top-0 z-[9999] h-[3px] w-full bg-transparent">
@@ -67,7 +69,7 @@ function ScrollProgressBar() {
         style={{ width: `${progress}%` }}
       />
     </div>
-  )
+  );
 }
 
 export default function Home() {
@@ -96,9 +98,26 @@ export default function Home() {
           preserveAspectRatio="none"
         >
           <defs>
-            <filter id="glass-filter" x="-20%" y="-20%" width="140%" height="140%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" result="noise" />
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+            <filter
+              id="glass-filter"
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
+            >
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.03"
+                numOctaves="3"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="3"
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
             </filter>
             <mask id="frame-margin-mask">
               {/* Cover everywhere with white (reveals background in margins) */}
@@ -138,7 +157,7 @@ export default function Home() {
           className="fixed inset-3 sm:inset-5 lg:inset-6 z-40 pointer-events-none rounded-[2.5rem] border border-white/35 shadow-2xl max-w-[1780px] mx-auto"
           style={{
             boxShadow:
-              '0 30px 100px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 1.5px 2px rgba(255, 255, 255, 0.55), inset 0 -1.5px 2px rgba(255, 255, 255, 0.35)',
+              "0 30px 100px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 1.5px 2px rgba(255, 255, 255, 0.55), inset 0 -1.5px 2px rgba(255, 255, 255, 0.35)",
           }}
         >
           {/* Top Glass Specular Shine Accent */}
@@ -183,7 +202,6 @@ export default function Home() {
               <Pipeline />
             </div>
 
-
             {/* Lead Discovery Console */}
             <div data-scroll-reveal className="reveal-panel">
               <LeadDiscovery />
@@ -193,8 +211,6 @@ export default function Home() {
             <div data-scroll-reveal className="reveal-panel">
               <ParallelResearch />
             </div>
-
-
 
             {/* Interactive Self-Healing Demo */}
             <div data-scroll-reveal className="reveal-panel">
@@ -257,5 +273,5 @@ export default function Home() {
         </div>
       </div>
     </SmoothScrollProvider>
-  )
+  );
 }

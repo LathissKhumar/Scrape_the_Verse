@@ -1,44 +1,49 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { 
-  DollarSign, 
-  ChevronRight, 
-  Sparkles, 
-  Building2, 
-  CheckCircle2, 
-  Clock, 
-  ArrowRight, 
-  Plus, 
-  Filter, 
-  Layers, 
-  PhoneCall, 
+import React, { useState, useEffect } from "react";
+import {
+  DollarSign,
+  ChevronRight,
+  Sparkles,
+  Building2,
+  CheckCircle2,
+  Clock,
+  ArrowRight,
+  Plus,
+  Filter,
+  Layers,
+  PhoneCall,
   FileText,
   Server,
   Power,
   RefreshCw,
   Zap,
-  Activity
-} from 'lucide-react';
-import { LeadRecord, DashboardTab, PipelineStage } from './types';
-import { mockLeads } from './mockData';
-import { 
-  getLeads, 
-  ingestLifecycleEvent, 
-  getTwentyCrmStatus, 
-  spinUpTwentyCrm, 
-  spinDownTwentyCrm, 
-  TwentyCrmStatus 
-} from '@/lib/api/leadManager';
+  Activity,
+} from "lucide-react";
+import { LeadRecord, DashboardTab, PipelineStage } from "./types";
+import { mockLeads } from "./mockData";
+import {
+  getLeads,
+  ingestLifecycleEvent,
+  getTwentyCrmStatus,
+  spinUpTwentyCrm,
+  spinDownTwentyCrm,
+  TwentyCrmStatus,
+} from "@/lib/api/leadManager";
 
 interface PipelinePageProps {
   onNavigateTab: (tab: DashboardTab, leadId?: string) => void;
   onSelectLead: (lead: LeadRecord) => void;
 }
 
-export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSelectLead }) => {
+export const PipelinePage: React.FC<PipelinePageProps> = ({
+  onNavigateTab,
+  onSelectLead,
+}) => {
   const [leads, setLeads] = useState<LeadRecord[]>(mockLeads);
-  const [twentyStatus, setTwentyStatus] = useState<TwentyCrmStatus | null>(null);
+  const [twentyStatus, setTwentyStatus] = useState<TwentyCrmStatus | null>(
+    null,
+  );
   const [isManagingCrm, setIsManagingCrm] = useState(false);
   const [crmMessage, setCrmMessage] = useState<string | null>(null);
 
@@ -55,19 +60,19 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
           const transformed: LeadRecord[] = leadsRes.leads.map((l) => ({
             id: l.id,
             business_name: l.company_name,
-            category: l.industry || 'Commercial Services',
-            location: l.location || 'Bangalore, India',
-            phone_number: l.primary_contact_phone || '+91 98860 11224',
-            website: l.website_url || 'https://company.com',
-            source: 'Google Maps',
-            decision_path: 'website_analysis',
-            stage: (l.stage.toLowerCase() as PipelineStage) || 'discovered',
+            category: l.industry || "Commercial Services",
+            location: l.location || "Bangalore, India",
+            phone_number: l.primary_contact_phone || "+91 98860 11224",
+            website: l.website_url || "https://company.com",
+            source: "Google Maps",
+            decision_path: "website_analysis",
+            stage: (l.stage.toLowerCase() as PipelineStage) || "discovered",
             lead_quality_score: Math.round((l.fit_score || 0.85) * 100),
-            opportunity_priority: 'High',
-            estimated_deal_value: 16500,
-            contact_person: l.primary_contact_name || 'Executive Officer',
-            email: l.primary_contact_email || 'info@company.com',
-            last_activity: 'Just now',
+            opportunity_priority: "High",
+            estimated_deal_value: Math.round(75 + (l.fit_score || 0.85) * 90),
+            contact_person: l.primary_contact_name || "Executive Officer",
+            email: l.primary_contact_email || "info@company.com",
+            last_activity: "Just now",
             created_at: l.created_at || new Date().toISOString(),
           }));
           setLeads(transformed);
@@ -83,23 +88,58 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
     loadBackendData();
   }, []);
 
-  const stages: { id: PipelineStage; label: string; color: string; badgeBg: string }[] = [
-    { id: 'discovered', label: 'Discovered', color: 'border-white/20 text-white/70', badgeBg: 'bg-white/[0.08]' },
-    { id: 'analyzed', label: '360° Audited', color: 'border-white/20 text-indigo-300', badgeBg: 'bg-white/[0.08]' },
-    { id: 'proposal_ready', label: 'Proposal Ready', color: 'border-white/20 text-blue-300', badgeBg: 'bg-white/[0.08]' },
-    { id: 'outreach_active', label: 'Outreach Active', color: 'border-white/20 text-sky-300', badgeBg: 'bg-white/[0.08]' },
-    { id: 'call_booked', label: 'Call Booked', color: 'border-white/20 text-amber-300', badgeBg: 'bg-white/[0.08]' },
-    { id: 'won', label: 'Closed Won', color: 'border-white/20 text-emerald-300', badgeBg: 'bg-white/[0.08]' },
+  const stages: {
+    id: PipelineStage;
+    label: string;
+    color: string;
+    badgeBg: string;
+  }[] = [
+    {
+      id: "discovered",
+      label: "Discovered",
+      color: "border-white/20 text-white/70",
+      badgeBg: "bg-white/[0.08]",
+    },
+    {
+      id: "analyzed",
+      label: "360° Audited",
+      color: "border-white/20 text-indigo-300",
+      badgeBg: "bg-white/[0.08]",
+    },
+    {
+      id: "proposal_ready",
+      label: "Proposal Ready",
+      color: "border-white/20 text-blue-300",
+      badgeBg: "bg-white/[0.08]",
+    },
+    {
+      id: "outreach_active",
+      label: "Outreach Active",
+      color: "border-white/20 text-sky-300",
+      badgeBg: "bg-white/[0.08]",
+    },
+    {
+      id: "call_booked",
+      label: "Call Booked",
+      color: "border-white/20 text-amber-300",
+      badgeBg: "bg-white/[0.08]",
+    },
+    {
+      id: "won",
+      label: "Closed Won",
+      color: "border-white/20 text-emerald-300",
+      badgeBg: "bg-white/[0.08]",
+    },
   ];
 
   const advanceStage = async (leadId: string) => {
     const stageOrder: PipelineStage[] = [
-      'discovered',
-      'analyzed',
-      'proposal_ready',
-      'outreach_active',
-      'call_booked',
-      'won',
+      "discovered",
+      "analyzed",
+      "proposal_ready",
+      "outreach_active",
+      "call_booked",
+      "won",
     ];
 
     const targetLead = leads.find((l) => l.id === leadId);
@@ -110,11 +150,13 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
     const newStage = stageOrder[nextIndex];
 
     setLeads((prev) =>
-      prev.map((lead) => (lead.id === leadId ? { ...lead, stage: newStage } : lead))
+      prev.map((lead) =>
+        lead.id === leadId ? { ...lead, stage: newStage } : lead,
+      ),
     );
 
     try {
-      await ingestLifecycleEvent('stage.changed', leadId, 'human', {
+      await ingestLifecycleEvent("stage.changed", leadId, "human", {
         previous_stage: targetLead.stage,
         new_stage: newStage.toUpperCase(),
       });
@@ -138,14 +180,17 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
       const updated = await getTwentyCrmStatus();
       setTwentyStatus(updated);
     } catch {
-      setCrmMessage('Twenty CRM operation simulated (Docker bridge).');
+      setCrmMessage("Twenty CRM operation simulated (Docker bridge).");
     } finally {
       setIsManagingCrm(false);
       setTimeout(() => setCrmMessage(null), 5000);
     }
   };
 
-  const totalPipelineRevenue = leads.reduce((acc, l) => acc + (l.estimated_deal_value || 0), 0);
+  const totalPipelineRevenue = leads.reduce(
+    (acc, l) => acc + (l.estimated_deal_value || 0),
+    0,
+  );
 
   return (
     <div className="space-y-8 animate-fadeIn font-body">
@@ -160,7 +205,8 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
             Sales Pipeline & Kanban CRM
           </h1>
           <p className="text-sm text-white/60 mt-1 max-w-2xl">
-            Track multi-stage deal progression from raw scraper discovery to 360° AI audits, tailored proposals, and closed revenue.
+            Track multi-stage deal progression from raw scraper discovery to
+            360° AI audits, tailored proposals, and closed revenue.
           </p>
         </div>
 
@@ -171,19 +217,25 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
             disabled={isManagingCrm}
             className={`px-4 py-2 rounded-full border text-xs font-mono font-semibold flex items-center gap-2 transition cursor-pointer backdrop-blur-xl ${
               twentyStatus?.is_responsive
-                ? 'bg-emerald-500/15 border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/25'
-                : 'bg-white/[0.06] border-white/[0.14] text-white/80 hover:bg-white/[0.12]'
+                ? "bg-emerald-500/15 border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/25"
+                : "bg-white/[0.06] border-white/[0.14] text-white/80 hover:bg-white/[0.12]"
             }`}
             title="On-Demand Self-Hosted Twenty CRM Docker Bridge"
           >
-            <Power className={`w-3.5 h-3.5 ${isManagingCrm ? 'animate-spin' : ''}`} />
+            <Power
+              className={`w-3.5 h-3.5 ${isManagingCrm ? "animate-spin" : ""}`}
+            />
             <span>
-              {twentyStatus?.is_responsive ? 'Twenty CRM: Running' : 'Spin Up Twenty CRM'}
+              {twentyStatus?.is_responsive
+                ? "Twenty CRM: Running"
+                : "Spin Up Twenty CRM"}
             </span>
           </button>
 
           <div className="p-3.5 rounded-2xl bg-white/[0.08] border border-white/[0.16] backdrop-blur-xl shadow-sm text-right">
-            <div className="text-[10px] font-mono text-white/50 uppercase">Active Pipeline Value</div>
+            <div className="text-[10px] font-mono text-white/50 uppercase">
+              Active Pipeline Value
+            </div>
             <div className="text-xl font-black text-emerald-400 font-mono">
               ${totalPipelineRevenue.toLocaleString()}
             </div>
@@ -198,7 +250,12 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
             <Activity className="w-4 h-4 text-emerald-400" />
             <span>{crmMessage}</span>
           </div>
-          <button onClick={() => setCrmMessage(null)} className="text-white/40 hover:text-white cursor-pointer">✕</button>
+          <button
+            onClick={() => setCrmMessage(null)}
+            className="text-white/40 hover:text-white cursor-pointer"
+          >
+            ✕
+          </button>
         </div>
       )}
 
@@ -206,7 +263,10 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 overflow-x-auto pb-4 no-scrollbar">
         {stages.map((stage) => {
           const stageLeads = leads.filter((l) => l.stage === stage.id);
-          const stageValue = stageLeads.reduce((acc, l) => acc + (l.estimated_deal_value || 0), 0);
+          const stageValue = stageLeads.reduce(
+            (acc, l) => acc + (l.estimated_deal_value || 0),
+            0,
+          );
 
           return (
             <div
@@ -216,7 +276,9 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
               {/* Column Header */}
               <div className="space-y-2 border-b border-white/[0.08] pb-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white tracking-tight">{stage.label}</span>
+                  <span className="text-xs font-bold text-white tracking-tight">
+                    {stage.label}
+                  </span>
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white/[0.08] border border-white/[0.12] text-white">
                     {stageLeads.length}
                   </span>
@@ -233,7 +295,7 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
                     key={lead.id}
                     onClick={() => {
                       onSelectLead(lead);
-                      onNavigateTab('analysis', lead.id);
+                      onNavigateTab("analysis", lead.id);
                     }}
                     className="p-4 rounded-2xl bg-white/[0.035] border border-white/[0.08] hover:border-white/[0.18] hover:bg-white/[0.065] backdrop-blur-xl transition-all cursor-pointer space-y-2.5 shadow-sm group"
                   >
@@ -241,7 +303,9 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
                       <h4 className="font-bold text-xs text-white group-hover:text-sky-300 transition-colors line-clamp-1">
                         {lead.business_name}
                       </h4>
-                      <p className="text-[10px] text-white/50 truncate mt-0.5">{lead.category}</p>
+                      <p className="text-[10px] text-white/50 truncate mt-0.5">
+                        {lead.category}
+                      </p>
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-white/[0.06]">
@@ -254,7 +318,10 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
                     </div>
 
                     {/* Quick Move Forward Button */}
-                    <div className="pt-1 flex items-center justify-end" onClick={(e) => e.stopPropagation()}>
+                    <div
+                      className="pt-1 flex items-center justify-end"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <button
                         onClick={() => advanceStage(lead.id)}
                         className="text-[10px] font-bold text-sky-300 hover:text-white flex items-center gap-1 bg-white/[0.06] hover:bg-white/[0.14] px-2.5 py-1 rounded-full border border-white/[0.12] transition cursor-pointer backdrop-blur-md"
@@ -276,7 +343,9 @@ export const PipelinePage: React.FC<PipelinePageProps> = ({ onNavigateTab, onSel
 
               {/* Column Footer */}
               <div className="pt-2 border-t border-white/[0.06] text-center">
-                <span className="text-[10px] font-mono text-white/40">Autonomous CRM Sync</span>
+                <span className="text-[10px] font-mono text-white/40">
+                  Autonomous CRM Sync
+                </span>
               </div>
             </div>
           );

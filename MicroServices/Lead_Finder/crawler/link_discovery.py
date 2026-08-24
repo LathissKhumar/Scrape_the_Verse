@@ -1,10 +1,8 @@
-import re
-from typing import Optional
 from urllib.parse import urljoin, urlparse
-from bs4 import BeautifulSoup
 
-from leadfinder.crawler.url_validator import UrlSecurityValidator
+from bs4 import BeautifulSoup
 from leadfinder.config.logging import get_logger
+from leadfinder.crawler.url_validator import UrlSecurityValidator
 
 logger = get_logger("LINK_DISCOVERY")
 
@@ -12,14 +10,14 @@ logger = get_logger("LINK_DISCOVERY")
 class LinkDiscoveryEngine:
     """Discovers, scores, and filters sub-links from rendered page HTML."""
 
-    def __init__(self, security_validator: Optional[UrlSecurityValidator] = None):
+    def __init__(self, security_validator: UrlSecurityValidator | None = None):
         self.security_validator = security_validator or UrlSecurityValidator()
 
     def extract_candidate_links(
         self,
         html: str,
         base_url: str,
-        query_keywords: Optional[list[str]] = None,
+        query_keywords: list[str] | None = None,
         max_links: int = 5,
         same_domain_only: bool = True,
     ) -> list[str]:
@@ -32,7 +30,18 @@ class LinkDiscoveryEngine:
 
         keywords = [k.lower().strip() for k in (query_keywords or []) if k.strip()]
         # Common informative words
-        generic_relevant_words = {"spec", "specs", "specification", "specifications", "detail", "details", "feature", "features", "overview", "product"}
+        generic_relevant_words = {
+            "spec",
+            "specs",
+            "specification",
+            "specifications",
+            "detail",
+            "details",
+            "feature",
+            "features",
+            "overview",
+            "product",
+        }
         all_keywords = set(keywords).union(generic_relevant_words)
 
         soup = BeautifulSoup(html, "html.parser")
@@ -42,7 +51,13 @@ class LinkDiscoveryEngine:
             raw_href = a_tag["href"].strip()
             link_text = a_tag.get_text(strip=True).lower()
 
-            if not raw_href or raw_href.startswith("#") or raw_href.startswith("javascript:") or raw_href.startswith("mailto:") or raw_href.startswith("tel:"):
+            if (
+                not raw_href
+                or raw_href.startswith("#")
+                or raw_href.startswith("javascript:")
+                or raw_href.startswith("mailto:")
+                or raw_href.startswith("tel:")
+            ):
                 continue
 
             absolute_url = urljoin(base_url, raw_href)
@@ -75,7 +90,19 @@ class LinkDiscoveryEngine:
                     score += 2.0
 
             # Penalize utility links
-            utility_words = ["login", "signin", "signup", "cart", "checkout", "privacy", "terms", "help", "faq", "contact", "about"]
+            utility_words = [
+                "login",
+                "signin",
+                "signup",
+                "cart",
+                "checkout",
+                "privacy",
+                "terms",
+                "help",
+                "faq",
+                "contact",
+                "about",
+            ]
             if any(u in href_lower or u in link_text for u in utility_words):
                 score -= 5.0
 

@@ -4,18 +4,20 @@ Synthesizes parallel Website Analysis + Business Analysis findings into
 a structured, narrative-rich PersonalizedPromptPack using LLM.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from pydantic import BaseModel, Field
+
 from MicroServices.Lead_Manager.agents.llm_factory import LLMClient
 
 
 class PersonalizedPromptPack(BaseModel):
     company_context: str
-    key_problems: List[str] = Field(default_factory=list)
-    value_angles: List[str] = Field(default_factory=list)
-    recommended_services: List[str] = Field(default_factory=list)
-    proof_points: List[str] = Field(default_factory=list)
-    objections_and_responses: List[Dict[str, str]] = Field(default_factory=list)
+    key_problems: list[str] = Field(default_factory=list)
+    value_angles: list[str] = Field(default_factory=list)
+    recommended_services: list[str] = Field(default_factory=list)
+    proof_points: list[str] = Field(default_factory=list)
+    objections_and_responses: list[dict[str, str]] = Field(default_factory=list)
 
 
 class PromptGenerator:
@@ -23,17 +25,17 @@ class PromptGenerator:
     Synthesizes technical SEO & business intelligence into high-conversion sales narrative context.
     """
 
-    def __init__(self, llm_client: Optional[LLMClient] = None):
+    def __init__(self, llm_client: LLMClient | None = None):
         self.llm = llm_client or LLMClient()
 
     async def generate_sales_context(
         self,
         company_name: str,
-        website_url: Optional[str],
-        industry: Optional[str] = None,
-        location: Optional[str] = None,
-        seo_data: Optional[Dict[str, Any]] = None,
-        business_data: Optional[Dict[str, Any]] = None,
+        website_url: str | None,
+        industry: str | None = None,
+        location: str | None = None,
+        seo_data: dict[str, Any] | None = None,
+        business_data: dict[str, Any] | None = None,
     ) -> PersonalizedPromptPack:
         seo_data = seo_data or {}
         business_data = business_data or {}
@@ -58,7 +60,7 @@ class PromptGenerator:
             '    {"objection": "Already have an agency/web designer", "response": "tactical response"},\n'
             '    {"objection": "Get all business via word of mouth", "response": "tactical response"},\n'
             '    {"objection": "No budget right now", "response": "tactical response"}\n'
-            '  ]\n'
+            "  ]\n"
             "}"
         )
 
@@ -74,9 +76,15 @@ class PromptGenerator:
             f"Generate the comprehensive sales context pack."
         )
 
-        llm_result = await self.llm.generate_json(prompt=user_prompt, system_prompt=system_prompt)
+        llm_result = await self.llm.generate_json(
+            prompt=user_prompt, system_prompt=system_prompt
+        )
 
-        if llm_result and isinstance(llm_result, dict) and "company_context" in llm_result:
+        if (
+            llm_result
+            and isinstance(llm_result, dict)
+            and "company_context" in llm_result
+        ):
             try:
                 return PersonalizedPromptPack(**llm_result)
             except Exception:
@@ -88,7 +96,9 @@ class PromptGenerator:
             problems.append(f"Technical & speed issues: {seo_issues[0]}")
         problems.extend(business_weaknesses[:2])
         if not problems:
-            problems = ["Suboptimal mobile conversion rate and under-leveraged local Google 3-Pack rankings."]
+            problems = [
+                "Suboptimal mobile conversion rate and under-leveraged local Google 3-Pack rankings."
+            ]
 
         return PersonalizedPromptPack(
             company_context=(

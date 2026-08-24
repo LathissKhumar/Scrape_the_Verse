@@ -6,15 +6,12 @@ Provides schema-versioned (schema_version: "2.0"), token-efficient JSON outputs 
 - Programmatic Tool APIs (get_issue_summary, get_page, get_recommendations...)
 """
 
-from typing import Dict, Any, List, Optional
-import os
-import json
-
+from typing import Any
 
 SCHEMA_VERSION = "2.0"
 
 
-def generate_agent_summary_json(full_audit_state: Dict[str, Any]) -> Dict[str, Any]:
+def generate_agent_summary_json(full_audit_state: dict[str, Any]) -> dict[str, Any]:
     """
     Generates a compact (< 10 KB, ~1000 tokens) JSON payload tailored for LLM agents.
     Excludes massive raw page dumps while retaining critical findings, high-confidence issues,
@@ -22,7 +19,7 @@ def generate_agent_summary_json(full_audit_state: Dict[str, Any]) -> Dict[str, A
     """
     base_url = full_audit_state.get("base_url") or full_audit_state.get("url", "")
     domain = full_audit_state.get("base_domain") or ""
-    
+
     pages = full_audit_state.get("pages", [])
     issues = full_audit_state.get("issues", [])
     recs = full_audit_state.get("priority_action_items", [])
@@ -38,7 +35,7 @@ def generate_agent_summary_json(full_audit_state: Dict[str, Any]) -> Dict[str, A
             "confidence": i.get("confidence", "high"),
             "url": i.get("url"),
             "observation": i.get("observation") or i.get("details"),
-            "recommendation": i.get("recommendation")
+            "recommendation": i.get("recommendation"),
         }
         for i in issues
         if str(i.get("severity")).lower() in ("critical", "high", "error")
@@ -51,7 +48,7 @@ def generate_agent_summary_json(full_audit_state: Dict[str, Any]) -> Dict[str, A
             "status_code": p.get("status_code"),
             "title": (p.get("title") or "")[:50],
             "word_count": p.get("word_count", 0),
-            "resource_type": p.get("resource_type", "html")
+            "resource_type": p.get("resource_type", "html"),
         }
         for p in pages[:20]
     ]
@@ -66,11 +63,13 @@ def generate_agent_summary_json(full_audit_state: Dict[str, Any]) -> Dict[str, A
             "total_pages_crawled": len(pages),
             "total_issues_detected": len(issues),
             "total_recommendations": len(recs),
-            "duration_seconds": full_audit_state.get("crawl_summary", {}).get("duration_seconds", 0)
+            "duration_seconds": full_audit_state.get("crawl_summary", {}).get(
+                "duration_seconds", 0
+            ),
         },
         "top_issues": high_priority_issues,
         "priority_recommendations": recs[:10],
-        "sampled_page_index": page_index
+        "sampled_page_index": page_index,
     }
 
 
@@ -79,37 +78,39 @@ class SEOAgentTools:
     Tool-friendly data access class for LangGraph SEO agents.
     """
 
-    def __init__(self, audit_state: Dict[str, Any]):
+    def __init__(self, audit_state: dict[str, Any]):
         self.state = audit_state
         self.schema_version = SCHEMA_VERSION
 
-    def get_crawl_summary(self) -> Dict[str, Any]:
+    def get_crawl_summary(self) -> dict[str, Any]:
         """Returns compact crawl summary and scores."""
         return {
             "schema_version": self.schema_version,
             "url": self.state.get("base_url"),
             "overall_score": self.state.get("overall_seo_score"),
             "category_scores": self.state.get("category_scores"),
-            "summary": self.state.get("crawl_summary")
+            "summary": self.state.get("crawl_summary"),
         }
 
-    def get_issues_by_category(self, category: str) -> List[Dict[str, Any]]:
+    def get_issues_by_category(self, category: str) -> list[dict[str, Any]]:
         """Returns issues filtered by category."""
         category_lower = category.lower()
         return [
-            i for i in self.state.get("issues", [])
+            i
+            for i in self.state.get("issues", [])
             if str(i.get("category", "")).lower() == category_lower
         ]
 
-    def get_issues_by_severity(self, severity: str) -> List[Dict[str, Any]]:
+    def get_issues_by_severity(self, severity: str) -> list[dict[str, Any]]:
         """Returns issues filtered by severity."""
         sev_lower = severity.lower()
         return [
-            i for i in self.state.get("issues", [])
+            i
+            for i in self.state.get("issues", [])
             if str(i.get("severity", "")).lower() == sev_lower
         ]
 
-    def get_page(self, url: str) -> Optional[Dict[str, Any]]:
+    def get_page(self, url: str) -> dict[str, Any] | None:
         """Returns detailed PageRecord for a specific URL."""
         url_lower = url.lower().split("#")[0]
         for p in self.state.get("pages", []):
@@ -117,6 +118,6 @@ class SEOAgentTools:
                 return p
         return None
 
-    def get_recommendations(self) -> List[Dict[str, Any]]:
+    def get_recommendations(self) -> list[dict[str, Any]]:
         """Returns priority action items."""
         return self.state.get("priority_action_items", [])

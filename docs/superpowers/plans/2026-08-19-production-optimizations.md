@@ -37,14 +37,17 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock
 from app.extraction.vision import VisionTextExtractor
 
+
 @pytest.mark.asyncio
 async def test_vision_text_extractor_extracts_verbatim_text():
     mock_client = MagicMock()
-    mock_client.post = AsyncMock(return_value=MagicMock(
-        status_code=200,
-        json=lambda: {"response": "Special Price: $19.99\nModel: ABC-123"}
-    ))
-    
+    mock_client.post = AsyncMock(
+        return_value=MagicMock(
+            status_code=200,
+            json=lambda: {"response": "Special Price: $19.99\nModel: ABC-123"},
+        )
+    )
+
     extractor = VisionTextExtractor(model_name="gemma4:e2b", client=mock_client)
     text = await extractor.extract_text_from_image_base64("dummy_base64_data")
     assert "Special Price: $19.99" in text
@@ -72,10 +75,13 @@ Extract all visible text, numbers, prices, labels, and tabular data from this im
 DO NOT describe what the image looks like.
 Output ONLY the raw extracted text and data found in the image."""
 
+
 class VisionTextExtractor:
     """Extracts text data from page images using Ollama vision models (e.g. gemma4:e2b)."""
 
-    def __init__(self, model_name: str = "gemma4:e2b", client: Optional[httpx.AsyncClient] = None):
+    def __init__(
+        self, model_name: str = "gemma4:e2b", client: Optional[httpx.AsyncClient] = None
+    ):
         self.settings = get_settings()
         self.model_name = model_name
         self.base_url = self.settings.OLLAMA_BASE_URL.rstrip("/")
@@ -132,6 +138,7 @@ git commit -m "feat(vision): add VisionTextExtractor using gemma4:e2b for verbat
 import pytest
 from app.extraction.grid_cards import GridCardExtractor
 
+
 def test_grid_card_extractor_extracts_product_cards():
     html = """
     <div class="container">
@@ -148,7 +155,9 @@ def test_grid_card_extractor_extracts_product_cards():
     </div>
     """
     extractor = GridCardExtractor()
-    records = extractor.extract(html=html, target_fields=["title", "price", "availability"])
+    records = extractor.extract(
+        html=html, target_fields=["title", "price", "availability"]
+    )
     assert len(records) == 2
     assert "Book One" in records[0].get("title", "")
     assert "12.99" in records[0].get("price", "")
@@ -166,13 +175,25 @@ from typing import Any, Optional
 from bs4 import BeautifulSoup, Tag
 from app.extraction.engine import FIELD_SYNONYM_MAP
 
+
 class GridCardExtractor:
     """Deterministically extracts repeating cards/items (products, quotes, articles) from HTML."""
 
     CARD_TAGS = ["article", "li", "div", "tr", "section"]
-    COMMON_CARD_CLASSES = ["product", "item", "card", "quote", "result", "post", "entry", "listing"]
+    COMMON_CARD_CLASSES = [
+        "product",
+        "item",
+        "card",
+        "quote",
+        "result",
+        "post",
+        "entry",
+        "listing",
+    ]
 
-    def extract(self, html: str, target_fields: Optional[list[str]] = None) -> list[dict[str, Any]]:
+    def extract(
+        self, html: str, target_fields: Optional[list[str]] = None
+    ) -> list[dict[str, Any]]:
         if not html or not html.strip():
             return []
         soup = BeautifulSoup(html, "html.parser")
@@ -186,10 +207,12 @@ class GridCardExtractor:
                 classes = " ".join(el.get("class", []))
                 if classes:
                     by_class.setdefault(classes, []).append(el)
-            
+
             for cls_name, items in by_class.items():
                 if len(items) >= 2:
-                    is_relevant = any(c in cls_name.lower() for c in self.COMMON_CARD_CLASSES) or tag_name in ("article", "tr")
+                    is_relevant = any(
+                        c in cls_name.lower() for c in self.COMMON_CARD_CLASSES
+                    ) or tag_name in ("article", "tr")
                     score = len(items) * (2 if is_relevant else 1)
                     candidate_containers.append((score, items))
 
@@ -206,7 +229,9 @@ class GridCardExtractor:
                 records.append(rec)
         return records
 
-    def _extract_card_fields(self, card: Tag, target_fields: list[str]) -> dict[str, Any]:
+    def _extract_card_fields(
+        self, card: Tag, target_fields: list[str]
+    ) -> dict[str, Any]:
         rec = {}
         for f in target_fields:
             val = None
@@ -219,7 +244,14 @@ class GridCardExtractor:
                         if val:
                             break
             elif f_lower in ("price", "cost", "amount"):
-                price_el = card.find(class_=lambda c: c and any(p in str(c).lower() for p in ["price", "cost", "amount"]))
+                price_el = card.find(
+                    class_=lambda c: (
+                        c
+                        and any(
+                            p in str(c).lower() for p in ["price", "cost", "amount"]
+                        )
+                    )
+                )
                 if price_el:
                     val = price_el.get_text(strip=True)
                 else:
@@ -236,7 +268,15 @@ class GridCardExtractor:
                 if img:
                     val = img.get("src") or img.get("data-src")
             elif f_lower in ("availability", "stock", "status"):
-                stock_el = card.find(class_=lambda c: c and any(s in str(c).lower() for s in ["stock", "availability", "status"]))
+                stock_el = card.find(
+                    class_=lambda c: (
+                        c
+                        and any(
+                            s in str(c).lower()
+                            for s in ["stock", "availability", "status"]
+                        )
+                    )
+                )
                 if stock_el:
                     val = stock_el.get_text(strip=True)
             if not val:
@@ -278,16 +318,24 @@ from unittest.mock import AsyncMock, MagicMock
 from app.extraction.llm import LLMExtractor
 from app.models.schemas import ScrapingTask
 
+
 @pytest.mark.asyncio
 async def test_llm_extractor_concurrent_chunks():
     mock_llm = MagicMock()
-    mock_llm.invoke = AsyncMock(side_effect=[
-        '[{"title": "Item 1", "price": "$10"}]',
-        '[{"title": "Item 2", "price": "$20"}]'
-    ])
+    mock_llm.invoke = AsyncMock(
+        side_effect=[
+            '[{"title": "Item 1", "price": "$10"}]',
+            '[{"title": "Item 2", "price": "$20"}]',
+        ]
+    )
     extractor = LLMExtractor(llm_client=mock_llm)
-    task = ScrapingTask(task_id="t1", objective="Scrape items", target_urls=["https://example.com"], fields=["title", "price"])
-    
+    task = ScrapingTask(
+        task_id="t1",
+        objective="Scrape items",
+        target_urls=["https://example.com"],
+        fields=["title", "price"],
+    )
+
     records = await extractor.extract_async(
         raw_content="Chunk 1 content paragraph\n\n\n\nChunk 2 content paragraph",
         task=task,
@@ -330,6 +378,7 @@ import pytest
 from app.healing.persistent_memory import PersistentRepairMemory
 from app.healing.schemas import RepairMemoryRecord, RepairType
 
+
 def test_persistent_repair_memory_saves_and_reloads(tmp_path):
     db_file = str(tmp_path / "test_memory.db")
     mem1 = PersistentRepairMemory(db_path=db_file)
@@ -342,7 +391,7 @@ def test_persistent_repair_memory_saves_and_reloads(tmp_path):
         after_health=1.0,
     )
     mem1.record_success(rec)
-    
+
     # Instantiate fresh memory pointing to same DB
     mem2 = PersistentRepairMemory(db_path=db_file)
     match = mem2.lookup("example.com", "sig_123")
@@ -366,6 +415,7 @@ from app.config.logging import get_logger
 from app.healing.schemas import RepairMemoryRecord, RepairType
 
 logger = get_logger("PERSISTENT_REPAIR_MEMORY")
+
 
 class PersistentRepairMemory:
     """SQLite-backed persistent repair memory for instant repeat self-healing."""
@@ -393,27 +443,37 @@ class PersistentRepairMemory:
 
     def record_success(self, record: RepairMemoryRecord) -> None:
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("""
+            conn.execute(
+                """
                 INSERT OR REPLACE INTO repair_memory (domain, failure_signature, repair_type, patch_json, before_health, after_health)
                 VALUES (?, ?, ?, ?, ?, ?)
-            """, (
-                record.domain,
-                record.failure_signature,
-                record.repair_type.value,
-                json.dumps(record.patch),
-                record.before_health,
-                record.after_health,
-            ))
+            """,
+                (
+                    record.domain,
+                    record.failure_signature,
+                    record.repair_type.value,
+                    json.dumps(record.patch),
+                    record.before_health,
+                    record.after_health,
+                ),
+            )
             conn.commit()
-            logger.info(f"Persistent repair stored for domain={record.domain} sig={record.failure_signature}")
+            logger.info(
+                f"Persistent repair stored for domain={record.domain} sig={record.failure_signature}"
+            )
 
-    def lookup(self, domain: str, failure_signature: str) -> Optional[RepairMemoryRecord]:
+    def lookup(
+        self, domain: str, failure_signature: str
+    ) -> Optional[RepairMemoryRecord]:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT domain, failure_signature, repair_type, patch_json, before_health, after_health
                 FROM repair_memory WHERE domain = ? AND failure_signature = ?
-            """, (domain, failure_signature))
+            """,
+                (domain, failure_signature),
+            )
             row = cursor.fetchone()
             if row:
                 return RepairMemoryRecord(
@@ -457,15 +517,13 @@ git commit -m "feat(healing): add SQLite-backed PersistentRepairMemory for insta
 import pytest
 from app.export.exporter import DataExporter
 
+
 def test_data_exporter_csv_and_json():
-    records = [
-        {"title": "Book 1", "price": "$10"},
-        {"title": "Book 2", "price": "$20"}
-    ]
+    records = [{"title": "Book 1", "price": "$10"}, {"title": "Book 2", "price": "$20"}]
     csv_str = DataExporter.to_csv(records)
     assert "title,price" in csv_str
     assert "Book 1,$10" in csv_str
-    
+
     json_str = DataExporter.to_json(records)
     assert '"title": "Book 1"' in json_str
 ```
@@ -482,6 +540,7 @@ import csv
 import io
 import json
 from typing import Any
+
 
 class DataExporter:
     """Exports structured scraping records to various standard file formats."""

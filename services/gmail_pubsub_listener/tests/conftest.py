@@ -1,7 +1,9 @@
 """Test configuration and fixtures."""
+
 import os
 import sys
 import tempfile
+
 import pytest
 
 # Ensure app package is importable

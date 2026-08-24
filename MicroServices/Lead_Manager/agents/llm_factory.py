@@ -3,8 +3,10 @@ Unified LLM Factory for Lead Manager.
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 import httpx
+
 from ..config.logging import get_logger
 from ..config.settings import Settings, get_settings
 
@@ -12,7 +14,7 @@ logger = get_logger("LLMFactory")
 
 
 class LLMClient:
-    def __init__(self, settings: Optional[Settings] = None):
+    def __init__(self, settings: Settings | None = None):
         self.settings = settings or get_settings()
         self.ollama_url = f"{self.settings.OLLAMA_BASE_URL.rstrip('/')}/api/generate"
         self.ollama_model = self.settings.OLLAMA_MODEL
@@ -20,10 +22,10 @@ class LLMClient:
         self.gemini_key = self.settings.GEMINI_API_KEY
         self.gemini_model = self.settings.GEMINI_MODEL
 
-    async def generate(self, prompt: str, system_prompt: Optional[str] = None) -> str:
+    async def generate(self, prompt: str, system_prompt: str | None = None) -> str:
         # 1. Try local Ollama
         try:
-            payload: Dict[str, Any] = {
+            payload: dict[str, Any] = {
                 "model": self.ollama_model,
                 "prompt": prompt,
                 "stream": False,
@@ -36,9 +38,13 @@ class LLMClient:
                 if response.status_code == 200:
                     data = response.json()
                     return data.get("response", "").strip()
-                logger.warning(f"Ollama returned HTTP {response.status_code}: {response.text}")
+                logger.warning(
+                    f"Ollama returned HTTP {response.status_code}: {response.text}"
+                )
         except Exception as e:
-            logger.warning(f"Ollama call failed ({e}). Attempting fallback if configured...")
+            logger.warning(
+                f"Ollama call failed ({e}). Attempting fallback if configured..."
+            )
 
         # 2. Try Gemini Cloud Fallback
         if self.gemini_key:
@@ -48,7 +54,9 @@ class LLMClient:
                     f"{self.gemini_model}:generateContent?key={self.gemini_key}"
                 )
                 gemini_payload = {
-                    "contents": [{"parts": [{"text": f"{system_prompt or ''}\n\n{prompt}"}]}]
+                    "contents": [
+                        {"parts": [{"text": f"{system_prompt or ''}\n\n{prompt}"}]}
+                    ]
                 }
                 async with httpx.AsyncClient(timeout=30.0) as client:
                     resp = await client.post(gemini_url, json=gemini_payload)
@@ -59,14 +67,21 @@ class LLMClient:
                             parts = candidates[0].get("content", {}).get("parts", [])
                             if parts:
                                 return parts[0].get("text", "").strip()
-                    logger.warning(f"Gemini API returned HTTP {resp.status_code}: {resp.text}")
+                    logger.warning(
+                        f"Gemini API returned HTTP {resp.status_code}: {resp.text}"
+                    )
             except Exception as ge:
                 logger.error(f"Gemini fallback failed: {ge}")
 
         return ""
 
-    async def generate_json(self, prompt: str, system_prompt: Optional[str] = None) -> Optional[Dict[str, Any]]:
-        full_system = (system_prompt or "") + "\nYou MUST return valid, parseable JSON with no extra markdown formatting or backticks."
+    async def generate_json(
+        self, prompt: str, system_prompt: str | None = None
+    ) -> dict[str, Any] | None:
+        full_system = (
+            (system_prompt or "")
+            + "\nYou MUST return valid, parseable JSON with no extra markdown formatting or backticks."
+        )
         raw = await self.generate(prompt=prompt, system_prompt=full_system)
         if not raw:
             return None
@@ -76,12 +91,13 @@ class LLMClient:
             clean = clean[7:]
         elif clean.startswith("```"):
             clean = clean[3:]
-        if clean.endswith("```"):
-            clean = clean[:-3]
+        clean = clean.removesuffix("```")
         clean = clean.strip()
 
         try:
             return json.loads(clean)
         except Exception as e:
-            logger.warning(f"Failed to parse LLM response as JSON: {e} | Raw: {raw[:200]}")
+            logger.warning(
+                f"Failed to parse LLM response as JSON: {e} | Raw: {raw[:200]}"
+            )
             return None

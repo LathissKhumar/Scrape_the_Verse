@@ -1,5 +1,6 @@
 import re
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.validation.schemas import SchemaMetric
 
 EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$")
@@ -68,7 +69,14 @@ class TypeValidator:
                 if not re.search(r"\d", cleaned):
                     return False
                 # Slogans and generic buttons without numerical context are invalid
-                if cleaned in ("free", "on request", "call for price", "get quote", "सही दाम पर", "best price"):
+                if cleaned in (
+                    "free",
+                    "on request",
+                    "call for price",
+                    "get quote",
+                    "सही दाम पर",
+                    "best price",
+                ):
                     return False
                 return True
             return False
@@ -78,8 +86,8 @@ class TypeValidator:
     def validate_records_schema(
         self,
         records: list[dict[str, Any]],
-        output_schema: Optional[dict[str, Any]],
-        required_fields: Optional[list[str]] = None,
+        output_schema: dict[str, Any] | None,
+        required_fields: list[str] | None = None,
     ) -> SchemaMetric:
         """Assess overall schema conformance across all records."""
         total = len(records)
@@ -103,7 +111,9 @@ class TypeValidator:
             for field_name, expected_type in schema.items():
                 val = r.get(field_name)
                 f_type = str(expected_type)
-                if ("price" in field_name.lower() or "cost" in field_name.lower()) and f_type in ("string", "str"):
+                if (
+                    "price" in field_name.lower() or "cost" in field_name.lower()
+                ) and f_type in ("string", "str"):
                     f_type = "price"
                 if val is not None and not self.validate_value(val, f_type):
                     record_valid = False

@@ -1,9 +1,9 @@
-import re
 import json
 import logging
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+import re
 from difflib import SequenceMatcher
+from pathlib import Path
+from typing import Any
 
 
 def setup_logging(level: str = "INFO") -> logging.Logger:
@@ -35,7 +35,7 @@ def similarity(a: str, b: str) -> float:
     return SequenceMatcher(None, a, b).ratio()
 
 
-def load_json_file(filepath: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+def load_json_file(filepath: str) -> tuple[dict[str, Any] | None, str | None]:
     path = Path(filepath)
     if not path.exists():
         return None, f"File not found: {filepath}"
@@ -48,15 +48,15 @@ def load_json_file(filepath: str) -> Tuple[Optional[Dict[str, Any]], Optional[st
             with open(path, "r", encoding=encoding) as f:
                 data = json.load(f)
             return data, None
-        except json.JSONDecodeError as e:
+        except json.JSONDecodeError:
             continue
-        except Exception as e:
+        except Exception:
             continue
 
     return None, f"Failed to parse JSON with any encoding: {filepath}"
 
 
-def find_json_files(directory: str) -> List[str]:
+def find_json_files(directory: str) -> list[str]:
     path = Path(directory)
     if not path.exists():
         return []
@@ -84,7 +84,7 @@ def truncate_text(text: str, max_length: int) -> str:
     return text[:max_length] + "... [truncated]"
 
 
-def format_issue_summary(findings: List[Dict[str, Any]], max_items: int = 10) -> str:
+def format_issue_summary(findings: list[dict[str, Any]], max_items: int = 10) -> str:
     if not findings:
         return "None"
     lines = []
@@ -98,7 +98,7 @@ def format_issue_summary(findings: List[Dict[str, Any]], max_items: int = 10) ->
     return "\n".join(lines)
 
 
-def count_findings_by_severity(findings: List[Dict[str, Any]]) -> Dict[str, int]:
+def count_findings_by_severity(findings: list[dict[str, Any]]) -> dict[str, int]:
     counts = {"critical": 0, "high": 0, "medium": 0, "low": 0}
     for f in findings:
         severity = f.get("severity", "").lower()

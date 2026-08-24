@@ -23,4 +23,3 @@ class BrightDataTimeoutError(BrightDataError):
 
 class BrightDataEmptyResultError(BrightDataError):
     """Raised when Bright Data successfully completes but returns zero records."""
-

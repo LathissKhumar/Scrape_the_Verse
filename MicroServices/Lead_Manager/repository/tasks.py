@@ -3,8 +3,9 @@ Task Repository for Async SQLite.
 """
 
 import json
-from typing import Any, Dict, List, Optional
-from ..domain.stage import TaskStatus, TaskType
+from typing import Any
+
+from ..domain.stage import TaskStatus
 from ..domain.task import LeadTask, utc_now_iso
 from .database import DatabaseManager
 
@@ -41,7 +42,9 @@ class TaskRepository:
                     task.id,
                     task.lead_id,
                     task.type,
-                    task.status.value if hasattr(task.status, "value") else str(task.status),
+                    task.status.value
+                    if hasattr(task.status, "value")
+                    else str(task.status),
                     task.due_at,
                     task.assigned_to,
                     task.title,
@@ -54,17 +57,15 @@ class TaskRepository:
             await conn.commit()
         return task
 
-    async def get_by_id(self, task_id: str) -> Optional[LeadTask]:
+    async def get_by_id(self, task_id: str) -> LeadTask | None:
         async with self.db.get_connection() as conn:
-            cursor = await conn.execute(
-                "SELECT * FROM tasks WHERE id = ?", (task_id,)
-            )
+            cursor = await conn.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))
             row = await cursor.fetchone()
             if row:
                 return self._row_to_task(row)
             return None
 
-    async def get_by_lead_id(self, lead_id: str) -> List[LeadTask]:
+    async def get_by_lead_id(self, lead_id: str) -> list[LeadTask]:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM tasks WHERE lead_id = ? ORDER BY created_at DESC",
@@ -75,13 +76,13 @@ class TaskRepository:
 
     async def list_tasks(
         self,
-        status: Optional[TaskStatus] = None,
-        assigned_to: Optional[str] = None,
+        status: TaskStatus | None = None,
+        assigned_to: str | None = None,
         limit: int = 100,
         offset: int = 0,
-    ) -> List[LeadTask]:
+    ) -> list[LeadTask]:
         query = "SELECT * FROM tasks WHERE 1=1"
-        params: List[Any] = []
+        params: list[Any] = []
 
         if status:
             query += " AND status = ?"
@@ -100,8 +101,11 @@ class TaskRepository:
             return [self._row_to_task(row) for row in rows]
 
     async def update_status(
-        self, task_id: str, status: TaskStatus, metadata: Optional[Dict[str, Any]] = None
-    ) -> Optional[LeadTask]:
+        self,
+        task_id: str,
+        status: TaskStatus,
+        metadata: dict[str, Any] | None = None,
+    ) -> LeadTask | None:
         status_str = status.value if hasattr(status, "value") else str(status)
         now_str = utc_now_iso()
 

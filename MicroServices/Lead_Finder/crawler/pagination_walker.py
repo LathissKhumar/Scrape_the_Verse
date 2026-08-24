@@ -1,8 +1,7 @@
 """Pagination walker engine advancing search and catalog pages via Next buttons or dynamic scroll."""
 
-import asyncio
 import logging
-from typing import Optional
+
 from playwright.async_api import Page
 
 logger = logging.getLogger("CRAWLER_PAGINATION_WALKER")
@@ -52,10 +51,12 @@ class PaginationWalkerEngine:
                 if hasattr(next_button, "scroll_into_view_if_needed"):
                     await next_button.scroll_into_view_if_needed(timeout=2000)
                 await next_button.click(timeout=3000)
-                
+
                 if hasattr(page, "wait_for_load_state"):
                     try:
-                        await page.wait_for_load_state("domcontentloaded", timeout=wait_timeout_ms)
+                        await page.wait_for_load_state(
+                            "domcontentloaded", timeout=wait_timeout_ms
+                        )
                     except Exception:
                         pass
                 if hasattr(page, "wait_for_timeout"):

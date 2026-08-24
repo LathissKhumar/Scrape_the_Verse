@@ -1,7 +1,7 @@
 """Body parsing and sanitization utilities."""
-import re
-from typing import Optional, Tuple
+
 import email.message
+import re
 
 
 def html_to_plain_text(html_content: str) -> str:
@@ -9,7 +9,12 @@ def html_to_plain_text(html_content: str) -> str:
     if not html_content:
         return ""
     # Remove style and script tags
-    cleaned = re.sub(r"<(script|style).*?>.*?</\1>", "", html_content, flags=re.DOTALL | re.IGNORECASE)
+    cleaned = re.sub(
+        r"<(script|style).*?>.*?</\1>",
+        "",
+        html_content,
+        flags=re.DOTALL | re.IGNORECASE,
+    )
     # Replace <br> and <p> with newlines
     cleaned = re.sub(r"<br\s*/?>", "\n", cleaned, flags=re.IGNORECASE)
     cleaned = re.sub(r"</p>", "\n\n", cleaned, flags=re.IGNORECASE)
@@ -29,7 +34,9 @@ def html_to_plain_text(html_content: str) -> str:
     return cleaned.strip()
 
 
-def extract_body_parts(msg: email.message.Message) -> Tuple[Optional[str], Optional[str]]:
+def extract_body_parts(
+    msg: email.message.Message,
+) -> tuple[str | None, str | None]:
     """Traverses MIME parts to extract (plain_text_body, html_body)."""
     text_parts = []
     html_parts = []

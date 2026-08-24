@@ -1,6 +1,7 @@
 """Deterministic XPath-based structured extraction using lxml."""
 
 from typing import Any
+
 import lxml.html
 from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
@@ -48,7 +49,9 @@ class XPathExtractor:
                     try:
                         xpath_expr = field_rule.selector
                         # Ensure relative xpath if not already prefixed
-                        if not xpath_expr.startswith(".") and not xpath_expr.startswith("/"):
+                        if not xpath_expr.startswith(".") and not xpath_expr.startswith(
+                            "/"
+                        ):
                             xpath_expr = f".//{xpath_expr}"
 
                         results = container.xpath(xpath_expr)
@@ -76,4 +79,3 @@ class XPathExtractor:
                 records.append(record)
 
         return records
-

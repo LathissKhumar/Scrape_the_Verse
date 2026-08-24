@@ -1,10 +1,10 @@
 """Thread-safe SQLite database connection manager with WAL mode and busy timeout handling."""
 
-import os
 import sqlite3
 import threading
+from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Generator
+
 from leadfinder.config.logging import get_logger
 
 logger = get_logger("SQLITE_DB_POOL")
@@ -31,7 +31,9 @@ def get_sqlite_connection(db_path: str, timeout: float = 15.0) -> sqlite3.Connec
 
 
 @contextmanager
-def safe_sqlite_transaction(db_path: str, timeout: float = 15.0) -> Generator[sqlite3.Connection, None, None]:
+def safe_sqlite_transaction(
+    db_path: str, timeout: float = 15.0
+) -> Generator[sqlite3.Connection, None, None]:
     """Context manager acquiring a thread mutex and executing within a clean SQLite transaction."""
     lock = get_db_lock(db_path)
     with lock:

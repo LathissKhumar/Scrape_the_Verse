@@ -3,7 +3,7 @@
  * Real-Time AI Telephony via Twilio Carrier PSTN, Multi-Turn Brain, Simulated Call Engine, and Meeting Auto-Bookings.
  */
 
-import { API_URLS, safeFetch } from './client';
+import { API_URLS, safeFetch } from "./client";
 
 export interface VoiceConfigStatus {
   twilio_configured: boolean;
@@ -20,7 +20,7 @@ export interface CallSessionResult {
   lead_id?: string;
   company_name: string;
   contact_name?: string;
-  status: 'COMPLETED' | 'IN_PROGRESS' | 'SCHEDULED' | 'FAILED';
+  status: "COMPLETED" | "IN_PROGRESS" | "SCHEDULED" | "FAILED";
   disposition?: string;
   interest_score: number;
   transcript: Array<{ speaker: string; text: string; timestamp?: string }>;
@@ -41,7 +41,9 @@ export interface OutboundCallResponse {
  * Fetch Twilio carrier telephony configuration status.
  */
 export async function getVoiceConfig(): Promise<VoiceConfigStatus | null> {
-  const res = await safeFetch<VoiceConfigStatus>(`${API_URLS.VOICE_AGENT}/api/v1/voice/config`);
+  const res = await safeFetch<VoiceConfigStatus>(
+    `${API_URLS.VOICE_AGENT}/api/v1/voice/config`,
+  );
   return res.data;
 }
 
@@ -58,10 +60,10 @@ export async function initiateOutboundCall(params: {
   const res = await safeFetch<OutboundCallResponse>(
     `${API_URLS.VOICE_AGENT}/api/v1/voice/call/initiate`,
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(params),
     },
-    20000
+    20000,
   );
 
   if (res.data) {
@@ -70,24 +72,31 @@ export async function initiateOutboundCall(params: {
 
   return {
     success: false,
-    error: res.error || 'Failed to initiate outbound call',
+    error: res.error || "Failed to initiate outbound call",
   };
 }
 
 /**
  * Send a 1-line verified audio test call to verify phone audio delivery.
  */
-export async function sendTestCall(toPhone: string): Promise<OutboundCallResponse> {
+export async function sendTestCall(
+  toPhone: string,
+): Promise<OutboundCallResponse> {
   const res = await safeFetch<OutboundCallResponse>(
     `${API_URLS.VOICE_AGENT}/api/v1/voice/call/test`,
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ to_phone: toPhone }),
     },
-    20000
+    20000,
   );
 
-  return res.data || { success: false, error: res.error || 'Failed to send test call' };
+  return (
+    res.data || {
+      success: false,
+      error: res.error || "Failed to send test call",
+    }
+  );
 }
 
 /**
@@ -100,14 +109,18 @@ export async function runSimulatedCall(params: {
   has_website?: boolean;
   lead_id?: string;
   simulated_prospect_responses?: string[];
-}): Promise<{ session: CallSessionResult | null; isLive: boolean; error: string | null }> {
+}): Promise<{
+  session: CallSessionResult | null;
+  isLive: boolean;
+  error: string | null;
+}> {
   const res = await safeFetch<CallSessionResult>(
     `${API_URLS.VOICE_AGENT}/api/v1/voice/simulate-call`,
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(params),
     },
-    45000
+    45000,
   );
 
   return {

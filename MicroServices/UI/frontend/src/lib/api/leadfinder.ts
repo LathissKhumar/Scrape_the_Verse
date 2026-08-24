@@ -4,7 +4,7 @@
  * Handles Google Maps discovery, Bright Data B2B leads, Scraper jobs, and DCA collector registry.
  */
 
-import { API_URLS, safeFetch } from './client';
+import { API_URLS, safeFetch } from "./client";
 
 export interface GMapLeadItem {
   name: string;
@@ -38,7 +38,7 @@ export interface ScraperRecord {
   collector_id: string;
   name: string;
   target_domain: string;
-  status: 'READY' | 'CREATING' | 'HEALING' | 'ERROR';
+  status: "READY" | "CREATING" | "HEALING" | "ERROR";
   records_extracted: number;
   health_score: number;
   last_healed?: string;
@@ -47,7 +47,7 @@ export interface ScraperRecord {
 
 export interface JobStatusResponse {
   job_id: string;
-  status: 'queued' | 'running' | 'completed' | 'failed';
+  status: "queued" | "running" | "completed" | "failed";
   total_urls: number;
   processed_urls?: number;
   records_extracted?: number;
@@ -59,8 +59,13 @@ export interface JobStatusResponse {
  */
 export async function searchGoogleMapsLeads(
   query: string,
-  location?: string
-): Promise<{ leads: GMapLeadItem[]; total: number; isLive: boolean; error: string | null }> {
+  location?: string,
+): Promise<{
+  leads: GMapLeadItem[];
+  total: number;
+  isLive: boolean;
+  error: string | null;
+}> {
   const fullQuery = location ? `${query} in ${location}` : query;
   const result = await safeFetch<{
     query: string;
@@ -68,10 +73,14 @@ export async function searchGoogleMapsLeads(
     location: string;
     total_leads: number;
     leads: GMapLeadItem[];
-  }>(`${API_URLS.LEADFINDER}/api/v1/gmaps/leads`, {
-    method: 'POST',
-    body: JSON.stringify({ query: fullQuery }),
-  }, 45000);
+  }>(
+    `${API_URLS.LEADFINDER}/api/v1/gmaps/leads`,
+    {
+      method: "POST",
+      body: JSON.stringify({ query: fullQuery }),
+    },
+    45000,
+  );
 
   if (result.data && result.data.leads) {
     return {
@@ -86,7 +95,7 @@ export async function searchGoogleMapsLeads(
     leads: [],
     total: 0,
     isLive: result.isLive,
-    error: result.error || 'Failed to fetch Google Maps leads from leadfinder',
+    error: result.error || "Failed to fetch Google Maps leads from leadfinder",
   };
 }
 
@@ -95,19 +104,28 @@ export async function searchGoogleMapsLeads(
  */
 export async function searchBrightDataLeads(
   query: string,
-  enrich: boolean = true
-): Promise<{ leads: BrightDataLeadItem[]; total: number; isLive: boolean; error: string | null }> {
+  enrich: boolean = true,
+): Promise<{
+  leads: BrightDataLeadItem[];
+  total: number;
+  isLive: boolean;
+  error: string | null;
+}> {
   const result = await safeFetch<{
     query: string;
     total_leads: number;
     leads: BrightDataLeadItem[];
-  }>(`${API_URLS.LEADFINDER}/api/v1/brightdata/leads`, {
-    method: 'POST',
-    body: JSON.stringify({
-      query,
-      metadata: { enrich },
-    }),
-  }, 60000);
+  }>(
+    `${API_URLS.LEADFINDER}/api/v1/brightdata/leads`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        query,
+        metadata: { enrich },
+      }),
+    },
+    60000,
+  );
 
   if (result.data && result.data.leads) {
     return {
@@ -122,7 +140,7 @@ export async function searchBrightDataLeads(
     leads: [],
     total: 0,
     isLive: result.isLive,
-    error: result.error || 'Failed to fetch Bright Data leads from leadfinder',
+    error: result.error || "Failed to fetch Bright Data leads from leadfinder",
   };
 }
 
@@ -131,15 +149,20 @@ export async function searchBrightDataLeads(
  */
 export async function submitScrapingJob(
   query: string,
-  targetUrls: string[]
-): Promise<{ jobId: string | null; status: string; isLive: boolean; error: string | null }> {
+  targetUrls: string[],
+): Promise<{
+  jobId: string | null;
+  status: string;
+  isLive: boolean;
+  error: string | null;
+}> {
   const result = await safeFetch<{
     job_id: string;
     status: string;
     total_urls: number;
     status_url: string;
   }>(`${API_URLS.LEADFINDER}/api/v1/jobs`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({
       query,
       target_urls: targetUrls,
@@ -157,26 +180,33 @@ export async function submitScrapingJob(
 
   return {
     jobId: null,
-    status: 'failed',
+    status: "failed",
     isLive: result.isLive,
-    error: result.error || 'Failed to submit scraping job to leadfinder',
+    error: result.error || "Failed to submit scraping job to leadfinder",
   };
 }
 
 /**
  * Checks progress of an async scraping job in leadfinder.
  */
-export async function getScrapingJobStatus(jobId: string): Promise<JobStatusResponse | null> {
-  const result = await safeFetch<JobStatusResponse>(`${API_URLS.LEADFINDER}/api/v1/jobs/${jobId}`);
+export async function getScrapingJobStatus(
+  jobId: string,
+): Promise<JobStatusResponse | null> {
+  const result = await safeFetch<JobStatusResponse>(
+    `${API_URLS.LEADFINDER}/api/v1/jobs/${jobId}`,
+  );
   return result.data;
 }
 
 /**
  * Lists DCA collectors in the leadfinder self-healing registry.
  */
-export async function listRegistryScrapers(): Promise<{ scrapers: ScraperRecord[]; isLive: boolean }> {
+export async function listRegistryScrapers(): Promise<{
+  scrapers: ScraperRecord[];
+  isLive: boolean;
+}> {
   const result = await safeFetch<{ total: number; scrapers: ScraperRecord[] }>(
-    `${API_URLS.LEADFINDER}/scrapers`
+    `${API_URLS.LEADFINDER}/scrapers`,
   );
 
   if (result.data && result.data.scrapers) {
@@ -191,29 +221,35 @@ export async function listRegistryScrapers(): Promise<{ scrapers: ScraperRecord[
  */
 export async function healCollector(
   collectorId: string,
-  failureDescription: string
+  failureDescription: string,
 ): Promise<{ success: boolean; message: string }> {
   const result = await safeFetch<{
     collector_id: string;
     status: string;
     repair_summary?: string;
-  }>(`${API_URLS.LEADFINDER}/scrapers/heal`, {
-    method: 'POST',
-    body: JSON.stringify({
-      collector_id: collectorId,
-      failure_description: failureDescription,
-    }),
-  }, 45000);
+  }>(
+    `${API_URLS.LEADFINDER}/scrapers/heal`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        collector_id: collectorId,
+        failure_description: failureDescription,
+      }),
+    },
+    45000,
+  );
 
-  if (result.data && result.data.status === 'success') {
+  if (result.data && result.data.status === "success") {
     return {
       success: true,
-      message: result.data.repair_summary || `Collector ${collectorId} successfully repaired.`,
+      message:
+        result.data.repair_summary ||
+        `Collector ${collectorId} successfully repaired.`,
     };
   }
 
   return {
     success: false,
-    message: result.error || 'Self-healing request failed in leadfinder',
+    message: result.error || "Self-healing request failed in leadfinder",
   };
 }

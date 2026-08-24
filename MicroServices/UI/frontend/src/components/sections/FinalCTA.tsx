@@ -1,68 +1,68 @@
-'use client'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useEffect, useRef } from 'react'
-import { ArrowRight, Calendar, Sparkles } from 'lucide-react'
-import { GradientText } from '@/components/ui/GradientText'
-import Link from 'next/link'
+"use client";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { ArrowRight, Calendar, Sparkles } from "lucide-react";
+import { GradientText } from "@/components/ui/GradientText";
+import Link from "next/link";
 
 export function FinalCTA() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const magneticWrapRef = useRef<HTMLDivElement>(null)
-  const magneticBtnRef = useRef<HTMLButtonElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const magneticWrapRef = useRef<HTMLDivElement>(null);
+  const magneticBtnRef = useRef<HTMLButtonElement>(null);
 
   // 1. Parallax Scrolling Background Text at 0.3x speed
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [-80, 80])
+    offset: ["start end", "end start"],
+  });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [-80, 80]);
 
   // 2. Magnetic CTA button with lerp cursor attraction within 80px radius
   useEffect(() => {
-    const wrap = magneticWrapRef.current
-    const btn = magneticBtnRef.current
-    if (!wrap || !btn) return
+    const wrap = magneticWrapRef.current;
+    const btn = magneticBtnRef.current;
+    if (!wrap || !btn) return;
 
-    let targetX = 0
-    let targetY = 0
-    let currentX = 0
-    let currentY = 0
-    let animId: number
-    const RADIUS = 85
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let animId: number;
+    const RADIUS = 85;
 
     const onMouseMove = (e: MouseEvent) => {
-      const rect = wrap.getBoundingClientRect()
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
-      const dx = e.clientX - centerX
-      const dy = e.clientY - centerY
-      const distance = Math.sqrt(dx * dx + dy * dy)
+      const rect = wrap.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dx = e.clientX - centerX;
+      const dy = e.clientY - centerY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < RADIUS) {
-        const pull = (RADIUS - distance) / RADIUS
-        targetX = dx * pull * 0.55
-        targetY = dy * pull * 0.55
+        const pull = (RADIUS - distance) / RADIUS;
+        targetX = dx * pull * 0.55;
+        targetY = dy * pull * 0.55;
       } else {
-        targetX = 0
-        targetY = 0
+        targetX = 0;
+        targetY = 0;
       }
-    }
+    };
 
     const render = () => {
-      currentX += (targetX - currentX) * 0.12
-      currentY += (targetY - currentY) * 0.12
-      btn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`
-      animId = requestAnimationFrame(render)
-    }
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+      btn.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+      animId = requestAnimationFrame(render);
+    };
 
-    window.addEventListener('mousemove', onMouseMove, { passive: true })
-    animId = requestAnimationFrame(render)
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    animId = requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove)
-      cancelAnimationFrame(animId)
-    }
-  }, [])
+      window.removeEventListener("mousemove", onMouseMove);
+      cancelAnimationFrame(animId);
+    };
+  }, []);
 
   return (
     <section
@@ -82,8 +82,8 @@ export function FinalCTA() {
         <span
           className="text-7xl sm:text-9xl md:text-[140px] font-black uppercase tracking-tighter"
           style={{
-            WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.15)',
-            color: 'transparent',
+            WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.15)",
+            color: "transparent",
           }}
         >
           LET&apos;S BUILD
@@ -94,7 +94,7 @@ export function FinalCTA() {
         <motion.div
           initial={{ opacity: 0, scale: 0.88, y: 45 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-8"
         >
@@ -109,11 +109,15 @@ export function FinalCTA() {
           <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-display leading-[1.1] tracking-tight text-text-primary">
             We don&apos;t stop at finding leads.
             <br />
-            <GradientText>We tell you what they need, what to sell, and what to build.</GradientText>
+            <GradientText>
+              We tell you what they need, what to sell, and what to build.
+            </GradientText>
           </h2>
 
           <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
-            AgencyOS is the AI-powered lead-to-opportunity engine for web and SEO agencies. Discover leads, audit sites, detect opportunities, generate specs, and close deals — automatically.
+            AgencyOS is the AI-powered lead-to-opportunity engine for web and
+            SEO agencies. Discover leads, audit sites, detect opportunities,
+            generate specs, and close deals — automatically.
           </p>
 
           {/* Magnetic CTA Buttons */}
@@ -132,14 +136,16 @@ export function FinalCTA() {
                     className="absolute -inset-[2px] rounded-full z-[-1] animate-spin"
                     style={{
                       background:
-                        'conic-gradient(from 0deg, #38BDF8, #818CF8, #34D399, #38BDF8)',
-                      animationDuration: '3.5s',
+                        "conic-gradient(from 0deg, #38BDF8, #818CF8, #34D399, #38BDF8)",
+                      animationDuration: "3.5s",
                     }}
                   />
                   {/* Button Inner Surface */}
                   <span className="absolute inset-[1.5px] rounded-full bg-[#0B0F19] z-[-1] backdrop-blur-md group-hover:bg-[#121B2A] transition-colors" />
 
-                  <span className="relative z-10 tracking-wide">Launch Command Center</span>
+                  <span className="relative z-10 tracking-wide">
+                    Launch Command Center
+                  </span>
                   <ArrowRight className="w-5 h-5 text-cyan-300 relative z-10 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
@@ -159,5 +165,5 @@ export function FinalCTA() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

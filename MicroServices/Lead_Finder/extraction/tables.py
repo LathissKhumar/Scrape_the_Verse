@@ -1,6 +1,7 @@
 """Deterministic HTML table detection, quality scoring, and structured extraction."""
 
-from typing import Any, Optional
+from typing import Any
+
 from bs4 import BeautifulSoup, Tag
 from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
@@ -72,23 +73,27 @@ class TableExtractor:
                     extracted_rows.append(cells)
 
             if extracted_rows:
-                parsed_tables.append({
-                    "table_index": idx,
-                    "score": quality,
-                    "headers": headers,
-                    "rows": extracted_rows,
-                    "metadata": {
-                        "row_count": len(extracted_rows),
-                        "column_count": len(headers) if headers else (len(extracted_rows[0]) if extracted_rows else 0),
-                    },
-                })
+                parsed_tables.append(
+                    {
+                        "table_index": idx,
+                        "score": quality,
+                        "headers": headers,
+                        "rows": extracted_rows,
+                        "metadata": {
+                            "row_count": len(extracted_rows),
+                            "column_count": len(headers)
+                            if headers
+                            else (len(extracted_rows[0]) if extracted_rows else 0),
+                        },
+                    }
+                )
 
         return parsed_tables
 
     def extract(
         self,
         content: str | RawPage,
-        schema: Optional[ExtractionSchema] = None,
+        schema: ExtractionSchema | None = None,
     ) -> list[dict[str, Any]]:
         """Extract structured records from data tables mapped to requested schema fields."""
         tables = self.extract_tables(content)
@@ -103,7 +108,9 @@ class TableExtractor:
 
         records: list[dict[str, Any]] = []
 
-        target_field_names = [f.name for f in schema.fields] if schema and schema.fields else None
+        target_field_names = (
+            [f.name for f in schema.fields] if schema and schema.fields else None
+        )
 
         for row in rows:
             record: dict[str, Any] = {}
@@ -131,4 +138,3 @@ class TableExtractor:
                 records.append(record)
 
         return records
-

@@ -3,7 +3,8 @@
 import asyncio
 import os
 import time
-from typing import Any, Callable, Coroutine, Optional
+from collections.abc import Callable, Coroutine
+from typing import Any
 from uuid import uuid4
 
 from leadfinder.brightdata.registry import ScraperRegistry, default_scraper_registry
@@ -20,11 +21,13 @@ class ScraperJobManager:
 
     def __init__(
         self,
-        db_path: Optional[str] = None,
-        registry: Optional[ScraperRegistry] = None,
+        db_path: str | None = None,
+        registry: ScraperRegistry | None = None,
     ) -> None:
         settings = get_settings()
-        path = db_path or getattr(settings, "BRIGHTDATA_REGISTRY_DB_PATH", ".brightdata_registry.sqlite")
+        path = db_path or getattr(
+            settings, "BRIGHTDATA_REGISTRY_DB_PATH", ".brightdata_registry.sqlite"
+        )
         if not os.path.exists(path) and os.path.exists(os.path.join("app", path)):
             path = os.path.join("app", path)
         self.db_path = path
@@ -66,7 +69,9 @@ class ScraperJobManager:
             updated_at=row[6],
         )
 
-    def create_job(self, scraper_id: str, job_id: Optional[str] = None) -> CollectorJobRecord:
+    def create_job(
+        self, scraper_id: str, job_id: str | None = None
+    ) -> CollectorJobRecord:
         """Create a new job record in CREATING state."""
         jid = job_id or f"job_{uuid4().hex[:12]}"
         now = time.time()
@@ -92,9 +97,9 @@ class ScraperJobManager:
         self,
         job_id: str,
         status: CollectorStatus,
-        collector_id: Optional[str] = None,
-        error: Optional[str] = None,
-    ) -> Optional[CollectorJobRecord]:
+        collector_id: str | None = None,
+        error: str | None = None,
+    ) -> CollectorJobRecord | None:
         """Update job status, collector ID, or error message."""
         now = time.time()
         with safe_sqlite_transaction(self.db_path) as conn:
@@ -118,7 +123,7 @@ class ScraperJobManager:
                 )
         return self.get_job(job_id)
 
-    def get_job(self, job_id: str) -> Optional[CollectorJobRecord]:
+    def get_job(self, job_id: str) -> CollectorJobRecord | None:
         """Fetch job progress record by job ID."""
         conn = get_sqlite_connection(self.db_path)
         try:
@@ -136,7 +141,7 @@ class ScraperJobManager:
         finally:
             conn.close()
 
-    def find_active_job_for_scraper(self, scraper_id: str) -> Optional[CollectorJobRecord]:
+    def find_active_job_for_scraper(self, scraper_id: str) -> CollectorJobRecord | None:
         """Find any currently running or in-progress creation job for a given scraper ID."""
         conn = get_sqlite_connection(self.db_path)
         try:
@@ -163,12 +168,17 @@ class ScraperJobManager:
         create_coro_factory: Callable[[], Coroutine[Any, Any, str]],
     ) -> asyncio.Task:
         """Launch background asyncio task executing scraper creation and persisting result."""
+
         async def _worker() -> None:
-            logger.info(f"SCRAPER_CREATION_STARTED job_id={job_id} scraper_id={scraper_id}")
+            logger.info(
+                f"SCRAPER_CREATION_STARTED job_id={job_id} scraper_id={scraper_id}"
+            )
             try:
                 collector_id = await create_coro_factory()
                 if not collector_id or not collector_id.startswith("c_"):
-                    raise ValueError(f"Invalid Bright Data Collector ID returned: '{collector_id}'")
+                    raise ValueError(
+                        f"Invalid Bright Data Collector ID returned: '{collector_id}'"
+                    )
 
                 # Update registry & job record to READY
                 self.registry.update_status(

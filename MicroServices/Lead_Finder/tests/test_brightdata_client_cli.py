@@ -1,14 +1,12 @@
 """Unit tests for BrightDataClient CLI subprocess wrapper and error handling."""
 
-import pytest
 from unittest.mock import AsyncMock, patch
 
+import pytest
 from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.exceptions import (
     BrightDataConfigError,
-    BrightDataError,
     BrightDataJobError,
-    BrightDataTimeoutError,
 )
 from leadfinder.config.settings import Settings
 
@@ -25,7 +23,9 @@ def configured_client():
 
 @pytest.mark.asyncio
 async def test_create_scraper_success(configured_client):
-    with patch.object(configured_client, "_execute_cli_subprocess", new_callable=AsyncMock) as mock_exec:
+    with patch.object(
+        configured_client, "_execute_cli_subprocess", new_callable=AsyncMock
+    ) as mock_exec:
         mock_exec.return_value = (
             0,
             "Creating collector...\nCollector ID: c_m123456789 ready for use\nDone",
@@ -41,7 +41,9 @@ async def test_create_scraper_success(configured_client):
 
 @pytest.mark.asyncio
 async def test_create_scraper_cli_failure(configured_client):
-    with patch.object(configured_client, "_execute_cli_subprocess", new_callable=AsyncMock) as mock_exec:
+    with patch.object(
+        configured_client, "_execute_cli_subprocess", new_callable=AsyncMock
+    ) as mock_exec:
         mock_exec.return_value = (
             1,
             "",
@@ -58,7 +60,9 @@ async def test_create_scraper_cli_failure(configured_client):
 
 @pytest.mark.asyncio
 async def test_create_scraper_missing_collector_id_in_output(configured_client):
-    with patch.object(configured_client, "_execute_cli_subprocess", new_callable=AsyncMock) as mock_exec:
+    with patch.object(
+        configured_client, "_execute_cli_subprocess", new_callable=AsyncMock
+    ) as mock_exec:
         mock_exec.return_value = (
             0,
             "Scraper creation succeeded without identifier output",
@@ -75,7 +79,9 @@ async def test_create_scraper_missing_collector_id_in_output(configured_client):
 
 @pytest.mark.asyncio
 async def test_run_scraper_success(configured_client):
-    with patch.object(configured_client, "scrape_via_cli", new_callable=AsyncMock) as mock_run:
+    with patch.object(
+        configured_client, "scrape_via_cli", new_callable=AsyncMock
+    ) as mock_run:
         mock_run.return_value = [
             {"product_name": "Laptop", "price": "$999"},
             {"product_name": "Mouse", "price": "$29"},
@@ -100,7 +106,9 @@ async def test_run_scraper_invalid_collector_id(configured_client):
 
 @pytest.mark.asyncio
 async def test_heal_scraper_success(configured_client):
-    with patch.object(configured_client, "_execute_cli_subprocess", new_callable=AsyncMock) as mock_exec:
+    with patch.object(
+        configured_client, "_execute_cli_subprocess", new_callable=AsyncMock
+    ) as mock_exec:
         mock_exec.return_value = (
             0,
             "Collector c_m123456789 healed successfully.",
@@ -117,7 +125,9 @@ async def test_heal_scraper_success(configured_client):
 
 @pytest.mark.asyncio
 async def test_heal_scraper_failure(configured_client):
-    with patch.object(configured_client, "_execute_cli_subprocess", new_callable=AsyncMock) as mock_exec:
+    with patch.object(
+        configured_client, "_execute_cli_subprocess", new_callable=AsyncMock
+    ) as mock_exec:
         mock_exec.return_value = (
             1,
             "",
@@ -147,22 +157,48 @@ def test_cli_base_command_resolution():
 
 @pytest.mark.asyncio
 async def test_exact_cli_argument_lists(configured_client):
-    with patch.object(configured_client, "_execute_cli_subprocess", new_callable=AsyncMock) as mock_exec:
-        mock_exec.return_value = (0, '{"collector_id": "c_exact123", "status": "ready"}', "")
+    with patch.object(
+        configured_client, "_execute_cli_subprocess", new_callable=AsyncMock
+    ) as mock_exec:
+        mock_exec.return_value = (
+            0,
+            '{"collector_id": "c_exact123", "status": "ready"}',
+            "",
+        )
 
         # 1. Create Scraper
-        col_id = await configured_client.create_scraper("https://example.com", "extract titles")
+        col_id = await configured_client.create_scraper(
+            "https://example.com", "extract titles"
+        )
         assert col_id == "c_exact123"
         args_create = mock_exec.call_args_list[0][0][0]
-        assert args_create == ["scraper", "create", "https://example.com", "extract titles", "--json"]
+        assert args_create == [
+            "scraper",
+            "create",
+            "https://example.com",
+            "extract titles",
+            "--json",
+        ]
 
         # 2. Heal Scraper
         await configured_client.heal_scraper("c_exact123", "fix price selector")
         args_heal = mock_exec.call_args_list[1][0][0]
-        assert args_heal == ["scraper", "heal", "c_exact123", "fix price selector", "--json"]
+        assert args_heal == [
+            "scraper",
+            "heal",
+            "c_exact123",
+            "fix price selector",
+            "--json",
+        ]
 
         # 3. Scrape Via CLI (Run)
         mock_exec.return_value = (0, '[{"title": "Item 1"}]', "")
         await configured_client.scrape_via_cli("c_exact123", "https://example.com")
         args_run = mock_exec.call_args_list[2][0][0]
-        assert args_run == ["scraper", "run", "c_exact123", "https://example.com", "--json"]
+        assert args_run == [
+            "scraper",
+            "run",
+            "c_exact123",
+            "https://example.com",
+            "--json",
+        ]

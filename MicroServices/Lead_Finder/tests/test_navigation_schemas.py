@@ -1,4 +1,3 @@
-from leadfinder.graph.state import ScrapingGraphState
 from leadfinder.models.schemas import ScrapingTask
 
 

@@ -3,7 +3,7 @@
  * Handles Autonomous Web Crawling (LibreCrawl), 6-domain SEO Audits, Opportunity Synthesis, Proposal Generation, and Outreach Preparation.
  */
 
-import { API_URLS, safeFetch } from './client';
+import { API_URLS, safeFetch } from "./client";
 
 export interface WebsiteAuditResult {
   url: string;
@@ -23,7 +23,7 @@ export interface WebsiteAuditResult {
   };
   issues: {
     domain: string;
-    severity: 'critical' | 'warning' | 'info';
+    severity: "critical" | "warning" | "info";
     message: string;
     affected_urls?: string[];
   }[];
@@ -39,7 +39,7 @@ export interface SDRFullPipelineResult {
   lead_id: string;
   company_name: string;
   website_url?: string;
-  status: 'PROCESSED' | 'FAILED';
+  status: "PROCESSED" | "FAILED";
   fit_score: number;
   opportunity_score: number;
   audit_summary?: WebsiteAuditResult;
@@ -70,12 +70,16 @@ export async function auditWebsite(
   url: string,
   maxDepth: number = 2,
   maxPages: number = 10,
-  javascript: boolean = false
-): Promise<{ audit: WebsiteAuditResult | null; isLive: boolean; error: string | null }> {
+  javascript: boolean = false,
+): Promise<{
+  audit: WebsiteAuditResult | null;
+  isLive: boolean;
+  error: string | null;
+}> {
   const result = await safeFetch<WebsiteAuditResult>(
     `${API_URLS.SDR}/api/v1/audit`,
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         url,
         max_depth: maxDepth,
@@ -83,7 +87,7 @@ export async function auditWebsite(
         javascript,
       }),
     },
-    60000
+    60000,
   );
 
   return {
@@ -106,19 +110,23 @@ export async function executeFullSdrPipeline(prospectData: {
   industry?: string;
   location?: string;
   source?: string;
-}): Promise<{ result: SDRFullPipelineResult | null; isLive: boolean; error: string | null }> {
+}): Promise<{
+  result: SDRFullPipelineResult | null;
+  isLive: boolean;
+  error: string | null;
+}> {
   const payload = {
     ...prospectData,
-    source: prospectData.source || 'leadfinder+sdr',
+    source: prospectData.source || "leadfinder+sdr",
   };
 
   const response = await safeFetch<SDRFullPipelineResult>(
     `${API_URLS.SDR}/api/v1/pipeline/process-target`,
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(payload),
     },
-    75000
+    75000,
   );
 
   return {

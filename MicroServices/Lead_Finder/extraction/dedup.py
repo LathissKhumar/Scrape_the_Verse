@@ -2,9 +2,18 @@
 
 import hashlib
 import json
-from typing import Any, Optional
+from typing import Any
 
-PRIMARY_KEY_CANDIDATES = ["url", "product_url", "link", "id", "sku", "email", "title", "name"]
+PRIMARY_KEY_CANDIDATES = [
+    "url",
+    "product_url",
+    "link",
+    "id",
+    "sku",
+    "email",
+    "title",
+    "name",
+]
 
 
 class RecordDeduplicator:
@@ -13,7 +22,7 @@ class RecordDeduplicator:
     def deduplicate(
         self,
         records: list[dict[str, Any]],
-        key_field: Optional[str] = None,
+        key_field: str | None = None,
     ) -> list[dict[str, Any]]:
         """Deduplicate records preserving insertion order."""
         if not records:
@@ -27,7 +36,7 @@ class RecordDeduplicator:
         if not effective_key:
             sample = records[0]
             for candidate in PRIMARY_KEY_CANDIDATES:
-                if candidate in sample and sample[candidate]:
+                if sample.get(candidate):
                     effective_key = candidate
                     break
 
@@ -47,9 +56,13 @@ class RecordDeduplicator:
                 dedup_key = f"{effective_key}:{str(normalized_record[effective_key]).strip().lower()}"
             else:
                 # Composite hash of sorted items
-                sorted_items = sorted([
-                    (str(key), str(val).strip()) for key, val in normalized_record.items() if val is not None
-                ])
+                sorted_items = sorted(
+                    [
+                        (str(key), str(val).strip())
+                        for key, val in normalized_record.items()
+                        if val is not None
+                    ]
+                )
                 serialized = json.dumps(sorted_items, sort_keys=True)
                 dedup_key = hashlib.md5(serialized.encode("utf-8")).hexdigest()
 
@@ -58,4 +71,3 @@ class RecordDeduplicator:
                 deduped.append(normalized_record)
 
         return deduped
-

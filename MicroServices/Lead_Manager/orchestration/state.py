@@ -2,7 +2,8 @@
 LangGraph Workflow State Definition for Lead Manager.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from typing_extensions import TypedDict
 
 
@@ -11,20 +12,20 @@ class LeadWorkflowState(TypedDict, total=False):
     event_type: str
     lead_id: str
     actor: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
 
     current_stage: str
-    new_stage: Optional[str]
-    lead_data: Optional[Dict[str, Any]]
-    validation_error: Optional[str]
+    new_stage: str | None
+    lead_data: dict[str, Any] | None
+    validation_error: str | None
     transition_valid: bool
-    transition_reason: Optional[str]
+    transition_reason: str | None
 
-    intent_result: Optional[Dict[str, Any]]
-    meeting_result: Optional[Dict[str, Any]]
+    intent_result: dict[str, Any] | None
+    meeting_result: dict[str, Any] | None
 
-    created_activities: List[Dict[str, Any]]
-    created_tasks: List[Dict[str, Any]]
-    published_events: List[Dict[str, Any]]
+    created_activities: list[dict[str, Any]]
+    created_tasks: list[dict[str, Any]]
+    published_events: list[dict[str, Any]]
 
     is_new_lead: bool

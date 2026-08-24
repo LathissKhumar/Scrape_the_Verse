@@ -4,11 +4,12 @@ Ultra-realistic Neural Text-to-Speech (Edge-TTS) and real-time Speech-to-Text (S
 """
 
 import asyncio
-import io
 import subprocess
-from typing import AsyncGenerator, List, Optional
+from collections.abc import AsyncGenerator
+
 import edge_tts
 import speech_recognition as sr
+
 from .audio_utils import AudioUtils
 from .config.settings import get_voice_settings
 
@@ -18,12 +19,12 @@ class VoiceEngine:
     Voice Engine handling real-time audio synthesis (TTS) and transcription (STT).
     """
 
-    def __init__(self, voice: Optional[str] = None):
+    def __init__(self, voice: str | None = None):
         self.settings = get_voice_settings()
         self.voice = voice or self.settings.VOICE_TTS_VOICE
         self.recognizer = sr.Recognizer()
 
-    async def synthesize_to_mulaw(self, text: str, voice: Optional[str] = None) -> bytes:
+    async def synthesize_to_mulaw(self, text: str, voice: str | None = None) -> bytes:
         """
         Synthesize text to 8000Hz 8-bit mulaw audio bytes using Edge-TTS and ffmpeg.
         """
@@ -33,7 +34,7 @@ class VoiceEngine:
 
         # 1. Generate MP3 stream via Edge-TTS
         communicate = edge_tts.Communicate(text.strip(), target_voice)
-        audio_chunks: List[bytes] = []
+        audio_chunks: list[bytes] = []
         async for chunk in communicate.stream():
             if chunk["type"] == "audio":
                 audio_chunks.append(chunk["data"])
@@ -55,7 +56,18 @@ class VoiceEngine:
         """Synchronous helper running ffmpeg pipe."""
         try:
             proc = subprocess.Popen(
-                ["ffmpeg", "-i", "pipe:0", "-f", "mulaw", "-ar", "8000", "-ac", "1", "pipe:1"],
+                [
+                    "ffmpeg",
+                    "-i",
+                    "pipe:0",
+                    "-f",
+                    "mulaw",
+                    "-ar",
+                    "8000",
+                    "-ac",
+                    "1",
+                    "pipe:1",
+                ],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL,
@@ -69,7 +81,7 @@ class VoiceEngine:
         self,
         text: str,
         frame_size: int = 160,  # 20ms at 8000Hz
-        voice: Optional[str] = None,
+        voice: str | None = None,
     ) -> AsyncGenerator[str, None]:
         """
         Synthesize text and stream 20ms base64-encoded mulaw frames for Twilio WebSocket.
@@ -84,7 +96,9 @@ class VoiceEngine:
             chunk = mulaw_audio[offset : offset + frame_size]
             if len(chunk) < frame_size:
                 # Pad remaining bytes with silence
-                chunk = chunk + AudioUtils.create_silence_mulaw(20 - int(len(chunk) / 8))
+                chunk = chunk + AudioUtils.create_silence_mulaw(
+                    20 - int(len(chunk) / 8)
+                )
             yield AudioUtils.mulaw_to_base64(chunk)
             offset += frame_size
             # 20ms real-time pacing
@@ -109,7 +123,9 @@ class VoiceEngine:
         """Synchronous speech recognition wrapper."""
         try:
             # Create AudioData object (sample_width=2 bytes for 16-bit PCM)
-            audio_data = sr.AudioData(pcm_bytes, sample_rate=sample_rate, sample_width=2)
+            audio_data = sr.AudioData(
+                pcm_bytes, sample_rate=sample_rate, sample_width=2
+            )
             text = self.recognizer.recognize_google(audio_data)
             return text.strip()
         except sr.UnknownValueError:

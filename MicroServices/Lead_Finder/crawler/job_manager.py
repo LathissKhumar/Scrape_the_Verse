@@ -1,16 +1,13 @@
 """Lightweight crash-safe progress checkpointing and background job execution manager."""
 
-import asyncio
 import json
 import os
 import time
-from typing import Any, Dict, List, Optional, Set
-from uuid import uuid4
-from pydantic import BaseModel, Field
+from typing import Any
 
 from leadfinder.config.logging import get_logger
 from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
-from leadfinder.export.exporter import DataExporter
+from pydantic import BaseModel, Field
 
 logger = get_logger("JOB_MANAGER")
 
@@ -23,7 +20,7 @@ class JobProgress(BaseModel):
     scraped_urls: int = 0
     failed_urls: int = 0
     total_records: int = 0
-    error: Optional[str] = None
+    error: str | None = None
     created_at: float = Field(default_factory=time.time)
     updated_at: float = Field(default_factory=time.time)
 
@@ -85,7 +82,13 @@ class JobManager:
                 """,
                 (job_id, query, total_urls, now, now),
             )
-        return JobProgress(job_id=job_id, query=query, total_urls=total_urls, created_at=now, updated_at=now)
+        return JobProgress(
+            job_id=job_id,
+            query=query,
+            total_urls=total_urls,
+            created_at=now,
+            updated_at=now,
+        )
 
     def record_checkpoint(
         self,
@@ -142,7 +145,7 @@ class JobManager:
                     (now, job_id),
                 )
 
-    def get_completed_urls(self, job_id: str) -> Set[str]:
+    def get_completed_urls(self, job_id: str) -> set[str]:
         """Return the set of URLs already completed for a job to support resumption."""
         conn = get_sqlite_connection(self.db_path)
         try:
@@ -156,7 +159,7 @@ class JobManager:
             conn.close()
 
     def update_job_status(
-        self, job_id: str, status: str, error: Optional[str] = None
+        self, job_id: str, status: str, error: str | None = None
     ) -> None:
         """Update overall job status (completed, failed, etc.)."""
         now = time.time()
@@ -170,7 +173,7 @@ class JobManager:
                 (status, error, now, job_id),
             )
 
-    def get_job(self, job_id: str) -> Optional[JobProgress]:
+    def get_job(self, job_id: str) -> JobProgress | None:
         """Get live job progress details."""
         conn = get_sqlite_connection(self.db_path)
         try:
@@ -201,10 +204,10 @@ class JobManager:
         finally:
             conn.close()
 
-    def get_job_records(self, job_id: str) -> List[dict[str, Any]]:
+    def get_job_records(self, job_id: str) -> list[dict[str, Any]]:
         """Retrieve all extracted records across completed checkpoints for a job."""
         conn = get_sqlite_connection(self.db_path)
-        records: List[dict[str, Any]] = []
+        records: list[dict[str, Any]] = []
         try:
             cursor = conn.cursor()
             cursor.execute(

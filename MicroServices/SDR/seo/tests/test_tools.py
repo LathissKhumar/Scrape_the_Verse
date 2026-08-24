@@ -3,10 +3,13 @@ Unit Tests for SEO Agent Tools
 Tests issue filtering, page analysis, link graph analysis, and performance tools.
 """
 
-import pytest
 from seo.tools.issues import filter_issues_tool, get_issue_summary_tool
-from seo.tools.pages import get_pages_by_status_tool, find_meta_issues_tool, find_duplicate_titles_tool
-from seo.tools.links import find_broken_links_tool, analyze_link_graph_tool
+from seo.tools.links import analyze_link_graph_tool, find_broken_links_tool
+from seo.tools.pages import (
+    find_duplicate_titles_tool,
+    find_meta_issues_tool,
+    get_pages_by_status_tool,
+)
 from seo.tools.performance import analyze_performance_tool
 
 

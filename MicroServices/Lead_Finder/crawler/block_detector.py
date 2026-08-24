@@ -1,7 +1,8 @@
 """Block and challenge detector for identifying rate limits, CAPTCHAs, and security challenges."""
 
 import logging
-from typing import Any, Dict, Tuple
+from typing import Any
+
 from leadfinder.crawler.result_models import BlockType
 
 logger = logging.getLogger("CRAWLER_BLOCK_DETECTOR")
@@ -62,13 +63,13 @@ class BlockDetector:
     def detect_block(
         self,
         status_code: int,
-        headers: Dict[str, str],
+        headers: dict[str, str],
         html: str,
         url: str = "",
-    ) -> Tuple[bool, BlockType, Dict[str, Any]]:
+    ) -> tuple[bool, BlockType, dict[str, Any]]:
         """Inspect HTTP status, headers, and DOM content to classify block status."""
         html_lower = html.lower() if html else ""
-        diagnostics: Dict[str, Any] = {"status_code": status_code, "url": url}
+        diagnostics: dict[str, Any] = {"status_code": status_code, "url": url}
 
         # 1. Inspect HTTP status codes
         if status_code == 429:
@@ -120,13 +121,25 @@ class BlockDetector:
                 return True, BlockType.CAPTCHA, diagnostics
             elif not is_short_page:
                 # On large pages, only trigger if it's an explicit challenge prompt or widget element
-                if sig in ("are you a human", "cf-turnstile", "solve the captcha", "verify you are human",
-                            "enter the characters you see below", "type the characters you see in this image"):
+                if sig in (
+                    "are you a human",
+                    "cf-turnstile",
+                    "solve the captcha",
+                    "verify you are human",
+                    "enter the characters you see below",
+                    "type the characters you see in this image",
+                ):
                     if sig in html_lower:
                         diagnostics["matched_signature"] = sig
                         return True, BlockType.CAPTCHA, diagnostics
                 elif sig in ("hcaptcha", "recaptcha", "g-recaptcha"):
-                    if f"class=\"{sig}\"" in html_lower or f"id=\"{sig}\"" in html_lower or f"class=\"h-captcha\"" in html_lower or f"class=\"g-recaptcha\"" in html_lower or "data-sitekey" in html_lower:
+                    if (
+                        f'class="{sig}"' in html_lower
+                        or f'id="{sig}"' in html_lower
+                        or 'class="h-captcha"' in html_lower
+                        or 'class="g-recaptcha"' in html_lower
+                        or "data-sitekey" in html_lower
+                    ):
                         diagnostics["matched_signature"] = sig
                         return True, BlockType.CAPTCHA, diagnostics
 
@@ -142,4 +155,3 @@ class BlockDetector:
 
         # Not blocked
         return False, BlockType.NONE, diagnostics
-

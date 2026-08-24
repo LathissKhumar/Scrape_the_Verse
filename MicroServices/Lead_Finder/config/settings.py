@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Optional
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -19,11 +19,11 @@ class Settings(BaseSettings):
 
     # Bright Data Settings
     BRIGHTDATA: bool = False
-    BRIGHTDATA_API_KEY: Optional[str] = None
-    BRIGHTDATA_COLLECTOR_ID: Optional[str] = None
-    BRIGHTDATA_DISCOVERY_COLLECTOR_ID: Optional[str] = None
-    BRIGHTDATA_COMPANY_COLLECTOR_ID: Optional[str] = None
-    BRIGHTDATA_GMAPS_COLLECTOR_ID: Optional[str] = None
+    BRIGHTDATA_API_KEY: str | None = None
+    BRIGHTDATA_COLLECTOR_ID: str | None = None
+    BRIGHTDATA_DISCOVERY_COLLECTOR_ID: str | None = None
+    BRIGHTDATA_COMPANY_COLLECTOR_ID: str | None = None
+    BRIGHTDATA_GMAPS_COLLECTOR_ID: str | None = None
     BRIGHTDATA_CLI_COMMAND: str = "bdata"
     BRIGHTDATA_COMMAND_TIMEOUT: float = 300.0
     BRIGHTDATA_REGISTRY_DB_PATH: str = ".brightdata_registry.sqlite"
@@ -49,10 +49,10 @@ class Settings(BaseSettings):
     # Application & Security Settings
     APP_ENV: str = "development"
     LOG_LEVEL: str = "INFO"
-    API_SECRET_KEY: Optional[str] = None
+    API_SECRET_KEY: str | None = None
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     """Return cached application settings."""
     return Settings()

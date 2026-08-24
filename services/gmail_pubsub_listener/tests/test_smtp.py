@@ -1,9 +1,11 @@
 """Tests for SMTP outbound sender and thread header creation."""
-import pytest
+
 from unittest.mock import MagicMock
+
+import pytest
 from app.events.bus import EventBus
-from app.smtp.sender import GmailSMTPSender, OutboundEmail
 from app.persistence.models import EmailMessage
+from app.smtp.sender import GmailSMTPSender, OutboundEmail
 
 
 @pytest.mark.asyncio

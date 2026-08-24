@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { API_URLS } from '@/lib/api/client';
+import { useEffect, useState, useCallback, useRef } from "react";
+import { API_URLS } from "@/lib/api/client";
 
 export interface TimelineEvent {
   id: string;
@@ -21,7 +21,7 @@ export function useTimelineStream(enabled: boolean = true) {
   }, []);
 
   useEffect(() => {
-    if (!enabled || typeof window === 'undefined') {
+    if (!enabled || typeof window === "undefined") {
       if (eventSourceRef.current) {
         eventSourceRef.current.close();
         eventSourceRef.current = null;
@@ -48,7 +48,7 @@ export function useTimelineStream(enabled: boolean = true) {
             const raw = JSON.parse(event.data);
             const timelineItem: TimelineEvent = {
               id: `evt-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-              topic: raw.topic || 'activity',
+              topic: raw.topic || "activity",
               timestamp: new Date().toISOString(),
               data: raw.data || raw,
             };

@@ -1,18 +1,48 @@
-'use client'
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+"use client";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const STORY = [
-  { text: '"The web is where your next opportunity is hiding."', color: '#38BDF8', size: 'text-4xl md:text-6xl', weight: 'font-bold', delay: 0 },
-  { text: "Unstructured signals published across maps, reviews, directories, and social platforms.", color: '#A7AFBD', size: 'text-xl md:text-2xl', weight: 'font-normal', delay: 0.25 },
-]
+  {
+    text: '"The web is where your next opportunity is hiding."',
+    color: "#38BDF8",
+    size: "text-4xl md:text-6xl",
+    weight: "font-bold",
+    delay: 0,
+  },
+  {
+    text: "Unstructured signals published across maps, reviews, directories, and social platforms.",
+    color: "#A7AFBD",
+    size: "text-xl md:text-2xl",
+    weight: "font-normal",
+    delay: 0.25,
+  },
+];
 
-const WEB_NODES = ['Business Listing', 'Website Status', 'Review Sentiment', 'Competitor Gap', 'Social Signals', 'Location Data', 'Product Offering', 'Pricing Signals']
-const NODE_COLORS = ['#38BDF8', '#60A5FA', '#34D399', '#818CF8', '#38BDF8', '#60A5FA', '#34D399', '#818CF8']
+const WEB_NODES = [
+  "Business Listing",
+  "Website Status",
+  "Review Sentiment",
+  "Competitor Gap",
+  "Social Signals",
+  "Location Data",
+  "Product Offering",
+  "Pricing Signals",
+];
+const NODE_COLORS = [
+  "#38BDF8",
+  "#60A5FA",
+  "#34D399",
+  "#818CF8",
+  "#38BDF8",
+  "#60A5FA",
+  "#34D399",
+  "#818CF8",
+];
 
 export function WebDatabase() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
@@ -29,9 +59,13 @@ export function WebDatabase() {
               key={i}
               className={`${line.size} ${line.weight} leading-tight font-display tracking-tight`}
               style={{ color: line.color }}
-              initial={{ opacity: 0, y: 30, filter: 'blur(12px)' }}
-              animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
-              transition={{ delay: line.delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
+              animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+              transition={{
+                delay: line.delay,
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             >
               {line.text}
             </motion.p>
@@ -41,7 +75,7 @@ export function WebDatabase() {
         {/* 3D Tilt Perspective Container (Matching Scroll_UI.mp4 3D Scroll) */}
         <motion.div
           className="mt-20 space-y-12"
-          style={{ perspective: '1200px' }}
+          style={{ perspective: "1200px" }}
           initial={{ opacity: 0, rotateX: 15, y: 40 }}
           animate={inView ? { opacity: 1, rotateX: 0, y: 0 } : {}}
           transition={{ delay: 0.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
@@ -57,16 +91,29 @@ export function WebDatabase() {
                 className="px-4 py-2.5 rounded-xl text-xs font-mono font-semibold border backdrop-blur-md shadow-md shadow-black/20"
                 style={{
                   color: NODE_COLORS[i],
-                  backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                  backgroundColor: "rgba(255, 255, 255, 0.12)",
                   borderColor: `${NODE_COLORS[i]}65`,
                   boxShadow: `0 8px 24px rgba(0, 0, 0, 0.18), inset 0 1px 0.5px rgba(255, 255, 255, 0.4), 0 0 12px ${NODE_COLORS[i]}25`,
                 }}
                 initial={{ scale: 0.85, opacity: 0, y: 20 }}
                 animate={inView ? { scale: 1, opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.6 + i * 0.08, type: 'spring', stiffness: 120, damping: 15 }}
-                whileHover={{ scale: 1.05, y: -4, backgroundColor: 'rgba(255, 255, 255, 0.2)', borderColor: NODE_COLORS[i] }}
+                transition={{
+                  delay: 0.6 + i * 0.08,
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 15,
+                }}
+                whileHover={{
+                  scale: 1.05,
+                  y: -4,
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                  borderColor: NODE_COLORS[i],
+                }}
               >
-                <span className="w-2 h-2 rounded-full inline-block mr-2 shadow-sm" style={{ backgroundColor: NODE_COLORS[i] }} />
+                <span
+                  className="w-2 h-2 rounded-full inline-block mr-2 shadow-sm"
+                  style={{ backgroundColor: NODE_COLORS[i] }}
+                />
                 {node}
               </motion.div>
             ))}
@@ -95,5 +142,5 @@ export function WebDatabase() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

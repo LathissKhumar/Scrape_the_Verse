@@ -1,11 +1,11 @@
-import pytest
-from unittest.mock import AsyncMock, patch, MagicMock
-from fastapi.testclient import TestClient
+from unittest.mock import AsyncMock, MagicMock, patch
 
+import pytest
+from fastapi.testclient import TestClient
 from leadfinder.agents.gmaps import GoogleMapsAgent
 from leadfinder.gmaps.pipeline import GoogleMapsPipeline
 from leadfinder.gmaps.service import GoogleMapsService
-from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.models.schemas import ScrapingTask
 
 
 def test_gmaps_pipeline_url_formatting():
@@ -90,7 +90,9 @@ async def test_gmaps_agent_delegation_execution():
         target_urls=["https://www.google.com/maps/search/plumbers+in+chennai"],
     )
 
-    result = await agent.execute_agent_delegation(task, source_agent="ScrapingPlannerAgent")
+    result = await agent.execute_agent_delegation(
+        task, source_agent="ScrapingPlannerAgent"
+    )
 
     assert result.status == "success"
     assert result.task_id == "agent-delegation-001"

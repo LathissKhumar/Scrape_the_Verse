@@ -1,11 +1,13 @@
 """CommunicationAgent managing Agent-to-Agent discovery and execution."""
-from typing import Any, Dict
+
+from typing import Any
+
 from app.a2a.skills import (
-    skill_send_email,
-    skill_get_thread,
-    skill_get_message,
-    skill_sync_mailbox,
     skill_classify_email,
+    skill_get_message,
+    skill_get_thread,
+    skill_send_email,
+    skill_sync_mailbox,
 )
 
 
@@ -19,7 +21,7 @@ class CommunicationAgent:
             "classify_email": skill_classify_email,
         }
 
-    def get_agent_card(self) -> Dict[str, Any]:
+    def get_agent_card(self) -> dict[str, Any]:
         """Returns the A2A Agent Card for discovery at /.well-known/agent-card.json."""
         return {
             "schema_version": "1.0",
@@ -61,7 +63,7 @@ class CommunicationAgent:
             ],
         }
 
-    async def execute_skill(self, skill_name: str, params: Dict[str, Any]) -> Any:
+    async def execute_skill(self, skill_name: str, params: dict[str, Any]) -> Any:
         handler = self.skills.get(skill_name)
         if not handler:
             raise ValueError(f"Skill '{skill_name}' not found.")

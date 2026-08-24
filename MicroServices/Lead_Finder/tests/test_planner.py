@@ -1,6 +1,6 @@
 import json
-import pytest
 
+import pytest
 from leadfinder.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
 from leadfinder.llm.exceptions import LLMInvocationError
 from leadfinder.models.schemas import ScrapingRequest
@@ -29,11 +29,11 @@ async def test_planner_agent_plan_async_success():
         "output_schema": {
             "product_name": "string",
             "price": "string",
-            "rating": "number"
+            "rating": "number",
         },
         "max_records": 100,
         "constraints": ["Include in-stock only"],
-        "source_requirements": []
+        "source_requirements": [],
     }
     mock_llm = MockLLMClient(response_text=json.dumps(llm_payload))
     planner = ScrapingPlannerAgent(llm_client=mock_llm)
@@ -53,7 +53,7 @@ async def test_planner_agent_plan_async_success():
     assert task.output_schema == {
         "product_name": "string",
         "price": "string",
-        "rating": "number"
+        "rating": "number",
     }
     assert task.max_records == 100
     assert task.constraints == ["Include in-stock only"]
@@ -67,7 +67,7 @@ def test_planner_agent_plan_sync_success():
         "output_schema": {"title": "string", "author": "string"},
         "max_records": 20,
         "constraints": [],
-        "source_requirements": []
+        "source_requirements": [],
     }
     mock_llm = MockLLMClient(response_text=json.dumps(llm_payload))
     planner = ScrapingPlannerAgent(llm_client=mock_llm)
@@ -92,7 +92,7 @@ async def test_planner_extracts_urls_from_query_when_target_urls_empty():
         "output_schema": {"headline": "string", "timestamp": "string"},
         "max_records": None,
         "constraints": [],
-        "source_requirements": []
+        "source_requirements": [],
     }
     mock_llm = MockLLMClient(response_text=json.dumps(llm_payload))
     planner = ScrapingPlannerAgent(llm_client=mock_llm)
@@ -116,7 +116,7 @@ async def test_planner_never_invents_urls():
         "output_schema": {"name": "string"},
         "max_records": None,
         "constraints": [],
-        "source_requirements": []
+        "source_requirements": [],
     }
     mock_llm = MockLLMClient(response_text=json.dumps(llm_payload))
     planner = ScrapingPlannerAgent(llm_client=mock_llm)

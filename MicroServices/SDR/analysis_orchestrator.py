@@ -4,7 +4,8 @@ Concurrently executes Website / SEO Analysis and Business Analysis Agents.
 """
 
 import asyncio
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from .business_analyzer import BusinessAnalyzer
 from .cta_detector import CTADetector
 from .seo.analyzers.content import run_content_audit
@@ -32,7 +33,7 @@ class AnalysisOrchestrator:
         max_depth: int = 2,
         max_pages: int = 15,
         javascript: bool = False,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Branch A: Crawl website and execute 6-domain SEO and CTA audit."""
         if not url.startswith("http://") and not url.startswith("https://"):
             url = f"https://{url}"
@@ -56,20 +57,22 @@ class AnalysisOrchestrator:
         pagespeed = crawl_result.get("pagespeed", [])
 
         if not pages:
-            pages = [{
-                "url": url,
-                "status": 200,
-                "title": "Homepage",
-                "meta_description": "",
-                "word_count": 250,
-                "h1": ["Welcome"],
-                "h2": [],
-                "images": [],
-                "schema_types": [],
-                "is_ssl": url.startswith("https://"),
-                "load_time_ms": 450,
-                "links": [],
-            }]
+            pages = [
+                {
+                    "url": url,
+                    "status": 200,
+                    "title": "Homepage",
+                    "meta_description": "",
+                    "word_count": 250,
+                    "h1": ["Welcome"],
+                    "h2": [],
+                    "images": [],
+                    "schema_types": [],
+                    "is_ssl": url.startswith("https://"),
+                    "load_time_ms": 450,
+                    "links": [],
+                }
+            ]
 
         # Run 6 Domain Analyzers
         tech_res = run_technical_audit(pages, links, issues, sitemaps)
@@ -131,10 +134,10 @@ class AnalysisOrchestrator:
     async def run_parallel_analysis(
         self,
         company_name: str,
-        website_url: Optional[str] = None,
-        location: Optional[str] = None,
-        industry: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        website_url: str | None = None,
+        location: str | None = None,
+        industry: str | None = None,
+    ) -> dict[str, Any]:
         """
         Runs Website/SEO Analysis and Business Analysis concurrently.
         """
@@ -142,7 +145,15 @@ class AnalysisOrchestrator:
         seo_coro = (
             self.run_website_seo_audit(website_url)
             if website_url
-            else asyncio.sleep(0, result={"overall_seo_score": 0, "has_website": False, "scores": {}, "issues": ["No website detected."]})
+            else asyncio.sleep(
+                0,
+                result={
+                    "overall_seo_score": 0,
+                    "has_website": False,
+                    "scores": {},
+                    "issues": ["No website detected."],
+                },
+            )
         )
         business_coro = self.business_analyzer.analyze_business(
             company_name=company_name,

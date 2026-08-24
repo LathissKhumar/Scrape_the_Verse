@@ -7,7 +7,7 @@
   --glass-bg-floating: rgba(255, 255, 255, 0.12);
   --glass-bg-nested: rgba(255, 255, 255, 0.035);
   --glass-bg-hover: rgba(255, 255, 255, 0.11);
-  
+
   --glass-border-standard: rgba(255, 255, 255, 0.14);
   --glass-border-elevated: rgba(255, 255, 255, 0.18);
   --glass-border-floating: rgba(255, 255, 255, 0.24);
@@ -31,63 +31,86 @@
   --radius-xl: 26px;
   --radius-2xl: 32px;
 
-  --text-primary: #FFFFFF;
+  --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.72);
   --text-muted: rgba(255, 255, 255, 0.45);
 }
 
 @theme {
   --color-void: #040711;
-  --color-bg-surface: #070B16;
+  --color-bg-surface: #070b16;
   --color-glass-surface: var(--glass-bg-standard);
   --color-glass-border: var(--glass-border-standard);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-muted: var(--text-muted);
-  
+
   /* Apple VisionOS Accents */
-  --color-violet-accent: #38BDF8;
-  --color-blue-accent: #60A5FA;
-  --color-emerald-success: #34D399;
-  --color-amber-warning: #FBBF24;
-  --color-rose-error: #FB7185;
+  --color-violet-accent: #38bdf8;
+  --color-blue-accent: #60a5fa;
+  --color-emerald-success: #34d399;
+  --color-amber-warning: #fbbf24;
+  --color-rose-error: #fb7185;
 
   /* Typography Stack */
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI", Roboto, sans-serif;
+  --font-display:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI", Roboto, sans-serif;
+  --font-body:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI", Roboto, sans-serif;
 }
 
 body {
   background-color: #040711;
-  color: #FFFFFF;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  color: #ffffff;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Segoe UI", Roboto, sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font-family: inherit;
 }
 
 ::selection {
   background-color: rgba(56, 189, 248, 0.35);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
 
 /* ── REUSABLE APPLE VISIONOS GLASS CLASSES ── */
 
@@ -97,7 +120,9 @@ button, input, select, textarea {
   backdrop-filter: blur(32px) saturate(140%);
   -webkit-backdrop-filter: blur(32px) saturate(140%);
   border: 1px solid var(--glass-border-standard);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25), var(--glass-highlight);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.25),
+    var(--glass-highlight);
   border-radius: var(--radius-2xl);
   position: relative;
 }
@@ -108,7 +133,9 @@ button, input, select, textarea {
   backdrop-filter: blur(36px) saturate(150%);
   -webkit-backdrop-filter: blur(36px) saturate(150%);
   border: 1px solid var(--glass-border-elevated);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22), var(--glass-highlight);
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.22),
+    var(--glass-highlight);
   border-radius: var(--radius-xl);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
@@ -118,7 +145,9 @@ button, input, select, textarea {
   background: var(--glass-bg-hover);
   border-color: var(--glass-border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), var(--glass-highlight);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    var(--glass-highlight);
 }
 
 /* Level 3: Nested Elements (Sub-cards, Table rows, Sequence items) */
@@ -163,8 +192,10 @@ button, input, select, textarea {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.26);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), var(--glass-highlight);
-  color: #FFFFFF;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    var(--glass-highlight);
+  color: #ffffff;
 }
 
 /* Apple Primary Button */
@@ -173,10 +204,12 @@ button, input, select, textarea {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 600;
   border-radius: 9999px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), var(--glass-highlight);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    var(--glass-highlight);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -184,7 +217,9 @@ button, input, select, textarea {
   background: rgba(255, 255, 255, 0.26);
   border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), var(--glass-highlight);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    var(--glass-highlight);
 }
 
 .apple-btn-primary:active {
@@ -219,7 +254,7 @@ button, input, select, textarea {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: var(--radius-md);
   transition: all 0.2s ease-out;
 }
@@ -240,8 +275,14 @@ button, input, select, textarea {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fadeIn {

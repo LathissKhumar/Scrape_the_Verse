@@ -1,4 +1,5 @@
 """Main FastAPI application entrypoint for the Communication Service."""
+
 import logging
 import os
 import sys
@@ -11,6 +12,7 @@ if _service_dir not in sys.path:
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.api.routes import router
 from app.config import get_settings
 from app.events.bus import event_bus
@@ -75,6 +77,7 @@ app.include_router(router)
 
 if __name__ == "__main__":
     import uvicorn
+
     settings = get_settings()
     uvicorn.run(
         "app.main:app",

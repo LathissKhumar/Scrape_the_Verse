@@ -4,9 +4,10 @@ Generates RFC 5545 compliant .ics calendar files.
 """
 
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Optional
 from uuid import uuid4
+
 from icalendar import Calendar, Event, vCalAddress, vText
+
 from ..config.logging import get_logger
 from ..domain.meeting import Meeting
 from ..domain.stage import MeetingStatus
@@ -23,8 +24,8 @@ class SchedulingAgent:
         duration_minutes: int,
         organizer_email: str,
         attendee_email: str,
-        description: Optional[str] = None,
-        location_url: Optional[str] = None,
+        description: str | None = None,
+        location_url: str | None = None,
     ) -> str:
         cal = Calendar()
         cal.add("prodid", "-//AgencyOS//LeadManager 1.0//EN")
@@ -66,8 +67,8 @@ class SchedulingAgent:
         duration_minutes: int,
         organizer_email: str,
         attendee_email: str,
-        conversation_id: Optional[str] = None,
-        notes: Optional[str] = None,
+        conversation_id: str | None = None,
+        notes: str | None = None,
     ) -> Meeting:
         try:
             start_dt = datetime.fromisoformat(proposed_time_iso)

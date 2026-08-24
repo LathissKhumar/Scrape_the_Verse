@@ -1,8 +1,10 @@
 """SQLite database manager with asynchronous execution."""
+
 import asyncio
 import os
 import sqlite3
-from typing import Any, List, Optional, Tuple
+from typing import Any
+
 from app.config import get_settings
 
 SCHEMA_SQL = """
@@ -97,7 +99,7 @@ CREATE INDEX IF NOT EXISTS idx_events_type ON events(event_type);
 
 
 class Database:
-    def __init__(self, db_path: Optional[str] = None):
+    def __init__(self, db_path: str | None = None):
         self.db_path = db_path or get_settings().DATABASE_PATH
         self._lock = asyncio.Lock()
 
@@ -119,32 +121,38 @@ class Database:
         """Initializes database schema asynchronously."""
         await asyncio.to_thread(self.init_db_sync)
 
-    async def execute(self, query: str, params: Tuple[Any, ...] = ()) -> int:
+    async def execute(self, query: str, params: tuple[Any, ...] = ()) -> int:
         """Executes INSERT/UPDATE/DELETE query and returns affected rows."""
         async with self._lock:
+
             def _run():
                 with self._get_connection() as conn:
                     cursor = conn.execute(query, params)
                     conn.commit()
                     return cursor.rowcount
+
             return await asyncio.to_thread(_run)
 
-    async def fetch_one(self, query: str, params: Tuple[Any, ...] = ()) -> Optional[dict]:
+    async def fetch_one(self, query: str, params: tuple[Any, ...] = ()) -> dict | None:
         """Fetches a single row as a dictionary."""
+
         def _run():
             with self._get_connection() as conn:
                 cursor = conn.execute(query, params)
                 row = cursor.fetchone()
                 return dict(row) if row else None
+
         return await asyncio.to_thread(_run)
 
-    async def fetch_all(self, query: str, params: Tuple[Any, ...] = ()) -> List[dict]:
+    async def fetch_all(self, query: str, params: tuple[Any, ...] = ()) -> list[dict]:
         """Fetches all rows as a list of dictionaries."""
+
         def _run():
             with self._get_connection() as conn:
                 cursor = conn.execute(query, params)
                 rows = cursor.fetchall()
                 return [dict(row) for row in rows]
+
         return await asyncio.to_thread(_run)
 
 

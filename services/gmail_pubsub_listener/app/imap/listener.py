@@ -1,12 +1,14 @@
 """Background IMAP listener maintaining persistent IDLE connection."""
+
 import asyncio
 import logging
-from typing import Optional
+
 from app.config import get_settings
 from app.imap.client import GmailIMAPClient
 from app.imap.reconnect import BackoffStrategy
 from app.imap.synchronizer import MailboxSynchronizer
-from app.persistence.repository import Repository, repository as default_repo
+from app.persistence.repository import Repository
+from app.persistence.repository import repository as default_repo
 
 logger = logging.getLogger(__name__)
 
@@ -14,9 +16,9 @@ logger = logging.getLogger(__name__)
 class IMAPListener:
     def __init__(
         self,
-        client: Optional[GmailIMAPClient] = None,
-        synchronizer: Optional[MailboxSynchronizer] = None,
-        repo: Optional[Repository] = None,
+        client: GmailIMAPClient | None = None,
+        synchronizer: MailboxSynchronizer | None = None,
+        repo: Repository | None = None,
     ):
         self.settings = get_settings()
         self.client = client or GmailIMAPClient()
@@ -24,7 +26,7 @@ class IMAPListener:
         self.synchronizer = synchronizer or MailboxSynchronizer(self.client, self.repo)
         self.backoff = BackoffStrategy(initial=1.0, multiplier=2.0, max_delay=60.0)
         self._running = False
-        self._task: Optional[asyncio.Task] = None
+        self._task: asyncio.Task | None = None
         self._mailbox = self.settings.IMAP_MAILBOX
 
     @property
@@ -38,7 +40,9 @@ class IMAPListener:
             return
 
         if not self.settings.GMAIL_ADDRESS or not self.settings.GMAIL_APP_PASSWORD:
-            logger.info("Gmail credentials not fully configured. IMAPListener waiting in dormant state.")
+            logger.info(
+                "Gmail credentials not fully configured. IMAPListener waiting in dormant state."
+            )
             return
 
         self._running = True
@@ -55,7 +59,9 @@ class IMAPListener:
             except asyncio.CancelledError:
                 pass
         await asyncio.to_thread(self.client.close)
-        await self.repo.update_mailbox_state(self._mailbox, last_uid=0, status="STOPPED")
+        await self.repo.update_mailbox_state(
+            self._mailbox, last_uid=0, status="STOPPED"
+        )
         logger.info("IMAPListener stopped.")
 
     async def _listen_loop(self) -> None:
@@ -67,12 +73,18 @@ class IMAPListener:
                 await asyncio.to_thread(self.client.authenticate)
                 await asyncio.to_thread(self.client.select_mailbox, self._mailbox)
                 self.backoff.reset()
-                logger.info(f"Connected and authenticated on mailbox '{self._mailbox}'.")
+                logger.info(
+                    f"Connected and authenticated on mailbox '{self._mailbox}'."
+                )
 
                 # 2. Sync any messages arrived while offline
-                await self.repo.update_mailbox_state(self._mailbox, last_uid=0, status="SYNCING")
+                await self.repo.update_mailbox_state(
+                    self._mailbox, last_uid=0, status="SYNCING"
+                )
                 await self.synchronizer.sync_mailbox(self._mailbox)
-                await self.repo.update_mailbox_state(self._mailbox, last_uid=0, status="IDLE")
+                await self.repo.update_mailbox_state(
+                    self._mailbox, last_uid=0, status="IDLE"
+                )
 
                 # 3. IDLE Loop
                 while self._running and self.client.is_connected:
@@ -86,12 +98,20 @@ class IMAPListener:
                         break
 
                     if has_exists:
-                        logger.info("EXISTS notification received! Synchronizing new messages...")
-                        await self.repo.update_mailbox_state(self._mailbox, last_uid=0, status="SYNCING")
+                        logger.info(
+                            "EXISTS notification received! Synchronizing new messages..."
+                        )
+                        await self.repo.update_mailbox_state(
+                            self._mailbox, last_uid=0, status="SYNCING"
+                        )
                         await self.synchronizer.sync_mailbox(self._mailbox)
-                        await self.repo.update_mailbox_state(self._mailbox, last_uid=0, status="IDLE")
+                        await self.repo.update_mailbox_state(
+                            self._mailbox, last_uid=0, status="IDLE"
+                        )
                     else:
-                        logger.info("IDLE cycle duration reached. Refreshing IDLE connection...")
+                        logger.info(
+                            "IDLE cycle duration reached. Refreshing IDLE connection..."
+                        )
                         # Run a quick sync check on timeout
                         await self.synchronizer.sync_mailbox(self._mailbox)
 

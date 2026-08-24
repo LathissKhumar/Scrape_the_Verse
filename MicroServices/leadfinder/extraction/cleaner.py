@@ -1,7 +1,7 @@
 """DOM cleaner and structured content extractor for converting raw HTML to noise-free article text."""
 
 import re
-from typing import Optional
+
 from bs4 import BeautifulSoup, Comment
 
 NOISE_TAGS = [
@@ -58,7 +58,7 @@ class HTMLCleaner:
     def __init__(self, remove_citations: bool = True) -> None:
         self.remove_citations = remove_citations
 
-    def clean_html_to_text(self, html: str, base_url: Optional[str] = None) -> str:
+    def clean_html_to_text(self, html: str, base_url: str | None = None) -> str:
         """Parse raw HTML and extract clean, structured plain text/markdown without boilerplate."""
         if not html or not html.strip():
             return ""
@@ -91,7 +91,9 @@ class HTMLCleaner:
 
         lines: list[str] = []
 
-        for elem in main_content.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "tr"]):
+        for elem in main_content.find_all(
+            ["h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "tr"]
+        ):
             text = elem.get_text(separator=" ", strip=True)
             if not text:
                 continue
@@ -103,7 +105,9 @@ class HTMLCleaner:
             elif elem.name == "li":
                 lines.append(f"- {text}")
             elif elem.name == "tr":
-                cells = [td.get_text(" ", strip=True) for td in elem.find_all(["td", "th"])]
+                cells = [
+                    td.get_text(" ", strip=True) for td in elem.find_all(["td", "th"])
+                ]
                 if cells:
                     lines.append(" | ".join(cells))
             else:
@@ -127,4 +131,3 @@ _default_cleaner = HTMLCleaner()
 def clean_html(html: str) -> str:
     """Convenience helper to clean HTML to structured text using default settings."""
     return _default_cleaner.clean_html_to_text(html)
-

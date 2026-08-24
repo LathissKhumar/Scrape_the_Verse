@@ -1,15 +1,12 @@
-from typing import List
+from business_analysis.llm import get_structured_llm
 from business_analysis.schemas.models import (
     BusinessProblem,
-    ProblemSeverity,
-    ProblemStatus,
-    ProblemType,
     NodeExecutionStatus,
     NodeStatusEnum,
+    ProblemStatus,
+    ProblemType,
 )
-from business_analysis.llm import get_structured_llm
 from business_analysis.state import BusinessAnalysisState, get_relevant_evidence
-
 
 BUSINESS_PROBLEM_PROMPT = """ROLE: You are an expert Business Problem Synthesizer.
 OBJECTIVE: Synthesize all analytical outputs (Business Profile, Market, Customer, Competitor, Service) into evidence-grounded business problems.
@@ -46,10 +43,12 @@ RULES:
 
 def business_problem_agent(state: BusinessAnalysisState) -> BusinessAnalysisState:
     relevant_evidence = get_relevant_evidence(state, "problem")
-    evidence_text = "\n".join([
-        f"[{e.id}] Claim: {e.claim} | Supporting Text: {e.supporting_text or 'N/A'}"
-        for e in relevant_evidence
-    ])
+    evidence_text = "\n".join(
+        [
+            f"[{e.id}] Claim: {e.claim} | Supporting Text: {e.supporting_text or 'N/A'}"
+            for e in relevant_evidence
+        ]
+    )
 
     profile = state.get("business_profile")
     service_analysis = state.get("service_analysis")
@@ -58,10 +57,31 @@ def business_problem_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
     website_analysis = state.get("website_analysis")
 
     profile_summary = f"Industry: {profile.industry.value if profile and hasattr(profile.industry, 'value') else 'Unknown'}, Location: {profile.geographic_market.value if profile and hasattr(profile.geographic_market, 'value') else 'Unknown'}"
-    services_summary = ", ".join([f"{s.name} (gap: {s.potential_gap or 'none'})" for s in service_analysis.services]) if service_analysis and service_analysis.services else "No services listed"
-    customer_summary = ", ".join([s.segment_name for s in customer_analysis.segments]) if customer_analysis and customer_analysis.segments else "No segments listed"
-    competitor_summary = ", ".join(competitor_analysis.identified_gaps) if competitor_analysis and competitor_analysis.identified_gaps else "Competitive gaps identified"
-    website_summary = f"SEO score: {website_analysis.seo_score}, Findings: {website_analysis.findings}" if website_analysis else "Website analysis unavailable (standalone mode)"
+    services_summary = (
+        ", ".join(
+            [
+                f"{s.name} (gap: {s.potential_gap or 'none'})"
+                for s in service_analysis.services
+            ]
+        )
+        if service_analysis and service_analysis.services
+        else "No services listed"
+    )
+    customer_summary = (
+        ", ".join([s.segment_name for s in customer_analysis.segments])
+        if customer_analysis and customer_analysis.segments
+        else "No segments listed"
+    )
+    competitor_summary = (
+        ", ".join(competitor_analysis.identified_gaps)
+        if competitor_analysis and competitor_analysis.identified_gaps
+        else "Competitive gaps identified"
+    )
+    website_summary = (
+        f"SEO score: {website_analysis.seo_score}, Findings: {website_analysis.findings}"
+        if website_analysis
+        else "Website analysis unavailable (standalone mode)"
+    )
 
     prompt = BUSINESS_PROBLEM_PROMPT.format(
         evidence=evidence_text,
@@ -75,13 +95,15 @@ def business_problem_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
     statuses = dict(state.get("node_statuses", {}))
 
     try:
-        class BusinessProblemList(List[BusinessProblem]):
+
+        class BusinessProblemList(list[BusinessProblem]):
             pass
 
         # Use List wrapper model for LLM structured output
         from pydantic import BaseModel
+
         class ProblemListContainer(BaseModel):
-            problems: List[BusinessProblem] = []
+            problems: list[BusinessProblem] = []
 
         llm = get_structured_llm(ProblemListContainer)
         res = llm.invoke(prompt)
@@ -91,7 +113,6 @@ def business_problem_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
             problems = res.problems
         else:
             problems = []
-
 
         if not problems:
             # Fallback evidence-grounded problems if LLM returns 0
@@ -125,8 +146,16 @@ def business_problem_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
                 ),
             ]
 
-        statuses["business_problem"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.88)
+        statuses["business_problem"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.88
+        )
         return {**state, "business_problems": problems, "node_statuses": statuses}
     except Exception as e:
-        statuses["business_problem"] = NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e))
-        return {**state, "errors": state.get("errors", []) + [f"BusinessProblemAgent error: {str(e)}"], "node_statuses": statuses}
+        statuses["business_problem"] = NodeExecutionStatus(
+            status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e)
+        )
+        return {
+            **state,
+            "errors": state.get("errors", []) + [f"BusinessProblemAgent error: {e!s}"],
+            "node_statuses": statuses,
+        }

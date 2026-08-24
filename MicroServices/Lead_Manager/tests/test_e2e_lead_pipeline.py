@@ -6,9 +6,11 @@ Outreach Preparation -> Lead Manager CRM -> Voice Agent Qualification & Meeting 
 """
 
 import os
+
 import pytest
 import sniffio
 from httpx import ASGITransport, AsyncClient
+
 from MicroServices.Lead_Manager.domain.stage import LeadStage
 from MicroServices.Lead_Manager.main import app as lead_manager_app
 from MicroServices.Lead_Manager.repository.database import get_db_manager
@@ -86,7 +88,9 @@ async def test_end_to_end_full_agencyos_sdr_pipeline():
             "primary_contact_phone": norm["primary_contact_phone"],
             "fit_score": 85.0,
             "opportunity_score": offers[0]["priority_score"],
-            "recommended_services": [o["service_title"] for o in offers if o.get("recommended")],
+            "recommended_services": [
+                o["service_title"] for o in offers if o.get("recommended")
+            ],
             "metadata": {
                 "dedupe_key": norm["dedupe_key"],
                 "proposal_id": prop["proposal_id"],

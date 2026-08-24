@@ -7,14 +7,20 @@ Verifies:
 - PageRecord vs ResourceRecord creation
 """
 
-import pytest
+from LibreCrawl.src.core.models import create_resource_record
 from LibreCrawl.src.core.resource_classifier import ResourceClassifier
-from LibreCrawl.src.core.models import create_page_record, create_resource_record
-from seo.analyzers import is_html_page, run_onpage_audit, run_technical_audit, run_content_audit
+from seo.analyzers import (
+    is_html_page,
+    run_content_audit,
+    run_onpage_audit,
+    run_technical_audit,
+)
 
 
 def test_classify_resource_html():
-    res = ResourceClassifier.classify_resource("https://example.com/about", content_type="text/html; charset=utf-8")
+    res = ResourceClassifier.classify_resource(
+        "https://example.com/about", content_type="text/html; charset=utf-8"
+    )
     assert res["resource_type"] == "html"
     assert res["is_html_document"] is True
     assert res["is_seo_page"] is True
@@ -22,7 +28,9 @@ def test_classify_resource_html():
 
 def test_classify_resource_image():
     # Content-type image
-    res1 = ResourceClassifier.classify_resource("https://example.com/logo.png", content_type="image/png")
+    res1 = ResourceClassifier.classify_resource(
+        "https://example.com/logo.png", content_type="image/png"
+    )
     assert res1["resource_type"] == "image"
     assert res1["is_html_document"] is False
     assert res1["is_seo_page"] is False
@@ -34,15 +42,21 @@ def test_classify_resource_image():
 
 
 def test_classify_resource_pdf_css_js():
-    res_pdf = ResourceClassifier.classify_resource("https://example.com/doc.pdf", content_type="application/pdf")
+    res_pdf = ResourceClassifier.classify_resource(
+        "https://example.com/doc.pdf", content_type="application/pdf"
+    )
     assert res_pdf["resource_type"] == "pdf"
     assert res_pdf["is_indexable_document"] is True
 
-    res_css = ResourceClassifier.classify_resource("https://example.com/style.css", content_type="text/css")
+    res_css = ResourceClassifier.classify_resource(
+        "https://example.com/style.css", content_type="text/css"
+    )
     assert res_css["resource_type"] == "css"
     assert res_css["is_html_document"] is False
 
-    res_js = ResourceClassifier.classify_resource("https://example.com/app.js", content_type="application/javascript")
+    res_js = ResourceClassifier.classify_resource(
+        "https://example.com/app.js", content_type="application/javascript"
+    )
     assert res_js["resource_type"] == "javascript"
     assert res_js["is_html_document"] is False
 
@@ -52,14 +66,14 @@ def test_is_html_page_filter():
         "url": "https://example.com/dentist",
         "status_code": 200,
         "content_type": "text/html",
-        "is_html_document": True
+        "is_html_document": True,
     }
     image_asset = {
         "url": "https://example.com/image.png",
         "status_code": 200,
         "content_type": "image/png",
         "is_html_document": False,
-        "resource_type": "image"
+        "resource_type": "image",
     }
 
     assert is_html_page(html_page) is True
@@ -74,7 +88,7 @@ def test_elimination_of_false_positives_on_images():
         url="https://example.com/logo.png",
         status_code=200,
         content_type="image/png",
-        size_bytes=45000
+        size_bytes=45000,
     )
 
     pages = [image_asset]

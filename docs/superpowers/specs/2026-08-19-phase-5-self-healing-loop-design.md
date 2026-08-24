@@ -140,6 +140,7 @@ class RepairType(str, Enum):
     RETRY_WITH_ALTERNATIVE_STRATEGY = "RETRY_WITH_ALTERNATIVE_STRATEGY"
     ESCALATE = "ESCALATE"
 
+
 class RepairStatus(str, Enum):
     PROPOSED = "proposed"
     APPLIED = "applied"
@@ -176,6 +177,7 @@ class PerformanceSnapshot(BaseModel):
     duplicate_rate: float = 0.0
     schema_valid_rate: float = 1.0
     strategy_used: str = "unknown"
+
 
 class RepairEvaluation(BaseModel):
     repair_id: str

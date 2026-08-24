@@ -1,8 +1,9 @@
-from enum import Enum
-from typing import Optional, List, Dict, Any, Literal, Union
-from pydantic import BaseModel, Field, field_validator, model_validator
-from datetime import datetime
 import uuid
+from datetime import datetime
+from enum import Enum
+from typing import Any, Literal
+
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class SourceType(str, Enum):
@@ -24,7 +25,7 @@ class Evidence(BaseModel):
     claim: str
     source: str
     source_type: SourceType = SourceType.MANUAL_INPUT
-    supporting_text: Optional[str] = None
+    supporting_text: str | None = None
     confidence: float = Field(ge=0.0, le=1.0, default=0.9)
     relevance: float = Field(ge=0.0, le=1.0, default=1.0)
     timestamp: str = Field(default_factory=lambda: datetime.now().isoformat())
@@ -40,9 +41,9 @@ class FieldStatus(BaseModel):
     value: Any = "Not specified"
     status: FieldStatusEnum = FieldStatusEnum.UNKNOWN
     confidence: float = Field(ge=0.0, le=1.0, default=0.0)
-    evidence_ids: List[str] = []
+    evidence_ids: list[str] = []
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, FieldStatus):
             return self.value == other.value and self.status == other.status
         if hasattr(self.value, "value"):
@@ -65,13 +66,28 @@ class FieldStatus(BaseModel):
         return str(self.value)
 
     @classmethod
-    def wrap(cls, val: Any, status: FieldStatusEnum = FieldStatusEnum.KNOWN, confidence: float = 1.0, evidence_ids: List[str] = None):
+    def wrap(
+        cls,
+        val: Any,
+        status: FieldStatusEnum = FieldStatusEnum.KNOWN,
+        confidence: float = 1.0,
+        evidence_ids: list[str] = None,
+    ):
         if isinstance(val, FieldStatus):
             return val
         if val is None or val == "Not specified" or val == "unknown":
-            return cls(value="Not specified", status=FieldStatusEnum.UNKNOWN, confidence=0.0, evidence_ids=evidence_ids or [])
-        return cls(value=val, status=status, confidence=confidence, evidence_ids=evidence_ids or [])
-
+            return cls(
+                value="Not specified",
+                status=FieldStatusEnum.UNKNOWN,
+                confidence=0.0,
+                evidence_ids=evidence_ids or [],
+            )
+        return cls(
+            value=val,
+            status=status,
+            confidence=confidence,
+            evidence_ids=evidence_ids or [],
+        )
 
 
 class BusinessType(str, Enum):
@@ -107,33 +123,110 @@ class CompanyScale(str, Enum):
 
 
 class BusinessProfile(BaseModel):
-    business_name: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    official_name: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    business_type: FieldStatus = Field(default_factory=lambda: FieldStatus(value=BusinessType.OTHER.value, status=FieldStatusEnum.KNOWN, confidence=0.8))
-    business_model: FieldStatus = Field(default_factory=lambda: FieldStatus(value=BusinessModel.B2C.value, status=FieldStatusEnum.KNOWN, confidence=0.8))
-    industry: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    sub_industry: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    geographic_market: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    primary_location: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    service_area: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    primary_offerings: FieldStatus = Field(default_factory=lambda: FieldStatus(value=[], status=FieldStatusEnum.UNKNOWN))
-    secondary_offerings: FieldStatus = Field(default_factory=lambda: FieldStatus(value=[], status=FieldStatusEnum.UNKNOWN))
-    positioning: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    value_proposition: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    target_market: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    company_scale: FieldStatus = Field(default_factory=lambda: FieldStatus(value=CompanyScale.UNKNOWN.value, status=FieldStatusEnum.UNKNOWN))
-    business_age: FieldStatus = Field(default_factory=lambda: FieldStatus(value="Not specified", status=FieldStatusEnum.UNKNOWN))
-    specializations: FieldStatus = Field(default_factory=lambda: FieldStatus(value=[], status=FieldStatusEnum.UNKNOWN))
-    evidence_ids: List[str] = []
+    business_name: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    official_name: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    business_type: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value=BusinessType.OTHER.value, status=FieldStatusEnum.KNOWN, confidence=0.8
+        )
+    )
+    business_model: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value=BusinessModel.B2C.value, status=FieldStatusEnum.KNOWN, confidence=0.8
+        )
+    )
+    industry: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    sub_industry: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    geographic_market: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    primary_location: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    service_area: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    primary_offerings: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(value=[], status=FieldStatusEnum.UNKNOWN)
+    )
+    secondary_offerings: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(value=[], status=FieldStatusEnum.UNKNOWN)
+    )
+    positioning: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    value_proposition: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    target_market: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    company_scale: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value=CompanyScale.UNKNOWN.value, status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    business_age: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(
+            value="Not specified", status=FieldStatusEnum.UNKNOWN
+        )
+    )
+    specializations: FieldStatus = Field(
+        default_factory=lambda: FieldStatus(value=[], status=FieldStatusEnum.UNKNOWN)
+    )
+    evidence_ids: list[str] = []
 
     @model_validator(mode="before")
     @classmethod
     def wrap_raw_fields(cls, data: Any) -> Any:
         if isinstance(data, dict):
-            for key in ["business_name", "official_name", "business_type", "business_model", "industry", 
-                        "sub_industry", "geographic_market", "primary_location", "service_area", 
-                        "primary_offerings", "secondary_offerings", "positioning", "value_proposition", 
-                        "target_market", "company_scale", "business_age", "specializations"]:
+            for key in [
+                "business_name",
+                "official_name",
+                "business_type",
+                "business_model",
+                "industry",
+                "sub_industry",
+                "geographic_market",
+                "primary_location",
+                "service_area",
+                "primary_offerings",
+                "secondary_offerings",
+                "positioning",
+                "value_proposition",
+                "target_market",
+                "company_scale",
+                "business_age",
+                "specializations",
+            ]:
                 if key in data and not isinstance(data[key], (dict, FieldStatus)):
                     data[key] = FieldStatus.wrap(data[key])
         return data
@@ -170,38 +263,38 @@ class SearchIntentOpportunity(BaseModel):
     customer_need: str
     priority: int = Field(ge=1, le=10, default=5)
     confidence: float = Field(ge=0.0, le=1.0, default=0.8)
-    evidence_ids: List[str] = []
+    evidence_ids: list[str] = []
 
 
 class MarketAnalysis(BaseModel):
-    industry: Optional[str] = None
-    sub_industry: Optional[str] = None
-    local_market: Optional[str] = None
-    industry_overview: Optional[str] = None
-    local_market_conditions: Optional[str] = None
+    industry: str | None = None
+    sub_industry: str | None = None
+    local_market: str | None = None
+    industry_overview: str | None = None
+    local_market_conditions: str | None = None
     market_condition: MarketCondition = MarketCondition.UNKNOWN
-    customer_acquisition_environment: Optional[str] = None
+    customer_acquisition_environment: str | None = None
     digital_adoption: DigitalAdoptionLevel = DigitalAdoptionLevel.UNKNOWN
-    search_discovery_behavior: Optional[str] = None
-    market_demand_signals: List[str] = []
-    competitive_intensity: Optional[str] = None
-    digital_trends: List[str] = []
-    local_opportunity: Optional[str] = None
-    content_opportunities: List[str] = []
-    SEO_opportunities: List[str] = []
-    search_intent_opportunities: List[SearchIntentOpportunity] = []
-    digital_opportunities: List[str] = []
-    evidence_ids: List[str] = []
+    search_discovery_behavior: str | None = None
+    market_demand_signals: list[str] = []
+    competitive_intensity: str | None = None
+    digital_trends: list[str] = []
+    local_opportunity: str | None = None
+    content_opportunities: list[str] = []
+    SEO_opportunities: list[str] = []
+    search_intent_opportunities: list[SearchIntentOpportunity] = []
+    digital_opportunities: list[str] = []
+    evidence_ids: list[str] = []
 
 
 class CustomerSegment(BaseModel):
     segment_name: str
     description: str = ""
     is_primary: bool = False
-    why_it_matters: Optional[str] = None
-    needs: List[str] = []
-    intent_signals: List[str] = []
-    evidence_ids: List[str] = []
+    why_it_matters: str | None = None
+    needs: list[str] = []
+    intent_signals: list[str] = []
+    evidence_ids: list[str] = []
     confidence: float = 0.8
 
 
@@ -216,8 +309,8 @@ class JourneyStage(str, Enum):
 class CustomerJourneyStep(BaseModel):
     stage: JourneyStage
     description: str
-    touchpoints: List[str] = []
-    friction_points: List[str] = []
+    touchpoints: list[str] = []
+    friction_points: list[str] = []
 
 
 class ConversionAction(BaseModel):
@@ -227,58 +320,58 @@ class ConversionAction(BaseModel):
 
 
 class CustomerAnalysis(BaseModel):
-    segments: List[CustomerSegment] = []
-    primary_segments: List[CustomerSegment] = []
-    secondary_segments: List[CustomerSegment] = []
-    primary_customers: List[str] = []
-    secondary_customers: List[str] = []
-    customer_needs: List[str] = []
-    customer_pain_points: List[str] = []
-    customer_intent: List[str] = []
-    customer_intents: List[str] = []
-    decision_factors: List[str] = []
-    trust_factors: List[str] = []
-    journey: List[CustomerJourneyStep] = []
-    conversion_actions: List[ConversionAction] = []
-    evidence_ids: List[str] = []
+    segments: list[CustomerSegment] = []
+    primary_segments: list[CustomerSegment] = []
+    secondary_segments: list[CustomerSegment] = []
+    primary_customers: list[str] = []
+    secondary_customers: list[str] = []
+    customer_needs: list[str] = []
+    customer_pain_points: list[str] = []
+    customer_intent: list[str] = []
+    customer_intents: list[str] = []
+    decision_factors: list[str] = []
+    trust_factors: list[str] = []
+    journey: list[CustomerJourneyStep] = []
+    conversion_actions: list[ConversionAction] = []
+    evidence_ids: list[str] = []
 
 
 class CandidateCompetitor(BaseModel):
     name: str
-    location: Optional[str] = None
-    service_match: List[str] = []
+    location: str | None = None
+    service_match: list[str] = []
     is_validated: bool = False
-    validation_reason: Optional[str] = None
+    validation_reason: str | None = None
 
 
 class Competitor(BaseModel):
     name: str
-    website: Optional[str] = None
-    location: Optional[str] = None
-    services: List[str] = []
-    positioning: Optional[str] = None
-    specializations: List[str] = []
-    offerings: List[str] = []
-    digital_presence: Optional[str] = None
-    website_quality: Optional[str] = None
-    seo_presence: Optional[str] = None
-    content_strategy: Optional[str] = None
-    cta_effectiveness: Optional[str] = None
-    customer_journey: Optional[str] = None
-    trust_signals: List[str] = []
-    local_presence: Optional[str] = None
-    digital_strengths: List[str] = []
-    digital_weaknesses: List[str] = []
-    competitive_gaps: List[str] = []
+    website: str | None = None
+    location: str | None = None
+    services: list[str] = []
+    positioning: str | None = None
+    specializations: list[str] = []
+    offerings: list[str] = []
+    digital_presence: str | None = None
+    website_quality: str | None = None
+    seo_presence: str | None = None
+    content_strategy: str | None = None
+    cta_effectiveness: str | None = None
+    customer_journey: str | None = None
+    trust_signals: list[str] = []
+    local_presence: str | None = None
+    digital_strengths: list[str] = []
+    digital_weaknesses: list[str] = []
+    competitive_gaps: list[str] = []
 
 
 class CompetitorAnalysis(BaseModel):
-    candidates: List[CandidateCompetitor] = []
-    competitors: List[Competitor] = []
-    competitive_landscape_summary: Optional[str] = None
-    comparison_matrix: Dict[str, Dict[str, str]] = Field(default_factory=dict)
-    identified_gaps: List[str] = []
-    evidence_ids: List[str] = []
+    candidates: list[CandidateCompetitor] = []
+    competitors: list[Competitor] = []
+    competitive_landscape_summary: str | None = None
+    comparison_matrix: dict[str, dict[str, str]] = Field(default_factory=dict)
+    identified_gaps: list[str] = []
+    evidence_ids: list[str] = []
 
 
 class ServiceImportance(str, Enum):
@@ -297,24 +390,24 @@ class ServiceVisibility(str, Enum):
 class Service(BaseModel):
     name: str
     description: str = ""
-    category: Optional[str] = None
+    category: str | None = None
     importance: ServiceImportance = ServiceImportance.SECONDARY
-    target_customer: Optional[str] = None
-    customer_problem_solved: Optional[str] = None
+    target_customer: str | None = None
+    customer_problem_solved: str | None = None
     visibility: ServiceVisibility = ServiceVisibility.MODERATE
     discoverability: ServiceVisibility = ServiceVisibility.MODERATE
-    digital_representation: Optional[str] = None
+    digital_representation: str | None = None
     dedicated_page: str = "unknown"
     CTA: str = "unknown"
     content_quality: str = "unknown"
-    search_intent: Optional[str] = None
-    potential_gap: Optional[str] = None
+    search_intent: str | None = None
+    potential_gap: str | None = None
     has_dedicated_page: bool = False
     cta_present: bool = False
-    customer_friction: List[str] = []
-    content_gaps: List[str] = []
+    customer_friction: list[str] = []
+    content_gaps: list[str] = []
     confidence: float = 0.8
-    evidence_ids: List[str] = []
+    evidence_ids: list[str] = []
 
     @field_validator("name")
     @classmethod
@@ -322,20 +415,36 @@ class Service(BaseModel):
         if not v or len(v.strip()) < 2:
             raise ValueError(f"Service name too short: {v!r}")
         # Reject obvious malformed names from LLM hallucinations
-        bad_patterns = ["=", "\\", '"', "{", "}", "target_customers", "products_services",
-                        "additional_info", "description", "schema", "json", "null", "true", "false"]
+        bad_patterns = [
+            "=",
+            "\\",
+            '"',
+            "{",
+            "}",
+            "target_customers",
+            "products_services",
+            "additional_info",
+            "description",
+            "schema",
+            "json",
+            "null",
+            "true",
+            "false",
+        ]
         v_lower = v.lower().strip()
         for pat in bad_patterns:
             if pat in v:
-                raise ValueError(f"Service name appears malformed (contains '{pat}'): {v!r}")
+                raise ValueError(
+                    f"Service name appears malformed (contains '{pat}'): {v!r}"
+                )
         return v.strip()
 
 
 class ServiceAnalysis(BaseModel):
-    services: List[Service] = []
+    services: list[Service] = []
     overall_visibility: ServiceVisibility = ServiceVisibility.MODERATE
-    key_gaps: List[str] = []
-    evidence_ids: List[str] = []
+    key_gaps: list[str] = []
+    evidence_ids: list[str] = []
 
 
 class ProblemSeverity(str, Enum):
@@ -368,18 +477,18 @@ class BusinessProblem(BaseModel):
     id: str = Field(default_factory=lambda: f"prob_{str(uuid.uuid4())[:6]}")
     title: str = ""
     problem: str = ""
-    description: Optional[str] = None
+    description: str | None = None
     type: ProblemType = ProblemType.SERVICE_VISIBILITY
     status: ProblemStatus = ProblemStatus.POTENTIAL
-    evidence_ids: List[str] = []
-    observations: List[str] = []
+    evidence_ids: list[str] = []
+    observations: list[str] = []
     business_impact: int = Field(ge=1, le=10, default=5)
     urgency: int = Field(ge=1, le=10, default=5)
     confidence: float = Field(ge=0.0, le=1.0, default=0.8)
     reasoning: str = ""
     severity: ProblemSeverity = ProblemSeverity.MEDIUM
-    affected_customer_segment: Optional[str] = None
-    affected_service: Optional[str] = None
+    affected_customer_segment: str | None = None
+    affected_service: str | None = None
 
     @model_validator(mode="before")
     @classmethod
@@ -409,8 +518,8 @@ class AgencyService(str, Enum):
 class Opportunity(BaseModel):
     problem_reference: str = ""
     opportunity: str
-    recommended_services: List[AgencyService] = []
-    expected_business_outcome: Optional[str] = None
+    recommended_services: list[AgencyService] = []
+    expected_business_outcome: str | None = None
     priority: int = Field(ge=1, le=10, default=5)
     impact: int = Field(ge=1, le=10, default=5)
     urgency: int = Field(ge=1, le=10, default=5)
@@ -438,7 +547,7 @@ class BusinessScore(BaseModel):
     analysis_completeness: int = Field(ge=0, le=100, default=100)
     overall_score: int = Field(ge=0, le=100)
     priority: ScoreCategory
-    score_explanation: Union[str, Dict[str, str]]
+    score_explanation: str | dict[str, str]
 
 
 class NodeStatusEnum(str, Enum):
@@ -451,7 +560,7 @@ class NodeStatusEnum(str, Enum):
 class NodeExecutionStatus(BaseModel):
     status: NodeStatusEnum = NodeStatusEnum.SUCCESS
     confidence: float = Field(ge=0.0, le=1.0, default=1.0)
-    error_message: Optional[str] = None
+    error_message: str | None = None
 
 
 class AnalysisCompleteness(BaseModel):
@@ -466,36 +575,40 @@ class AnalysisCompleteness(BaseModel):
 
 
 class QualityGateResult(BaseModel):
-    quality_status: Literal["PASSED", "PASSED_WITH_WARNINGS", "NEEDS_REVIEW", "FAILED"] = "PASSED"
-    passed_checks: List[str] = []
-    failed_checks: List[str] = []
-    warnings: List[str] = []
-    notes: List[str] = []
+    quality_status: Literal[
+        "PASSED", "PASSED_WITH_WARNINGS", "NEEDS_REVIEW", "FAILED"
+    ] = "PASSED"
+    passed_checks: list[str] = []
+    failed_checks: list[str] = []
+    warnings: list[str] = []
+    notes: list[str] = []
 
 
 class WebsiteAnalysisResult(BaseModel):
-    seo_score: Optional[int] = None
-    technical_score: Optional[int] = None
-    ux_score: Optional[int] = None
-    content_score: Optional[int] = None
-    conversion_score: Optional[int] = None
-    crawl_status: Literal["COMPLETE", "PARTIAL", "FAILED", "UNAVAILABLE"] = "UNAVAILABLE"
+    seo_score: int | None = None
+    technical_score: int | None = None
+    ux_score: int | None = None
+    content_score: int | None = None
+    conversion_score: int | None = None
+    crawl_status: Literal["COMPLETE", "PARTIAL", "FAILED", "UNAVAILABLE"] = (
+        "UNAVAILABLE"
+    )
     pages_analyzed: int = 0
-    pages: List[str] = []
-    findings: List[str] = []
-    broken_links: List[str] = []
-    missing_titles: List[str] = []
-    missing_meta: List[str] = []
-    performance: Optional[str] = None
-    structured_data: Optional[str] = None
-    mobile_issues: List[str] = []
-    service_page_findings: List[str] = []
+    pages: list[str] = []
+    findings: list[str] = []
+    broken_links: list[str] = []
+    missing_titles: list[str] = []
+    missing_meta: list[str] = []
+    performance: str | None = None
+    structured_data: str | None = None
+    mobile_issues: list[str] = []
+    service_page_findings: list[str] = []
     confidence: float = 0.0
 
 
 class FinalBusinessAnalysis(BaseModel):
     company_name: str
-    website: Optional[str] = None
+    website: str | None = None
     industry: str
     location: str
     business_profile: BusinessProfile
@@ -503,26 +616,26 @@ class FinalBusinessAnalysis(BaseModel):
     customer_analysis: CustomerAnalysis
     competitor_analysis: CompetitorAnalysis
     service_analysis: ServiceAnalysis
-    business_problems: List[BusinessProblem] = []
-    opportunities: List[Opportunity] = []
+    business_problems: list[BusinessProblem] = []
+    opportunities: list[Opportunity] = []
     business_score: BusinessScore
-    evidence: List[Evidence] = []
-    node_statuses: Dict[str, NodeExecutionStatus] = Field(default_factory=dict)
-    completeness: Optional[AnalysisCompleteness] = None
-    quality_gate: Optional[QualityGateResult] = None
-    website_analysis: Optional[WebsiteAnalysisResult] = None
-    sdr_opportunity_brief: Optional[Dict[str, Any]] = None
+    evidence: list[Evidence] = []
+    node_statuses: dict[str, NodeExecutionStatus] = Field(default_factory=dict)
+    completeness: AnalysisCompleteness | None = None
+    quality_gate: QualityGateResult | None = None
+    website_analysis: WebsiteAnalysisResult | None = None
+    sdr_opportunity_brief: dict[str, Any] | None = None
     generated_at: datetime = Field(default_factory=datetime.now)
-    errors: List[str] = []
-    warnings: List[str] = []
+    errors: list[str] = []
+    warnings: list[str] = []
 
 
 class BusinessInput(BaseModel):
     company_name: str
-    website: Optional[str] = None
+    website: str | None = None
     industry: str
     location: str
-    description: Optional[str] = None
-    products_services: Optional[str] = None
-    target_customers: Optional[str] = None
-    additional_info: Optional[str] = None
+    description: str | None = None
+    products_services: str | None = None
+    target_customers: str | None = None
+    additional_info: str | None = None

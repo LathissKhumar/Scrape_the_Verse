@@ -3,7 +3,8 @@ Action & Task Generation Policy for Lead Manager.
 """
 
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from ..domain.stage import EmailIntent, LeadStage, TaskType
 from ..domain.task import LeadTask
 
@@ -89,8 +90,8 @@ STAGE_ENTRY_TASKS = {
 def get_tasks_for_intent(
     lead_id: str,
     intent: str,
-    metadata: Optional[Dict[str, Any]] = None,
-) -> List[LeadTask]:
+    metadata: dict[str, Any] | None = None,
+) -> list[LeadTask]:
     intent_norm = intent.upper() if intent else ""
     if intent_norm in INTENT_TASK_MAPPING:
         spec = INTENT_TASK_MAPPING[intent_norm]
@@ -112,8 +113,8 @@ def get_tasks_for_intent(
 def get_tasks_for_stage_entry(
     lead_id: str,
     new_stage: LeadStage,
-    metadata: Optional[Dict[str, Any]] = None,
-) -> List[LeadTask]:
+    metadata: dict[str, Any] | None = None,
+) -> list[LeadTask]:
     if new_stage in STAGE_ENTRY_TASKS:
         spec = STAGE_ENTRY_TASKS[new_stage]
         meta = metadata.copy() if metadata else {}
@@ -132,11 +133,11 @@ def get_tasks_for_stage_entry(
 
 
 def evaluate_stale_lead(
-    lead_dict: Dict[str, Any],
+    lead_dict: dict[str, Any],
     stale_days_contacted: int = 3,
     stale_days_engaged: int = 2,
     stale_days_proposal: int = 2,
-) -> Optional[LeadTask]:
+) -> LeadTask | None:
     stage = lead_dict.get("stage")
     updated_at_str = lead_dict.get("updated_at") or lead_dict.get("created_at")
     lead_id = lead_dict.get("id")
@@ -165,7 +166,9 @@ def evaluate_stale_lead(
     elif stage == LeadStage.ENGAGED.value or stage == LeadStage.REQUEST_INFO.value:
         threshold = timedelta(days=stale_days_engaged)
         task_title = "Follow up with Engaged Prospect"
-        task_desc = f"Conversation paused for {stale_days_engaged} days. Nudge prospect."
+        task_desc = (
+            f"Conversation paused for {stale_days_engaged} days. Nudge prospect."
+        )
     elif stage == LeadStage.PROPOSAL_READY.value:
         threshold = timedelta(days=stale_days_proposal)
         task_title = "Pending Human Proposal Approval"

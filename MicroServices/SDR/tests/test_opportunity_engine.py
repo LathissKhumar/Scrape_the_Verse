@@ -2,8 +2,7 @@
 Tests for Opportunity Engine (Layer 5) & Dynamic Service Catalog Matching.
 """
 
-import pytest
-from MicroServices.SDR.opportunity_engine import OpportunityEngine, SelectedOffer
+from MicroServices.SDR.opportunity_engine import OpportunityEngine
 
 
 def test_evaluate_opportunities_with_website_weaknesses():

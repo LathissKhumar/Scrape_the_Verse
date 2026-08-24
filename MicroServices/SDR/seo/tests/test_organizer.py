@@ -11,20 +11,31 @@ Tests:
 - LLM token reduction comparison
 """
 
-import os
 import json
-import pytest
-from seo.organizer import WebsiteDataOrganizer, extract_domain, normalize_url, generate_stable_id
+import os
+
+from seo.organizer import (
+    WebsiteDataOrganizer,
+    extract_domain,
+    generate_stable_id,
+    normalize_url,
+)
 
 
 def test_extract_domain():
-    assert extract_domain("https://www.atlaskliniek.nl/en/dentist-amsterdam/") == "atlaskliniek.nl"
+    assert (
+        extract_domain("https://www.atlaskliniek.nl/en/dentist-amsterdam/")
+        == "atlaskliniek.nl"
+    )
     assert extract_domain("http://example.com/test") == "example.com"
     assert extract_domain("sub.domain.co.uk") == "sub.domain.co.uk"
 
 
 def test_normalize_url():
-    assert normalize_url("https://Example.COM/path/#fragment") == "https://example.com/path/"
+    assert (
+        normalize_url("https://Example.COM/path/#fragment")
+        == "https://example.com/path/"
+    )
     assert normalize_url("http://example.com//a//b") == "http://example.com/a/b"
 
 
@@ -32,13 +43,15 @@ def test_generate_stable_id():
     id1 = generate_stable_id("page", "https://example.com/about")
     id2 = generate_stable_id("page", "https://example.com/about")
     id3 = generate_stable_id("page", "https://example.com/contact")
-    
+
     assert id1 == id2
     assert id1 != id3
     assert id1.startswith("page_")
 
 
-def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issues, sample_sitemaps):
+def test_organizer_end_to_end(
+    tmp_path, sample_pages, sample_links, sample_issues, sample_sitemaps
+):
     """Test full normalization and folder organization."""
     raw_payload = {
         "crawl_id": "test_crawl_123",
@@ -50,7 +63,7 @@ def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issue
         "crawl_summary": {
             "total_pages_crawled": len(sample_pages),
             "total_links": len(sample_links),
-            "duration_seconds": 3.4
+            "duration_seconds": 3.4,
         },
         "pages": sample_pages,
         "links": sample_links,
@@ -60,7 +73,7 @@ def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issue
             {
                 "url": "https://www.atlaskliniek.nl/",
                 "mobile": {"error": "API rate limited"},
-                "desktop": {"performance_score": 85}
+                "desktop": {"performance_score": 85},
             }
         ],
         "priority_action_items": [
@@ -71,9 +84,9 @@ def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issue
                 "action": "Redirect broken links",
                 "impact_score": 9,
                 "estimated_effort": "low",
-                "affected_count": 1
+                "affected_count": 1,
             }
-        ]
+        ],
     }
 
     base_out = str(tmp_path / "websites")
@@ -99,19 +112,42 @@ def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issue
     assert os.path.exists(os.path.join(domain_dir, "pages", "index.json"))
 
     # 4. Verify Technical Directory
-    for f_name in ["audit.json", "canonicals.json", "robots.json", "sitemap.json", "redirects.json", "errors.json"]:
+    for f_name in [
+        "audit.json",
+        "canonicals.json",
+        "robots.json",
+        "sitemap.json",
+        "redirects.json",
+        "errors.json",
+    ]:
         assert os.path.exists(os.path.join(domain_dir, "technical", f_name))
 
     # 5. Verify On-Page Directory
-    for f_name in ["audit.json", "titles.json", "meta_descriptions.json", "headings.json", "images_alt.json"]:
+    for f_name in [
+        "audit.json",
+        "titles.json",
+        "meta_descriptions.json",
+        "headings.json",
+        "images_alt.json",
+    ]:
         assert os.path.exists(os.path.join(domain_dir, "onpage", f_name))
 
     # 6. Verify Content Directory
-    for f_name in ["audit.json", "thin_content.json", "duplicate_titles.json", "content_metrics.json"]:
+    for f_name in [
+        "audit.json",
+        "thin_content.json",
+        "duplicate_titles.json",
+        "content_metrics.json",
+    ]:
         assert os.path.exists(os.path.join(domain_dir, "content", f_name))
 
     # 7. Verify Performance Directory (with strict missing PageSpeed status)
-    for f_name in ["audit.json", "page_performance.json", "slow_pages.json", "pagespeed.json"]:
+    for f_name in [
+        "audit.json",
+        "page_performance.json",
+        "slow_pages.json",
+        "pagespeed.json",
+    ]:
         assert os.path.exists(os.path.join(domain_dir, "performance", f_name))
 
     with open(os.path.join(domain_dir, "performance", "pagespeed.json"), "r") as f:
@@ -127,7 +163,14 @@ def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issue
         assert os.path.exists(os.path.join(domain_dir, "local", f_name))
 
     # 10. Verify Links Directory
-    for f_name in ["all.json", "internal.json", "external.json", "broken.json", "anchor_text.json", "architecture.json"]:
+    for f_name in [
+        "all.json",
+        "internal.json",
+        "external.json",
+        "broken.json",
+        "anchor_text.json",
+        "architecture.json",
+    ]:
         assert os.path.exists(os.path.join(domain_dir, "links", f_name))
 
     # 11. Verify Images Directory
@@ -138,7 +181,14 @@ def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issue
     assert os.path.exists(os.path.join(domain_dir, "analytics", "tracking.json"))
 
     # 13. Verify Issues Directory
-    for f_name in ["all.json", "critical.json", "high.json", "medium.json", "low.json", "by_category.json"]:
+    for f_name in [
+        "all.json",
+        "critical.json",
+        "high.json",
+        "medium.json",
+        "low.json",
+        "by_category.json",
+    ]:
         assert os.path.exists(os.path.join(domain_dir, "issues", f_name))
 
     # 14. Verify Recommendations Directory
@@ -146,7 +196,13 @@ def test_organizer_end_to_end(tmp_path, sample_pages, sample_links, sample_issue
         assert os.path.exists(os.path.join(domain_dir, "recommendations", f_name))
 
     # 15. Verify Summary Directory & Validation Report
-    for f_name in ["overview.json", "category_scores.json", "metrics.json", "executive_summary.md", "validation.json"]:
+    for f_name in [
+        "overview.json",
+        "category_scores.json",
+        "metrics.json",
+        "executive_summary.md",
+        "validation.json",
+    ]:
         assert os.path.exists(os.path.join(domain_dir, "summary", f_name))
 
     with open(os.path.join(domain_dir, "summary", "validation.json"), "r") as f:

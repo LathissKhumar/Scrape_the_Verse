@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 from leadfinder.extraction.llm import LLMExtractor
 from leadfinder.models.schemas import ScrapingTask
 
@@ -27,4 +28,6 @@ async def test_llm_extractor_concurrent_chunks():
         task=task,
     )
     assert len(records) >= 1
-    assert any("Item 1" in str(r.values()) or "Item 2" in str(r.values()) for r in records)
+    assert any(
+        "Item 1" in str(r.values()) or "Item 2" in str(r.values()) for r in records
+    )

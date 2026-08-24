@@ -1,26 +1,31 @@
 import json
+
 import pytest
 from leadfinder.agents.diagnosis import DiagnosisAgent
 from leadfinder.diagnosis.schemas import RepairStrategy, RootCause
 from leadfinder.models.schemas import ScrapingTask
-from leadfinder.validation.schemas import FieldMetric, ValidationResult
 from leadfinder.tests.conftest import MockLLMClient
+from leadfinder.validation.schemas import FieldMetric, ValidationResult
 
 
 @pytest.mark.asyncio
 async def test_diagnosis_agent_llm_selector_drift():
-    mock_llm_response = json.dumps({
-        "diagnosis_status": "diagnosed",
-        "root_cause": "SELECTOR_DRIFT",
-        "confidence": 0.92,
-        "failure_category": "EXTRACTION_DEGRADATION",
-        "affected_stage": "css_extraction",
-        "affected_fields": ["price"],
-        "evidence": ["Class name changed from .price to .current-price in card container"],
-        "repair_strategy": "REPAIR_CSS_SELECTORS",
-        "repair_targets": ["price"],
-        "recommended_action": "REPAIR_EXTRACTION_SCHEMA",
-    })
+    mock_llm_response = json.dumps(
+        {
+            "diagnosis_status": "diagnosed",
+            "root_cause": "SELECTOR_DRIFT",
+            "confidence": 0.92,
+            "failure_category": "EXTRACTION_DEGRADATION",
+            "affected_stage": "css_extraction",
+            "affected_fields": ["price"],
+            "evidence": [
+                "Class name changed from .price to .current-price in card container"
+            ],
+            "repair_strategy": "REPAIR_CSS_SELECTORS",
+            "repair_targets": ["price"],
+            "recommended_action": "REPAIR_EXTRACTION_SCHEMA",
+        }
+    )
 
     mock_llm = MockLLMClient(response_text=mock_llm_response)
     agent = DiagnosisAgent(llm_client=mock_llm)

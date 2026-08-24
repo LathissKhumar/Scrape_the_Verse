@@ -1,5 +1,7 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
 from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema, RawPage
 from leadfinder.healing.multi_page import MultiPageRepairValidator
 from leadfinder.models.schemas import ScrapingTask
@@ -10,24 +12,37 @@ from leadfinder.validation.schemas import ValidationResult
 async def test_multi_page_validator_passes_when_consistent():
     mock_extractor = MagicMock()
     mock_extractor.extract_async = AsyncMock(
-        return_value=ExtractionResult(records=[{"title": "Prod 1"}, {"title": "Prod 2"}], strategy_used="css")
+        return_value=ExtractionResult(
+            records=[{"title": "Prod 1"}, {"title": "Prod 2"}], strategy_used="css"
+        )
     )
     mock_validator = MagicMock()
-    mock_validator.validate.return_value = ValidationResult(status="healthy", health_score=0.95)
+    mock_validator.validate.return_value = ValidationResult(
+        status="healthy", health_score=0.95
+    )
 
     multi_page_val = MultiPageRepairValidator(
         extraction_engine=mock_extractor,
         validation_engine=mock_validator,
     )
 
-    task = ScrapingTask(task_id="t1", objective="scrape", target_urls=["https://example.com/p1", "https://example.com/p2"])
+    task = ScrapingTask(
+        task_id="t1",
+        objective="scrape",
+        target_urls=["https://example.com/p1", "https://example.com/p2"],
+    )
     schema = ExtractionSchema()
     pages = [
         RawPage(url="https://example.com/p1", html="<html>Page 1</html>"),
         RawPage(url="https://example.com/p2", html="<html>Page 2</html>"),
     ]
 
-    passed, avg_health, metrics, reason = await multi_page_val.validate_candidate_across_pages(
+    (
+        passed,
+        avg_health,
+        metrics,
+        reason,
+    ) = await multi_page_val.validate_candidate_across_pages(
         task=task, schema=schema, raw_pages=pages
     )
 
@@ -41,7 +56,9 @@ async def test_multi_page_validator_passes_when_consistent():
 async def test_multi_page_validator_rejects_when_inconsistent():
     mock_extractor = MagicMock()
     mock_extractor.extract_async = AsyncMock(
-        return_value=ExtractionResult(records=[{"title": "Prod 1"}], strategy_used="css")
+        return_value=ExtractionResult(
+            records=[{"title": "Prod 1"}], strategy_used="css"
+        )
     )
     mock_validator = MagicMock()
     # First page healthy (0.90), second page broken (0.20)
@@ -55,14 +72,23 @@ async def test_multi_page_validator_rejects_when_inconsistent():
         validation_engine=mock_validator,
     )
 
-    task = ScrapingTask(task_id="t1", objective="scrape", target_urls=["https://example.com/p1", "https://example.com/p2"])
+    task = ScrapingTask(
+        task_id="t1",
+        objective="scrape",
+        target_urls=["https://example.com/p1", "https://example.com/p2"],
+    )
     schema = ExtractionSchema()
     pages = [
         RawPage(url="https://example.com/p1", html="<html>Page 1</html>"),
         RawPage(url="https://example.com/p2", html="<html>Page 2</html>"),
     ]
 
-    passed, avg_health, metrics, reason = await multi_page_val.validate_candidate_across_pages(
+    (
+        passed,
+        avg_health,
+        metrics,
+        reason,
+    ) = await multi_page_val.validate_candidate_across_pages(
         task=task, schema=schema, raw_pages=pages
     )
 

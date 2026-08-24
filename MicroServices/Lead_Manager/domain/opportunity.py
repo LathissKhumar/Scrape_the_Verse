@@ -3,8 +3,9 @@ Opportunity Domain Model.
 """
 
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any
 from uuid import uuid4
+
 from pydantic import BaseModel, Field
 
 
@@ -19,14 +20,14 @@ class Opportunity(BaseModel):
     type: str
     score: float = 0.0
 
-    problem_summary: Optional[str] = None
-    evidence: List[Dict[str, Any]] = Field(default_factory=list)
+    problem_summary: str | None = None
+    evidence: list[dict[str, Any]] = Field(default_factory=list)
 
     recommended: bool = True
     status: str = "IDENTIFIED"
 
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, Any] = Field(default_factory=dict)
     created_at: str = Field(default_factory=utc_now_iso)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return self.model_dump()

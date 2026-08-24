@@ -1,18 +1,16 @@
-import json
-import sys
-from typing import List, Optional, Dict, Any, Tuple
 from pathlib import Path
+from typing import Any
 
+from config import settings
 from utils import (
+    extract_domain_from_url,
+    find_json_files,
+    get_filename_stem,
+    load_json_file,
+    logger,
     normalize_string,
     similarity,
-    find_json_files,
-    load_json_file,
-    extract_domain_from_url,
-    get_filename_stem,
-    logger,
 )
-from config import settings
 
 
 class MatchResult:
@@ -20,8 +18,8 @@ class MatchResult:
         self,
         filepath: str,
         score: float,
-        match_signals: Dict[str, Any],
-        json_data: Dict[str, Any],
+        match_signals: dict[str, Any],
+        json_data: dict[str, Any],
     ):
         self.filepath = filepath
         self.score = score
@@ -29,7 +27,7 @@ class MatchResult:
         self.json_data = json_data
 
 
-def load_seo_report_metadata(filepath: str) -> Dict[str, Any]:
+def load_seo_report_metadata(filepath: str) -> dict[str, Any]:
     data, _ = load_json_file(filepath)
     if not data or not isinstance(data, dict):
         return {}
@@ -39,12 +37,14 @@ def load_seo_report_metadata(filepath: str) -> Dict[str, Any]:
         "base_url": data.get("base_url", ""),
         "domain_name": extract_domain_from_url(data.get("url", "")),
         "crawl_status": data.get("status", ""),
-        "pages_crawled": data.get("raw_crawl_data", {}).get("summary", {}).get("total_pages_crawled", 0),
+        "pages_crawled": data.get("raw_crawl_data", {})
+        .get("summary", {})
+        .get("total_pages_crawled", 0),
     }
     return metadata
 
 
-def load_business_report_metadata(filepath: str) -> Dict[str, Any]:
+def load_business_report_metadata(filepath: str) -> dict[str, Any]:
     data, _ = load_json_file(filepath)
     if not data or not isinstance(data, dict):
         return {}
@@ -63,8 +63,8 @@ def score_seo_match(
     company_name: str,
     normalized_company: str,
     filepath: str,
-    metadata: Dict[str, Any],
-) -> Tuple[float, Dict[str, Any]]:
+    metadata: dict[str, Any],
+) -> tuple[float, dict[str, Any]]:
     signals = {}
     scores = []
 
@@ -100,8 +100,8 @@ def score_business_match(
     company_name: str,
     normalized_company: str,
     filepath: str,
-    metadata: Dict[str, Any],
-) -> Tuple[float, Dict[str, Any]]:
+    metadata: dict[str, Any],
+) -> tuple[float, dict[str, Any]]:
     signals = {}
     scores = []
 
@@ -132,7 +132,7 @@ def score_business_match(
     return sum(scores), signals
 
 
-def discover_seo_report(company_name: str) -> Tuple[Optional[str], List[MatchResult]]:
+def discover_seo_report(company_name: str) -> tuple[str | None, list[MatchResult]]:
     normalized_company = normalize_string(company_name)
     logger.info(f"Searching SEO reports in: {settings.seo_report_dir}")
 
@@ -147,7 +147,9 @@ def discover_seo_report(company_name: str) -> Tuple[Optional[str], List[MatchRes
         if not metadata:
             continue
 
-        score, signals = score_seo_match(company_name, normalized_company, filepath, metadata)
+        score, signals = score_seo_match(
+            company_name, normalized_company, filepath, metadata
+        )
         if score > 0.15:
             data, _ = load_json_file(filepath)
             if data:
@@ -157,23 +159,29 @@ def discover_seo_report(company_name: str) -> Tuple[Optional[str], List[MatchRes
 
     logger.info(f"Found {len(candidates)} SEO report candidates")
     for c in candidates[:5]:
-        logger.debug(f"  {c.filepath} - score: {c.score:.3f} - signals: {c.match_signals}")
+        logger.debug(
+            f"  {c.filepath} - score: {c.score:.3f} - signals: {c.match_signals}"
+        )
 
     if not candidates:
         return None, []
 
     best = candidates[0]
     if len(candidates) > 1 and candidates[1].score > best.score * 0.8:
-        logger.warning(f"Multiple SEO candidates with similar scores:")
+        logger.warning("Multiple SEO candidates with similar scores:")
         for i, c in enumerate(candidates[:3]):
-            logger.warning(f"  {i+1}. {c.filepath} (score: {c.score:.3f})")
+            logger.warning(f"  {i + 1}. {c.filepath} (score: {c.score:.3f})")
 
     return best.filepath, candidates
 
 
-def discover_business_report(company_name: str) -> Tuple[Optional[str], List[MatchResult]]:
+def discover_business_report(
+    company_name: str,
+) -> tuple[str | None, list[MatchResult]]:
     normalized_company = normalize_string(company_name)
-    logger.info(f"Searching Business Analysis reports in: {settings.business_report_dir}")
+    logger.info(
+        f"Searching Business Analysis reports in: {settings.business_report_dir}"
+    )
 
     files = find_json_files(settings.business_report_dir)
     if not files:
@@ -186,7 +194,9 @@ def discover_business_report(company_name: str) -> Tuple[Optional[str], List[Mat
         if not metadata:
             continue
 
-        score, signals = score_business_match(company_name, normalized_company, filepath, metadata)
+        score, signals = score_business_match(
+            company_name, normalized_company, filepath, metadata
+        )
         if score > 0.15:
             data, _ = load_json_file(filepath)
             if data:
@@ -196,21 +206,23 @@ def discover_business_report(company_name: str) -> Tuple[Optional[str], List[Mat
 
     logger.info(f"Found {len(candidates)} Business Analysis candidates")
     for c in candidates[:5]:
-        logger.debug(f"  {c.filepath} - score: {c.score:.3f} - signals: {c.match_signals}")
+        logger.debug(
+            f"  {c.filepath} - score: {c.score:.3f} - signals: {c.match_signals}"
+        )
 
     if not candidates:
         return None, []
 
     best = candidates[0]
     if len(candidates) > 1 and candidates[1].score > best.score * 0.8:
-        logger.warning(f"Multiple Business Analysis candidates with similar scores:")
+        logger.warning("Multiple Business Analysis candidates with similar scores:")
         for i, c in enumerate(candidates[:3]):
-            logger.warning(f"  {i+1}. {c.filepath} (score: {c.score:.3f})")
+            logger.warning(f"  {i + 1}. {c.filepath} (score: {c.score:.3f})")
 
     return best.filepath, candidates
 
 
-def validate_website_exists(seo_data: Dict[str, Any]) -> bool:
+def validate_website_exists(seo_data: dict[str, Any]) -> bool:
     crawl_status = seo_data.get("status", "")
     raw_data = seo_data.get("raw_crawl_data", {})
     summary = raw_data.get("summary", {})
@@ -221,21 +233,21 @@ def validate_website_exists(seo_data: Dict[str, Any]) -> bool:
 
 
 def select_best_match(
-    candidates: List[MatchResult],
+    candidates: list[MatchResult],
     report_type: str,
     company_name: str,
-) -> Optional[MatchResult]:
+) -> MatchResult | None:
     if not candidates:
         return None
 
     # Always auto-select the best match for now
     # The scoring should be reliable enough
     best = candidates[0]
-    
+
     # Log if there are close competitors
     if len(candidates) > 1 and candidates[1].score > best.score * 0.9:
         logger.warning(f"Multiple {report_type} candidates with very similar scores:")
         for i, c in enumerate(candidates[:3]):
-            logger.warning(f"  {i+1}. {Path(c.filepath).name} (score: {c.score:.3f})")
-    
+            logger.warning(f"  {i + 1}. {Path(c.filepath).name} (score: {c.score:.3f})")
+
     return best

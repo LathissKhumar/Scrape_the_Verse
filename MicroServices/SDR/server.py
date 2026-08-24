@@ -3,12 +3,13 @@ SDR Microservice FastAPI Server (Port 8081).
 Autonomous Website Audit, SEO Analysis, Opportunity Synthesizer, Proposal Generator, Outreach Pack, and A2A Agent.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
+import sniffio
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-import sniffio
-from starlette.middleware.base import BaseHTTPMiddleware
+
 from .orchestrator import SDROrchestrator
 
 app = FastAPI(
@@ -55,21 +56,21 @@ class AuditRequest(BaseModel):
 
 class FullPipelineRequest(BaseModel):
     company_name: str
-    website_url: Optional[str] = None
-    campaign_id: Optional[str] = None
-    primary_contact_name: Optional[str] = None
-    primary_contact_email: Optional[str] = None
-    primary_contact_phone: Optional[str] = None
-    industry: Optional[str] = None
-    location: Optional[str] = None
+    website_url: str | None = None
+    campaign_id: str | None = None
+    primary_contact_name: str | None = None
+    primary_contact_email: str | None = None
+    primary_contact_phone: str | None = None
+    industry: str | None = None
+    location: str | None = None
     source: str = "leadfinder+sdr"
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class A2AInvokeRequest(BaseModel):
     skill: str
-    parameters: Dict[str, Any] = Field(default_factory=dict)
-    caller_agent: Optional[str] = "unknown"
+    parameters: dict[str, Any] = Field(default_factory=dict)
+    caller_agent: str | None = "unknown"
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
@@ -98,7 +99,10 @@ async def serve_sdr_agent_card():
             {
                 "name": "audit_website",
                 "description": "Perform deep technical and on-page SEO crawl and audit on a target domain.",
-                "parameters": {"url": "string (required)", "max_pages": "integer (optional)"},
+                "parameters": {
+                    "url": "string (required)",
+                    "max_pages": "integer (optional)",
+                },
             },
             {
                 "name": "execute_full_sdr_pipeline",
@@ -155,7 +159,11 @@ async def invoke_a2a_skill(request: A2AInvokeRequest):
             url=params.get("url", "")
         )
         return {"success": True, "result": res}
-    elif skill in ("execute_full_sdr_pipeline", "audit_and_dispatch_lead", "process_discovered_prospect"):
+    elif skill in (
+        "execute_full_sdr_pipeline",
+        "audit_and_dispatch_lead",
+        "process_discovered_prospect",
+    ):
         res = await orchestrator.process_discovered_prospect(
             raw_lead_data=params,
             auto_dispatch_to_lead_manager=True,

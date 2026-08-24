@@ -2,13 +2,11 @@ import asyncio
 import os
 import sys
 import time
-from urllib.parse import urljoin
 
 sys.path.insert(0, os.path.abspath("."))
 
-from leadfinder.graph.workflow import create_scraping_workflow
 from leadfinder.graph.state import ScrapingGraphState
-from leadfinder.config.settings import get_settings
+from leadfinder.graph.workflow import create_scraping_workflow
 
 
 async def run_stress_test():
@@ -34,7 +32,9 @@ async def run_stress_test():
         {
             "name": "Deep Single-Product Page with Table Metadata & Thumbnail",
             "query": "Extract the book title, UPC code, price tax excluded, stock availability, and main image",
-            "urls": ["https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"],
+            "urls": [
+                "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
+            ],
             "expected_fields": ["title", "upc", "price", "availability", "image"],
         },
     ]
@@ -63,7 +63,9 @@ async def run_stress_test():
 
             if not output:
                 print(f"[FAIL] No output produced for {tc['name']}")
-                flaws_found.append(f"{tc['name']}: No output returned from graph workflow.")
+                flaws_found.append(
+                    f"{tc['name']}: No output returned from graph workflow."
+                )
                 continue
 
             records = output.records
@@ -84,7 +86,10 @@ async def run_stress_test():
             # Check 1: Relative Image URLs instead of Absolute URLs
             for i, r in enumerate(records):
                 for k, v in r.items():
-                    if any(img_key in k.lower() for img_key in ["image", "img", "thumbnail", "picture"]):
+                    if any(
+                        img_key in k.lower()
+                        for img_key in ["image", "img", "thumbnail", "picture"]
+                    ):
                         if v and isinstance(v, str):
                             if v.startswith("../") or v.startswith("/"):
                                 flaw_msg = f"Relative image URL not resolved: field '{k}' = '{v}'"
@@ -98,14 +103,18 @@ async def run_stress_test():
                             if flaw_msg not in flaws_found:
                                 flaws_found.append(flaw_msg)
                         if "&nbsp;" in v or "&#" in v:
-                            flaw_msg = f"Unescaped HTML entity noise in field '{k}': '{v}'"
+                            flaw_msg = (
+                                f"Unescaped HTML entity noise in field '{k}': '{v}'"
+                            )
                             if flaw_msg not in flaws_found:
                                 flaws_found.append(flaw_msg)
 
             # Check 3: Missing Requested Fields / Null rates
             missing_fields = []
             for ef in tc["expected_fields"]:
-                has_field = any(r.get(ef) is not None and str(r.get(ef)).strip() for r in records)
+                has_field = any(
+                    r.get(ef) is not None and str(r.get(ef)).strip() for r in records
+                )
                 if not has_field:
                     missing_fields.append(ef)
 
@@ -113,13 +122,15 @@ async def run_stress_test():
                 flaw_msg = f"Task '{tc['name']}' failed to extract requested fields: {missing_fields}"
                 flaws_found.append(flaw_msg)
 
-            results_summary.append({
-                "name": tc["name"],
-                "records": len(records),
-                "health": health_score,
-                "time": elapsed,
-                "status": "PASS" if health_score >= 0.80 else "DEGRADED",
-            })
+            results_summary.append(
+                {
+                    "name": tc["name"],
+                    "records": len(records),
+                    "health": health_score,
+                    "time": elapsed,
+                    "status": "PASS" if health_score >= 0.80 else "DEGRADED",
+                }
+            )
 
         except Exception as e:
             print(f"[ERROR] Exception during {tc['name']}: {e}")
@@ -129,7 +140,9 @@ async def run_stress_test():
     print("  STRESS TEST FINAL RESULTS & AUDIT REPORT")
     print("=" * 70)
     for s in results_summary:
-        print(f"[{s['status']}] {s['name']} | Records: {s['records']} | Health: {s['health']:.2f} | Time: {s['time']:.2f}s")
+        print(
+            f"[{s['status']}] {s['name']} | Records: {s['records']} | Health: {s['health']:.2f} | Time: {s['time']:.2f}s"
+        )
 
     print("\n" + "=" * 70)
     print(f"  DETECTED FLAWS & NOISE FINDINGS ({len(flaws_found)})")

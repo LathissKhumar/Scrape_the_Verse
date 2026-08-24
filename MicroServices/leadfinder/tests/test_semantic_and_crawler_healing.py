@@ -21,7 +21,9 @@ def test_semantic_repair_memory_matching():
     )
     sem_mem.register_record(rec1, html_shop1)
 
-    matches = sem_mem.find_cross_domain_candidates(html_shop2, fields=["price"], similarity_threshold=0.70)
+    matches = sem_mem.find_cross_domain_candidates(
+        html_shop2, fields=["price"], similarity_threshold=0.70
+    )
     assert len(matches) >= 1
     assert matches[0].domain == "brand-a.com"
 

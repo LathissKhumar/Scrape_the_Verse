@@ -3,8 +3,8 @@ Lead Manager CLI Runner (Port 8082).
 Launch with: python -m MicroServices.Lead_Manager.run
 """
 
-import os
 import uvicorn
+
 from .config.settings import get_settings
 
 settings = get_settings()

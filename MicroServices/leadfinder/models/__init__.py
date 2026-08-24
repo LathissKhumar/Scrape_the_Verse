@@ -1,13 +1,13 @@
 from leadfinder.models.schemas import (
     ScrapingRequest,
-    ScrapingTask,
     ScrapingResult,
+    ScrapingTask,
     validate_http_url,
 )
 
 __all__ = [
     "ScrapingRequest",
-    "ScrapingTask",
     "ScrapingResult",
+    "ScrapingTask",
     "validate_http_url",
 ]

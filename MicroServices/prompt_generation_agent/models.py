@@ -1,6 +1,7 @@
-from typing import List, Dict, Any, Optional, Literal
-from pydantic import BaseModel, Field
 from enum import Enum
+from typing import Any
+
+from pydantic import BaseModel
 
 
 class PromptType(str, Enum):
@@ -25,7 +26,7 @@ class IssueFinding(BaseModel):
     url: str
     title: str
     description: str
-    evidence: Dict[str, Any] = {}
+    evidence: dict[str, Any] = {}
 
 
 class PageFinding(BaseModel):
@@ -35,7 +36,7 @@ class PageFinding(BaseModel):
     h1: str = ""
     word_count: int = 0
     status_code: int = 0
-    issues: List[IssueFinding] = []
+    issues: list[IssueFinding] = []
 
 
 class WebsiteIntelligence(BaseModel):
@@ -44,42 +45,42 @@ class WebsiteIntelligence(BaseModel):
     crawl_status: str
     pages_analyzed: int
     overall_score: int
-    category_scores: Dict[str, int] = {}
-    technical_findings: List[IssueFinding] = []
-    seo_findings: List[IssueFinding] = []
-    content_findings: List[IssueFinding] = []
-    ux_findings: List[IssueFinding] = []
-    conversion_findings: List[IssueFinding] = []
-    page_findings: List[PageFinding] = []
-    service_page_findings: List[PageFinding] = []
-    strengths: List[str] = []
-    weaknesses: List[str] = []
-    critical_findings: List[IssueFinding] = []
-    high_findings: List[IssueFinding] = []
-    medium_findings: List[IssueFinding] = []
-    low_findings: List[IssueFinding] = []
-    important_pages: List[PageFinding] = []
+    category_scores: dict[str, int] = {}
+    technical_findings: list[IssueFinding] = []
+    seo_findings: list[IssueFinding] = []
+    content_findings: list[IssueFinding] = []
+    ux_findings: list[IssueFinding] = []
+    conversion_findings: list[IssueFinding] = []
+    page_findings: list[PageFinding] = []
+    service_page_findings: list[PageFinding] = []
+    strengths: list[str] = []
+    weaknesses: list[str] = []
+    critical_findings: list[IssueFinding] = []
+    high_findings: list[IssueFinding] = []
+    medium_findings: list[IssueFinding] = []
+    low_findings: list[IssueFinding] = []
+    important_pages: list[PageFinding] = []
 
 
 class BusinessProfile(BaseModel):
-    business_name: Optional[str] = None
-    official_name: Optional[str] = None
-    business_type: Optional[str] = None
-    business_model: Optional[str] = None
-    industry: Optional[str] = None
-    sub_industry: Optional[str] = None
-    geographic_market: Optional[str] = None
-    primary_location: Optional[str] = None
-    service_area: Optional[str] = None
-    primary_offerings: List[str] = []
-    secondary_offerings: List[str] = []
-    positioning: Optional[str] = None
-    value_proposition: Optional[str] = None
-    target_market: Optional[str] = None
-    company_scale: Optional[str] = None
-    business_age: Optional[str] = None
-    specializations: List[str] = []
-    evidence_ids: List[str] = []
+    business_name: str | None = None
+    official_name: str | None = None
+    business_type: str | None = None
+    business_model: str | None = None
+    industry: str | None = None
+    sub_industry: str | None = None
+    geographic_market: str | None = None
+    primary_location: str | None = None
+    service_area: str | None = None
+    primary_offerings: list[str] = []
+    secondary_offerings: list[str] = []
+    positioning: str | None = None
+    value_proposition: str | None = None
+    target_market: str | None = None
+    company_scale: str | None = None
+    business_age: str | None = None
+    specializations: list[str] = []
+    evidence_ids: list[str] = []
 
 
 class CustomerSegment(BaseModel):
@@ -87,40 +88,40 @@ class CustomerSegment(BaseModel):
     description: str
     is_primary: bool
     why_it_matters: str
-    needs: List[str] = []
-    intent_signals: List[str] = []
-    evidence_ids: List[str] = []
+    needs: list[str] = []
+    intent_signals: list[str] = []
+    evidence_ids: list[str] = []
     confidence: float = 0.0
 
 
 class CustomerAnalysis(BaseModel):
-    segments: List[CustomerSegment] = []
-    primary_segments: List[CustomerSegment] = []
-    secondary_segments: List[CustomerSegment] = []
-    journey: List[Dict[str, Any]] = []
-    evidence_ids: List[str] = []
+    segments: list[CustomerSegment] = []
+    primary_segments: list[CustomerSegment] = []
+    secondary_segments: list[CustomerSegment] = []
+    journey: list[dict[str, Any]] = []
+    evidence_ids: list[str] = []
 
 
 class Service(BaseModel):
     name: str
     description: str
-    category: Optional[str] = None
-    importance: Optional[str] = None
-    target_customer: Optional[str] = None
-    customer_problem_solved: Optional[str] = None
-    visibility: Optional[str] = None
-    discoverability: Optional[str] = None
+    category: str | None = None
+    importance: str | None = None
+    target_customer: str | None = None
+    customer_problem_solved: str | None = None
+    visibility: str | None = None
+    discoverability: str | None = None
     has_dedicated_page: bool = False
     cta_present: bool = False
     confidence: float = 0.0
-    evidence_ids: List[str] = []
+    evidence_ids: list[str] = []
 
 
 class ServiceAnalysis(BaseModel):
-    services: List[Service] = []
-    overall_visibility: Optional[str] = None
-    key_gaps: List[str] = []
-    evidence_ids: List[str] = []
+    services: list[Service] = []
+    overall_visibility: str | None = None
+    key_gaps: list[str] = []
+    evidence_ids: list[str] = []
 
 
 class BusinessProblem(BaseModel):
@@ -130,20 +131,20 @@ class BusinessProblem(BaseModel):
     description: str
     type: str
     status: str
-    evidence_ids: List[str] = []
+    evidence_ids: list[str] = []
     business_impact: int = 0
     urgency: int = 0
     confidence: float = 0.0
     reasoning: str = ""
     severity: str = ""
-    affected_customer_segment: Optional[str] = None
-    affected_service: Optional[str] = None
+    affected_customer_segment: str | None = None
+    affected_service: str | None = None
 
 
 class Opportunity(BaseModel):
     problem_reference: str
     opportunity: str
-    recommended_services: List[str] = []
+    recommended_services: list[str] = []
     expected_business_outcome: str = ""
     priority: int = 0
     impact: int = 0
@@ -172,17 +173,17 @@ class BusinessIntelligence(BaseModel):
     industry: str
     location: str
     business_profile: BusinessProfile
-    market_analysis: Dict[str, Any] = {}
+    market_analysis: dict[str, Any] = {}
     customer_analysis: CustomerAnalysis
-    competitor_analysis: Dict[str, Any] = {}
+    competitor_analysis: dict[str, Any] = {}
     service_analysis: ServiceAnalysis
-    business_problems: List[BusinessProblem] = []
-    opportunities: List[Opportunity] = []
-    business_score: Dict[str, Any] = {}
-    evidence: List[Evidence] = []
-    quality_gate: Dict[str, Any] = {}
-    warnings: List[str] = []
-    errors: List[str] = []
+    business_problems: list[BusinessProblem] = []
+    opportunities: list[Opportunity] = []
+    business_score: dict[str, Any] = {}
+    evidence: list[Evidence] = []
+    quality_gate: dict[str, Any] = {}
+    warnings: list[str] = []
+    errors: list[str] = []
 
 
 class PagePlan(BaseModel):
@@ -197,27 +198,27 @@ class PagePlan(BaseModel):
 
 
 class RecommendedChanges(BaseModel):
-    seo: List[str] = []
-    ux: List[str] = []
-    content: List[str] = []
-    conversion: List[str] = []
-    design: List[str] = []
-    technical: List[str] = []
+    seo: list[str] = []
+    ux: list[str] = []
+    content: list[str] = []
+    conversion: list[str] = []
+    design: list[str] = []
+    technical: list[str] = []
 
 
 class StructuredOutput(BaseModel):
     company_name: str
     website: str
     prompt_type: str
-    source_files: Dict[str, str]
-    website_summary: Dict[str, Any] = {}
-    business_summary: Dict[str, Any] = {}
-    identified_problems: List[Dict[str, Any]] = []
-    business_opportunities: List[Dict[str, Any]] = []
+    source_files: dict[str, str]
+    website_summary: dict[str, Any] = {}
+    business_summary: dict[str, Any] = {}
+    identified_problems: list[dict[str, Any]] = []
+    business_opportunities: list[dict[str, Any]] = []
     recommended_changes: RecommendedChanges
-    page_plan: List[PagePlan] = []
-    preservation_rules: List[str] = []
-    success_criteria: List[str] = []
-    evidence_ids: List[str] = []
+    page_plan: list[PagePlan] = []
+    preservation_rules: list[str] = []
+    success_criteria: list[str] = []
+    evidence_ids: list[str] = []
     confidence: float = 0.0
     generated_prompt: str = ""

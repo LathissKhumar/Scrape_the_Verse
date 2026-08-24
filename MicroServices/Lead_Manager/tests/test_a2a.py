@@ -3,8 +3,10 @@ Unit tests for Agent-to-Agent (A2A) protocol in Lead Manager.
 """
 
 import os
+
 import pytest
 from httpx import ASGITransport, AsyncClient
+
 from MicroServices.Lead_Manager.domain.stage import LeadStage
 from MicroServices.Lead_Manager.main import app
 from MicroServices.Lead_Manager.repository.database import get_db_manager
@@ -25,7 +27,9 @@ async def setup_db():
 
 @pytest.mark.asyncio
 async def test_a2a_agent_card_and_invoke():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
         # 1. Fetch Agent Card
         res_card = await client.get("/.well-known/agent.json")
         assert res_card.status_code == 200

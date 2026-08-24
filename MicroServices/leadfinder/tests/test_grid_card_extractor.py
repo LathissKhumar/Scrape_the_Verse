@@ -1,4 +1,3 @@
-import pytest
 from leadfinder.extraction.grid_cards import GridCardExtractor
 
 
@@ -81,5 +80,3 @@ def test_grid_card_extractor_ignores_recommendation_carousels():
     assert len(records) == 2
     assert records[0]["title"] == "Apple iPhone 15"
     assert records[1]["title"] == "Apple iPhone 14"
-
-

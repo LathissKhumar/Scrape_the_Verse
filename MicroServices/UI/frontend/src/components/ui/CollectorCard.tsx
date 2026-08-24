@@ -1,18 +1,18 @@
-'use client'
-import { motion } from 'framer-motion'
-import { NeonBadge } from './NeonBadge'
-import type { CollectorStatus } from '@/lib/types'
-import { formatNumber } from '@/lib/utils'
+"use client";
+import { motion } from "framer-motion";
+import { NeonBadge } from "./NeonBadge";
+import type { CollectorStatus } from "@/lib/types";
+import { formatNumber } from "@/lib/utils";
 
 const HEALTH_COLOR: Record<string, string> = {
-  healthy: '#34D399',
-  running: '#38BDF8',
-  healing: '#818CF8',
-  failed: '#FB7185',
-}
+  healthy: "#34D399",
+  running: "#38BDF8",
+  healing: "#818CF8",
+  failed: "#FB7185",
+};
 
 export function CollectorCard({ collector }: { collector: CollectorStatus }) {
-  const color = HEALTH_COLOR[collector.health] ?? '#A7AFBD'
+  const color = HEALTH_COLOR[collector.health] ?? "#A7AFBD";
 
   return (
     <motion.div
@@ -61,10 +61,12 @@ export function CollectorCard({ collector }: { collector: CollectorStatus }) {
 
       {collector.lastEvent && (
         <div className="text-xs font-mono text-muted border-t border-white/10 pt-3.5 flex items-center justify-between gap-2">
-          <span className="text-text-primary shrink-0">{collector.lastEventTime}</span>
+          <span className="text-text-primary shrink-0">
+            {collector.lastEventTime}
+          </span>
           <span className="truncate">{collector.lastEvent}</span>
         </div>
       )}
     </motion.div>
-  )
+  );
 }

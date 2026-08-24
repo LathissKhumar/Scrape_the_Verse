@@ -1,5 +1,6 @@
 from enum import Enum
-from typing import Any, Literal, Optional
+from typing import Any, Literal
+
 from pydantic import BaseModel, Field
 
 DiagnosisStatus = Literal["diagnosed", "inconclusive", "not_needed", "escalated"]
@@ -70,12 +71,22 @@ class DiagnosisResult(BaseModel):
 
     diagnosis_status: DiagnosisStatus = "diagnosed"
     root_cause: RootCause = RootCause.UNKNOWN
-    confidence: float = Field(default=0.5, ge=0.0, le=1.0, description="Diagnostic confidence score.")
-    failure_category: str = Field(default="UNKNOWN", description="Associated high-level failure category.")
+    confidence: float = Field(
+        default=0.5, ge=0.0, le=1.0, description="Diagnostic confidence score."
+    )
+    failure_category: str = Field(
+        default="UNKNOWN", description="Associated high-level failure category."
+    )
     affected_stage: AffectedStage = AffectedStage.UNKNOWN
-    affected_fields: list[str] = Field(default_factory=list, description="Fields failing extraction or validation.")
-    evidence: list[str] = Field(default_factory=list, description="Evidence items supporting this diagnosis.")
+    affected_fields: list[str] = Field(
+        default_factory=list, description="Fields failing extraction or validation."
+    )
+    evidence: list[str] = Field(
+        default_factory=list, description="Evidence items supporting this diagnosis."
+    )
     repair_strategy: RepairStrategy = RepairStrategy.ESCALATE
-    repair_targets: list[str] = Field(default_factory=list, description="Target selectors, fields, or parameters.")
+    repair_targets: list[str] = Field(
+        default_factory=list, description="Target selectors, fields, or parameters."
+    )
     recommended_action: RecommendedAction = RecommendedAction.MANUAL_INSPECTION
     metadata: dict[str, Any] = Field(default_factory=dict)

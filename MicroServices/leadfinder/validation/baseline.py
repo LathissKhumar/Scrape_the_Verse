@@ -1,5 +1,5 @@
-from typing import Any, Optional
 from pydantic import BaseModel, Field
+
 from leadfinder.validation.schemas import FailureItem, FailureTaxonomy, ValidationResult
 
 
@@ -30,7 +30,11 @@ def build_baseline(previous_results: list[ValidationResult]) -> HistoricalBaseli
 
     field_coverage: dict[str, float] = {}
     for f in all_fields:
-        coverages = [r.field_metrics[f].coverage for r in previous_results if f in r.field_metrics]
+        coverages = [
+            r.field_metrics[f].coverage
+            for r in previous_results
+            if f in r.field_metrics
+        ]
         if coverages:
             field_coverage[f] = round(sum(coverages) / len(coverages), 4)
 
@@ -58,7 +62,9 @@ def compare_with_baseline(
 
     # 1. Record count drop deviation
     if baseline.average_record_count >= 10:
-        drop_pct = (baseline.average_record_count - current.record_count) / baseline.average_record_count
+        drop_pct = (
+            baseline.average_record_count - current.record_count
+        ) / baseline.average_record_count
         if drop_pct >= count_drop_threshold:
             anomalies.append(
                 f"Significant record count drop: extracted {current.record_count} vs historical average {baseline.average_record_count:.1f} ({drop_pct * 100:.1f}% drop)."

@@ -1,7 +1,6 @@
 from leadfinder.diagnosis.classifier import RuleBasedClassifier
 from leadfinder.diagnosis.schemas import RepairStrategy, RootCause
 from leadfinder.validation.schemas import (
-    DuplicateMetric,
     FailureItem,
     FailureTaxonomy,
     SchemaMetric,

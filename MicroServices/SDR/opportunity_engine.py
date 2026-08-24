@@ -4,8 +4,9 @@ Matches prospect weaknesses and SEO/Business findings to structured Agency Servi
 with impact scoring (1-100), urgency scoring (1-100), and expected business outcomes.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 from uuid import uuid4
+
 from pydantic import BaseModel, Field
 
 
@@ -18,9 +19,9 @@ class SelectedOffer(BaseModel):
     priority_score: float
     problem_addressed: str
     solution_package: str
-    deliverables: List[str] = Field(default_factory=list)
+    deliverables: list[str] = Field(default_factory=list)
     estimated_price_usd: int
-    expected_outcomes: List[str] = Field(default_factory=list)
+    expected_outcomes: list[str] = Field(default_factory=list)
     recommended: bool = True
 
 
@@ -101,11 +102,11 @@ class OpportunityEngine:
     @classmethod
     def evaluate_opportunities(
         cls,
-        seo_data: Dict[str, Any],
-        business_data: Dict[str, Any],
+        seo_data: dict[str, Any],
+        business_data: dict[str, Any],
         has_website: bool = True,
-    ) -> List[SelectedOffer]:
-        offers: List[SelectedOffer] = []
+    ) -> list[SelectedOffer]:
+        offers: list[SelectedOffer] = []
         scores = seo_data.get("scores", {})
         issues = seo_data.get("issues", [])
         weaknesses = business_data.get("weaknesses", [])
@@ -200,7 +201,9 @@ class OpportunityEngine:
             )
 
         # 4. Evaluate AI Booking Funnel
-        if not cta_signals.get("has_booking_engine") or not cta_signals.get("has_live_chat"):
+        if not cta_signals.get("has_booking_engine") or not cta_signals.get(
+            "has_live_chat"
+        ):
             spec = cls.SERVICE_CATALOG["AI_BOOKING_FUNNEL"]
             offers.append(
                 SelectedOffer(
@@ -223,5 +226,5 @@ class OpportunityEngine:
         return offers
 
     @classmethod
-    def to_dict_list(cls, offers: List[SelectedOffer]) -> List[Dict[str, Any]]:
+    def to_dict_list(cls, offers: list[SelectedOffer]) -> list[dict[str, Any]]:
         return [o.model_dump() for o in offers]

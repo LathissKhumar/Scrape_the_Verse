@@ -3,7 +3,8 @@ Lead Pipeline Client for Lead Finder.
 Dispatches discovered targets to SDR (:8081), Voice Agent (:8084), and Lead Manager (:8082).
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 import httpx
 
 
@@ -21,15 +22,15 @@ class LeadPipelineClient:
     async def audit_and_forward_to_lead_manager(
         self,
         company_name: str,
-        website_url: Optional[str] = None,
-        campaign_id: Optional[str] = None,
-        primary_contact_name: Optional[str] = None,
-        primary_contact_email: Optional[str] = None,
-        primary_contact_phone: Optional[str] = None,
-        industry: Optional[str] = None,
-        location: Optional[str] = None,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> Dict[str, Any]:
+        website_url: str | None = None,
+        campaign_id: str | None = None,
+        primary_contact_name: str | None = None,
+        primary_contact_email: str | None = None,
+        primary_contact_phone: str | None = None,
+        industry: str | None = None,
+        location: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         """
         Sends discovered company to SDR (:8081) for normalization, parallel audit,
         opportunity matching, proposal creation, outreach pack generation,

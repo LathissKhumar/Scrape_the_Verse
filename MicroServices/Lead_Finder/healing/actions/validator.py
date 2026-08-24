@@ -1,6 +1,7 @@
 """Validator for verifying that an executed ActionPlan successfully unblocked content."""
 
 from typing import Any
+
 from bs4 import BeautifulSoup
 from leadfinder.config.logging import get_logger
 
@@ -27,7 +28,9 @@ class ActionRepairValidator:
         len_before = len(before_html)
         len_after = len(after_html)
         if len_after > len_before * 1.05:
-            logger.debug(f"Action produced DOM expansion: {len_before} -> {len_after} bytes (+{(len_after - len_before) / len_before:.1%})")
+            logger.debug(
+                f"Action produced DOM expansion: {len_before} -> {len_after} bytes (+{(len_after - len_before) / len_before:.1%})"
+            )
             return True
 
         # 2. Tag count progression check
@@ -38,9 +41,13 @@ class ActionRepairValidator:
         cards_after = len(soup_after.find_all(["article", "li", "div"]))
 
         if cards_after > cards_before:
-            logger.debug(f"Action increased element count: {cards_before} -> {cards_after}")
+            logger.debug(
+                f"Action increased element count: {cards_before} -> {cards_after}"
+            )
             return True
 
         # 3. If steps succeeded without errors, accept as valid UI stabilization
-        return any(a["status"] == "success" for a in execution_result.get("actions_executed", []))
-
+        return any(
+            a["status"] == "success"
+            for a in execution_result.get("actions_executed", [])
+        )

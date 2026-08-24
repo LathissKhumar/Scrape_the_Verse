@@ -1,8 +1,8 @@
 """Memory storage and retrieval for successful repair patterns indexed by domain and structural signatures."""
 
 import hashlib
-from typing import Optional
 from urllib.parse import urlparse
+
 from bs4 import BeautifulSoup
 from leadfinder.config.logging import get_logger
 from leadfinder.healing.persistent_memory import PersistentRepairMemory
@@ -58,8 +58,8 @@ class RepairMemory:
     def find_similar_repairs(
         self,
         domain: str,
-        signature: Optional[str] = None,
-        root_cause: Optional[str] = None,
+        signature: str | None = None,
+        root_cause: str | None = None,
     ) -> list[RepairMemoryRecord]:
         """Find relevant successful repair records matching domain, signature, or root cause."""
         clean_domain = domain.lower()
@@ -90,4 +90,3 @@ class RepairMemory:
     def clear(self) -> None:
         """Clear all stored repair memory records."""
         self._records.clear()
-

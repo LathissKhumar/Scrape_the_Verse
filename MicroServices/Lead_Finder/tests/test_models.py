@@ -1,11 +1,19 @@
 import pytest
+from leadfinder.models.schemas import (
+    ScrapingRequest,
+    ScrapingResult,
+    ScrapingTask,
+    validate_http_url,
+)
 from pydantic import ValidationError
-from leadfinder.models.schemas import ScrapingRequest, ScrapingTask, ScrapingResult, validate_http_url
 
 
 def test_validate_http_url_valid():
     assert validate_http_url("https://example.com") == "https://example.com"
-    assert validate_http_url("http://sub.domain.org/path?q=1") == "http://sub.domain.org/path?q=1"
+    assert (
+        validate_http_url("http://sub.domain.org/path?q=1")
+        == "http://sub.domain.org/path?q=1"
+    )
 
 
 def test_validate_http_url_invalid():

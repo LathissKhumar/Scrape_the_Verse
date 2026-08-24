@@ -2,21 +2,22 @@ import asyncio
 import os
 import tempfile
 import threading
-import time
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
 
 from leadfinder.agents.scraper import ScraperAgent
 from leadfinder.crawler.browser_manager import BrowserManager
 from leadfinder.crawler.config import CrawlerConfig
-from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
 from leadfinder.crawler.job_manager import JobManager
 from leadfinder.crawler.rate_limiter import DomainRateLimiter
 from leadfinder.crawler.result_models import BlockType, CrawlResult
 from leadfinder.export.exporter import DataExporter
 from leadfinder.healing.persistent_memory import PersistentRepairMemory
-from leadfinder.healing.schemas import RepairConfidenceLevel, RepairFreshnessStatus, RepairMemoryRecord, RepairType
-from leadfinder.models.schemas import ScrapingRequest, ScrapingTask
+from leadfinder.healing.schemas import (
+    RepairMemoryRecord,
+    RepairType,
+)
 
 
 @pytest.mark.asyncio
@@ -24,7 +25,7 @@ async def test_bounded_browser_concurrency_semaphore():
     """Verify that ScraperAgent strictly limits concurrent crawls to max_concurrency."""
     mock_executor = MagicMock()
     mock_executor.config = CrawlerConfig(max_concurrency=3)
-    
+
     active_concurrent = 0
     max_observed_concurrent = 0
     lock = asyncio.Lock()
@@ -33,12 +34,11 @@ async def test_bounded_browser_concurrency_semaphore():
         nonlocal active_concurrent, max_observed_concurrent
         async with lock:
             active_concurrent += 1
-            if active_concurrent > max_observed_concurrent:
-                max_observed_concurrent = active_concurrent
-        
+            max_observed_concurrent = max(max_observed_concurrent, active_concurrent)
+
         # Simulate network delay
         await asyncio.sleep(0.05)
-        
+
         async with lock:
             active_concurrent -= 1
 
@@ -121,9 +121,25 @@ def test_job_checkpointing_and_resumption():
         jm.create_job(job_id=job_id, query="scrape products", total_urls=10)
 
         # Checkpoint URL 1 and 2
-        jm.record_checkpoint(job_id=job_id, url="https://example.com/1", status="completed", records=[{"title": "Item 1"}])
-        jm.record_checkpoint(job_id=job_id, url="https://example.com/2", status="completed", records=[{"title": "Item 2"}])
-        jm.record_checkpoint(job_id=job_id, url="https://example.com/3", status="failed", records=[], retries=1)
+        jm.record_checkpoint(
+            job_id=job_id,
+            url="https://example.com/1",
+            status="completed",
+            records=[{"title": "Item 1"}],
+        )
+        jm.record_checkpoint(
+            job_id=job_id,
+            url="https://example.com/2",
+            status="completed",
+            records=[{"title": "Item 2"}],
+        )
+        jm.record_checkpoint(
+            job_id=job_id,
+            url="https://example.com/3",
+            status="failed",
+            records=[],
+            retries=1,
+        )
 
         completed = jm.get_completed_urls(job_id)
         assert "https://example.com/1" in completed
@@ -197,18 +213,24 @@ def test_observability_tail_loader():
         tmp_path = tmp.name
 
     try:
-        from leadfinder.healing.observability import RepairObservability, RepairSessionTelemetry
+        from leadfinder.healing.observability import (
+            RepairObservability,
+            RepairSessionTelemetry,
+        )
+
         obs = RepairObservability(log_path=tmp_path)
         for i in range(20):
-            obs.record_session(RepairSessionTelemetry(
-                task_id=f"t_{i}",
-                domain=f"domain_{i}.com",
-                root_cause="SELECTOR_DRIFT",
-                initial_health=0.2,
-                final_health=0.9,
-                improvement=0.7,
-                accepted=True,
-            ))
+            obs.record_session(
+                RepairSessionTelemetry(
+                    task_id=f"t_{i}",
+                    domain=f"domain_{i}.com",
+                    root_cause="SELECTOR_DRIFT",
+                    initial_health=0.2,
+                    final_health=0.9,
+                    improvement=0.7,
+                    accepted=True,
+                )
+            )
 
         # Test tail reading of only last 5 sessions
         tail = obs.load_all_persisted_sessions(limit=5)
@@ -221,4 +243,3 @@ def test_observability_tail_loader():
                 os.remove(tmp_path)
             except Exception:
                 pass
-

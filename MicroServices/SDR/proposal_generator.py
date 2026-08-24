@@ -5,8 +5,10 @@ CRM records, and client deliverables.
 """
 
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from pydantic import BaseModel, Field
+
 from .opportunity_engine import SelectedOffer
 from .prompt_generator import PersonalizedPromptPack
 
@@ -14,15 +16,15 @@ from .prompt_generator import PersonalizedPromptPack
 class ProposalDocument(BaseModel):
     proposal_id: str
     company_name: str
-    website_url: Optional[str]
+    website_url: str | None
     generated_at: str
     executive_summary: str
-    current_state_audit: Dict[str, Any] = Field(default_factory=dict)
-    recommended_solutions: List[Dict[str, Any]] = Field(default_factory=list)
-    deliverables: List[str] = Field(default_factory=list)
-    investment_matrix: Dict[str, Any] = Field(default_factory=dict)
+    current_state_audit: dict[str, Any] = Field(default_factory=dict)
+    recommended_solutions: list[dict[str, Any]] = Field(default_factory=list)
+    deliverables: list[str] = Field(default_factory=list)
+    investment_matrix: dict[str, Any] = Field(default_factory=dict)
     timeline_weeks: int = 4
-    next_steps: List[str] = Field(default_factory=list)
+    next_steps: list[str] = Field(default_factory=list)
     markdown_content: str
 
 
@@ -35,11 +37,11 @@ class ProposalGenerator:
     def generate_proposal(
         cls,
         company_name: str,
-        website_url: Optional[str],
+        website_url: str | None,
         prompt_pack: PersonalizedPromptPack,
-        offers: List[SelectedOffer],
-        seo_data: Optional[Dict[str, Any]] = None,
-        business_data: Optional[Dict[str, Any]] = None,
+        offers: list[SelectedOffer],
+        seo_data: dict[str, Any] | None = None,
+        business_data: dict[str, Any] | None = None,
     ) -> ProposalDocument:
         proposal_id = f"prop_{company_name.lower().replace(' ', '_')[:12]}_{int(datetime.now(timezone.utc).timestamp())}"
         top_offers = offers[:3]
@@ -54,20 +56,28 @@ class ProposalGenerator:
 
         # 2. Audit Breakdown
         current_state = {
-            "seo_health_score": seo_data.get("overall_seo_score", 70) if seo_data else 70,
+            "seo_health_score": seo_data.get("overall_seo_score", 70)
+            if seo_data
+            else 70,
             "key_problems": prompt_pack.key_problems,
-            "competitor_pressures": business_data.get("competitor_insights", "") if business_data else "",
+            "competitor_pressures": business_data.get("competitor_insights", "")
+            if business_data
+            else "",
         }
 
         # 3. Deliverables Checklist
         all_deliverables = []
         for o in top_offers:
             all_deliverables.extend(o.deliverables)
-        all_deliverables.append("Dedicated Analytics Dashboard & Monthly Performance Review")
+        all_deliverables.append(
+            "Dedicated Analytics Dashboard & Monthly Performance Review"
+        )
 
         # 4. Investment Matrix
         investment_matrix = {
-            "primary_package": top_offers[0].service_title if top_offers else "Custom Growth Sprint",
+            "primary_package": top_offers[0].service_title
+            if top_offers
+            else "Custom Growth Sprint",
             "one_time_investment_usd": total_setup,
             "monthly_retainer_usd": 499,
             "roi_guarantee": "30-Day Measurable Search & Speed Improvement",
@@ -86,7 +96,7 @@ class ProposalGenerator:
 
         # 6. Generate Markdown Document
         md_lines = [
-            f"# Digital Growth & Optimization Proposal",
+            "# Digital Growth & Optimization Proposal",
             f"**Prepared for:** {company_name}",
             f"**Date:** {datetime.now(timezone.utc).strftime('%Y-%m-%d')}",
             f"**Proposal ID:** `{proposal_id}`",
@@ -101,26 +111,32 @@ class ProposalGenerator:
         for p in prompt_pack.key_problems:
             md_lines.append(f"- **Issue:** {p}")
 
-        md_lines.extend([
-            "",
-            "## 3. Recommended Solution Package",
-        ])
+        md_lines.extend(
+            [
+                "",
+                "## 3. Recommended Solution Package",
+            ]
+        )
         for o in top_offers:
-            md_lines.append(f"### {o.service_title} (Priority Score: {o.priority_score}/100)")
+            md_lines.append(
+                f"### {o.service_title} (Priority Score: {o.priority_score}/100)"
+            )
             md_lines.append(f"*{o.solution_package}*")
             md_lines.append("**Deliverables:**")
             for d in o.deliverables:
                 md_lines.append(f"- {d}")
             md_lines.append("")
 
-        md_lines.extend([
-            "## 4. Investment & Deliverables Summary",
-            f"- **Total Setup Sprint Investment:** ${total_setup:,} USD",
-            "- **Optional Monthly Growth & Maintenance Retainer:** $499/month",
-            "- **Estimated Sprint Timeline:** 4 Weeks",
-            "",
-            "## 5. Next Steps",
-        ])
+        md_lines.extend(
+            [
+                "## 4. Investment & Deliverables Summary",
+                f"- **Total Setup Sprint Investment:** ${total_setup:,} USD",
+                "- **Optional Monthly Growth & Maintenance Retainer:** $499/month",
+                "- **Estimated Sprint Timeline:** 4 Weeks",
+                "",
+                "## 5. Next Steps",
+            ]
+        )
         for s in next_steps:
             md_lines.append(s)
 

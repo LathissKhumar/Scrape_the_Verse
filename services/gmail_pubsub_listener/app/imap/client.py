@@ -1,8 +1,9 @@
 """IMAP client managing Gmail IMAP connection and IDLE notifications."""
+
 import imaplib
 import logging
 import ssl
-from typing import List, Optional, Tuple
+
 from app.config import get_settings
 
 logger = logging.getLogger(__name__)
@@ -11,10 +12,10 @@ logger = logging.getLogger(__name__)
 class GmailIMAPClient:
     def __init__(
         self,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        email_address: Optional[str] = None,
-        password: Optional[str] = None,
+        host: str | None = None,
+        port: int | None = None,
+        email_address: str | None = None,
+        password: str | None = None,
         use_ssl: bool = True,
     ):
         settings = get_settings()
@@ -23,9 +24,9 @@ class GmailIMAPClient:
         self.email_address = email_address or settings.GMAIL_ADDRESS
         self.password = password or settings.GMAIL_APP_PASSWORD
         self.use_ssl = use_ssl
-        self.imap: Optional[imaplib.IMAP4_SSL] = None
+        self.imap: imaplib.IMAP4_SSL | None = None
         self._is_connected = False
-        self._current_mailbox: Optional[str] = None
+        self._current_mailbox: str | None = None
 
     @property
     def is_connected(self) -> bool:
@@ -43,15 +44,22 @@ class GmailIMAPClient:
             logger.info(f"Connected to IMAP server {self.host}:{self.port}")
         except Exception as e:
             self._is_connected = False
-            raise ConnectionError(f"Failed to connect to IMAP server {self.host}:{self.port}: {e}")
+            raise ConnectionError(
+                f"Failed to connect to IMAP server {self.host}:{self.port}: {e}"
+            )
 
-    def _get_oauth2_access_token(self) -> Optional[str]:
+    def _get_oauth2_access_token(self) -> str | None:
         """Fetches a fresh access token using the OAuth refresh token."""
         settings = get_settings()
-        if not (settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET and settings.GOOGLE_REFRESH_TOKEN):
+        if not (
+            settings.GOOGLE_CLIENT_ID
+            and settings.GOOGLE_CLIENT_SECRET
+            and settings.GOOGLE_REFRESH_TOKEN
+        ):
             return None
         try:
             import httpx
+
             resp = httpx.post(
                 "https://oauth2.googleapis.com/token",
                 data={
@@ -79,20 +87,26 @@ class GmailIMAPClient:
         access_token = self._get_oauth2_access_token()
         if access_token:
             try:
-                auth_string = f"user={self.email_address}\x01auth=Bearer {access_token}\x01\x01".encode("utf-8")
+                auth_string = f"user={self.email_address}\x01auth=Bearer {access_token}\x01\x01".encode()
                 typ, data = self.imap.authenticate("XOAUTH2", lambda x: auth_string)
                 if typ == "OK":
                     logger.info(f"Authenticated as {self.email_address} via OAuth2")
                     return
             except Exception as e:
-                logger.warning(f"OAuth2 authentication attempt failed: {e}. Falling back to App Password...")
+                logger.warning(
+                    f"OAuth2 authentication attempt failed: {e}. Falling back to App Password..."
+                )
 
         # Fallback to App Password
         if not self.password:
-            raise ValueError("Neither valid OAuth credentials nor Gmail App Password provided.")
+            raise ValueError(
+                "Neither valid OAuth credentials nor Gmail App Password provided."
+            )
 
         try:
-            typ, data = self.imap.login(self.email_address, self.password.replace(" ", ""))
+            typ, data = self.imap.login(
+                self.email_address, self.password.replace(" ", "")
+            )
             if typ != "OK":
                 raise PermissionError(f"Authentication failed: {data}")
             logger.info(f"Authenticated as {self.email_address} via App Password")
@@ -100,7 +114,7 @@ class GmailIMAPClient:
             self._is_connected = False
             raise PermissionError(f"IMAP login failed: {e}")
 
-    def select_mailbox(self, mailbox: str = "INBOX") -> Tuple[int, int]:
+    def select_mailbox(self, mailbox: str = "INBOX") -> tuple[int, int]:
         """Selects a mailbox (e.g. INBOX) and returns (num_messages, recent_messages)."""
         if not self.imap or not self._is_connected:
             raise ConnectionError("IMAP connection is not open.")
@@ -113,7 +127,7 @@ class GmailIMAPClient:
         num_messages = int(data[0]) if data and data[0] else 0
         return num_messages, 0
 
-    def search_uids_greater_than(self, last_uid: int) -> List[int]:
+    def search_uids_greater_than(self, last_uid: int) -> list[int]:
         """Searches for message UIDs strictly greater than last_uid."""
         if not self.imap or not self._is_connected:
             raise ConnectionError("IMAP connection is not open.")
@@ -128,7 +142,7 @@ class GmailIMAPClient:
         uids.sort()
         return uids
 
-    def get_latest_uids(self, limit: int = 50) -> List[int]:
+    def get_latest_uids(self, limit: int = 50) -> list[int]:
         """Retrieves the latest N UIDs in the selected mailbox."""
         if not self.imap or not self._is_connected:
             raise ConnectionError("IMAP connection is not open.")
@@ -142,7 +156,7 @@ class GmailIMAPClient:
         uids.sort()
         return uids[-limit:] if len(uids) > limit else uids
 
-    def fetch_rfc822(self, uid: int) -> Optional[bytes]:
+    def fetch_rfc822(self, uid: int) -> bytes | None:
         """Fetches raw RFC822 bytes for a message UID."""
         if not self.imap or not self._is_connected:
             raise ConnectionError("IMAP connection is not open.")
@@ -177,7 +191,11 @@ class GmailIMAPClient:
                 return False
 
         # Fallback IDLE implementation for standard Python imaplib
-        tag = self.imap._new_tag().decode() if isinstance(self.imap._new_tag(), bytes) else str(self.imap._new_tag())
+        tag = (
+            self.imap._new_tag().decode()
+            if isinstance(self.imap._new_tag(), bytes)
+            else str(self.imap._new_tag())
+        )
         cmd = f"{tag} IDLE\r\n"
         self.imap.send(cmd.encode("utf-8"))
 

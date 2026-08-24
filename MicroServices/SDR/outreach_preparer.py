@@ -7,8 +7,8 @@ Generates a multi-touch omnichannel outreach pack:
 - SMS / WhatsApp Teaser
 """
 
-from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
+
 from .opportunity_engine import SelectedOffer
 from .prompt_generator import PersonalizedPromptPack
 from .proposal_generator import ProposalDocument
@@ -26,11 +26,11 @@ class CallScriptStructure(BaseModel):
     owner_opener_15s: str
     value_hook: str
     call_to_action_close: str
-    objection_counters: List[Dict[str, str]] = Field(default_factory=list)
+    objection_counters: list[dict[str, str]] = Field(default_factory=list)
 
 
 class OmnichannelOutreachPack(BaseModel):
-    email_sequence: List[ColdEmailStep] = Field(default_factory=list)
+    email_sequence: list[ColdEmailStep] = Field(default_factory=list)
     cold_call_script: CallScriptStructure
     linkedin_connection_note: str
     linkedin_followup_message: str
@@ -46,16 +46,26 @@ class OutreachPreparer:
     def prepare_outreach(
         cls,
         company_name: str,
-        website_url: Optional[str],
-        contact_name: Optional[str],
+        website_url: str | None,
+        contact_name: str | None,
         prompt_pack: PersonalizedPromptPack,
         proposal: ProposalDocument,
-        top_offers: List[SelectedOffer],
+        top_offers: list[SelectedOffer],
     ) -> OmnichannelOutreachPack:
         name = contact_name or "there"
-        top_problem = prompt_pack.key_problems[0] if prompt_pack.key_problems else "digital growth barriers"
-        primary_service = top_offers[0].service_title if top_offers else "Conversion Architecture"
-        proof_point = prompt_pack.proof_points[0] if prompt_pack.proof_points else "Clients average +35% higher inbound calls."
+        top_problem = (
+            prompt_pack.key_problems[0]
+            if prompt_pack.key_problems
+            else "digital growth barriers"
+        )
+        primary_service = (
+            top_offers[0].service_title if top_offers else "Conversion Architecture"
+        )
+        proof_point = (
+            prompt_pack.proof_points[0]
+            if prompt_pack.proof_points
+            else "Clients average +35% higher inbound calls."
+        )
 
         # 1. Email Sequence (3 Touches)
         email_sequence = [

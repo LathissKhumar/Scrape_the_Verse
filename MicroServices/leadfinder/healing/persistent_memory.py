@@ -3,7 +3,6 @@
 import json
 import os
 import time
-from typing import Optional
 
 from leadfinder.config.logging import get_logger
 from leadfinder.crawler.db import get_sqlite_connection, safe_sqlite_transaction
@@ -75,9 +74,13 @@ class PersistentRepairMemory:
                     ("structural_fingerprint", "TEXT"),
                 ]:
                     if col not in existing_cols:
-                        conn.execute(f"ALTER TABLE repair_memory ADD COLUMN {col} {col_type}")
+                        conn.execute(
+                            f"ALTER TABLE repair_memory ADD COLUMN {col} {col_type}"
+                        )
         except Exception as error:
-            logger.warning(f"Could not initialize SQLite persistent repair memory: {error}")
+            logger.warning(
+                f"Could not initialize SQLite persistent repair memory: {error}"
+            )
 
     def record_success(self, record: RepairMemoryRecord) -> None:
         """Persist or update a verified working repair record into SQLite database."""
@@ -144,9 +147,7 @@ class PersistentRepairMemory:
         except Exception as error:
             logger.debug(f"Failed to record repair failure in SQLite: {error}")
 
-    def lookup(
-        self, domain: str, signature: str
-    ) -> Optional[RepairMemoryRecord]:
+    def lookup(self, domain: str, signature: str) -> RepairMemoryRecord | None:
         """Query SQLite database for a previously verified working repair record (skipping disabled)."""
         try:
             conn = get_sqlite_connection(self.db_path)
@@ -162,8 +163,16 @@ class PersistentRepairMemory:
                 )
                 row = cursor.fetchone()
                 if row:
-                    status_val = RepairFreshnessStatus(row[10]) if row[10] in RepairFreshnessStatus.__members__.values() else RepairFreshnessStatus.ACTIVE
-                    conf_val = RepairConfidenceLevel(row[11]) if row[11] in RepairConfidenceLevel.__members__.values() else RepairConfidenceLevel.HIGH
+                    status_val = (
+                        RepairFreshnessStatus(row[10])
+                        if row[10] in RepairFreshnessStatus.__members__.values()
+                        else RepairFreshnessStatus.ACTIVE
+                    )
+                    conf_val = (
+                        RepairConfidenceLevel(row[11])
+                        if row[11] in RepairConfidenceLevel.__members__.values()
+                        else RepairConfidenceLevel.HIGH
+                    )
                     return RepairMemoryRecord(
                         memory_id=row[0],
                         domain=row[1],
@@ -186,4 +195,3 @@ class PersistentRepairMemory:
         except Exception as error:
             logger.error(f"Failed to lookup repair memory in SQLite: {error}")
         return None
-

@@ -1,26 +1,27 @@
-export type DashboardTab = 
-  | 'overview'
-  | 'discovery'
-  | 'analysis'
-  | 'proposals'
-  | 'outreach'
-  | 'calls'
-  | 'pipeline'
-  | 'scrapers';
+export type DashboardTab =
+  | "overview"
+  | "discovery"
+  | "analysis"
+  | "proposals"
+  | "outreach"
+  | "calls"
+  | "pipeline"
+  | "scrapers";
 
-export type PipelineStage = 
-  | 'discovered'
-  | 'analyzed'
-  | 'proposal_ready'
-  | 'outreach_active'
-  | 'call_booked'
-  | 'negotiation'
-  | 'won'
-  | 'nurture';
+export type PipelineStage =
+  | "discovered"
+  | "analyzed"
+  | "proposal_ready"
+  | "outreach_active"
+  | "call_booked"
+  | "negotiation"
+  | "won"
+  | "nurture";
 
 export type DealStage = PipelineStage;
 
-export type DecisionPath = 'website_analysis' | 'voice_bot_pitch' | 'direct_outreach';
+export type DecisionPath =
+  "website_analysis" | "voice_bot_pitch" | "direct_outreach";
 
 export interface LeadRecord {
   id: string;
@@ -31,13 +32,13 @@ export interface LeadRecord {
   website?: string;
   rating?: number;
   reviews_count?: number;
-  source: 'Google Maps' | 'IndiaMART' | 'Yelp' | 'Avvo' | 'Justdial' | 'Custom';
+  source: "Google Maps" | "IndiaMART" | "Yelp" | "Avvo" | "Justdial" | "Custom";
   decision_path: DecisionPath;
   stage: PipelineStage;
   lead_quality_score: number; // 0 - 100
   seo_score?: number; // 0 - 100
   business_score?: number; // 0 - 100
-  opportunity_priority: 'High' | 'Medium' | 'Low';
+  opportunity_priority: "High" | "Medium" | "Low";
   estimated_deal_value: number;
   contact_person?: string;
   email?: string;
@@ -48,7 +49,7 @@ export interface LeadRecord {
 export interface SEOMetric {
   category: string;
   score: number;
-  status: 'good' | 'warning' | 'critical';
+  status: "good" | "warning" | "critical";
   details: string;
 }
 
@@ -74,18 +75,18 @@ export interface Proposal {
   deliverables: { title: string; timeline: string; price: number }[];
   total_investment: number;
   roi_estimate: string;
-  status: 'draft' | 'ready' | 'sent' | 'accepted';
+  status: "draft" | "ready" | "sent" | "accepted";
   created_at: string;
 }
 
 export interface OutreachAsset {
   id: string;
   lead_id: string;
-  channel: 'email' | 'linkedin' | 'call_script';
+  channel: "email" | "linkedin" | "call_script";
   subject?: string;
   content: string;
   sequence_step: number;
-  status: 'ready' | 'sent' | 'opened' | 'replied';
+  status: "ready" | "sent" | "opened" | "replied";
 }
 
 export interface CallLog {
@@ -95,12 +96,16 @@ export interface CallLog {
   contact_name: string;
   phone_number: string;
   duration_seconds: number;
-  status: 'completed' | 'in_progress' | 'scheduled' | 'failed';
+  status: "completed" | "in_progress" | "scheduled" | "failed";
   interest_score: number; // 0 - 100
   meeting_booked: boolean;
   meeting_time?: string;
   summary: string;
-  transcript: { speaker: 'AI SDR Agent' | 'Prospect'; text: string; timestamp: string }[];
+  transcript: {
+    speaker: "AI SDR Agent" | "Prospect";
+    text: string;
+    timestamp: string;
+  }[];
   audio_url?: string;
   objections: string[];
 }
@@ -110,7 +115,7 @@ export interface ScraperStatusRecord {
   collector_id: string;
   name: string;
   target_domain: string;
-  status: 'READY' | 'CREATING' | 'HEALING' | 'ERROR';
+  status: "READY" | "CREATING" | "HEALING" | "ERROR";
   records_extracted: number;
   health_score: number; // 0.0 - 1.0
   last_healed?: string;

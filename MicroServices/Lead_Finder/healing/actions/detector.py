@@ -2,6 +2,7 @@
 
 import re
 from typing import Any
+
 from bs4 import BeautifulSoup
 from leadfinder.config.logging import get_logger
 from leadfinder.healing.actions.models import ActionType
@@ -83,12 +84,14 @@ class ActionIssueDetector:
                         break
 
             if el:
-                issues.append({
-                    "issue_type": "COOKIE_CONSENT_BANNER",
-                    "recommended_action": ActionType.ACCEPT_COOKIE,
-                    "target_selector": sel,
-                    "element_text": el.get_text().strip()[:50] if el else "",
-                })
+                issues.append(
+                    {
+                        "issue_type": "COOKIE_CONSENT_BANNER",
+                        "recommended_action": ActionType.ACCEPT_COOKIE,
+                        "target_selector": sel,
+                        "element_text": el.get_text().strip()[:50] if el else "",
+                    }
+                )
                 break
 
         # 2. Check for Blocking Modals / Overlays
@@ -98,12 +101,17 @@ class ActionIssueDetector:
             if text_pattern:
                 target_text = text_pattern.group(1).lower()
                 for btn in soup.find_all(["button", "a", "div"]):
-                    if target_text in btn.get_text().strip().lower() and len(btn.get_text().strip()) < 30:
-                        issues.append({
-                            "issue_type": "BLOCKING_MODAL_OVERLAY",
-                            "recommended_action": ActionType.DISMISS_OVERLAY,
-                            "target_selector": sel,
-                            })
+                    if (
+                        target_text in btn.get_text().strip().lower()
+                        and len(btn.get_text().strip()) < 30
+                    ):
+                        issues.append(
+                            {
+                                "issue_type": "BLOCKING_MODAL_OVERLAY",
+                                "recommended_action": ActionType.DISMISS_OVERLAY,
+                                "target_selector": sel,
+                            }
+                        )
                         matched = True
                         break
             if matched:
@@ -116,21 +124,24 @@ class ActionIssueDetector:
                 target_text = text_pattern.group(1).lower()
                 for btn in soup.find_all(["button", "a"]):
                     if target_text in btn.get_text().strip().lower():
-                        issues.append({
-                            "issue_type": "PAGINATION_LOAD_MORE_REQUIRED",
-                            "recommended_action": ActionType.CLICK_LOAD_MORE,
-                            "target_selector": sel,
-                        })
+                        issues.append(
+                            {
+                                "issue_type": "PAGINATION_LOAD_MORE_REQUIRED",
+                                "recommended_action": ActionType.CLICK_LOAD_MORE,
+                                "target_selector": sel,
+                            }
+                        )
                         break
 
         # 4. Check for Infinite Scroll Requirement (e.g. low initial records or presence of scroll indicators)
         if len(soup.find_all(["article", "li", "div"])) > 20 and len(html) < 25000:
-            issues.append({
-                "issue_type": "LAZY_LOAD_SCROLL_REQUIRED",
-                "recommended_action": ActionType.SCROLL,
-                "target_selector": "window",
-                "value": "2000",
-            })
+            issues.append(
+                {
+                    "issue_type": "LAZY_LOAD_SCROLL_REQUIRED",
+                    "recommended_action": ActionType.SCROLL,
+                    "target_selector": "window",
+                    "value": "2000",
+                }
+            )
 
         return issues
-

@@ -4,14 +4,15 @@ FastAPI Routes for Lead Manager.
 
 import asyncio
 import json
-from typing import Any, Dict, List, Optional
+
 from fastapi import APIRouter, HTTPException, Query, status
 from fastapi.responses import StreamingResponse
+
 from ..domain.activity import LeadActivity
 from ..domain.lead import Lead
 from ..domain.meeting import Meeting
 from ..domain.opportunity import Opportunity
-from ..domain.stage import LeadStage, MeetingStatus, TaskStatus
+from ..domain.stage import LeadStage
 from ..domain.task import LeadTask
 from ..events.handlers import handle_incoming_event
 from ..events.publishers import EventPublisher
@@ -80,10 +81,10 @@ async def create_lead_endpoint(request: CreateLeadRequest):
     return created
 
 
-@router.get("/leads", response_model=List[Lead])
+@router.get("/leads", response_model=list[Lead])
 async def list_leads_endpoint(
-    stage: Optional[LeadStage] = None,
-    campaign_id: Optional[str] = None,
+    stage: LeadStage | None = None,
+    campaign_id: str | None = None,
     limit: int = Query(100, ge=1, le=1000),
     offset: int = Query(0, ge=0),
 ):
@@ -142,13 +143,13 @@ async def ingest_event_endpoint(request: IngestEventRequest):
     }
 
 
-@router.get("/leads/{lead_id}/activities", response_model=List[LeadActivity])
+@router.get("/leads/{lead_id}/activities", response_model=list[LeadActivity])
 async def get_lead_activities_endpoint(lead_id: str):
     repos = get_repos()
     return await repos["activities"].get_by_lead_id(lead_id)
 
 
-@router.get("/leads/{lead_id}/tasks", response_model=List[LeadTask])
+@router.get("/leads/{lead_id}/tasks", response_model=list[LeadTask])
 async def get_lead_tasks_endpoint(lead_id: str):
     repos = get_repos()
     return await repos["tasks"].get_by_lead_id(lead_id)
@@ -165,7 +166,7 @@ async def update_task_status_endpoint(task_id: str, request: UpdateTaskStatusReq
     return updated
 
 
-@router.get("/leads/{lead_id}/opportunities", response_model=List[Opportunity])
+@router.get("/leads/{lead_id}/opportunities", response_model=list[Opportunity])
 async def get_lead_opportunities_endpoint(lead_id: str):
     repos = get_repos()
     return await repos["opportunities"].get_by_lead_id(lead_id)
@@ -190,6 +191,7 @@ async def approve_proposal_endpoint(lead_id: str):
 @router.post("/meetings", response_model=Meeting)
 async def schedule_meeting_endpoint(request: ScheduleMeetingRequest):
     from ..agents.scheduling_agent import SchedulingAgent
+
     agent = SchedulingAgent()
     repos = get_repos()
 
@@ -239,10 +241,12 @@ async def sse_timeline_stream():
 # Twenty CRM On-Demand Lifecycle Management Endpoints
 # ------------------------------------------------------------------------------
 
+
 @router.get("/crm/status")
 async def get_crm_status_endpoint():
     """Returns real-time status of the self-hosted Twenty CRM instance."""
     from ..crm.lifecycle import TwentyLifecycleManager
+
     mgr = TwentyLifecycleManager.get_instance()
     is_up = await mgr.is_crm_responsive()
     return {
@@ -258,15 +262,25 @@ async def get_crm_status_endpoint():
 async def spin_up_crm_endpoint(max_wait: int = Query(default=45, ge=5, le=120)):
     """Spins up the Twenty CRM Docker containers on demand."""
     from ..crm.lifecycle import TwentyLifecycleManager
+
     mgr = TwentyLifecycleManager.get_instance()
     success = await mgr.spin_up(max_wait_seconds=max_wait)
-    return {"success": success, "crm": "twenty", "status": "running" if success else "failed"}
+    return {
+        "success": success,
+        "crm": "twenty",
+        "status": "running" if success else "failed",
+    }
 
 
 @router.post("/crm/spin-down")
 async def spin_down_crm_endpoint(force: bool = Query(default=False)):
     """Spins down the Twenty CRM Docker containers (all database data preserved)."""
     from ..crm.lifecycle import TwentyLifecycleManager
+
     mgr = TwentyLifecycleManager.get_instance()
     success = await mgr.spin_down(force=force)
-    return {"success": success, "crm": "twenty", "status": "stopped" if success else "busy"}
+    return {
+        "success": success,
+        "crm": "twenty",
+        "status": "stopped" if success else "busy",
+    }

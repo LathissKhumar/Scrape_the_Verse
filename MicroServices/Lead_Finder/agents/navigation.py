@@ -1,8 +1,7 @@
 """Navigation agent orchestrating on-site search, pagination traversal, and detail link harvesting."""
 
-import asyncio
 import logging
-from typing import List, Optional
+
 from leadfinder.agents.base import BaseAgent
 from leadfinder.crawler.browser_manager import BrowserManager
 from leadfinder.crawler.link_harvester import LinkHarvesterEngine
@@ -19,11 +18,11 @@ class NavigationAgent(BaseAgent):
 
     def __init__(
         self,
-        browser_manager: Optional[BrowserManager] = None,
-        navigator_engine: Optional[InteractiveNavigatorEngine] = None,
-        link_harvester: Optional[LinkHarvesterEngine] = None,
-        pagination_walker: Optional[PaginationWalkerEngine] = None,
-        planner: Optional[NavigationPlanner] = None,
+        browser_manager: BrowserManager | None = None,
+        navigator_engine: InteractiveNavigatorEngine | None = None,
+        link_harvester: LinkHarvesterEngine | None = None,
+        pagination_walker: PaginationWalkerEngine | None = None,
+        planner: NavigationPlanner | None = None,
     ):
         self.browser_manager = browser_manager or BrowserManager()
         self.navigator_engine = navigator_engine or InteractiveNavigatorEngine()
@@ -31,10 +30,12 @@ class NavigationAgent(BaseAgent):
         self.pagination_walker = pagination_walker or PaginationWalkerEngine()
         self.planner = planner or NavigationPlanner()
 
-    async def run(self, task: ScrapingTask) -> List[str]:
+    async def run(self, task: ScrapingTask) -> list[str]:
         """Execute autonomous navigation to search, traverse pagination, and harvest detail URLs."""
         if not task.is_search and not task.deep_crawl:
-            logger.info(f"Direct crawl request. Bypassing navigation for {len(task.target_urls)} URL(s).")
+            logger.info(
+                f"Direct crawl request. Bypassing navigation for {len(task.target_urls)} URL(s)."
+            )
             return list(task.target_urls)
 
         nav_plan = self.planner.plan_navigation(task)
@@ -43,45 +44,57 @@ class NavigationAgent(BaseAgent):
         max_links = nav_plan["max_links"]
         max_pages = nav_plan["max_pagination_pages"]
 
-        logger.info(f"Starting navigation session on '{root_url}' (search='{search_query}', target_links={max_links})...")
+        logger.info(
+            f"Starting navigation session on '{root_url}' (search='{search_query}', target_links={max_links})..."
+        )
 
         context = await self.browser_manager.create_isolated_context()
         page = await context.new_page()
 
-        harvested_urls: List[str] = []
+        harvested_urls: list[str] = []
         try:
             # 1. Navigate to Root Site
             logger.debug(f"Opening root URL: {root_url}")
-            await page.goto(root_url, wait_until="domcontentloaded", timeout=self.browser_manager.config.timeout_ms)
-            
+            await page.goto(
+                root_url,
+                wait_until="domcontentloaded",
+                timeout=self.browser_manager.config.timeout_ms,
+            )
+
             # Allow dynamic JS content to hydrate
             if hasattr(page, "wait_for_timeout"):
                 await page.wait_for_timeout(1000)
 
             # 2. Perform On-Site Search if specified
             if task.is_search and search_query:
-                search_success = await self.navigator_engine.search(page, query=search_query)
+                search_success = await self.navigator_engine.search(
+                    page, query=search_query
+                )
                 if not search_success:
-                    logger.warning(f"On-site search for '{search_query}' did not locate search bar. Proceeding with current page.")
+                    logger.warning(
+                        f"On-site search for '{search_query}' did not locate search bar. Proceeding with current page."
+                    )
 
             # 3. Harvest links with pagination loop
             for page_idx in range(max_pages):
                 current_html = await page.content()
                 current_url = page.url
-                
+
                 new_links = self.link_harvester.harvest_detail_links(
                     html=current_html,
                     base_url=current_url,
                     max_links=max_links,
                 )
-                
+
                 for link in new_links:
                     if link not in harvested_urls:
                         harvested_urls.append(link)
                         if len(harvested_urls) >= max_links:
                             break
 
-                logger.info(f"Navigation Page {page_idx + 1}: Accumulated {len(harvested_urls)} / {max_links} detail URLs.")
+                logger.info(
+                    f"Navigation Page {page_idx + 1}: Accumulated {len(harvested_urls)} / {max_links} detail URLs."
+                )
 
                 if len(harvested_urls) >= max_links:
                     break
@@ -99,8 +112,12 @@ class NavigationAgent(BaseAgent):
 
         # If navigation found no detail links, fall back to root URL
         if not harvested_urls:
-            logger.warning(f"Navigation harvested 0 links. Falling back to original target URLs: {task.target_urls}")
+            logger.warning(
+                f"Navigation harvested 0 links. Falling back to original target URLs: {task.target_urls}"
+            )
             return list(task.target_urls)
 
-        logger.info(f"Navigation completed successfully. Yielding {len(harvested_urls)} detail page(s) for scraping.")
+        logger.info(
+            f"Navigation completed successfully. Yielding {len(harvested_urls)} detail page(s) for scraping."
+        )
         return harvested_urls

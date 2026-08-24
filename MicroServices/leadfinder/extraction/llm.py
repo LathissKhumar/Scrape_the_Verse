@@ -3,7 +3,7 @@
 import asyncio
 import json
 import re
-from typing import Any, Optional
+from typing import Any
 
 from leadfinder.config.logging import get_logger
 from leadfinder.extraction.chunking import ContentChunker
@@ -53,8 +53,8 @@ class LLMExtractor:
     def __init__(
         self,
         llm_client: LLMClient,
-        chunker: Optional[ContentChunker] = None,
-        semantic_filter: Optional[SemanticFilter] = None,
+        chunker: ContentChunker | None = None,
+        semantic_filter: SemanticFilter | None = None,
     ) -> None:
         self.llm_client = llm_client
         self.chunker = chunker or ContentChunker(chunk_size=2500, chunk_overlap=200)
@@ -64,7 +64,7 @@ class LLMExtractor:
         self,
         content_snippet: str,
         task: ScrapingTask,
-        schema: Optional[ExtractionSchema] = None,
+        schema: ExtractionSchema | None = None,
     ) -> str:
         fields_str = json.dumps(task.fields)
         output_schema_str = json.dumps(task.output_schema or {})
@@ -76,7 +76,7 @@ class LLMExtractor:
         if task.output_schema:
             prompt_lines.append(f"Expected Output Schema: {output_schema_str}")
 
-        prompt_lines.append(f"\nSource Content:\n\"\"\"\n{content_snippet}\n\"\"\"")
+        prompt_lines.append(f'\nSource Content:\n"""\n{content_snippet}\n"""')
         prompt_lines.append(
             "\nExtract structured records strictly matching the Source Content above as a JSON array of objects. "
             "Only include facts directly stated in the text:"
@@ -101,7 +101,7 @@ class LLMExtractor:
             return []
         except Exception:
             # Resilient fallback 1: auto-close unclosed brackets
-            for fix in ("]", "}", "}\n]", "\"]}"):
+            for fix in ("]", "}", "}\n]", '"]}'):
                 try:
                     parsed = json.loads(cleaned + fix)
                     if isinstance(parsed, list):
@@ -143,7 +143,10 @@ class LLMExtractor:
             best_val = None
             for r in records:
                 val = r.get(f)
-                if val is not None and str(val).strip().lower() not in _NULL_STRING_VALUES:
+                if (
+                    val is not None
+                    and str(val).strip().lower() not in _NULL_STRING_VALUES
+                ):
                     # Choose richest non-empty value
                     if best_val is None or len(str(val)) > len(str(best_val)):
                         best_val = val
@@ -152,7 +155,11 @@ class LLMExtractor:
         # Preserve any non-requested keys that contain rich extracted data
         for r in records:
             for k, v in r.items():
-                if k not in unified and v is not None and str(v).strip().lower() not in _NULL_STRING_VALUES:
+                if (
+                    k not in unified
+                    and v is not None
+                    and str(v).strip().lower() not in _NULL_STRING_VALUES
+                ):
                     unified[k] = v
 
         return [unified]
@@ -170,7 +177,10 @@ class LLMExtractor:
                     if isinstance(val, str):
                         clean_str = val.strip().lower()
                         # If string has no digits or matches a slogan without price, nullify it
-                        if not _DIGIT_REGEX.search(clean_str) or clean_str in _INVALID_PRICE_SLOGANS:
+                        if (
+                            not _DIGIT_REGEX.search(clean_str)
+                            or clean_str in _INVALID_PRICE_SLOGANS
+                        ):
                             r[f] = None
         return records
 
@@ -178,17 +188,27 @@ class LLMExtractor:
         self,
         content: str | RawPage,
         task: ScrapingTask,
-        schema: Optional[ExtractionSchema] = None,
+        schema: ExtractionSchema | None = None,
     ) -> list[dict[str, Any]]:
         """Asynchronously extract structured records using LLM with semantic chunk filtering."""
-        text_str = content.get_primary_content() if isinstance(content, RawPage) else str(content)
+        text_str = (
+            content.get_primary_content()
+            if isinstance(content, RawPage)
+            else str(content)
+        )
         if not text_str or not text_str.strip():
             return []
 
         # If text is raw HTML, strip boilerplate and extract clean structured text
-        if "<html" in text_str.lower() or "<body" in text_str.lower() or "<div" in text_str.lower() or "<p" in text_str.lower():
+        if (
+            "<html" in text_str.lower()
+            or "<body" in text_str.lower()
+            or "<div" in text_str.lower()
+            or "<p" in text_str.lower()
+        ):
             try:
                 from leadfinder.extraction.cleaner import clean_html
+
                 cleaned = clean_html(text_str)
                 if cleaned and len(cleaned.strip()) > 20:
                     text_str = cleaned
@@ -202,7 +222,9 @@ class LLMExtractor:
         # If multiple chunks, rank them semantically against the task objective & fields
         if len(chunks) > 1:
             query_str = f"{task.objective} {' '.join(task.fields)}"
-            ranked = self.semantic_filter.rank_and_filter(chunks, query=query_str, top_k=3)
+            ranked = self.semantic_filter.rank_and_filter(
+                chunks, query=query_str, top_k=3
+            )
             selected_chunks = [c for c, _ in ranked] if ranked else chunks[:3]
         else:
             selected_chunks = chunks
@@ -220,13 +242,19 @@ class LLMExtractor:
                 logger.error(f"Error during LLM chunk extraction: {error}")
                 return []
 
-        chunk_results = await asyncio.gather(*[_extract_chunk(c) for c in selected_chunks])
+        chunk_results = await asyncio.gather(
+            *[_extract_chunk(c) for c in selected_chunks]
+        )
         all_records: list[dict[str, Any]] = []
         for records in chunk_results:
             all_records.extend(records)
 
         # If multiple chunks were extracted for a single entity request, consolidate chunk fragments into one record
-        if len(selected_chunks) > 1 and not getattr(task, "is_list", False) and (not schema or not schema.base_selector):
+        if (
+            len(selected_chunks) > 1
+            and not getattr(task, "is_list", False)
+            and (not schema or not schema.base_selector)
+        ):
             all_records = self._consolidate_entity_records(all_records, task.fields)
 
         all_records = self._sanitize_records(all_records, task.fields)
@@ -236,17 +264,27 @@ class LLMExtractor:
         self,
         content: str | RawPage,
         task: ScrapingTask,
-        schema: Optional[ExtractionSchema] = None,
+        schema: ExtractionSchema | None = None,
     ) -> list[dict[str, Any]]:
         """Synchronously extract structured records using LLM."""
-        text_str = content.get_primary_content() if isinstance(content, RawPage) else str(content)
+        text_str = (
+            content.get_primary_content()
+            if isinstance(content, RawPage)
+            else str(content)
+        )
         if not text_str or not text_str.strip():
             return []
 
         # If text is raw HTML, strip boilerplate and extract clean structured text
-        if "<html" in text_str.lower() or "<body" in text_str.lower() or "<div" in text_str.lower() or "<p" in text_str.lower():
+        if (
+            "<html" in text_str.lower()
+            or "<body" in text_str.lower()
+            or "<div" in text_str.lower()
+            or "<p" in text_str.lower()
+        ):
             try:
                 from leadfinder.extraction.cleaner import clean_html
+
                 cleaned = clean_html(text_str)
                 if cleaned and len(cleaned.strip()) > 20:
                     text_str = cleaned
@@ -259,7 +297,9 @@ class LLMExtractor:
 
         if len(chunks) > 1:
             query_str = f"{task.objective} {' '.join(task.fields)}"
-            ranked = self.semantic_filter.rank_and_filter(chunks, query=query_str, top_k=3)
+            ranked = self.semantic_filter.rank_and_filter(
+                chunks, query=query_str, top_k=3
+            )
             selected_chunks = [c for c, _ in ranked] if ranked else chunks[:3]
         else:
             selected_chunks = chunks
@@ -280,9 +320,12 @@ class LLMExtractor:
                 logger.error(f"Error during sync LLM chunk extraction: {error}")
 
         # If multiple chunks were extracted for a single entity request, consolidate chunk fragments into one record
-        if len(selected_chunks) > 1 and not getattr(task, "is_list", False) and (not schema or not schema.base_selector):
+        if (
+            len(selected_chunks) > 1
+            and not getattr(task, "is_list", False)
+            and (not schema or not schema.base_selector)
+        ):
             all_records = self._consolidate_entity_records(all_records, task.fields)
 
         all_records = self._sanitize_records(all_records, task.fields)
         return all_records
-

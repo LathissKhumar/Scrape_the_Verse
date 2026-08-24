@@ -3,10 +3,12 @@ Lead Manager Microservice FastAPI Main Application.
 """
 
 import asyncio
-import sniffio
 from contextlib import asynccontextmanager
+
+import sniffio
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
+
 from .a2a.agent import a2a_router
 from .agents.followup_agent import FollowUpAgent
 from .api.routes import router as api_router
@@ -72,8 +74,6 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
-
-
 
 
 class SniffioASGIMiddleware:

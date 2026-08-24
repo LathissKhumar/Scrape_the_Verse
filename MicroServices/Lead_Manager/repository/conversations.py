@@ -3,7 +3,8 @@ Conversation Repository for Async SQLite.
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from ..domain.conversation import Conversation, utc_now_iso
 from .database import DatabaseManager
 
@@ -32,8 +33,8 @@ class ConversationRepository:
         lead_id: str,
         thread_id: str,
         channel: str = "email",
-        last_intent: Optional[str] = None,
-        metadata: Optional[Dict[str, Any]] = None,
+        last_intent: str | None = None,
+        metadata: dict[str, Any] | None = None,
     ) -> Conversation:
         now_str = utc_now_iso()
         existing = await self.get_by_thread_id(thread_id)
@@ -92,7 +93,7 @@ class ConversationRepository:
                 await conn.commit()
                 return conv
 
-    async def get_by_id(self, conv_id: str) -> Optional[Conversation]:
+    async def get_by_id(self, conv_id: str) -> Conversation | None:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM conversations WHERE id = ?", (conv_id,)
@@ -102,7 +103,7 @@ class ConversationRepository:
                 return self._row_to_conv(row)
             return None
 
-    async def get_by_thread_id(self, thread_id: str) -> Optional[Conversation]:
+    async def get_by_thread_id(self, thread_id: str) -> Conversation | None:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM conversations WHERE thread_id = ? LIMIT 1", (thread_id,)
@@ -112,7 +113,7 @@ class ConversationRepository:
                 return self._row_to_conv(row)
             return None
 
-    async def get_by_lead_id(self, lead_id: str) -> List[Conversation]:
+    async def get_by_lead_id(self, lead_id: str) -> list[Conversation]:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM conversations WHERE lead_id = ? ORDER BY last_message_at DESC",

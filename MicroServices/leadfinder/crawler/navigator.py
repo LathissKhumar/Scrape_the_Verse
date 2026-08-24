@@ -1,8 +1,7 @@
 """Interactive navigator engine for autonomous on-site searching, form entry, and action execution."""
 
-import asyncio
 import logging
-from typing import Optional
+
 from playwright.async_api import Page
 
 logger = logging.getLogger("CRAWLER_NAVIGATOR")
@@ -101,7 +100,9 @@ class InteractiveNavigatorEngine:
             # 4. Wait for search results DOM update
             if hasattr(page, "wait_for_load_state"):
                 try:
-                    await page.wait_for_load_state("domcontentloaded", timeout=wait_timeout_ms)
+                    await page.wait_for_load_state(
+                        "domcontentloaded", timeout=wait_timeout_ms
+                    )
                 except Exception:
                     pass
 

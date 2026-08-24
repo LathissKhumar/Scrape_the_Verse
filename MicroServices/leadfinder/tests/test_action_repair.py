@@ -1,5 +1,7 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
 from leadfinder.healing.actions.detector import ActionIssueDetector
 from leadfinder.healing.actions.executor import ActionRepairExecutor
 from leadfinder.healing.actions.models import ActionPlan, ActionType, PageAction
@@ -43,10 +45,20 @@ def test_action_issue_detector_modal_overlay():
 
 def test_action_repair_planner_generates_plans():
     planner = ActionRepairPlanner()
-    task = ScrapingTask(task_id="t1", objective="scrape", target_urls=["https://example.com"])
+    task = ScrapingTask(
+        task_id="t1", objective="scrape", target_urls=["https://example.com"]
+    )
     issues = [
-        {"issue_type": "COOKIE_CONSENT_BANNER", "recommended_action": ActionType.ACCEPT_COOKIE, "target_selector": "#accept-cookies"},
-        {"issue_type": "PAGINATION_LOAD_MORE_REQUIRED", "recommended_action": ActionType.CLICK_LOAD_MORE, "target_selector": ".btn-load-more"},
+        {
+            "issue_type": "COOKIE_CONSENT_BANNER",
+            "recommended_action": ActionType.ACCEPT_COOKIE,
+            "target_selector": "#accept-cookies",
+        },
+        {
+            "issue_type": "PAGINATION_LOAD_MORE_REQUIRED",
+            "recommended_action": ActionType.CLICK_LOAD_MORE,
+            "target_selector": ".btn-load-more",
+        },
     ]
     plans = planner.plan_from_issues(issues, task)
     assert len(plans) == 2
@@ -63,7 +75,9 @@ async def test_action_repair_executor_safety_and_execution():
     mock_locator.click = AsyncMock()
     mock_page.locator.return_value.first = mock_locator
     mock_page.evaluate = AsyncMock()
-    mock_page.content = AsyncMock(return_value="<html><body>Updated Content</body></html>")
+    mock_page.content = AsyncMock(
+        return_value="<html><body>Updated Content</body></html>"
+    )
 
     plan = ActionPlan(
         description="Test Plan",

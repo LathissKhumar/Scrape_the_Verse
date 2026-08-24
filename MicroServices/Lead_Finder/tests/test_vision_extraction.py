@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 from leadfinder.extraction.vision import VisionTextExtractor
 
 

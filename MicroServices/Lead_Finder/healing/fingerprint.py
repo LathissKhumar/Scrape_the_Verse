@@ -3,6 +3,7 @@
 import hashlib
 from collections import Counter
 from typing import Any
+
 from bs4 import BeautifulSoup
 from leadfinder.config.logging import get_logger
 from leadfinder.config.settings import get_settings
@@ -26,7 +27,8 @@ class DOMFingerprinter:
 
         soup = BeautifulSoup(html[:25000], "html.parser")
         tags = [
-            tag.name for tag in soup.find_all(True)
+            tag.name
+            for tag in soup.find_all(True)
             if tag.name not in _IGNORED_FINGERPRINT_TAGS
         ]
         counts = Counter(tags)
@@ -53,7 +55,12 @@ class DOMFingerprinter:
 
     def compute_drift_score(self, fp1: dict[str, Any], fp2: dict[str, Any]) -> float:
         """Compute normalized structural drift between two DOM fingerprints [0.0 = identical, 1.0 = completely different]."""
-        if not fp1 or not fp2 or fp1.get("hash") == "empty" or fp2.get("hash") == "empty":
+        if (
+            not fp1
+            or not fp2
+            or fp1.get("hash") == "empty"
+            or fp2.get("hash") == "empty"
+        ):
             return 1.0
 
         if fp1.get("hash") == fp2.get("hash"):
@@ -75,7 +82,9 @@ class DOMFingerprinter:
             total_sum += max(c1, c2)
 
         tag_drift = diff_sum / max(1, total_sum)
-        depth_drift = abs(fp1.get("depth", 0) - fp2.get("depth", 0)) / max(1, max(fp1.get("depth", 1), fp2.get("depth", 1)))
+        depth_drift = abs(fp1.get("depth", 0) - fp2.get("depth", 0)) / max(
+            1, max(fp1.get("depth", 1), fp2.get("depth", 1))
+        )
 
         drift = round((0.75 * tag_drift) + (0.25 * depth_drift), 3)
         return min(1.0, max(0.0, drift))
@@ -83,9 +92,14 @@ class DOMFingerprinter:
     def is_significant_drift(self, fp1: dict[str, Any], fp2: dict[str, Any]) -> bool:
         """Check if structural drift exceeds the configured threshold."""
         score = self.compute_drift_score(fp1, fp2)
-        threshold = getattr(self.settings, "STRUCTURAL_DRIFT_THRESHOLD", _DEFAULT_STRUCTURAL_DRIFT_THRESHOLD)
+        threshold = getattr(
+            self.settings,
+            "STRUCTURAL_DRIFT_THRESHOLD",
+            _DEFAULT_STRUCTURAL_DRIFT_THRESHOLD,
+        )
         is_drift = score > threshold
         if is_drift:
-            logger.warning(f"Significant structural DOM drift detected: {score:.3f} > {threshold:.3f}")
+            logger.warning(
+                f"Significant structural DOM drift detected: {score:.3f} > {threshold:.3f}"
+            )
         return is_drift
-

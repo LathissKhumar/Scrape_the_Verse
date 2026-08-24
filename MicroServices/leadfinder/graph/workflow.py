@@ -1,4 +1,5 @@
-from typing import Any, Optional
+from typing import Any
+
 from langgraph.graph import END, START, StateGraph
 
 from leadfinder.agents.diagnosis import DiagnosisAgent
@@ -13,7 +14,6 @@ from leadfinder.config.settings import get_settings
 from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
 from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema
 from leadfinder.graph.state import ScrapingGraphState
-from leadfinder.healing.schemas import RepairEvaluation, RepairPlan, RepairType
 from leadfinder.llm.ollama_client import OllamaClient
 from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
 from leadfinder.validation.schemas import ValidationResult
@@ -22,12 +22,12 @@ logger = get_logger("GRAPH")
 
 
 def create_scraping_workflow(
-    planner_agent: Optional[ScrapingPlannerAgent] = None,
-    scraper_agent: Optional[ScraperAgent] = None,
-    extraction_agent: Optional[ExtractionAgent] = None,
-    validation_agent: Optional[ValidationAgent] = None,
-    diagnosis_agent: Optional[DiagnosisAgent] = None,
-    healing_agent: Optional[HealingAgent] = None,
+    planner_agent: ScrapingPlannerAgent | None = None,
+    scraper_agent: ScraperAgent | None = None,
+    extraction_agent: ExtractionAgent | None = None,
+    validation_agent: ValidationAgent | None = None,
+    diagnosis_agent: DiagnosisAgent | None = None,
+    healing_agent: HealingAgent | None = None,
 ):
     """Build and compile the Phase 5 LangGraph scraping state machine with autonomous self-healing feedback loop:
 
@@ -91,7 +91,7 @@ def create_scraping_workflow(
 
     async def scraper_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
-        task: Optional[ScrapingTask] = state.get("scraping_task")
+        task: ScrapingTask | None = state.get("scraping_task")
 
         logger.debug(f"task_id={task_id} [GRAPH:scraper_node] Running scraper agent")
 
@@ -106,7 +106,11 @@ def create_scraping_workflow(
                 task_id=task_id,
                 status="failed",
                 records=[],
-                metadata={"task_id": task_id, "record_count": 0, "scraper_provider": state.get("scraper_provider", "local")},
+                metadata={
+                    "task_id": task_id,
+                    "record_count": 0,
+                    "scraper_provider": state.get("scraper_provider", "local"),
+                },
                 error=err_msg,
             )
             return {
@@ -127,7 +131,11 @@ def create_scraping_workflow(
                 task_id=task_id,
                 status="failed",
                 records=[],
-                metadata={"task_id": task_id, "record_count": 0, "scraper_provider": state.get("scraper_provider", "local")},
+                metadata={
+                    "task_id": task_id,
+                    "record_count": 0,
+                    "scraper_provider": state.get("scraper_provider", "local"),
+                },
                 error=str(e),
             )
             return {
@@ -137,13 +145,15 @@ def create_scraping_workflow(
 
     async def extraction_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
-        task: Optional[ScrapingTask] = state.get("scraping_task")
+        task: ScrapingTask | None = state.get("scraping_task")
         raw_results = state.get("raw_results")
 
         if state.get("final_output") and state["final_output"].status == "failed":
             return {}
 
-        logger.debug(f"task_id={task_id} [GRAPH:extraction_node] Running extraction agent")
+        logger.debug(
+            f"task_id={task_id} [GRAPH:extraction_node] Running extraction agent"
+        )
 
         if not raw_results:
             empty_msg = "No raw content retrieved for extraction."
@@ -178,14 +188,16 @@ def create_scraping_workflow(
 
     async def validation_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
-        task: Optional[ScrapingTask] = state.get("scraping_task")
+        task: ScrapingTask | None = state.get("scraping_task")
         raw_results = state.get("raw_results")
         extracted_results = state.get("extracted_results") or []
 
         if state.get("final_output") and state["final_output"].status == "failed":
             return {}
 
-        logger.debug(f"task_id={task_id} [GRAPH:validation_node] Running validation agent")
+        logger.debug(
+            f"task_id={task_id} [GRAPH:validation_node] Running validation agent"
+        )
 
         validation_result: ValidationResult = await validator.validate(
             extracted_results=extracted_results,
@@ -201,7 +213,9 @@ def create_scraping_workflow(
             err_str = f"Validation detected quality degradation: health_score={validation_result.health_score:.2f}"
         else:  # broken
             final_status = "failed" if not extracted_results else "partial"
-            err_str = "Validation detected severe extraction degradation or broken output"
+            err_str = (
+                "Validation detected severe extraction degradation or broken output"
+            )
 
         final_res = ScrapingResult(
             task_id=task_id,
@@ -217,11 +231,18 @@ def create_scraping_workflow(
                 "anomalies": validation_result.anomalies,
                 "validation": {
                     "field_coverage": {
-                        k: v.coverage for k, v in validation_result.field_metrics.items()
+                        k: v.coverage
+                        for k, v in validation_result.field_metrics.items()
                     },
-                    "duplicate_rate": validation_result.duplicate_metrics.duplicate_rate if validation_result.duplicate_metrics else 0.0,
-                    "url_valid_rate": validation_result.url_metrics.valid_rate if validation_result.url_metrics else 1.0,
-                    "schema_valid_rate": validation_result.schema_metrics.valid_rate if validation_result.schema_metrics else 1.0,
+                    "duplicate_rate": validation_result.duplicate_metrics.duplicate_rate
+                    if validation_result.duplicate_metrics
+                    else 0.0,
+                    "url_valid_rate": validation_result.url_metrics.valid_rate
+                    if validation_result.url_metrics
+                    else 1.0,
+                    "schema_valid_rate": validation_result.schema_metrics.valid_rate
+                    if validation_result.schema_metrics
+                    else 1.0,
                 },
             },
             error=err_str,
@@ -229,20 +250,28 @@ def create_scraping_workflow(
 
         return {
             "validation_result": validation_result.model_dump(),
-            "failure": [f.model_dump() for f in validation_result.failures] if validation_result.failures else state.get("failure"),
+            "failure": [f.model_dump() for f in validation_result.failures]
+            if validation_result.failures
+            else state.get("failure"),
             "final_output": final_res,
         }
 
     async def diagnosis_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
-        task: Optional[ScrapingTask] = state.get("scraping_task")
+        task: ScrapingTask | None = state.get("scraping_task")
         raw_results = state.get("raw_results")
         extracted_results = state.get("extracted_results") or []
         val_dict = state.get("validation_result") or {}
 
-        logger.debug(f"task_id={task_id} [GRAPH:diagnosis_node] Running diagnosis agent")
+        logger.debug(
+            f"task_id={task_id} [GRAPH:diagnosis_node] Running diagnosis agent"
+        )
 
-        val_result = ValidationResult(**val_dict) if val_dict else ValidationResult(status="broken", health_score=0.0)
+        val_result = (
+            ValidationResult(**val_dict)
+            if val_dict
+            else ValidationResult(status="broken", health_score=0.0)
+        )
 
         diagnosis: DiagnosisResult = await diagnostician.diagnose(
             task=task or ScrapingTask(task_id=task_id, objective="", target_urls=[]),
@@ -267,7 +296,7 @@ def create_scraping_workflow(
 
     async def healing_node(state: ScrapingGraphState) -> dict[str, Any]:
         task_id = state.get("task_id", "unknown-task")
-        task: Optional[ScrapingTask] = state.get("scraping_task")
+        task: ScrapingTask | None = state.get("scraping_task")
         raw_results = state.get("raw_results")
         val_dict = state.get("validation_result") or {}
         diag_dict = state.get("diagnosis_result") or {}
@@ -275,9 +304,19 @@ def create_scraping_workflow(
 
         logger.debug(f"task_id={task_id} [GRAPH:healing_node] Running healing agent")
 
-        val_result = ValidationResult(**val_dict) if val_dict else ValidationResult(status="broken", health_score=0.0)
-        diag_result = DiagnosisResult(**diag_dict) if diag_dict else DiagnosisResult(root_cause=RootCause.UNKNOWN)
-        current_schema = ExtractionSchema(**schema_dict) if schema_dict else ExtractionSchema()
+        val_result = (
+            ValidationResult(**val_dict)
+            if val_dict
+            else ValidationResult(status="broken", health_score=0.0)
+        )
+        diag_result = (
+            DiagnosisResult(**diag_dict)
+            if diag_dict
+            else DiagnosisResult(root_cause=RootCause.UNKNOWN)
+        )
+        current_schema = (
+            ExtractionSchema(**schema_dict) if schema_dict else ExtractionSchema()
+        )
 
         success, healed_schema, evaluation, healed_records, history = await healer.heal(
             task=task or ScrapingTask(task_id=task_id, objective="", target_urls=[]),
@@ -305,11 +344,15 @@ def create_scraping_workflow(
             updated_meta["health_score"] = evaluation.after.health
             updated_meta["quality_score"] = evaluation.after.quality
             updated_meta["record_count"] = len(healed_records)
-            repair_type_val = history[-1]["repair_type"] if history else "REPAIR_CSS_SELECTORS"
+            repair_type_val = (
+                history[-1]["repair_type"] if history else "REPAIR_CSS_SELECTORS"
+            )
             updated_meta["repair_type"] = repair_type_val
         else:
             final_output.status = "failed" if not healed_records else "partial"
-            final_output.error = "Unable to recover scraper after bounded repair attempts"
+            final_output.error = (
+                "Unable to recover scraper after bounded repair attempts"
+            )
             updated_meta["self_healed"] = False
             updated_meta["escalated"] = True
 
@@ -342,7 +385,9 @@ def create_scraping_workflow(
             else "Unrecoverable failure detected"
         )
         final_output.metadata = updated_meta
-        logger.warning(f"Escalation triggered | task_id={task_id} | reason={updated_meta['escalation_reason']}")
+        logger.warning(
+            f"Escalation triggered | task_id={task_id} | reason={updated_meta['escalation_reason']}"
+        )
 
         return {"final_output": final_output}
 
@@ -387,7 +432,9 @@ def create_scraping_workflow(
 
         # Low confidence or unknown cause -> escalate
         if confidence < 0.50 or root_cause == RootCause.UNKNOWN.value:
-            logger.info(f"Diagnosis confidence too low ({confidence:.2f}) or UNKNOWN. Escalating.")
+            logger.info(
+                f"Diagnosis confidence too low ({confidence:.2f}) or UNKNOWN. Escalating."
+            )
             return "escalate"
 
         return "heal"

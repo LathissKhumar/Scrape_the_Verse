@@ -1,10 +1,24 @@
 from typing import Any
+
 from leadfinder.validation.schemas import FieldMetric
 
 SUSPICIOUS_PLACEHOLDERS = {
-    "n/a", "na", "n.a.", "unknown", "-", "--", "---",
-    "not available", "not applicable", "null", "none",
-    "[none]", "undefined", "tbd", "pending", "empty",
+    "n/a",
+    "na",
+    "n.a.",
+    "unknown",
+    "-",
+    "--",
+    "---",
+    "not available",
+    "not applicable",
+    "null",
+    "none",
+    "[none]",
+    "undefined",
+    "tbd",
+    "pending",
+    "empty",
 }
 
 
@@ -30,7 +44,9 @@ class CompletenessValidator:
             return len(val) == 0
         return False
 
-    def evaluate_field(self, records: list[dict[str, Any]], field_name: str) -> FieldMetric:
+    def evaluate_field(
+        self, records: list[dict[str, Any]], field_name: str
+    ) -> FieldMetric:
         """Calculate completeness and placeholder metrics for a single field across all records."""
         total = len(records)
         if total == 0:

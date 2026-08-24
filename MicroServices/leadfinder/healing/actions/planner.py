@@ -1,6 +1,7 @@
 """Planner for generating bounded ActionPlan candidates to unblock UI interactions and lazy hydration."""
 
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.config.logging import get_logger
 from leadfinder.healing.actions.detector import ActionIssueDetector
 from leadfinder.healing.actions.models import ActionPlan, ActionType, PageAction
@@ -15,13 +16,15 @@ class ActionRepairPlanner:
 
     def __init__(
         self,
-        detector: Optional[ActionIssueDetector] = None,
-        llm_client: Optional[LLMClient] = None,
+        detector: ActionIssueDetector | None = None,
+        llm_client: LLMClient | None = None,
     ) -> None:
         self.detector = detector or ActionIssueDetector()
         self.llm_client = llm_client
 
-    def plan_from_issues(self, issues: list[dict[str, Any]], task: ScrapingTask) -> list[ActionPlan]:
+    def plan_from_issues(
+        self, issues: list[dict[str, Any]], task: ScrapingTask
+    ) -> list[ActionPlan]:
         """Convert detected UI issues into ordered ActionPlan candidates."""
         candidates: list[ActionPlan] = []
 
@@ -33,8 +36,17 @@ class ActionRepairPlanner:
                 plan = ActionPlan(
                     description="Dismiss cookie consent banner",
                     actions=[
-                        PageAction(action_type=ActionType.CLICK, selector=selector, timeout_ms=3000, description="Click accept cookies"),
-                        PageAction(action_type=ActionType.WAIT_MS, value="800", description="Wait for banner dismissal"),
+                        PageAction(
+                            action_type=ActionType.CLICK,
+                            selector=selector,
+                            timeout_ms=3000,
+                            description="Click accept cookies",
+                        ),
+                        PageAction(
+                            action_type=ActionType.WAIT_MS,
+                            value="800",
+                            description="Wait for banner dismissal",
+                        ),
                     ],
                 )
                 candidates.append(plan)
@@ -43,8 +55,17 @@ class ActionRepairPlanner:
                 plan = ActionPlan(
                     description="Dismiss blocking modal overlay",
                     actions=[
-                        PageAction(action_type=ActionType.CLICK, selector=selector, timeout_ms=3000, description="Close overlay"),
-                        PageAction(action_type=ActionType.WAIT_MS, value="800", description="Stabilize DOM"),
+                        PageAction(
+                            action_type=ActionType.CLICK,
+                            selector=selector,
+                            timeout_ms=3000,
+                            description="Close overlay",
+                        ),
+                        PageAction(
+                            action_type=ActionType.WAIT_MS,
+                            value="800",
+                            description="Stabilize DOM",
+                        ),
                     ],
                 )
                 candidates.append(plan)
@@ -53,9 +74,22 @@ class ActionRepairPlanner:
                 plan = ActionPlan(
                     description="Click Load More button to fetch additional items",
                     actions=[
-                        PageAction(action_type=ActionType.SCROLL, value="1000", description="Scroll to button"),
-                        PageAction(action_type=ActionType.CLICK, selector=selector, timeout_ms=4000, description="Click load more"),
-                        PageAction(action_type=ActionType.WAIT_MS, value="1500", description="Wait for AJAX response"),
+                        PageAction(
+                            action_type=ActionType.SCROLL,
+                            value="1000",
+                            description="Scroll to button",
+                        ),
+                        PageAction(
+                            action_type=ActionType.CLICK,
+                            selector=selector,
+                            timeout_ms=4000,
+                            description="Click load more",
+                        ),
+                        PageAction(
+                            action_type=ActionType.WAIT_MS,
+                            value="1500",
+                            description="Wait for AJAX response",
+                        ),
                     ],
                 )
                 candidates.append(plan)
@@ -64,8 +98,16 @@ class ActionRepairPlanner:
                 plan = ActionPlan(
                     description="Trigger infinite scroll to hydrate dynamic items",
                     actions=[
-                        PageAction(action_type=ActionType.SCROLL, value="2500", description="Scroll down page"),
-                        PageAction(action_type=ActionType.WAIT_MS, value="1200", description="Wait for lazy render"),
+                        PageAction(
+                            action_type=ActionType.SCROLL,
+                            value="2500",
+                            description="Scroll down page",
+                        ),
+                        PageAction(
+                            action_type=ActionType.WAIT_MS,
+                            value="1200",
+                            description="Wait for lazy render",
+                        ),
                     ],
                 )
                 candidates.append(plan)
@@ -76,11 +118,18 @@ class ActionRepairPlanner:
                 ActionPlan(
                     description="General scroll down and DOM stabilization",
                     actions=[
-                        PageAction(action_type=ActionType.SCROLL, value="2000", description="Scroll down"),
-                        PageAction(action_type=ActionType.WAIT_MS, value="1000", description="Wait for hydration"),
+                        PageAction(
+                            action_type=ActionType.SCROLL,
+                            value="2000",
+                            description="Scroll down",
+                        ),
+                        PageAction(
+                            action_type=ActionType.WAIT_MS,
+                            value="1000",
+                            description="Wait for hydration",
+                        ),
                     ],
                 )
             )
 
         return candidates
-

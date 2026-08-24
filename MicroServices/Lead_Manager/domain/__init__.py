@@ -19,17 +19,17 @@ from .stage import (
 from .task import LeadTask
 
 __all__ = [
-    "LeadStage",
-    "TaskType",
-    "TaskStatus",
-    "OpportunityType",
-    "MeetingStatus",
     "ActivityType",
+    "Conversation",
     "EmailIntent",
     "Lead",
-    "Opportunity",
     "LeadActivity",
+    "LeadStage",
     "LeadTask",
-    "Conversation",
     "Meeting",
+    "MeetingStatus",
+    "Opportunity",
+    "OpportunityType",
+    "TaskStatus",
+    "TaskType",
 ]

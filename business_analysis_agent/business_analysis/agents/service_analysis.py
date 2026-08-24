@@ -1,15 +1,13 @@
-from typing import List
+from business_analysis.llm import get_structured_llm
 from business_analysis.schemas.models import (
-    ServiceAnalysis,
-    Service,
-    ServiceImportance,
-    ServiceVisibility,
     NodeExecutionStatus,
     NodeStatusEnum,
+    Service,
+    ServiceAnalysis,
+    ServiceImportance,
+    ServiceVisibility,
 )
-from business_analysis.llm import get_structured_llm
 from business_analysis.state import BusinessAnalysisState, get_relevant_evidence
-
 
 SERVICE_ANALYSIS_PROMPT = """ROLE: You are an expert Service & Product Analyst.
 OBJECTIVE: Extract and analyze all offerings, services, and specialized treatments provided by the business.
@@ -44,14 +42,24 @@ RULES:
 
 def service_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisState:
     relevant_evidence = get_relevant_evidence(state, "service")
-    evidence_text = "\n".join([
-        f"[{e.id}] Claim: {e.claim} | Supporting Text: {e.supporting_text or 'N/A'} (Source: {e.source})"
-        for e in relevant_evidence
-    ])
+    evidence_text = "\n".join(
+        [
+            f"[{e.id}] Claim: {e.claim} | Supporting Text: {e.supporting_text or 'N/A'} (Source: {e.source})"
+            for e in relevant_evidence
+        ]
+    )
 
     profile = state.get("business_profile")
-    industry_val = profile.industry.value if profile and hasattr(profile.industry, "value") else "Unknown"
-    location_val = profile.geographic_market.value if profile and hasattr(profile.geographic_market, "value") else "Unknown"
+    industry_val = (
+        profile.industry.value
+        if profile and hasattr(profile.industry, "value")
+        else "Unknown"
+    )
+    location_val = (
+        profile.geographic_market.value
+        if profile and hasattr(profile.geographic_market, "value")
+        else "Unknown"
+    )
 
     prompt = SERVICE_ANALYSIS_PROMPT.format(
         evidence=evidence_text,
@@ -72,8 +80,9 @@ def service_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
         for svc in raw_analysis.services:
             # Re-validate name through the model's validator
             try:
-                from pydantic import ValidationError as PydanticValidationError
-                Service(name=svc.name, description=svc.description)  # triggers name validator
+                Service(
+                    name=svc.name, description=svc.description
+                )  # triggers name validator
                 valid_services.append(svc)
             except Exception as ve:
                 warnings.append(f"Rejected malformed service: {svc.name!r} — {ve}")
@@ -90,8 +99,13 @@ def service_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
                     if line and len(line) > 3:
                         svc_name = line.split(":")[0].strip()
                         # Skip obviously malformed
-                        if any(bad in svc_name.lower() for bad in ["=", "\\\\", "{", "}", "target_customers"]):
-                            warnings.append(f"Skipped malformed fallback service name: {svc_name!r}")
+                        if any(
+                            bad in svc_name.lower()
+                            for bad in ["=", "\\\\", "{", "}", "target_customers"]
+                        ):
+                            warnings.append(
+                                f"Skipped malformed fallback service name: {svc_name!r}"
+                            )
                             continue
                         try:
                             fallback_services.append(
@@ -99,15 +113,21 @@ def service_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
                                     name=svc_name,
                                     description=line,
                                     importance=ServiceImportance.CORE,
-                                    target_customer=input_biz.target_customers or "Target Customers",
+                                    target_customer=input_biz.target_customers
+                                    or "Target Customers",
                                     customer_problem_solved="Specialized care delivery",
                                     visibility=ServiceVisibility.MODERATE,
                                     evidence_ids=[e.id for e in relevant_evidence],
                                 )
                             )
                         except Exception as fe:
-                            warnings.append(f"Rejected fallback service {svc_name!r}: {fe}")
-            if input_biz.additional_info and "Complex Case" in input_biz.additional_info:
+                            warnings.append(
+                                f"Rejected fallback service {svc_name!r}: {fe}"
+                            )
+            if (
+                input_biz.additional_info
+                and "Complex Case" in input_biz.additional_info
+            ):
                 try:
                     fallback_services.append(
                         Service(
@@ -125,7 +145,9 @@ def service_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
             if fallback_services:
                 analysis.services = fallback_services
 
-        node_status = NodeStatusEnum.SUCCESS if analysis.services else NodeStatusEnum.PARTIAL
+        node_status = (
+            NodeStatusEnum.SUCCESS if analysis.services else NodeStatusEnum.PARTIAL
+        )
         statuses["service_analysis"] = NodeExecutionStatus(
             status=node_status,
             confidence=0.9 if analysis.services else 0.4,
@@ -138,5 +160,11 @@ def service_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
             "errors": state.get("errors", []) + warning_msgs,
         }
     except Exception as e:
-        statuses["service_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e))
-        return {**state, "errors": state.get("errors", []) + [f"ServiceAnalysisAgent error: {str(e)}"], "node_statuses": statuses}
+        statuses["service_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e)
+        )
+        return {
+            **state,
+            "errors": state.get("errors", []) + [f"ServiceAnalysisAgent error: {e!s}"],
+            "node_statuses": statuses,
+        }

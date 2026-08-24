@@ -1,43 +1,43 @@
-'use client'
-import { motion } from 'framer-motion'
-import { GradientText } from '@/components/ui/GradientText'
-import { SectionLabel } from '@/components/ui/SectionLabel'
+"use client";
+import { motion } from "framer-motion";
+import { GradientText } from "@/components/ui/GradientText";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const WITHOUT_ITEMS = [
-  'Manually search IndiaMART, Yelp, Google one by one',
-  'Open each business website and inspect it yourself',
-  'Audit SEO manually using separate tools',
-  'Research the business, market, and customer profile',
-  'Guess what digital service to pitch',
-  'Write a cold outreach message from scratch',
-  'Track leads in a spreadsheet',
-]
+  "Manually search IndiaMART, Yelp, Google one by one",
+  "Open each business website and inspect it yourself",
+  "Audit SEO manually using separate tools",
+  "Research the business, market, and customer profile",
+  "Guess what digital service to pitch",
+  "Write a cold outreach message from scratch",
+  "Track leads in a spreadsheet",
+];
 
 const WITH_ITEMS = [
-  'Leads discovered automatically from multiple sources',
-  'Website crawled and audited by AI instantly',
-  'Full SEO report generated with specific findings',
-  'Business, market, and customer context built by agents',
-  'Service recommendation generated from evidence',
-  'Personalized outreach drafted automatically',
-  'Lead pipeline managed with priority scoring',
-]
+  "Leads discovered automatically from multiple sources",
+  "Website crawled and audited by AI instantly",
+  "Full SEO report generated with specific findings",
+  "Business, market, and customer context built by agents",
+  "Service recommendation generated from evidence",
+  "Personalized outreach drafted automatically",
+  "Lead pipeline managed with priority scoring",
+];
 
 const containerVariants = {
   hidden: {},
   visible: {
     transition: { staggerChildren: 0.07 },
   },
-}
+};
 
 const itemVariants = {
   hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: 'easeOut' as const },
+    transition: { duration: 0.5, ease: "easeOut" as const },
   },
-}
+};
 
 export function ProblemSection() {
   return (
@@ -52,18 +52,20 @@ export function ProblemSection() {
           className="text-center space-y-4 max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-15%' }}
+          viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionLabel label="THE PROBLEM" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
-            Every Agency Wastes Hours on Research{' '}
+            Every Agency Wastes Hours on Research{" "}
             <GradientText>That Should Take Seconds</GradientText>
           </h2>
           <p className="text-base text-text-secondary font-body max-w-2xl mx-auto leading-relaxed">
-            Before pitching a single client, your team manually searches directories, opens websites,
-            audits SEO, researches the business, studies the market, figures out what to offer, and
-            then writes a proposal — for every single lead. AgencyOS eliminates that entire chain.
+            Before pitching a single client, your team manually searches
+            directories, opens websites, audits SEO, researches the business,
+            studies the market, figures out what to offer, and then writes a
+            proposal — for every single lead. AgencyOS eliminates that entire
+            chain.
           </p>
         </motion.div>
 
@@ -77,7 +79,7 @@ export function ProblemSection() {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-15%' }}
+              viewport={{ once: true, margin: "-15%" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-6 md:pr-8"
             >
@@ -89,7 +91,7 @@ export function ProblemSection() {
                 variants={containerVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: '-15%' }}
+                viewport={{ once: true, margin: "-15%" }}
               >
                 {WITHOUT_ITEMS.map((item, i) => (
                   <motion.li
@@ -108,7 +110,7 @@ export function ProblemSection() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-15%' }}
+              viewport={{ once: true, margin: "-15%" }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-6 md:pl-8"
             >
@@ -120,7 +122,7 @@ export function ProblemSection() {
                 variants={containerVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, margin: '-15%' }}
+                viewport={{ once: true, margin: "-15%" }}
               >
                 {WITH_ITEMS.map((item, i) => (
                   <motion.li
@@ -138,5 +140,5 @@ export function ProblemSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

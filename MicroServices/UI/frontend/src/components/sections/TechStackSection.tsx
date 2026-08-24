@@ -1,25 +1,35 @@
-'use client'
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+"use client";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 // Exact uploaded images from C:\Users\msuke\Documents\Scrape_the_Verse\images\
 const UPLOADED_IMAGES = [
-  { name: 'Google Maps', src: '/images/tech/Google_Maps_Logo_2020.svg.webp' },
-  { name: 'Next.js', src: '/images/tech/nextjs.jpeg' },
-  { name: 'DuckDuckGo', src: '/images/tech/Duck-Duck-Go-Featured-1000x450.jpg' },
-  { name: 'Google Meet', src: '/images/tech/Goole-Meet.avif' },
-  { name: 'CRM Integration', src: '/images/tech/20_crm.png' },
-  { name: 'Tech Ecosystem', src: '/images/tech/7c7d23_de91fc0e3fd242fc8309486acdf78b7e_mv2.png' },
-  { name: 'Scraper Engine', src: '/images/tech/images (1).png' },
-  { name: 'Data Pipeline', src: '/images/tech/images (2).png' },
-  { name: 'SEO Analyzer', src: '/images/tech/images (3).png' },
-  { name: 'Lead Crawler', src: '/images/tech/images (4).png' },
-  { name: 'Cloud Infra', src: '/images/tech/images.jpg' },
-  { name: 'Intelligence Node', src: '/images/tech/images.png' },
-]
+  { name: "Google Maps", src: "/images/tech/Google_Maps_Logo_2020.svg.webp" },
+  { name: "Next.js", src: "/images/tech/nextjs.jpeg" },
+  {
+    name: "DuckDuckGo",
+    src: "/images/tech/Duck-Duck-Go-Featured-1000x450.jpg",
+  },
+  { name: "Google Meet", src: "/images/tech/Goole-Meet.avif" },
+  { name: "CRM Integration", src: "/images/tech/20_crm.png" },
+  {
+    name: "Tech Ecosystem",
+    src: "/images/tech/7c7d23_de91fc0e3fd242fc8309486acdf78b7e_mv2.png",
+  },
+  { name: "Scraper Engine", src: "/images/tech/images (1).png" },
+  { name: "Data Pipeline", src: "/images/tech/images (2).png" },
+  { name: "SEO Analyzer", src: "/images/tech/images (3).png" },
+  { name: "Lead Crawler", src: "/images/tech/images (4).png" },
+  { name: "Cloud Infra", src: "/images/tech/images.jpg" },
+  { name: "Intelligence Node", src: "/images/tech/images.png" },
+];
 
 // Duplicate array for seamless infinite right-to-left marquee loop
-const MARQUEE_UPLOADED_IMAGES = [...UPLOADED_IMAGES, ...UPLOADED_IMAGES, ...UPLOADED_IMAGES]
+const MARQUEE_UPLOADED_IMAGES = [
+  ...UPLOADED_IMAGES,
+  ...UPLOADED_IMAGES,
+  ...UPLOADED_IMAGES,
+];
 
 export function TechStackSection() {
   return (
@@ -35,7 +45,8 @@ export function TechStackSection() {
             Built With Enterprise Technology
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 font-body max-w-xl mx-auto leading-relaxed">
-            The complete suite of scraping engines, AI frameworks, and developer tools powering Scrape-Verse.
+            The complete suite of scraping engines, AI frameworks, and developer
+            tools powering Scrape-Verse.
           </p>
         </div>
       </div>
@@ -45,14 +56,14 @@ export function TechStackSection() {
         <motion.div
           className="flex items-center gap-16 sm:gap-24 w-max will-change-transform py-6 px-8"
           animate={{
-            x: ['-33.33%', '0%'],
+            x: ["-33.33%", "0%"],
           }}
           transition={{
             x: {
               repeat: Infinity,
-              repeatType: 'loop',
+              repeatType: "loop",
               duration: 32,
-              ease: 'linear',
+              ease: "linear",
             },
           }}
         >
@@ -74,5 +85,5 @@ export function TechStackSection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

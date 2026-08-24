@@ -1,9 +1,19 @@
 import hashlib
 import json
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.validation.schemas import DuplicateMetric
 
-PRIMARY_KEY_CANDIDATES = ["url", "product_url", "link", "id", "sku", "email", "title", "name"]
+PRIMARY_KEY_CANDIDATES = [
+    "url",
+    "product_url",
+    "link",
+    "id",
+    "sku",
+    "email",
+    "title",
+    "name",
+]
 
 
 class DuplicateValidator:
@@ -12,7 +22,7 @@ class DuplicateValidator:
     def evaluate_duplicates(
         self,
         records: list[dict[str, Any]],
-        key_field: Optional[str] = None,
+        key_field: str | None = None,
     ) -> DuplicateMetric:
         """Calculate duplicate metrics across records."""
         total = len(records)
@@ -23,7 +33,7 @@ class DuplicateValidator:
         if not effective_key:
             sample = records[0]
             for candidate in PRIMARY_KEY_CANDIDATES:
-                if candidate in sample and sample[candidate]:
+                if sample.get(candidate):
                     effective_key = candidate
                     break
 
@@ -37,9 +47,9 @@ class DuplicateValidator:
             if effective_key and r.get(effective_key):
                 dedup_key = f"{effective_key}:{str(r[effective_key]).strip().lower()}"
             else:
-                sorted_items = sorted([
-                    (str(k), str(v).strip()) for k, v in r.items() if v is not None
-                ])
+                sorted_items = sorted(
+                    [(str(k), str(v).strip()) for k, v in r.items() if v is not None]
+                )
                 serialized = json.dumps(sorted_items, sort_keys=True)
                 dedup_key = hashlib.md5(serialized.encode("utf-8")).hexdigest()
 

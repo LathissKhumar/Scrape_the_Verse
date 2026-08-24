@@ -2,12 +2,17 @@
 
 import re
 from typing import Any
+
 from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
 COMMON_PATTERNS = {
-    "email": re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE),
+    "email": re.compile(
+        r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE
+    ),
     "phone": re.compile(r"(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}"),
-    "price": re.compile(r"(?:[\$\€\£\₹]|USD|EUR)\s?\d+(?:,\d{3})*(?:\.\d{2})?|\d+(?:,\d{3})*(?:\.\d{2})?\s?(?:USD|EUR)"),
+    "price": re.compile(
+        r"(?:[\$\€\£\₹]|USD|EUR)\s?\d+(?:,\d{3})*(?:\.\d{2})?|\d+(?:,\d{3})*(?:\.\d{2})?\s?(?:USD|EUR)"
+    ),
     "url": re.compile(r"https?://[^\s,;\"'<>()\[\]{}]+", re.IGNORECASE),
     "date": re.compile(
         r"\b(?:\d{4}[-/]\d{1,2}[-/]\d{1,2}|\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+\d{4})\b",
@@ -37,7 +42,11 @@ class RegexExtractor:
         schema: ExtractionSchema,
     ) -> list[dict[str, Any]]:
         """Extract matching structured records using pattern matching."""
-        text_str = content.get_primary_content() if isinstance(content, RawPage) else str(content)
+        text_str = (
+            content.get_primary_content()
+            if isinstance(content, RawPage)
+            else str(content)
+        )
         if not text_str or not text_str.strip():
             return []
 
@@ -79,7 +88,8 @@ class RegexExtractor:
         # Check if schema requested multi-field entities
         total_schema_fields = len(schema.fields)
         primary_requested = [
-            f.name for f in schema.fields
+            f.name
+            for f in schema.fields
             if any(pk in f.name.lower().replace("_", "") for pk in _PRIMARY_IDENTIFIERS)
         ]
 
@@ -98,7 +108,10 @@ class RegexExtractor:
             # If multi-field schema with primary keys, ensure primary key is present or >= 50% fields populated
             if total_schema_fields > 1:
                 if primary_requested:
-                    has_primary = any(row.get(pk) is not None and str(row.get(pk)).strip() for pk in primary_requested)
+                    has_primary = any(
+                        row.get(pk) is not None and str(row.get(pk)).strip()
+                        for pk in primary_requested
+                    )
                     if not has_primary:
                         continue
                 elif populated_count < 2:
@@ -108,4 +121,3 @@ class RegexExtractor:
                 records.append(row)
 
         return records
-

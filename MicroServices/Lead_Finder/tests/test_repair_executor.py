@@ -1,5 +1,8 @@
-import pytest
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    ExtractionStrategyEnum,
+    FieldRule,
+)
 from leadfinder.healing.executor import RepairExecutor
 from leadfinder.healing.schemas import RepairPlan, RepairType
 

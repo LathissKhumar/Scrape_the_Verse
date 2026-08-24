@@ -2,7 +2,6 @@
 Tests for Data Normalization Layer (Layer 2).
 """
 
-import pytest
 from MicroServices.SDR.normalizer import DataNormalizer
 
 

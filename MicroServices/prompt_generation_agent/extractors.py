@@ -1,33 +1,31 @@
-import json
-from typing import List, Dict, Any, Optional
 from pathlib import Path
+from typing import Any
 
-from utils import (
-    load_json_file,
-    logger,
-    count_findings_by_severity,
-    format_issue_summary,
-    normalize_string,
-)
 from models import (
-    WebsiteIntelligence,
     BusinessIntelligence,
+    BusinessProblem,
+    BusinessProfile,
+    CustomerAnalysis,
+    CustomerSegment,
+    Evidence,
     IssueFinding,
+    Opportunity,
     PageFinding,
     PromptType,
-    BusinessProfile,
-    CustomerSegment,
-    CustomerAnalysis,
     Service,
     ServiceAnalysis,
-    BusinessProblem,
-    Opportunity,
-    Evidence,
+    WebsiteIntelligence,
 )
-from config import settings
+from utils import (
+    count_findings_by_severity,
+    load_json_file,
+    logger,
+)
 
 
-def extract_website_intelligence(seo_data: Dict[str, Any], seo_report_path: str) -> WebsiteIntelligence:
+def extract_website_intelligence(
+    seo_data: dict[str, Any], seo_report_path: str
+) -> WebsiteIntelligence:
     logger.info("Extracting website intelligence from SEO report")
 
     url = seo_data.get("url", "") or seo_data.get("base_url", "")
@@ -70,8 +68,12 @@ def extract_website_intelligence(seo_data: Dict[str, Any], seo_report_path: str)
     low_findings = [f for f in all_findings if f.get("severity") == "low"]
 
     seo_findings = [f for f in all_findings if f.get("category") == "Seo"]
-    accessibility_findings = [f for f in all_findings if f.get("category") == "Accessibility"]
-    technical_findings = [f for f in all_findings if f.get("category") in ("Technical", "Performance")]
+    accessibility_findings = [
+        f for f in all_findings if f.get("category") == "Accessibility"
+    ]
+    technical_findings = [
+        f for f in all_findings if f.get("category") in ("Technical", "Performance")
+    ]
 
     pages_path = domain_dir / "pages"
     page_findings = []
@@ -104,11 +106,30 @@ def extract_website_intelligence(seo_data: Dict[str, Any], seo_report_path: str)
             page_findings.append(pf)
 
             url_lower = page_url.lower()
-            if "/behandeling/" in url_lower or "/service/" in url_lower or "/treatment/" in url_lower:
+            if (
+                "/behandeling/" in url_lower
+                or "/service/" in url_lower
+                or "/treatment/" in url_lower
+            ):
                 service_page_findings.append(pf)
 
-            if any(x in url_lower for x in ["/", "index", "home", "contact", "about", "team", "behandeling/angst"]):
-                if page_url.endswith("/") or "behandeling/angst" in url_lower or "dentist-amsterdam" in url_lower:
+            if any(
+                x in url_lower
+                for x in [
+                    "/",
+                    "index",
+                    "home",
+                    "contact",
+                    "about",
+                    "team",
+                    "behandeling/angst",
+                ]
+            ):
+                if (
+                    page_url.endswith("/")
+                    or "behandeling/angst" in url_lower
+                    or "dentist-amsterdam" in url_lower
+                ):
                     important_pages.append(pf)
 
     strengths = []
@@ -128,11 +149,22 @@ def extract_website_intelligence(seo_data: Dict[str, Any], seo_report_path: str)
     if severity_counts["critical"] == 0 and severity_counts["high"] == 0:
         strengths.append("No critical or high severity issues")
     else:
-        weaknesses.append(f"{severity_counts['critical']} critical and {severity_counts['high']} high severity issues found")
+        weaknesses.append(
+            f"{severity_counts['critical']} critical and {severity_counts['high']} high severity issues found"
+        )
 
-    missing_meta = len([f for f in seo_findings if f.get("type") in ("missing_meta_description", "meta_description_too_short")])
+    missing_meta = len(
+        [
+            f
+            for f in seo_findings
+            if f.get("type")
+            in ("missing_meta_description", "meta_description_too_short")
+        ]
+    )
     if missing_meta > 10:
-        weaknesses.append(f"{missing_meta} pages with missing or too short meta descriptions")
+        weaknesses.append(
+            f"{missing_meta} pages with missing or too short meta descriptions"
+        )
 
     long_titles = len([f for f in seo_findings if f.get("type") == "title_too_long"])
     if long_titles > 5:
@@ -170,7 +202,9 @@ def extract_website_intelligence(seo_data: Dict[str, Any], seo_report_path: str)
     )
 
 
-def extract_business_intelligence(biz_data: Dict[str, Any], biz_report_path: str) -> BusinessIntelligence:
+def extract_business_intelligence(
+    biz_data: dict[str, Any], biz_report_path: str
+) -> BusinessIntelligence:
     logger.info("Extracting business intelligence from Business Analysis report")
 
     company_name = biz_data.get("company_name", "")
@@ -203,16 +237,18 @@ def extract_business_intelligence(biz_data: Dict[str, Any], biz_report_path: str
     ca_data = biz_data.get("customer_analysis", {})
     segments = []
     for seg in ca_data.get("segments", []):
-        segments.append(CustomerSegment(
-            segment_name=seg.get("segment_name", ""),
-            description=seg.get("description", ""),
-            is_primary=seg.get("is_primary", False),
-            why_it_matters=seg.get("why_it_matters", ""),
-            needs=seg.get("needs", []),
-            intent_signals=seg.get("intent_signals", []),
-            evidence_ids=seg.get("evidence_ids", []),
-            confidence=seg.get("confidence", 0.0),
-        ))
+        segments.append(
+            CustomerSegment(
+                segment_name=seg.get("segment_name", ""),
+                description=seg.get("description", ""),
+                is_primary=seg.get("is_primary", False),
+                why_it_matters=seg.get("why_it_matters", ""),
+                needs=seg.get("needs", []),
+                intent_signals=seg.get("intent_signals", []),
+                evidence_ids=seg.get("evidence_ids", []),
+                confidence=seg.get("confidence", 0.0),
+            )
+        )
 
     primary_segments = [s for s in segments if s.is_primary]
     secondary_segments = [s for s in segments if not s.is_primary]
@@ -228,20 +264,22 @@ def extract_business_intelligence(biz_data: Dict[str, Any], biz_report_path: str
     sa_data = biz_data.get("service_analysis", {})
     services = []
     for svc in sa_data.get("services", []):
-        services.append(Service(
-            name=svc.get("name", ""),
-            description=svc.get("description", ""),
-            category=svc.get("category"),
-            importance=svc.get("importance"),
-            target_customer=svc.get("target_customer"),
-            customer_problem_solved=svc.get("customer_problem_solved"),
-            visibility=svc.get("visibility"),
-            discoverability=svc.get("discoverability"),
-            has_dedicated_page=svc.get("has_dedicated_page", False),
-            cta_present=svc.get("cta_present", False),
-            confidence=svc.get("confidence", 0.0),
-            evidence_ids=svc.get("evidence_ids", []),
-        ))
+        services.append(
+            Service(
+                name=svc.get("name", ""),
+                description=svc.get("description", ""),
+                category=svc.get("category"),
+                importance=svc.get("importance"),
+                target_customer=svc.get("target_customer"),
+                customer_problem_solved=svc.get("customer_problem_solved"),
+                visibility=svc.get("visibility"),
+                discoverability=svc.get("discoverability"),
+                has_dedicated_page=svc.get("has_dedicated_page", False),
+                cta_present=svc.get("cta_present", False),
+                confidence=svc.get("confidence", 0.0),
+                evidence_ids=svc.get("evidence_ids", []),
+            )
+        )
 
     service_analysis = ServiceAnalysis(
         services=services,
@@ -252,52 +290,58 @@ def extract_business_intelligence(biz_data: Dict[str, Any], biz_report_path: str
 
     business_problems = []
     for prob in biz_data.get("business_problems", []):
-        business_problems.append(BusinessProblem(
-            id=prob.get("id", ""),
-            title=prob.get("title", ""),
-            problem=prob.get("problem", ""),
-            description=prob.get("description", ""),
-            type=prob.get("type", ""),
-            status=prob.get("status", ""),
-            evidence_ids=prob.get("evidence_ids", []),
-            business_impact=prob.get("business_impact", 0),
-            urgency=prob.get("urgency", 0),
-            confidence=prob.get("confidence", 0.0),
-            reasoning=prob.get("reasoning", ""),
-            severity=prob.get("severity", ""),
-            affected_customer_segment=prob.get("affected_customer_segment"),
-            affected_service=prob.get("affected_service"),
-        ))
+        business_problems.append(
+            BusinessProblem(
+                id=prob.get("id", ""),
+                title=prob.get("title", ""),
+                problem=prob.get("problem", ""),
+                description=prob.get("description", ""),
+                type=prob.get("type", ""),
+                status=prob.get("status", ""),
+                evidence_ids=prob.get("evidence_ids", []),
+                business_impact=prob.get("business_impact", 0),
+                urgency=prob.get("urgency", 0),
+                confidence=prob.get("confidence", 0.0),
+                reasoning=prob.get("reasoning", ""),
+                severity=prob.get("severity", ""),
+                affected_customer_segment=prob.get("affected_customer_segment"),
+                affected_service=prob.get("affected_service"),
+            )
+        )
 
     opportunities = []
     for opp in biz_data.get("opportunities", []):
-        opportunities.append(Opportunity(
-            problem_reference=opp.get("problem_reference", ""),
-            opportunity=opp.get("opportunity", ""),
-            recommended_services=opp.get("recommended_services", []),
-            expected_business_outcome=opp.get("expected_business_outcome", ""),
-            priority=opp.get("priority", 0),
-            impact=opp.get("impact", 0),
-            urgency=opp.get("urgency", 0),
-            confidence=opp.get("confidence", 0.0),
-            effort=opp.get("effort", 0),
-            business_value=opp.get("business_value", 0),
-            service_fit=opp.get("service_fit", 0),
-            rationale=opp.get("rationale", ""),
-        ))
+        opportunities.append(
+            Opportunity(
+                problem_reference=opp.get("problem_reference", ""),
+                opportunity=opp.get("opportunity", ""),
+                recommended_services=opp.get("recommended_services", []),
+                expected_business_outcome=opp.get("expected_business_outcome", ""),
+                priority=opp.get("priority", 0),
+                impact=opp.get("impact", 0),
+                urgency=opp.get("urgency", 0),
+                confidence=opp.get("confidence", 0.0),
+                effort=opp.get("effort", 0),
+                business_value=opp.get("business_value", 0),
+                service_fit=opp.get("service_fit", 0),
+                rationale=opp.get("rationale", ""),
+            )
+        )
 
     evidence = []
     for ev in biz_data.get("evidence", []):
-        evidence.append(Evidence(
-            id=ev.get("id", ""),
-            claim=ev.get("claim", ""),
-            source=ev.get("source", ""),
-            source_type=ev.get("source_type", ""),
-            supporting_text=ev.get("supporting_text", ""),
-            confidence=ev.get("confidence", 0.0),
-            relevance=ev.get("relevance", 0.0),
-            timestamp=ev.get("timestamp", ""),
-        ))
+        evidence.append(
+            Evidence(
+                id=ev.get("id", ""),
+                claim=ev.get("claim", ""),
+                source=ev.get("source", ""),
+                source_type=ev.get("source_type", ""),
+                supporting_text=ev.get("supporting_text", ""),
+                confidence=ev.get("confidence", 0.0),
+                relevance=ev.get("relevance", 0.0),
+                timestamp=ev.get("timestamp", ""),
+            )
+        )
 
     return BusinessIntelligence(
         company_name=company_name,
@@ -341,21 +385,31 @@ def classify_prompt_type(
 
     ux_conversion_issues = (
         len(seo.page_findings) > 10
-        or any(f.url for f in seo.page_findings if "contact" in f.url.lower() and not f.meta_description)
-        or len([s for s in biz.service_analysis.services if not s.has_dedicated_page]) > 0
+        or any(
+            f.url
+            for f in seo.page_findings
+            if "contact" in f.url.lower() and not f.meta_description
+        )
+        or len([s for s in biz.service_analysis.services if not s.has_dedicated_page])
+        > 0
     )
 
     website_poor = overall_score < 50 or critical_count > 5
 
     services_without_pages = [
-        s for s in biz.service_analysis.services
+        s
+        for s in biz.service_analysis.services
         if s.importance == "core" and not s.has_dedicated_page
     ]
 
-    logger.info(f"Scores - Overall: {overall_score}, Technical: {technical_score}, On-Page: {on_page_score}, Content: {content_score}")
+    logger.info(
+        f"Scores - Overall: {overall_score}, Technical: {technical_score}, On-Page: {on_page_score}, Content: {content_score}"
+    )
     logger.info(f"Issues - Critical: {critical_count}, High: {high_count}")
     logger.info(f"Services without dedicated pages: {len(services_without_pages)}")
-    logger.info(f"Tech/SEO dominates: {tech_seo_issues}, UX/Conversion dominates: {ux_conversion_issues}")
+    logger.info(
+        f"Tech/SEO dominates: {tech_seo_issues}, UX/Conversion dominates: {ux_conversion_issues}"
+    )
 
     if website_poor:
         return PromptType.WEBSITE_REDESIGN

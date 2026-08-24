@@ -1,9 +1,16 @@
 """JavaScript rendering handler using Playwright"""
+
 import asyncio
 import threading
 import time
-from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 from urllib.parse import urlparse
+
+from playwright.async_api import (
+    TimeoutError as PlaywrightTimeoutError,
+)
+from playwright.async_api import (
+    async_playwright,
+)
 
 
 class JavaScriptRenderer:
@@ -23,32 +30,38 @@ class JavaScriptRenderer:
             self.playwright = await async_playwright().start()
 
             # Choose browser based on configuration
-            browser_type = self.config.get('js_browser', 'chromium').lower()
-            headless = self.config.get('js_headless', True)
+            browser_type = self.config.get("js_browser", "chromium").lower()
+            headless = self.config.get("js_headless", True)
 
-            if browser_type == 'firefox':
+            if browser_type == "firefox":
                 self.browser = await self.playwright.firefox.launch(headless=headless)
-            elif browser_type == 'webkit':
+            elif browser_type == "webkit":
                 self.browser = await self.playwright.webkit.launch(headless=headless)
             else:  # Default to chromium
-                args = ['--no-sandbox', '--disable-dev-shm-usage'] if headless else []
-                self.browser = await self.playwright.chromium.launch(headless=headless, args=args)
+                args = ["--no-sandbox", "--disable-dev-shm-usage"] if headless else []
+                self.browser = await self.playwright.chromium.launch(
+                    headless=headless, args=args
+                )
 
             # Create page pool
-            max_pages = self.config.get('js_max_concurrent_pages', 3)
+            max_pages = self.config.get("js_max_concurrent_pages", 3)
             for i in range(max_pages):
                 context = await self.browser.new_context(
-                    user_agent=self.config.get('js_user_agent', 'LibreCrawl/1.0 (Web Crawler with JavaScript)'),
+                    user_agent=self.config.get(
+                        "js_user_agent", "LibreCrawl/1.0 (Web Crawler with JavaScript)"
+                    ),
                     viewport={
-                        'width': self.config.get('js_viewport_width', 1920),
-                        'height': self.config.get('js_viewport_height', 1080)
-                    }
+                        "width": self.config.get("js_viewport_width", 1920),
+                        "height": self.config.get("js_viewport_height", 1080),
+                    },
                 )
                 page = await context.new_page()
-                page.set_default_timeout(self.config.get('js_timeout', 30) * 1000)
+                page.set_default_timeout(self.config.get("js_timeout", 30) * 1000)
                 self.page_pool.append(page)
 
-            print(f"JavaScript rendering initialized with {len(self.page_pool)} browser pages")
+            print(
+                f"JavaScript rendering initialized with {len(self.page_pool)} browser pages"
+            )
 
         except Exception as e:
             print(f"Failed to initialize JavaScript rendering: {e}")
@@ -100,7 +113,7 @@ class JavaScriptRenderer:
         try:
             timing = response.request.timing if response else None
             if timing:
-                for key in ('responseEnd', 'responseStart'):
+                for key in ("responseEnd", "responseStart"):
                     value = timing.get(key)
                     if value and value > 0:
                         return float(value)
@@ -121,7 +134,7 @@ class JavaScriptRenderer:
             counting it as response time flags every page as slow.
         """
         page = None
-        empty_timing = {'response_ms': 0.0, 'render_ms': 0.0}
+        empty_timing = {"response_ms": 0.0, "render_ms": 0.0}
         try:
             page = await self.get_page()
             if not page:
@@ -132,30 +145,35 @@ class JavaScriptRenderer:
                 started = time.monotonic()
                 response = await page.goto(
                     url,
-                    wait_until='domcontentloaded',
-                    timeout=self.config.get('js_timeout', 30) * 1000
+                    wait_until="domcontentloaded",
+                    timeout=self.config.get("js_timeout", 30) * 1000,
                 )
                 navigation_ms = (time.monotonic() - started) * 1000
                 response_ms = self._response_ms(response, navigation_ms)
 
                 # Wait for JavaScript to render
-                await asyncio.sleep(self.config.get('js_wait_time', 3))
+                await asyncio.sleep(self.config.get("js_wait_time", 3))
 
                 # Get the rendered HTML content
                 html_content = await page.content()
                 status_code = response.status if response else 200
                 render_ms = (time.monotonic() - started) * 1000
 
-                return html_content, status_code, None, page.url, {
-                    'response_ms': response_ms, 'render_ms': render_ms}
+                return (
+                    html_content,
+                    status_code,
+                    None,
+                    page.url,
+                    {"response_ms": response_ms, "render_ms": render_ms},
+                )
 
             except PlaywrightTimeoutError:
                 return None, 0, "JavaScript rendering timeout", None, empty_timing
             except Exception as e:
-                return None, 0, f"Navigation error: {str(e)}", None, empty_timing
+                return None, 0, f"Navigation error: {e!s}", None, empty_timing
 
         except Exception as e:
-            return None, 0, f"JavaScript rendering error: {str(e)}", None, empty_timing
+            return None, 0, f"JavaScript rendering error: {e!s}", None, empty_timing
 
         finally:
             if page:
@@ -167,7 +185,20 @@ class JavaScriptRenderer:
         path = parsed.path.lower()
 
         # Skip if it's clearly a non-HTML resource
-        if path.endswith(('.pdf', '.jpg', '.jpeg', '.png', '.gif', '.css', '.js', '.xml', '.txt', '.zip')):
+        if path.endswith(
+            (
+                ".pdf",
+                ".jpg",
+                ".jpeg",
+                ".png",
+                ".gif",
+                ".css",
+                ".js",
+                ".xml",
+                ".txt",
+                ".zip",
+            )
+        ):
             return False
 
         return True

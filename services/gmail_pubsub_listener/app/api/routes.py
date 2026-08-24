@@ -1,18 +1,19 @@
 """API route definitions for Communication Service."""
-from typing import Any, Dict, List, Optional
+
 from fastapi import APIRouter, HTTPException, Query
+
+from app.a2a.agent import communication_agent
 from app.api.schemas import (
+    A2AInvokeRequest,
     HealthResponse,
     MailboxStatusResponse,
-    SyncRequest,
-    SyncResponse,
     SendMailRequest,
     SendMailResponse,
+    SyncRequest,
+    SyncResponse,
     ThreadDetailResponse,
     TimelineMessage,
-    A2AInvokeRequest,
 )
-from app.a2a.agent import communication_agent
 from app.config import get_settings
 from app.events.dispatcher import event_dispatcher
 from app.imap.listener import imap_listener
@@ -27,7 +28,9 @@ router = APIRouter()
 @router.get("/health", response_model=HealthResponse)
 async def get_health():
     return HealthResponse(
-        status="ok" if imap_listener.client.is_connected or not imap_listener.settings.GMAIL_ADDRESS else "degraded",
+        status="ok"
+        if imap_listener.client.is_connected or not imap_listener.settings.GMAIL_ADDRESS
+        else "degraded",
         imap_connected=imap_listener.client.is_connected,
         listener_running=imap_listener.is_running,
     )
@@ -87,7 +90,7 @@ async def get_message_detail(message_id: str):
     return data
 
 
-@router.get("/api/v1/messages", response_model=List[EmailMessage])
+@router.get("/api/v1/messages", response_model=list[EmailMessage])
 async def list_messages(
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
@@ -105,7 +108,7 @@ async def get_thread_timeline(thread_id: str):
     inbound = await repository.get_messages_by_thread(thread_id)
     outbound = await repository.get_outbound_messages_by_thread(thread_id)
 
-    timeline_items: List[TimelineMessage] = []
+    timeline_items: list[TimelineMessage] = []
     for msg in inbound:
         cl = await repository.get_classification(msg.id)
         timeline_items.append(
@@ -146,7 +149,7 @@ async def get_thread_timeline(thread_id: str):
     )
 
 
-@router.get("/api/v1/threads", response_model=List[EmailThread])
+@router.get("/api/v1/threads", response_model=list[EmailThread])
 async def list_threads(
     limit: int = Query(default=50, ge=1, le=500),
     offset: int = Query(default=0, ge=0),
@@ -180,9 +183,9 @@ async def send_mail(req: SendMailRequest):
 
 
 # ---------------- Events & Replay ----------------
-@router.get("/api/v1/events", response_model=List[EventRecord])
+@router.get("/api/v1/events", response_model=list[EventRecord])
 async def get_events_log(
-    status: Optional[str] = None,
+    status: str | None = None,
     limit: int = Query(default=100, ge=1, le=1000),
 ):
     return await repository.get_events(status=status, limit=limit)

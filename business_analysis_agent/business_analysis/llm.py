@@ -1,19 +1,19 @@
+import json
 import os
 import re
-import json
-from typing import Any, Optional, Type, TypeVar, List, Dict, get_origin, get_args
-from langchain_ollama import ChatOllama
-from langchain_core.messages import BaseMessage
+from typing import Any, Optional, TypeVar, get_args, get_origin
+
+from dotenv import load_dotenv
 from langchain_core.runnables import Runnable
+from langchain_ollama import ChatOllama
 from pydantic import BaseModel
 from pydantic_core import PydanticUndefined
-from dotenv import load_dotenv
 
 load_dotenv()
 
 T = TypeVar("T", bound=BaseModel)
 
-_llm_instance: Optional[ChatOllama] = None
+_llm_instance: ChatOllama | None = None
 
 
 def get_llm() -> ChatOllama:
@@ -38,18 +38,18 @@ def clean_json_string(text: str) -> str:
     if not isinstance(text, str):
         text = str(text)
     # Remove reasoning blocks like ...```
-    cleaned = re.sub(r'```.*?```', '', text, flags=re.DOTALL).strip()
-    
+    cleaned = re.sub(r"```.*?```", "", text, flags=re.DOTALL).strip()
+
     # Try finding markdown code block ```json ... ``` or ``` ... ```
-    match = re.search(r'```(?:json)?\s*(\{.*\}|\[.*\])\s*```', cleaned, re.DOTALL)
+    match = re.search(r"```(?:json)?\s*(\{.*\}|\[.*\])\s*```", cleaned, re.DOTALL)
     if match:
         return match.group(1).strip()
-    
+
     # Try finding raw json object { ... } or array [ ... ]
-    match_braces = re.search(r'(\{.*\}|\[.*\])', cleaned, re.DOTALL)
+    match_braces = re.search(r"(\{.*\}|\[.*\])", cleaned, re.DOTALL)
     if match_braces:
         return match_braces.group(1).strip()
-    
+
     return cleaned
 
 
@@ -59,43 +59,49 @@ def _get_field_default(field_info: Any, field_name: str) -> Any:
         return field_info.default
     if field_info.default_factory is not None:
         return field_info.default_factory()
-    
+
     annotation = field_info.annotation
     origin = get_origin(annotation)
     args = get_args(annotation)
-    
-    if annotation == str or origin is str or (origin is None and str(annotation) == "str"):
+
+    if (
+        annotation == str
+        or origin is str
+        or (origin is None and str(annotation) == "str")
+    ):
         return "Not specified"
     if annotation == int or annotation == float or origin in (int, float):
         return 0
     if annotation == bool or origin is bool:
         return False
-    if origin is list or origin is List:
+    if origin is list or origin is list:
         return []
-    if origin is dict or origin is Dict:
+    if origin is dict or origin is dict:
         return {}
     if origin is Optional or annotation == Optional[str]:
         return None
     return "Not specified"
 
 
-def create_fallback_model_instance(model_class: Type[T]) -> T:
+def create_fallback_model_instance(model_class: type[T]) -> T:
     """Create a fallback instance for a Pydantic model class (not list)."""
     if not isinstance(model_class, type) or not issubclass(model_class, BaseModel):
         raise TypeError(f"Expected Pydantic BaseModel class, got {type(model_class)}")
-    
+
     fields = model_class.model_fields
     fallback_data = {}
     for field_name, field_info in fields.items():
         fallback_data[field_name] = _get_field_default(field_info, field_name)
-    
+
     try:
         return model_class.model_validate(fallback_data)
     except Exception:
         return model_class.model_construct(**fallback_data)
 
 
-def validate_structured_output(output_model: Type[T], data: Any, max_retries: int = 1) -> tuple[Optional[T], Optional[str]]:
+def validate_structured_output(
+    output_model: type[T], data: Any, max_retries: int = 1
+) -> tuple[T | None, str | None]:
     """
     Validate structured output against Pydantic model.
     Returns (validated_instance, error_message).
@@ -123,7 +129,7 @@ def validate_structured_output(output_model: Type[T], data: Any, max_retries: in
 
 
 class RobustStructuredLLM(Runnable):
-    def __init__(self, llm: ChatOllama, output_model: Type[T]):
+    def __init__(self, llm: ChatOllama, output_model: type[T]):
         self.llm = llm
         self.output_model = output_model
         # Use direct format="json" validation for ChatOllama (prevents with_structured_output hangs)
@@ -148,7 +154,7 @@ class RobustStructuredLLM(Runnable):
             schema_dict.pop("description", None)
             schema_json = json.dumps(schema_dict, separators=(",", ":"))
             extra_prompt = f"\n\nCRITICAL: Return ONLY a valid raw JSON object strictly conforming to this schema:\n{schema_json}"
-            
+
             if isinstance(input, str):
                 prompt = input + extra_prompt
             else:
@@ -156,18 +162,20 @@ class RobustStructuredLLM(Runnable):
 
             raw_res = self.llm.invoke(prompt, config=config, **kwargs)
             raw_text = raw_res.content if hasattr(raw_res, "content") else str(raw_res)
-            
-            validated, err = validate_structured_output(self.output_model, raw_text, max_retries=1)
+
+            validated, err = validate_structured_output(
+                self.output_model, raw_text, max_retries=1
+            )
             if validated is not None:
                 return validated
-            
+
             # If validation failed, capture error for state
             raise ValueError(f"Structured output validation failed after retry: {err}")
         except Exception as e:
             # Return fallback but mark as validation error
             fallback = create_fallback_model_instance(self.output_model)
             # Attach validation error metadata if possible
-            if hasattr(fallback, '_validation_error'):
+            if hasattr(fallback, "_validation_error"):
                 fallback._validation_error = str(e)
             return fallback
 
@@ -185,7 +193,7 @@ class RobustStructuredLLM(Runnable):
         try:
             schema_json = json.dumps(self.output_model.model_json_schema(), indent=2)
             extra_prompt = f"\n\nCRITICAL: Return ONLY a valid raw JSON object strictly conforming to this schema:\n{schema_json}"
-            
+
             if isinstance(input, str):
                 prompt = input + extra_prompt
             else:
@@ -193,25 +201,27 @@ class RobustStructuredLLM(Runnable):
 
             raw_res = await self.llm.ainvoke(prompt, config=config, **kwargs)
             raw_text = raw_res.content if hasattr(raw_res, "content") else str(raw_res)
-            
-            validated, err = validate_structured_output(self.output_model, raw_text, max_retries=1)
+
+            validated, err = validate_structured_output(
+                self.output_model, raw_text, max_retries=1
+            )
             if validated is not None:
                 return validated
-            
+
             raise ValueError(f"Structured output validation failed after retry: {err}")
         except Exception as e:
             fallback = create_fallback_model_instance(self.output_model)
-            if hasattr(fallback, '_validation_error'):
+            if hasattr(fallback, "_validation_error"):
                 fallback._validation_error = str(e)
             return fallback
 
 
-def get_structured_llm(output_model: Type[T]) -> RobustStructuredLLM:
+def get_structured_llm(output_model: type[T]) -> RobustStructuredLLM:
     llm = get_llm()
     return RobustStructuredLLM(llm, output_model)
 
 
-def invoke_llm(prompt: str, output_model: Optional[Type[T]] = None) -> Any:
+def invoke_llm(prompt: str, output_model: type[T] | None = None) -> Any:
     if output_model:
         structured_llm = get_structured_llm(output_model)
         return structured_llm.invoke(prompt)
@@ -219,7 +229,7 @@ def invoke_llm(prompt: str, output_model: Optional[Type[T]] = None) -> Any:
     return llm.invoke(prompt)
 
 
-async def ainvoke_llm(prompt: str, output_model: Optional[Type[T]] = None) -> Any:
+async def ainvoke_llm(prompt: str, output_model: type[T] | None = None) -> Any:
     if output_model:
         structured_llm = get_structured_llm(output_model)
         return await structured_llm.ainvoke(prompt)

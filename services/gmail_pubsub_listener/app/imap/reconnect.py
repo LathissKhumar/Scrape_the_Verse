@@ -1,4 +1,5 @@
 """Exponential backoff strategy for network reconnections."""
+
 import asyncio
 import logging
 
@@ -6,7 +7,9 @@ logger = logging.getLogger(__name__)
 
 
 class BackoffStrategy:
-    def __init__(self, initial: float = 1.0, multiplier: float = 2.0, max_delay: float = 60.0):
+    def __init__(
+        self, initial: float = 1.0, multiplier: float = 2.0, max_delay: float = 60.0
+    ):
         self.initial = initial
         self.multiplier = multiplier
         self.max_delay = max_delay
@@ -25,6 +28,8 @@ class BackoffStrategy:
 
     async def wait(self) -> float:
         delay = self.next_delay()
-        logger.info(f"Reconnection attempt {self.attempts}: waiting {delay:.1f}s before retrying...")
+        logger.info(
+            f"Reconnection attempt {self.attempts}: waiting {delay:.1f}s before retrying..."
+        )
         await asyncio.sleep(delay)
         return delay

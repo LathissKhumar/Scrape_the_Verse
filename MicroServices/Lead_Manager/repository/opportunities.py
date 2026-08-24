@@ -3,7 +3,8 @@ Opportunity Repository for Async SQLite.
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from ..domain.opportunity import Opportunity
 from .database import DatabaseManager
 
@@ -51,7 +52,7 @@ class OpportunityRepository:
             await conn.commit()
         return opp
 
-    async def bulk_create(self, opportunities: List[Opportunity]) -> List[Opportunity]:
+    async def bulk_create(self, opportunities: list[Opportunity]) -> list[Opportunity]:
         if not opportunities:
             return []
 
@@ -80,7 +81,7 @@ class OpportunityRepository:
             await conn.commit()
         return opportunities
 
-    async def get_by_lead_id(self, lead_id: str) -> List[Opportunity]:
+    async def get_by_lead_id(self, lead_id: str) -> list[Opportunity]:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM opportunities WHERE lead_id = ? ORDER BY score DESC",
@@ -89,7 +90,7 @@ class OpportunityRepository:
             rows = await cursor.fetchall()
             return [self._row_to_opp(row) for row in rows]
 
-    async def get_by_id(self, opp_id: str) -> Optional[Opportunity]:
+    async def get_by_id(self, opp_id: str) -> Opportunity | None:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM opportunities WHERE id = ?", (opp_id,)

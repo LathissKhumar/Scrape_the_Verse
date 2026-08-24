@@ -5,6 +5,7 @@ API route tests for SDR Microservice (:8081).
 import pytest
 import sniffio
 from httpx import ASGITransport, AsyncClient
+
 from MicroServices.SDR.server import app
 
 
@@ -17,7 +18,9 @@ def set_async_lib():
 
 @pytest.mark.asyncio
 async def test_sdr_health_and_ready():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
         res_health = await client.get("/health")
         assert res_health.status_code == 200
         assert res_health.json()["service"] == "sdr_service"
@@ -29,7 +32,9 @@ async def test_sdr_health_and_ready():
 
 @pytest.mark.asyncio
 async def test_sdr_agent_card():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
         res = await client.get("/.well-known/agent.json")
         assert res.status_code == 200
         card = res.json()
@@ -41,7 +46,9 @@ async def test_sdr_agent_card():
 
 @pytest.mark.asyncio
 async def test_sdr_audit_endpoint():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
         payload = {"url": "https://example-bakery.com", "max_pages": 5}
         res = await client.post("/api/v1/audit", json=payload)
         assert res.status_code == 200

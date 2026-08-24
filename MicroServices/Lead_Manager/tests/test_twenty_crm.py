@@ -2,10 +2,12 @@
 Unit & Integration Tests for Twenty CRM Integration in Lead Manager.
 """
 
-import pytest
 from unittest.mock import AsyncMock, patch
-from MicroServices.Lead_Manager.crm.twenty_client import TwentyCRMClient
+
+import pytest
+
 from MicroServices.Lead_Manager.crm.twenty_adapter import TwentyCRMAdapter
+from MicroServices.Lead_Manager.crm.twenty_client import TwentyCRMClient
 from MicroServices.Lead_Manager.domain.lead import Lead
 from MicroServices.Lead_Manager.domain.opportunity import Opportunity
 from MicroServices.Lead_Manager.domain.stage import LeadStage
@@ -14,11 +16,15 @@ from MicroServices.Lead_Manager.domain.task import Task, TaskType
 
 @pytest.mark.asyncio
 async def test_twenty_client_serialization_and_mock():
-    mock_client = TwentyCRMClient(base_url="http://mock-twenty:3000", api_key="test_key")
+    mock_client = TwentyCRMClient(
+        base_url="http://mock-twenty:3000", api_key="test_key"
+    )
 
     mock_resp = AsyncMock()
     mock_resp.status_code = 201
-    mock_resp.json = lambda: {"data": {"id": "comp_123", "name": "Apex Roofing Solutions"}}
+    mock_resp.json = lambda: {
+        "data": {"id": "comp_123", "name": "Apex Roofing Solutions"}
+    }
     mock_resp.text = '{"data": {"id": "comp_123"}}'
 
     mock_http_client = AsyncMock()
@@ -108,7 +114,10 @@ async def test_twenty_adapter_sync_flow():
     transcript = [
         {"speaker": "agent", "text": "Hi Lathiss, this is Sarah from AgencyOS."},
         {"speaker": "prospect", "text": "Yes, we are looking for a mobile website."},
-        {"speaker": "agent", "text": "Awesome, let's schedule a demo Thursday at 2 PM."},
+        {
+            "speaker": "agent",
+            "text": "Awesome, let's schedule a demo Thursday at 2 PM.",
+        },
     ]
     note_res = await adapter.sync_call_notes(
         lead_id=lead.id,
@@ -138,8 +147,12 @@ async def test_twenty_adapter_sync_flow():
 async def test_twenty_adapter_graceful_offline_fallback():
     mock_client = TwentyCRMClient(base_url="http://unreachable-twenty:3000")
     # Simulate connection refusal / error
-    mock_client.create_company = AsyncMock(return_value={"success": False, "error": "Connection refused"})
-    mock_client.create_person = AsyncMock(return_value={"success": False, "error": "Connection refused"})
+    mock_client.create_company = AsyncMock(
+        return_value={"success": False, "error": "Connection refused"}
+    )
+    mock_client.create_person = AsyncMock(
+        return_value={"success": False, "error": "Connection refused"}
+    )
 
     adapter = TwentyCRMAdapter(client=mock_client)
     adapter.enabled = True
@@ -158,26 +171,32 @@ async def test_twenty_adapter_graceful_offline_fallback():
 async def test_twenty_lifecycle_manager():
     from MicroServices.Lead_Manager.crm.lifecycle import TwentyLifecycleManager
 
-    mgr = TwentyLifecycleManager(base_url="http://mock-twenty:3000", idle_timeout_seconds=0.1)
+    mgr = TwentyLifecycleManager(
+        base_url="http://mock-twenty:3000", idle_timeout_seconds=0.1
+    )
 
-    with patch.object(mgr, "is_crm_responsive", AsyncMock(side_effect=[False, True, True, True])):
-        with patch("asyncio.create_subprocess_exec") as mock_exec:
-            mock_proc = AsyncMock()
-            mock_proc.communicate.return_value = (b"ok", b"")
-            mock_proc.returncode = 0
-            mock_exec.return_value = mock_proc
+    with (
+        patch.object(
+            mgr, "is_crm_responsive", AsyncMock(side_effect=[False, True, True, True])
+        ),
+        patch("asyncio.create_subprocess_exec") as mock_exec,
+    ):
+        mock_proc = AsyncMock()
+        mock_proc.communicate.return_value = (b"ok", b"")
+        mock_proc.returncode = 0
+        mock_exec.return_value = mock_proc
 
-            # Test spin_up
-            res = await mgr.spin_up(max_wait_seconds=5)
-            assert res is True
-            assert mock_exec.called
+        # Test spin_up
+        res = await mgr.spin_up(max_wait_seconds=5)
+        assert res is True
+        assert mock_exec.called
 
-            # Test lease context manager
-            async with mgr.lease(auto_spin_down_delay=0.05):
-                assert mgr._active_leases == 1
+        # Test lease context manager
+        async with mgr.lease(auto_spin_down_delay=0.05):
+            assert mgr._active_leases == 1
 
-            assert mgr._active_leases == 0
+        assert mgr._active_leases == 0
 
-            # Test spin_down
-            down_res = await mgr.spin_down(force=True)
-            assert down_res is True
+        # Test spin_down
+        down_res = await mgr.spin_down(force=True)
+        assert down_res is True

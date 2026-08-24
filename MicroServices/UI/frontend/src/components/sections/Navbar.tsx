@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
+import Link from "next/link";
 
 const NAV_LINKS = [
-  { label: 'Product', href: '#hero' },
-  { label: 'How It Works', href: '#pipeline' },
-  { label: 'Self-Healing', href: '#self-healing' },
-  { label: 'Platform', href: '#scraper-control' },
-  { label: 'Developers', href: '#architecture' },
-]
+  { label: "Product", href: "#hero" },
+  { label: "How It Works", href: "#pipeline" },
+  { label: "Self-Healing", href: "#self-healing" },
+  { label: "Platform", href: "#scraper-control" },
+  { label: "Developers", href: "#architecture" },
+];
 
 export function Navbar() {
   return (
@@ -18,15 +18,26 @@ export function Navbar() {
     >
       <div className="w-full px-6 sm:px-10 lg:px-14 py-3.5 sm:py-4 flex items-center justify-between">
         {/* Far Left Component: Brand Logo */}
-        <a href="#" className="flex items-center gap-3 group shrink-0" id="nav-logo">
-          <img src="/images/AgencyOS_Logo.png" alt="AgencyOS Logo" className="w-8 h-8 object-contain transition-transform group-hover:scale-105" />
+        <Link
+          href="/"
+          className="flex items-center gap-3 group shrink-0"
+          id="nav-logo"
+        >
+          <img
+            src="/images/AgencyOS_Logo.png"
+            alt="AgencyOS Logo"
+            className="w-8 h-8 object-contain transition-transform group-hover:scale-105"
+          />
           <span className="font-extrabold text-lg sm:text-xl tracking-tight font-display text-white">
             AgencyOS
           </span>
         </Link>
 
         {/* Center Aligned Middle Components: Navigation Links */}
-        <ul className="hidden md:flex items-center justify-center gap-8 lg:gap-11 mx-auto" role="list">
+        <ul
+          className="hidden md:flex items-center justify-center gap-8 lg:gap-11 mx-auto"
+          role="list"
+        >
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <a
@@ -59,5 +70,5 @@ export function Navbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }

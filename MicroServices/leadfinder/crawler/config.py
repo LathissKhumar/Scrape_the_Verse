@@ -1,13 +1,15 @@
 """Configuration for browser execution layer."""
 
-from typing import Optional
 from pydantic import BaseModel, Field
 
 
 class CrawlerConfig(BaseModel):
     """Configuration for Playwright browser crawler."""
+
     headless: bool = Field(default=True, description="Run Chromium in headless mode")
-    timeout_ms: int = Field(default=30000, description="Global page navigation timeout in milliseconds")
+    timeout_ms: int = Field(
+        default=30000, description="Global page navigation timeout in milliseconds"
+    )
     viewport_width: int = Field(default=1920)
     viewport_height: int = Field(default=1080)
     user_agent: str = Field(
@@ -21,6 +23,13 @@ class CrawlerConfig(BaseModel):
     allow_private_ips: bool = Field(default=False)
     rate_limit_rps: float = Field(default=2.0)
     circuit_breaker_threshold: int = Field(default=3)
-    max_concurrency: int = Field(default=10, description="Max concurrent browser tabs/contexts")
-    block_media: bool = Field(default=False, description="Block heavy media assets (images/video/fonts) during crawl")
-    recycle_after_pages: int = Field(default=500, description="Recycle browser instance after processing N pages")
+    max_concurrency: int = Field(
+        default=10, description="Max concurrent browser tabs/contexts"
+    )
+    block_media: bool = Field(
+        default=False,
+        description="Block heavy media assets (images/video/fonts) during crawl",
+    )
+    recycle_after_pages: int = Field(
+        default=500, description="Recycle browser instance after processing N pages"
+    )

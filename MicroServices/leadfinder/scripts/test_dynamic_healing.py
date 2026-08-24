@@ -19,7 +19,12 @@ from leadfinder.config.logging import get_logger
 from leadfinder.config.settings import get_settings
 from leadfinder.diagnosis.engine import DiagnosisEngine
 from leadfinder.extraction.engine import ExtractionEngine
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    ExtractionStrategyEnum,
+    FieldRule,
+    RawPage,
+)
 from leadfinder.healing.engine import HealingEngine
 from leadfinder.healing.evidence_collector import RepairEvidenceCollector
 from leadfinder.healing.memory import RepairMemory
@@ -88,7 +93,13 @@ async def run_dynamic_healing_test():
 
     class MockScraper:
         async def execute(self, task=None, **kwargs):
-            return [{"url": "https://store.example.com/audio", "html": dynamic_html, "status_code": 200}]
+            return [
+                {
+                    "url": "https://store.example.com/audio",
+                    "html": dynamic_html,
+                    "status_code": 200,
+                }
+            ]
 
     mock_scraper = MockScraper()
     evidence_collector = RepairEvidenceCollector(scraper_agent=mock_scraper)
@@ -131,7 +142,13 @@ async def run_dynamic_healing_test():
     print(f"  -> Repair Strategy:   {diagnosis_result.repair_strategy.value}")
 
     print("\n[Step 4] Triggering Autonomous Self-Healing Engine...")
-    success, healed_schema, final_eval, final_records, repair_history = await healing_engine.heal(
+    (
+        success,
+        healed_schema,
+        final_eval,
+        final_records,
+        repair_history,
+    ) = await healing_engine.heal(
         task=task,
         diagnosis=diagnosis_result,
         validation=validation_result,
@@ -139,7 +156,9 @@ async def run_dynamic_healing_test():
         raw_results=[{"url": "https://store.example.com/audio", "html": dynamic_html}],
     )
     print(f"  -> Self-Healing Success:  {success}")
-    print(f"  -> Healed Strategy:       {healed_schema.strategy.value if healed_schema else 'None'}")
+    print(
+        f"  -> Healed Strategy:       {healed_schema.strategy.value if healed_schema else 'None'}"
+    )
     print(f"  -> Health Before:         {final_eval.before.health:.2f}")
     print(f"  -> Health After:          {final_eval.after.health:.2f}")
     print(f"  -> Improvement:          +{final_eval.improvement:+.2f}")
@@ -154,7 +173,9 @@ async def run_dynamic_healing_test():
         domain="store.example.com",
         signature="sig_f353e3adbeef8275",
     )
-    print(f"  -> Stored in Persistent SQLite: {'YES (Ready for instant <1ms repair re-use)' if similar_repair or success else 'Recorded'}")
+    print(
+        f"  -> Stored in Persistent SQLite: {'YES (Ready for instant <1ms repair re-use)' if similar_repair or success else 'Recorded'}"
+    )
 
     print("\n" + "=" * 70)
     if success and final_eval.after.health >= 0.80:

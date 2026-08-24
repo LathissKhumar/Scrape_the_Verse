@@ -1,12 +1,14 @@
 """A2A skills implemented by the Communication Service."""
-from typing import Any, Dict, List, Optional
+
+from typing import Any
+
+from app.classification.llm import llm_classifier
 from app.imap.listener import imap_listener
 from app.persistence.repository import repository
 from app.smtp.sender import OutboundEmail, smtp_sender
-from app.classification.llm import llm_classifier
 
 
-async def skill_send_email(params: Dict[str, Any]) -> Dict[str, Any]:
+async def skill_send_email(params: dict[str, Any]) -> dict[str, Any]:
     """Skill to send an email or thread reply."""
     req = OutboundEmail(
         to=params.get("to", []),
@@ -20,7 +22,7 @@ async def skill_send_email(params: Dict[str, Any]) -> Dict[str, Any]:
     return res.model_dump()
 
 
-async def skill_get_thread(params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+async def skill_get_thread(params: dict[str, Any]) -> dict[str, Any] | None:
     """Skill to retrieve complete conversation thread with all inbound and outbound messages."""
     thread_id = params.get("thread_id")
     if not thread_id:
@@ -36,27 +38,31 @@ async def skill_get_thread(params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     timeline = []
     for msg in inbound:
         cl = await repository.get_classification(msg.id)
-        timeline.append({
-            "id": msg.id,
-            "direction": "INBOUND",
-            "sender": msg.sender_email,
-            "subject": msg.subject,
-            "body": msg.text_body,
-            "timestamp": msg.received_at.isoformat(),
-            "intent": cl.intent if cl else None,
-            "confidence": cl.confidence if cl else None,
-        })
+        timeline.append(
+            {
+                "id": msg.id,
+                "direction": "INBOUND",
+                "sender": msg.sender_email,
+                "subject": msg.subject,
+                "body": msg.text_body,
+                "timestamp": msg.received_at.isoformat(),
+                "intent": cl.intent if cl else None,
+                "confidence": cl.confidence if cl else None,
+            }
+        )
 
     for out in outbound:
-        timeline.append({
-            "id": out.id,
-            "direction": "OUTBOUND",
-            "sender": smtp_sender.email_address,
-            "subject": out.subject,
-            "body": out.body_text,
-            "timestamp": out.created_at,
-            "status": out.status,
-        })
+        timeline.append(
+            {
+                "id": out.id,
+                "direction": "OUTBOUND",
+                "sender": smtp_sender.email_address,
+                "subject": out.subject,
+                "body": out.body_text,
+                "timestamp": out.created_at,
+                "status": out.status,
+            }
+        )
 
     timeline.sort(key=lambda x: x["timestamp"])
 
@@ -70,7 +76,7 @@ async def skill_get_thread(params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     }
 
 
-async def skill_get_message(params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+async def skill_get_message(params: dict[str, Any]) -> dict[str, Any] | None:
     """Skill to retrieve a single message by ID."""
     message_id = params.get("message_id")
     if not message_id:
@@ -84,14 +90,14 @@ async def skill_get_message(params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     return res
 
 
-async def skill_sync_mailbox(params: Dict[str, Any]) -> Dict[str, Any]:
+async def skill_sync_mailbox(params: dict[str, Any]) -> dict[str, Any]:
     """Skill to trigger manual mailbox sync."""
     mailbox = params.get("mailbox", "INBOX")
     synced = await imap_listener.synchronizer.sync_mailbox(mailbox)
     return {"status": "synced", "count": len(synced), "mailbox": mailbox}
 
 
-async def skill_classify_email(params: Dict[str, Any]) -> Dict[str, Any]:
+async def skill_classify_email(params: dict[str, Any]) -> dict[str, Any]:
     """Skill to classify raw text email."""
     subject = params.get("subject", "")
     body = params.get("body", "")

@@ -1,16 +1,16 @@
-'use client'
-import { motion } from 'framer-motion'
-import { useRef } from 'react'
-import { Code, ArrowRight, BrainCircuit } from 'lucide-react'
-import { GradientText } from '@/components/ui/GradientText'
-import { SectionLabel } from '@/components/ui/SectionLabel'
+"use client";
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import { Code, ArrowRight, BrainCircuit } from "lucide-react";
+import { GradientText } from "@/components/ui/GradientText";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const RAW_HTML_SNIPPET = `<div class="biz-card-984">
   <h2 class="title_v2">Urban Brew Café</h2>
   <span class="loc-pin">Chennai, Tamil Nadu</span>
   <div class="rev-box">4.7 stars (280 reviews)</div>
   <p class="status-no-web">No official site found</p>
-</div>`
+</div>`;
 
 const STRUCTURED_JSON_SNIPPET = `{
   "businessName": "Urban Brew Café",
@@ -21,28 +21,35 @@ const STRUCTURED_JSON_SNIPPET = `{
   "digitalPresenceScore": 38,
   "leadScore": 92,
   "opportunity": "HIGH"
-}`
+}`;
 
 export function StructuredData() {
-  const ref = useRef(null)
+  const ref = useRef(null);
 
   return (
-    <section id="structured-data" ref={ref} className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden" aria-label="Structured Data Intelligence">
+    <section
+      id="structured-data"
+      ref={ref}
+      className="py-32 md:py-40 relative border-b border-white/5 bg-transparent font-body overflow-hidden"
+      aria-label="Structured Data Intelligence"
+    >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <motion.div
           className="text-center mb-16 space-y-4"
-          initial={{ opacity: 0, x: 60, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true, margin: '-100px' }}
+          initial={{ opacity: 0, x: 60, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionLabel stage="04" label="Structured Data Intelligence" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
-            From raw web noise to <GradientText>structured JSON payload.</GradientText>
+            From raw web noise to{" "}
+            <GradientText>structured JSON payload.</GradientText>
           </h2>
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
-            Scrape-Verse parses unpredictable HTML payloads into validated, type-safe JSON objects ready for Gemini AI analysis.
+            Scrape-Verse parses unpredictable HTML payloads into validated,
+            type-safe JSON objects ready for Gemini AI analysis.
           </p>
         </motion.div>
 
@@ -53,7 +60,7 @@ export function StructuredData() {
             className="lg:col-span-5"
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="glass-level-2 overflow-hidden border-white/15 shadow-xl">
@@ -62,7 +69,9 @@ export function StructuredData() {
                   <Code className="w-3.5 h-3.5 text-rose-error" />
                   <span>RAW UNSTRUCTURED HTML</span>
                 </span>
-                <span className="text-rose-error text-[11px]">UNPREDICTABLE</span>
+                <span className="text-rose-error text-[11px]">
+                  UNPREDICTABLE
+                </span>
               </div>
               <pre className="p-6 text-xs font-mono text-muted leading-relaxed overflow-x-auto bg-black/40">
                 <code>{RAW_HTML_SNIPPET}</code>
@@ -75,7 +84,7 @@ export function StructuredData() {
             className="lg:col-span-2 flex flex-col items-center justify-center py-4"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <div className="p-4 rounded-full bg-sky-500/15 border border-sky-400/40 text-sky-400 shadow-xl">
@@ -92,7 +101,7 @@ export function StructuredData() {
             className="lg:col-span-5"
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="glass-level-3 overflow-hidden border-sky-400/40 shadow-2xl">
@@ -101,7 +110,9 @@ export function StructuredData() {
                   <Code className="w-3.5 h-3.5 text-sky-400" />
                   <span>STRUCTURED JSON OBJECT</span>
                 </span>
-                <span className="text-emerald-400 text-[11px] font-bold">TYPE-SAFE</span>
+                <span className="text-emerald-400 text-[11px] font-bold">
+                  TYPE-SAFE
+                </span>
               </div>
               <pre className="p-6 text-xs font-mono text-sky-300 font-semibold leading-relaxed overflow-x-auto bg-black/40">
                 <code>{STRUCTURED_JSON_SNIPPET}</code>
@@ -111,5 +122,5 @@ export function StructuredData() {
         </div>
       </div>
     </section>
-  )
+  );
 }

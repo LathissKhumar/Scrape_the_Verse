@@ -3,8 +3,8 @@
 import asyncio
 import random
 import time
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Dict, Optional
 from urllib.parse import urlparse
 
 
@@ -18,22 +18,28 @@ class DomainRateLimiter:
         default_backoff_seconds: float = 5.0,
     ):
         self.requests_per_second = requests_per_second
-        self.min_interval = 1.0 / requests_per_second if requests_per_second > 0 else 0.5
+        self.min_interval = (
+            1.0 / requests_per_second if requests_per_second > 0 else 0.5
+        )
         self.max_concurrency = max_concurrency
         self.default_backoff_seconds = default_backoff_seconds
 
-        self._last_request_time: Dict[str, float] = {}
-        self._blocked_until: Dict[str, float] = {}
-        self._semaphores: Dict[str, asyncio.Semaphore] = {}
+        self._last_request_time: dict[str, float] = {}
+        self._blocked_until: dict[str, float] = {}
+        self._semaphores: dict[str, asyncio.Semaphore] = {}
         self._lock = asyncio.Lock()
 
     def _get_domain(self, url: str) -> str:
         return urlparse(url).netloc.lower() or "default"
 
-    def record_429(self, url: str, retry_after_seconds: Optional[float] = None) -> None:
+    def record_429(self, url: str, retry_after_seconds: float | None = None) -> None:
         """Record HTTP 429 rate limit response and pause domain crawling with randomized jitter."""
         domain = self._get_domain(url)
-        base_pause = retry_after_seconds if (retry_after_seconds and retry_after_seconds > 0) else self.default_backoff_seconds
+        base_pause = (
+            retry_after_seconds
+            if (retry_after_seconds and retry_after_seconds > 0)
+            else self.default_backoff_seconds
+        )
         # Add 10-25% randomized jitter to prevent synchronized thundering herd
         jitter = random.uniform(0.1, 0.25) * base_pause
         self._blocked_until[domain] = time.time() + base_pause + jitter

@@ -1,6 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock
 
+import pytest
 from leadfinder.agents.scraper import ScraperAgent
 from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.exceptions import BrightDataJobError
@@ -47,7 +47,9 @@ async def test_scraper_agent_success():
 async def test_scraper_agent_client_error_propagates():
     mock_client = AsyncMock(spec=BrightDataClient)
     mock_client.is_configured = True
-    mock_client.scrape_and_collect.side_effect = BrightDataJobError("Collector failed on remote server")
+    mock_client.scrape_and_collect.side_effect = BrightDataJobError(
+        "Collector failed on remote server"
+    )
 
     agent = ScraperAgent(brightdata_client=mock_client)
     task = ScrapingTask(

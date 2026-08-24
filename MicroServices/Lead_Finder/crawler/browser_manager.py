@@ -2,10 +2,10 @@
 
 import asyncio
 import logging
-from typing import Any, Optional
-from playwright.async_api import async_playwright, Browser, BrowserContext, Playwright
+
 from leadfinder.crawler.config import CrawlerConfig
 from leadfinder.crawler.proxy_provider import ProxyProvider
+from playwright.async_api import Browser, BrowserContext, Playwright, async_playwright
 
 logger = logging.getLogger("CRAWLER_BROWSER_MANAGER")
 
@@ -15,13 +15,13 @@ class BrowserManager:
 
     def __init__(
         self,
-        config: Optional[CrawlerConfig] = None,
-        proxy_provider: Optional[ProxyProvider] = None,
+        config: CrawlerConfig | None = None,
+        proxy_provider: ProxyProvider | None = None,
     ):
         self.config = config or CrawlerConfig()
         self.proxy_provider = proxy_provider
-        self._playwright: Optional[Playwright] = None
-        self._browser: Optional[Browser] = None
+        self._playwright: Playwright | None = None
+        self._browser: Browser | None = None
         self._lock = asyncio.Lock()
         self._pages_processed: int = 0
 
@@ -38,7 +38,9 @@ class BrowserManager:
 
             if not is_valid:
                 if self._browser is not None:
-                    logger.warning("Chromium instance disconnected or crashed. Restarting fresh browser...")
+                    logger.warning(
+                        "Chromium instance disconnected or crashed. Restarting fresh browser..."
+                    )
                     try:
                         await self._browser.close()
                     except Exception:
@@ -48,8 +50,12 @@ class BrowserManager:
                 if self._playwright is None:
                     self._playwright = await async_playwright().start()
 
-                proxy_cfg = self.proxy_provider.get_proxy() if self.proxy_provider else None
-                logger.debug(f"Launching Playwright Chromium (headless={self.config.headless})...")
+                proxy_cfg = (
+                    self.proxy_provider.get_proxy() if self.proxy_provider else None
+                )
+                logger.debug(
+                    f"Launching Playwright Chromium (headless={self.config.headless})..."
+                )
                 self._browser = await self._playwright.chromium.launch(
                     headless=self.config.headless,
                     proxy=proxy_cfg,  # type: ignore
@@ -68,7 +74,9 @@ class BrowserManager:
 
             return self._browser
 
-    async def create_isolated_context(self, block_media: Optional[bool] = None) -> BrowserContext:
+    async def create_isolated_context(
+        self, block_media: bool | None = None
+    ) -> BrowserContext:
         """Create an isolated browser context with anti-bot stealth, viewport, locale, and optional asset blocking."""
         # Check if periodic recycling is due
         should_recycle = False
@@ -78,12 +86,17 @@ class BrowserManager:
                 should_recycle = True
 
         if should_recycle:
-            logger.info(f"Recycling Playwright Chromium after {self.config.recycle_after_pages} pages to prevent memory degradation...")
+            logger.info(
+                f"Recycling Playwright Chromium after {self.config.recycle_after_pages} pages to prevent memory degradation..."
+            )
             await self.close()
 
         browser = await self.get_browser()
         context = await browser.new_context(
-            viewport={"width": self.config.viewport_width, "height": self.config.viewport_height},
+            viewport={
+                "width": self.config.viewport_width,
+                "height": self.config.viewport_height,
+            },
             user_agent=self.config.user_agent,
             locale=self.config.locale,
             timezone_id=self.config.timezone_id,
@@ -105,6 +118,7 @@ class BrowserManager:
         # Apply deep anti-detection evasions (Canvas, WebGL, AudioContext, permissions, navigator)
         try:
             from playwright_stealth import Stealth
+
             stealth = Stealth()
             await stealth.apply_stealth_async(context)
         except Exception as stealth_err:
@@ -132,7 +146,9 @@ class BrowserManager:
         )
 
         # Optional asset route blocking (images, media, fonts) for high performance
-        effective_block_media = block_media if block_media is not None else self.config.block_media
+        effective_block_media = (
+            block_media if block_media is not None else self.config.block_media
+        )
         if effective_block_media:
             await context.route(
                 "**/*.{png,jpg,jpeg,webp,gif,svg,mp4,webm,woff,woff2,ttf,eot,ico}",

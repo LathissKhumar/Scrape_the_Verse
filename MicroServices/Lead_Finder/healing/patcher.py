@@ -1,7 +1,11 @@
 """Applies minimal, non-destructive patches to ExtractionSchema configurations."""
 
 from leadfinder.config.logging import get_logger
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    ExtractionStrategyEnum,
+    FieldRule,
+)
 from leadfinder.healing.schemas import RepairPlan, RepairType
 
 logger = get_logger("HEALING_PATCHER")
@@ -22,7 +26,9 @@ class RepairPatcher:
     @staticmethod
     def apply_patch(schema: ExtractionSchema, plan: RepairPlan) -> ExtractionSchema:
         """Derive a new patched ExtractionSchema based on the proposed RepairPlan."""
-        logger.debug(f"Applying patch for repair_id={plan.repair_id} ({plan.repair_type.value})")
+        logger.debug(
+            f"Applying patch for repair_id={plan.repair_id} ({plan.repair_type.value})"
+        )
 
         # Deep copy or reconstruct fields
         new_fields = [FieldRule(**f.model_dump()) for f in schema.fields]
@@ -48,7 +54,9 @@ class RepairPatcher:
             if key in patch_data and isinstance(patch_data[key], str):
                 new_base_selector = patch_data[key]
                 break
-            if key in plan.proposed_configuration and isinstance(plan.proposed_configuration[key], str):
+            if key in plan.proposed_configuration and isinstance(
+                plan.proposed_configuration[key], str
+            ):
                 new_base_selector = plan.proposed_configuration[key]
                 break
 
@@ -57,7 +65,9 @@ class RepairPatcher:
             new_strict_schema = bool(patch_data["strict_schema"])
 
         # 4. Field rules update
-        patched_fields_data = patch_data.get("fields") or plan.proposed_configuration.get("fields")
+        patched_fields_data = patch_data.get(
+            "fields"
+        ) or plan.proposed_configuration.get("fields")
         if patched_fields_data and isinstance(patched_fields_data, list):
             fields_by_name = {f.name: f for f in new_fields}
             for field_update in patched_fields_data:
@@ -71,15 +81,25 @@ class RepairPatcher:
                 if not matching_rule:
                     clean_name = name.lower().replace("_", "").replace(" ", "")
                     for existing_name, rule in fields_by_name.items():
-                        existing_clean = existing_name.lower().replace("_", "").replace(" ", "")
-                        if clean_name == existing_clean or clean_name in existing_clean or existing_clean in clean_name:
+                        existing_clean = (
+                            existing_name.lower().replace("_", "").replace(" ", "")
+                        )
+                        if (
+                            clean_name == existing_clean
+                            or clean_name in existing_clean
+                            or existing_clean in clean_name
+                        ):
                             matching_rule = rule
                             break
 
                 if matching_rule:
                     # Update existing field rule properties
                     for key, val in field_update.items():
-                        if hasattr(matching_rule, key) and val is not None and key != "name":
+                        if (
+                            hasattr(matching_rule, key)
+                            and val is not None
+                            and key != "name"
+                        ):
                             setattr(matching_rule, key, val)
                 else:
                     # New field rule added
@@ -89,11 +109,16 @@ class RepairPatcher:
 
         # 5. Direct field mapping in proposed_configuration (e.g. {"title": "h2", "price": ".price"})
         for field_name in plan.affected_fields:
-            if field_name in plan.proposed_configuration and isinstance(plan.proposed_configuration[field_name], str):
+            if field_name in plan.proposed_configuration and isinstance(
+                plan.proposed_configuration[field_name], str
+            ):
                 target_val = plan.proposed_configuration[field_name]
                 for f in new_fields:
                     if f.name == field_name:
-                        if plan.repair_type in (RepairType.REPAIR_CSS_SELECTORS, RepairType.REPAIR_XPATH_SELECTORS):
+                        if plan.repair_type in (
+                            RepairType.REPAIR_CSS_SELECTORS,
+                            RepairType.REPAIR_XPATH_SELECTORS,
+                        ):
                             f.selector = target_val
                         elif plan.repair_type == RepairType.REPAIR_REGEX_PATTERN:
                             f.regex_pattern = target_val
@@ -104,4 +129,3 @@ class RepairPatcher:
             fields=new_fields,
             strict_schema=new_strict_schema,
         )
-

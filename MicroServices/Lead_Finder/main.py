@@ -1,8 +1,8 @@
-from typing import Any, Optional
+from typing import Any
 from uuid import uuid4
+
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.responses import JSONResponse
-
 from leadfinder.agents.gmaps import GoogleMapsAgent
 from leadfinder.agents.healing import HealingAgent
 from leadfinder.agents.planner import ScrapingPlannerAgent, extract_urls_from_text
@@ -11,19 +11,16 @@ from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.exceptions import (
     BrightDataAuthError,
     BrightDataConfigError,
-    BrightDataEmptyResultError,
     BrightDataError,
-    BrightDataJobError,
-    BrightDataTimeoutError,
 )
 from leadfinder.brightdata.schemas import (
     CollectorStatus,
-    ScrapeTargetRequest,
     ScraperHealRequest,
     ScraperHealResponse,
     ScraperResolveResponse,
     ScraperRunRequest,
     ScraperRunResponse,
+    ScrapeTargetRequest,
 )
 from leadfinder.brightdata.service import BrightDataService
 from leadfinder.config.logging import get_logger, setup_logging
@@ -55,7 +52,9 @@ llm_client = OllamaClient(settings=settings)
 brightdata_client = BrightDataClient(settings=settings)
 brightdata_service = BrightDataService(settings=settings, client=brightdata_client)
 gmaps_service = GoogleMapsService(settings=settings, client=brightdata_client)
-gmaps_agent = GoogleMapsAgent(service=gmaps_service, llm_client=llm_client, settings=settings)
+gmaps_agent = GoogleMapsAgent(
+    service=gmaps_service, llm_client=llm_client, settings=settings
+)
 planner_agent = ScrapingPlannerAgent(llm_client=llm_client)
 scraper_agent = ScraperAgent(brightdata_client=brightdata_client)
 healing_agent = HealingAgent(llm_client=llm_client, scraper_agent=scraper_agent)
@@ -69,8 +68,8 @@ workflow = create_scraping_workflow(
 
 
 async def verify_api_key(
-    x_api_key: Optional[str] = Header(None, alias="X-API-Key"),
-    authorization: Optional[str] = Header(None, alias="Authorization"),
+    x_api_key: str | None = Header(None, alias="X-API-Key"),
+    authorization: str | None = Header(None, alias="Authorization"),
 ) -> None:
     """Verify API key if API_SECRET_KEY is configured in settings."""
     secret = settings.API_SECRET_KEY
@@ -207,7 +206,7 @@ async def parse_task(request: ScrapingRequest) -> dict[str, Any]:
         logger.error(f"Unexpected error parsing scraping task {task_id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to parse scraping task: {str(e)}",
+            detail=f"Failed to parse scraping task: {e!s}",
         )
 
 
@@ -227,7 +226,7 @@ async def _run_background_workflow(task_id: str, query: str, urls: list[str]):
     }
     try:
         final_state = await workflow.ainvoke(initial_state)
-        result: Optional[ScrapingResult] = final_state.get("final_output")
+        result: ScrapingResult | None = final_state.get("final_output")
         if result and result.records:
             default_job_manager.record_checkpoint(
                 job_id=task_id,
@@ -257,17 +256,46 @@ async def scrape(request: ScrapingRequest) -> Any:
     if not combined_urls:
         query_text = (request.query or "").strip()
         lower_query = query_text.lower()
-        is_generic_command = lower_query.startswith("scrape ") or lower_query.startswith("extract ") or "without" in lower_query or "no url" in lower_query
-        is_explicit_lead_req = bool(request.metadata and (request.metadata.get("leads") or request.metadata.get("b2b")))
+        is_generic_command = (
+            lower_query.startswith("scrape ")
+            or lower_query.startswith("extract ")
+            or "without" in lower_query
+            or "no url" in lower_query
+        )
+        is_explicit_lead_req = bool(
+            request.metadata
+            and (request.metadata.get("leads") or request.metadata.get("b2b"))
+        )
         is_b2b_query = (
             brightdata_service.is_enabled
             and not is_generic_command
-            and (is_explicit_lead_req or any(w in lower_query for w in [" in ", " near ", "supplier", "manufacturer", "dealer", "wholesale", "exporter", "trader"]))
+            and (
+                is_explicit_lead_req
+                or any(
+                    w in lower_query
+                    for w in [
+                        " in ",
+                        " near ",
+                        "supplier",
+                        "manufacturer",
+                        "dealer",
+                        "wholesale",
+                        "exporter",
+                        "trader",
+                    ]
+                )
+            )
         )
 
-        if gmaps_service.is_enabled and gmaps_agent.is_gmaps_query(query_text) and not is_generic_command:
+        if (
+            gmaps_service.is_enabled
+            and gmaps_agent.is_gmaps_query(query_text)
+            and not is_generic_command
+        ):
             task_id = str(uuid4())
-            logger.info(f"task_id={task_id} POST /scrape auto-routing keyword-only request to GoogleMapsService: '{query_text}'")
+            logger.info(
+                f"task_id={task_id} POST /scrape auto-routing keyword-only request to GoogleMapsService: '{query_text}'"
+            )
             cat, loc = gmaps_agent.parse_query_and_location(query_text)
             leads = await gmaps_service.get_local_leads(query=cat, location=loc)
             return {
@@ -284,9 +312,13 @@ async def scrape(request: ScrapingRequest) -> Any:
             }
         elif is_b2b_query:
             task_id = str(uuid4())
-            logger.info(f"task_id={task_id} POST /scrape auto-routing keyword-only request to BrightDataLeadPipeline: '{query_text}'")
+            logger.info(
+                f"task_id={task_id} POST /scrape auto-routing keyword-only request to BrightDataLeadPipeline: '{query_text}'"
+            )
             enrich = request.metadata.get("enrich", True) if request.metadata else True
-            leads = await brightdata_service.generate_leads(query=query_text, enrich_profiles=enrich)
+            leads = await brightdata_service.generate_leads(
+                query=query_text, enrich_profiles=enrich
+            )
             return {
                 "task_id": task_id,
                 "status": "success" if leads else "empty",
@@ -306,15 +338,26 @@ async def scrape(request: ScrapingRequest) -> Any:
             )
 
     task_id = str(uuid4())
-    logger.info(f"POST /scrape received. Assigned task_id: {task_id} with {len(combined_urls)} URL(s)")
+    logger.info(
+        f"POST /scrape received. Assigned task_id: {task_id} with {len(combined_urls)} URL(s)"
+    )
 
     # Check dual-engine routing: Bright Data Fast-Path vs Native Multi-Agent Engine
-    provider = str(request.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto").lower()
-    is_brightdata_target = any("indiamart" in u.lower() for u in combined_urls) if combined_urls else False
-    use_brightdata = (brightdata_service.is_enabled and (provider == "brightdata" or (provider == "auto" and is_brightdata_target))) or provider == "brightdata"
+    provider = str(
+        request.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto"
+    ).lower()
+    is_brightdata_target = (
+        any("indiamart" in u.lower() for u in combined_urls) if combined_urls else False
+    )
+    use_brightdata = (
+        brightdata_service.is_enabled
+        and (provider == "brightdata" or (provider == "auto" and is_brightdata_target))
+    ) or provider == "brightdata"
 
     if use_brightdata and provider != "local":
-        logger.info(f"task_id={task_id} Routing to Bright Data Fast-Path (BRIGHTDATA=True)")
+        logger.info(
+            f"task_id={task_id} Routing to Bright Data Fast-Path (BRIGHTDATA=True)"
+        )
         task = ScrapingTask(
             task_id=task_id,
             objective=request.query,
@@ -325,13 +368,19 @@ async def scrape(request: ScrapingRequest) -> Any:
             result = await brightdata_service.execute_task(task)
             if result and result.status == "success" and result.records:
                 return result.model_dump()
-            logger.info(f"task_id={task_id} Bright Data fast-path returned no records. Engaging Native Multi-Agent fallback...")
+            logger.info(
+                f"task_id={task_id} Bright Data fast-path returned no records. Engaging Native Multi-Agent fallback..."
+            )
         except Exception as e:
-            logger.warning(f"Bright Data fast-path error ({e}). Falling back to Native Multi-Agent engine...")
+            logger.warning(
+                f"Bright Data fast-path error ({e}). Falling back to Native Multi-Agent engine..."
+            )
 
     # If caller requested async_job or large URL batch, execute in background
     if request.async_job:
-        asyncio.create_task(_run_background_workflow(task_id, request.query, combined_urls))
+        asyncio.create_task(
+            _run_background_workflow(task_id, request.query, combined_urls)
+        )
         return JSONResponse(
             status_code=status.HTTP_202_ACCEPTED,
             content={
@@ -353,7 +402,7 @@ async def scrape(request: ScrapingRequest) -> Any:
 
     try:
         final_state = await workflow.ainvoke(initial_state)
-        result: Optional[ScrapingResult] = final_state.get("final_output")
+        result: ScrapingResult | None = final_state.get("final_output")
         if not result:
             result = ScrapingResult(
                 task_id=task_id,
@@ -386,7 +435,9 @@ async def generate_brightdata_leads(request: ScrapingRequest) -> dict[str, Any]:
             detail="Bright Data is not enabled. Set BRIGHTDATA=True and provide BRIGHTDATA_API_KEY in .env.",
         )
 
-    query = request.query or (request.target_urls[0] if request.target_urls else "solar panels")
+    query = request.query or (
+        request.target_urls[0] if request.target_urls else "solar panels"
+    )
     enrich = request.metadata.get("enrich", True) if request.metadata else True
 
     leads = await brightdata_service.generate_leads(query=query, enrich_profiles=enrich)
@@ -418,7 +469,11 @@ async def generate_gmaps_leads(request: ScrapingRequest) -> dict[str, Any]:
     }
 
 
-@app.post("/api/v1/jobs", status_code=status.HTTP_202_ACCEPTED, dependencies=[Depends(verify_api_key)])
+@app.post(
+    "/api/v1/jobs",
+    status_code=status.HTTP_202_ACCEPTED,
+    dependencies=[Depends(verify_api_key)],
+)
 async def create_scraping_job(request: ScrapingRequest) -> dict[str, Any]:
     """Submit a long-running scraping task to execute asynchronously in the background."""
     query_urls = extract_urls_from_text(request.query)
@@ -434,7 +489,9 @@ async def create_scraping_job(request: ScrapingRequest) -> dict[str, Any]:
         )
 
     job_id = str(uuid4())
-    logger.info(f"POST /api/v1/jobs accepted job_id: {job_id} for {len(combined_urls)} URLs")
+    logger.info(
+        f"POST /api/v1/jobs accepted job_id: {job_id} for {len(combined_urls)} URLs"
+    )
     asyncio.create_task(_run_background_workflow(job_id, request.query, combined_urls))
 
     return {
@@ -473,10 +530,12 @@ async def get_job_results(job_id: str, format: str = "json") -> Any:
     if fmt == "csv":
         csv_str = DataExporter.to_csv(records)
         from fastapi.responses import PlainTextResponse
+
         return PlainTextResponse(content=csv_str, media_type="text/csv")
     elif fmt == "ndjson":
         ndjson_str = DataExporter.to_ndjson(records)
         from fastapi.responses import PlainTextResponse
+
         return PlainTextResponse(content=ndjson_str, media_type="application/x-ndjson")
     else:
         return {
@@ -492,8 +551,16 @@ async def get_job_results(job_id: str, format: str = "json") -> Any:
 # =====================================================================
 
 
-@app.post("/scrapers/resolve", response_model=ScraperResolveResponse, dependencies=[Depends(verify_api_key)])
-@app.post("/api/v1/brightdata/resolve", response_model=ScraperResolveResponse, dependencies=[Depends(verify_api_key)])
+@app.post(
+    "/scrapers/resolve",
+    response_model=ScraperResolveResponse,
+    dependencies=[Depends(verify_api_key)],
+)
+@app.post(
+    "/api/v1/brightdata/resolve",
+    response_model=ScraperResolveResponse,
+    dependencies=[Depends(verify_api_key)],
+)
 async def resolve_scraper(request: ScrapeTargetRequest) -> ScraperResolveResponse:
     """Resolve target URL + schema against Scraper Registry to reuse or trigger async creation."""
     return await brightdata_service.resolve_scraper(request)
@@ -520,8 +587,16 @@ async def get_scraper_job(job_id: str) -> dict[str, Any]:
     }
 
 
-@app.post("/scrapers/run", response_model=ScraperRunResponse, dependencies=[Depends(verify_api_key)])
-@app.post("/api/v1/brightdata/run", response_model=ScraperRunResponse, dependencies=[Depends(verify_api_key)])
+@app.post(
+    "/scrapers/run",
+    response_model=ScraperRunResponse,
+    dependencies=[Depends(verify_api_key)],
+)
+@app.post(
+    "/api/v1/brightdata/run",
+    response_model=ScraperRunResponse,
+    dependencies=[Depends(verify_api_key)],
+)
 async def run_scraper(request: ScraperRunRequest) -> ScraperRunResponse:
     """Run a ready Bright Data Collector against a target URL."""
     return await brightdata_service.run_collector(
@@ -531,8 +606,16 @@ async def run_scraper(request: ScraperRunRequest) -> ScraperRunResponse:
     )
 
 
-@app.post("/scrapers/heal", response_model=ScraperHealResponse, dependencies=[Depends(verify_api_key)])
-@app.post("/api/v1/brightdata/heal", response_model=ScraperHealResponse, dependencies=[Depends(verify_api_key)])
+@app.post(
+    "/scrapers/heal",
+    response_model=ScraperHealResponse,
+    dependencies=[Depends(verify_api_key)],
+)
+@app.post(
+    "/api/v1/brightdata/heal",
+    response_model=ScraperHealResponse,
+    dependencies=[Depends(verify_api_key)],
+)
 async def heal_scraper(request: ScraperHealRequest) -> ScraperHealResponse:
     """Self-heal a broken Bright Data collector using failure description."""
     return await brightdata_service.heal_collector(
@@ -543,7 +626,9 @@ async def heal_scraper(request: ScraperHealRequest) -> ScraperHealResponse:
 
 @app.get("/scrapers", dependencies=[Depends(verify_api_key)])
 @app.get("/api/v1/brightdata/scrapers", dependencies=[Depends(verify_api_key)])
-async def list_scrapers(limit: int = 50, status_filter: Optional[str] = None) -> dict[str, Any]:
+async def list_scrapers(
+    limit: int = 50, status_filter: str | None = None
+) -> dict[str, Any]:
     """List tracked Bright Data collectors in the registry."""
     status_enum = CollectorStatus(status_filter.upper()) if status_filter else None
     records = brightdata_service.registry.list_records(limit=limit, status=status_enum)
@@ -553,12 +638,16 @@ async def list_scrapers(limit: int = 50, status_filter: Optional[str] = None) ->
     }
 
 
-@app.get("/scrapers/{scraper_id_or_collector_id}", dependencies=[Depends(verify_api_key)])
+@app.get(
+    "/scrapers/{scraper_id_or_collector_id}", dependencies=[Depends(verify_api_key)]
+)
 async def get_scraper(scraper_id_or_collector_id: str) -> dict[str, Any]:
     """Retrieve details of a specific scraper by internal ID or collector ID."""
     rec = brightdata_service.registry.get_record_by_id(scraper_id_or_collector_id)
     if not rec:
-        rec = brightdata_service.registry.get_record_by_collector_id(scraper_id_or_collector_id)
+        rec = brightdata_service.registry.get_record_by_collector_id(
+            scraper_id_or_collector_id
+        )
     if not rec:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

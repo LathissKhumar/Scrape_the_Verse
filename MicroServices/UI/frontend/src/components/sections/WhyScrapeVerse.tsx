@@ -1,42 +1,51 @@
-'use client'
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
-import { useRef } from 'react'
-import { Zap, ShieldCheck, BrainCircuit, Rocket, Sparkles } from 'lucide-react'
+"use client";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
+import { useRef } from "react";
+import { Zap, ShieldCheck, BrainCircuit, Rocket, Sparkles } from "lucide-react";
 
 const MANIFESTO_WORDS =
-  'Every agency is leaving money on the table. Not because they lack skill — but because finding the right lead, understanding the problem, and knowing what to pitch takes hours they don’t have. AgencyOS gives your team an unfair advantage. Automated. Evidence-backed. End-to-end.'.split(
-    ' '
-  )
+  "Every agency is leaving money on the table. Not because they lack skill — but because finding the right lead, understanding the problem, and knowing what to pitch takes hours they don’t have. AgencyOS gives your team an unfair advantage. Automated. Evidence-backed. End-to-end.".split(
+    " ",
+  );
 
 const REASONS = [
   {
     icon: <Zap className="w-6 h-6 text-sky-400" />,
-    title: 'Automated Lead Discovery',
-    description: 'Finds businesses from IndiaMART, Yelp, Google Maps, and Avvo — no manual directory browsing required.',
+    title: "Automated Lead Discovery",
+    description:
+      "Finds businesses from IndiaMART, Yelp, Google Maps, and Avvo — no manual directory browsing required.",
   },
   {
     icon: <ShieldCheck className="w-6 h-6 text-emerald-400" />,
-    title: 'Full-Stack SEO Audit',
-    description: 'Crawls websites and surfaces real problems — missing pages, broken titles, thin content, local SEO gaps — instantly.',
+    title: "Full-Stack SEO Audit",
+    description:
+      "Crawls websites and surfaces real problems — missing pages, broken titles, thin content, local SEO gaps — instantly.",
   },
   {
     icon: <BrainCircuit className="w-6 h-6 text-indigo-400" />,
-    title: 'Evidence-Backed Opportunities',
-    description: 'Maps business intelligence to specific digital service opportunities. No guesswork — every recommendation comes with proof.',
+    title: "Evidence-Backed Opportunities",
+    description:
+      "Maps business intelligence to specific digital service opportunities. No guesswork — every recommendation comes with proof.",
   },
   {
     icon: <Rocket className="w-6 h-6 text-cyan-300" />,
-    title: 'Implementation-Ready Output',
-    description: 'Generates a complete website specification ready to paste into Lovable, v0, Claude Code, Cursor, or Bolt.',
+    title: "Implementation-Ready Output",
+    description:
+      "Generates a complete website specification ready to paste into Lovable, v0, Claude Code, Cursor, or Bolt.",
   },
-]
+];
 
 export function WhyScrapeVerse() {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 80%', 'center 30%'],
-  })
+    offset: ["start 80%", "center 30%"],
+  });
 
   return (
     <section
@@ -55,8 +64,8 @@ export function WhyScrapeVerse() {
 
           <div className="flex flex-wrap gap-x-3 gap-y-2">
             {MANIFESTO_WORDS.map((word, i) => {
-              const start = (i / MANIFESTO_WORDS.length) * 0.7
-              const end = start + 0.2
+              const start = (i / MANIFESTO_WORDS.length) * 0.7;
+              const end = start + 0.2;
               return (
                 <KineticWord
                   key={i}
@@ -66,7 +75,7 @@ export function WhyScrapeVerse() {
                   start={start}
                   end={end}
                 />
-              )
+              );
             })}
           </div>
         </div>
@@ -78,8 +87,12 @@ export function WhyScrapeVerse() {
               key={reason.title}
               initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ delay: i * 0.12, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                delay: i * 0.12,
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1],
+              }}
               whileHover={{ y: -4, scale: 1.01 }}
               data-cursor-hover
             >
@@ -87,7 +100,9 @@ export function WhyScrapeVerse() {
                 <div className="p-3.5 rounded-2xl bg-white/10 w-fit border border-white/15 backdrop-blur-md">
                   {reason.icon}
                 </div>
-                <h3 className="text-xl font-bold font-display text-text-primary">{reason.title}</h3>
+                <h3 className="text-xl font-bold font-display text-text-primary">
+                  {reason.title}
+                </h3>
                 <p className="text-sm font-body text-text-secondary leading-relaxed">
                   {reason.description}
                 </p>
@@ -97,7 +112,7 @@ export function WhyScrapeVerse() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function KineticWord({
@@ -107,15 +122,15 @@ function KineticWord({
   start,
   end,
 }: {
-  word: string
-  index: number
-  progress: MotionValue<number>
-  start: number
-  end: number
+  word: string;
+  index: number;
+  progress: MotionValue<number>;
+  start: number;
+  end: number;
 }) {
-  const y = useTransform(progress, [start, end], [50, 0])
-  const opacity = useTransform(progress, [start, end], [0.3, 1])
-  const color = useTransform(progress, [start, end], ['#666677', '#ffffff'])
+  const y = useTransform(progress, [start, end], [50, 0]);
+  const opacity = useTransform(progress, [start, end], [0.3, 1]);
+  const color = useTransform(progress, [start, end], ["#666677", "#ffffff"]);
 
   return (
     <span className="inline-block overflow-hidden pb-1">
@@ -126,5 +141,5 @@ function KineticWord({
         {word}
       </motion.span>
     </span>
-  )
+  );
 }

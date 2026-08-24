@@ -3,7 +3,8 @@ Meeting Repository for Async SQLite.
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from ..domain.meeting import Meeting, utc_now_iso
 from ..domain.stage import MeetingStatus
 from .database import DatabaseManager
@@ -52,7 +53,9 @@ class MeetingRepository:
                     meeting.scheduled_at,
                     meeting.duration_minutes,
                     meeting.timezone,
-                    meeting.status.value if hasattr(meeting.status, "value") else str(meeting.status),
+                    meeting.status.value
+                    if hasattr(meeting.status, "value")
+                    else str(meeting.status),
                     meeting.meeting_url,
                     meeting.ics_content,
                     meeting.organizer_email,
@@ -66,7 +69,7 @@ class MeetingRepository:
             await conn.commit()
         return meeting
 
-    async def get_by_id(self, meeting_id: str) -> Optional[Meeting]:
+    async def get_by_id(self, meeting_id: str) -> Meeting | None:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM meetings WHERE id = ?", (meeting_id,)
@@ -76,7 +79,7 @@ class MeetingRepository:
                 return self._row_to_meeting(row)
             return None
 
-    async def get_by_lead_id(self, lead_id: str) -> List[Meeting]:
+    async def get_by_lead_id(self, lead_id: str) -> list[Meeting]:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM meetings WHERE lead_id = ? ORDER BY created_at DESC",
@@ -89,9 +92,9 @@ class MeetingRepository:
         self,
         meeting_id: str,
         status: MeetingStatus,
-        scheduled_at: Optional[str] = None,
-        ics_content: Optional[str] = None,
-    ) -> Optional[Meeting]:
+        scheduled_at: str | None = None,
+        ics_content: str | None = None,
+    ) -> Meeting | None:
         status_str = status.value if hasattr(status, "value") else str(status)
         now_str = utc_now_iso()
 

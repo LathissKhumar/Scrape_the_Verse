@@ -2,8 +2,8 @@
 Entry point for python -m LibreCrawl
 """
 
-import sys
 import os
+import sys
 
 # Ensure package is on sys.path
 package_dir = os.path.dirname(os.path.abspath(__file__))

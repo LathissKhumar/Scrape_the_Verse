@@ -2,10 +2,10 @@
 
 import pytest
 from leadfinder.extraction.cleaner import HTMLCleaner, clean_html
-from leadfinder.extraction.schema import RawPage
 from leadfinder.extraction.llm import LLMExtractor
-from leadfinder.tests.conftest import MockLLMClient
+from leadfinder.extraction.schema import RawPage
 from leadfinder.models.schemas import ScrapingTask
+from leadfinder.tests.conftest import MockLLMClient
 
 
 def test_html_cleaner_strips_scripts_styles_and_nav():
@@ -76,9 +76,21 @@ def test_llm_extractor_consolidates_entity_records():
 
     # Simulated chunk extractions where one chunk extracted summary, and another extracted members & filmography
     chunk_records = [
-        {"summary": "The Avengers are a team of superheroes.", "members": None, "filmography": None},
-        {"summary": None, "members": "Iron Man, Thor, Hulk", "filmography": "Avengers (2012)"},
-        {"summary": "Short note", "members": None, "filmography": "Avengers: Endgame (2019)"},
+        {
+            "summary": "The Avengers are a team of superheroes.",
+            "members": None,
+            "filmography": None,
+        },
+        {
+            "summary": None,
+            "members": "Iron Man, Thor, Hulk",
+            "filmography": "Avengers (2012)",
+        },
+        {
+            "summary": "Short note",
+            "members": None,
+            "filmography": "Avengers: Endgame (2019)",
+        },
     ]
     fields = ["summary", "members", "filmography"]
 
@@ -93,7 +105,9 @@ def test_llm_extractor_consolidates_entity_records():
 
 @pytest.mark.asyncio
 async def test_llm_extractor_single_entity_mode():
-    mock_llm = MockLLMClient(response_text='[{"summary": "Assembled superhero team.", "members": "Iron Man, Captain America"}]')
+    mock_llm = MockLLMClient(
+        response_text='[{"summary": "Assembled superhero team.", "members": "Iron Man, Captain America"}]'
+    )
     extractor = LLMExtractor(llm_client=mock_llm)
 
     task = ScrapingTask(
@@ -148,4 +162,3 @@ def test_html_cleaner_strips_carousel_and_recommendation_widgets():
     assert "Similar Laptops" not in cleaned
     assert "Asus Vivobook" not in cleaned
     assert "Sponsored Product" not in cleaned
-

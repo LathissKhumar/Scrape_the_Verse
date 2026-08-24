@@ -2,7 +2,8 @@
 Conversation Agent for Lead Manager.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any
+
 from ..config.logging import get_logger
 from ..domain.stage import EmailIntent
 from .llm_factory import LLMClient
@@ -11,13 +12,25 @@ logger = get_logger("ConversationAgent")
 
 
 class ConversationAgent:
-    def __init__(self, llm_client: Optional[LLMClient] = None):
+    def __init__(self, llm_client: LLMClient | None = None):
         self.llm = llm_client or LLMClient()
 
-    def _heuristic_classify(self, text: str) -> Dict[str, Any]:
+    def _heuristic_classify(self, text: str) -> dict[str, Any]:
         lower = text.lower()
 
-        if any(w in lower for w in ["meet", "call", "schedule", "zoom", "calendar", "tomorrow", "tuesday", "available at"]):
+        if any(
+            w in lower
+            for w in [
+                "meet",
+                "call",
+                "schedule",
+                "zoom",
+                "calendar",
+                "tomorrow",
+                "tuesday",
+                "available at",
+            ]
+        ):
             return {
                 "intent": EmailIntent.REQUEST_MEETING.value,
                 "confidence": 0.85,
@@ -25,7 +38,10 @@ class ConversationAgent:
                 "suggested_action": "CREATE_MEETING_TASK",
             }
 
-        if any(w in lower for w in ["price", "cost", "quote", "rate", "how much", "pricing", "budget"]):
+        if any(
+            w in lower
+            for w in ["price", "cost", "quote", "rate", "how much", "pricing", "budget"]
+        ):
             return {
                 "intent": EmailIntent.REQUEST_PRICING.value,
                 "confidence": 0.85,
@@ -33,7 +49,17 @@ class ConversationAgent:
                 "suggested_action": "CREATE_PRICING_REPLY_TASK",
             }
 
-        if any(w in lower for w in ["more info", "tell me more", "how does it work", "case study", "portfolio", "details"]):
+        if any(
+            w in lower
+            for w in [
+                "more info",
+                "tell me more",
+                "how does it work",
+                "case study",
+                "portfolio",
+                "details",
+            ]
+        ):
             return {
                 "intent": EmailIntent.REQUEST_MORE_INFO.value,
                 "confidence": 0.80,
@@ -41,7 +67,17 @@ class ConversationAgent:
                 "suggested_action": "CREATE_RESPONSE_TASK",
             }
 
-        if any(w in lower for w in ["not interested", "unsubscribe", "remove me", "stop emailing", "no thanks", "spam"]):
+        if any(
+            w in lower
+            for w in [
+                "not interested",
+                "unsubscribe",
+                "remove me",
+                "stop emailing",
+                "no thanks",
+                "spam",
+            ]
+        ):
             return {
                 "intent": EmailIntent.NOT_INTERESTED.value,
                 "confidence": 0.90,
@@ -49,7 +85,16 @@ class ConversationAgent:
                 "suggested_action": "MARK_DISQUALIFIED",
             }
 
-        if any(w in lower for w in ["out of office", "on vacation", "auto-reply", "away from my desk", "back on"]):
+        if any(
+            w in lower
+            for w in [
+                "out of office",
+                "on vacation",
+                "auto-reply",
+                "away from my desk",
+                "back on",
+            ]
+        ):
             return {
                 "intent": EmailIntent.OUT_OF_OFFICE.value,
                 "confidence": 0.95,
@@ -57,7 +102,17 @@ class ConversationAgent:
                 "suggested_action": "SCHEDULE_LATER",
             }
 
-        if any(w in lower for w in ["sounds good", "interested", "yes", "great", "let's do it", "send over"]):
+        if any(
+            w in lower
+            for w in [
+                "sounds good",
+                "interested",
+                "yes",
+                "great",
+                "let's do it",
+                "send over",
+            ]
+        ):
             return {
                 "intent": EmailIntent.INTERESTED.value,
                 "confidence": 0.75,
@@ -77,8 +132,8 @@ class ConversationAgent:
         lead_name: str,
         company_name: str,
         message_body: str,
-        current_intent: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        current_intent: str | None = None,
+    ) -> dict[str, Any]:
         if current_intent and current_intent != EmailIntent.AMBIGUOUS.value:
             return {
                 "intent": current_intent,
@@ -104,7 +159,9 @@ class ConversationAgent:
             f"Classify the intent accurately."
         )
 
-        result = await self.llm.generate_json(prompt=user_prompt, system_prompt=system_prompt)
+        result = await self.llm.generate_json(
+            prompt=user_prompt, system_prompt=system_prompt
+        )
         if result and "intent" in result:
             return result
 

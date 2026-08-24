@@ -4,9 +4,10 @@ Gathers live market, competitor, and customer review context via DuckDuckGo,
 then analyzes the business profile using LLM (Qwen3 / Gemini fallback).
 """
 
-import json
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from MicroServices.Lead_Manager.agents.llm_factory import LLMClient
+
 from .search_client import DuckDuckGoSearchClient
 
 
@@ -15,16 +16,16 @@ class BusinessAnalyzer:
     Executes live deep intelligence generation for businesses.
     """
 
-    def __init__(self, llm_client: Optional[LLMClient] = None):
+    def __init__(self, llm_client: LLMClient | None = None):
         self.llm = llm_client or LLMClient()
 
     async def analyze_business(
         self,
         company_name: str,
-        website_url: Optional[str] = None,
-        location: Optional[str] = None,
-        industry: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        website_url: str | None = None,
+        location: str | None = None,
+        industry: str | None = None,
+    ) -> dict[str, Any]:
         """
         Gathers live internet context and synthesizes deep business intelligence.
         """
@@ -60,7 +61,9 @@ class BusinessAnalyzer:
             f"Perform a rigorous business analysis and return the structured JSON."
         )
 
-        llm_result = await self.llm.generate_json(prompt=user_prompt, system_prompt=system_prompt)
+        llm_result = await self.llm.generate_json(
+            prompt=user_prompt, system_prompt=system_prompt
+        )
 
         if not llm_result or not isinstance(llm_result, dict):
             # Fallback heuristic business synthesis

@@ -1,111 +1,111 @@
-'use client'
-import { useEffect, useRef } from 'react'
-import type { WebNode, WebEdge } from '@/lib/types'
+"use client";
+import { useEffect, useRef } from "react";
+import type { WebNode, WebEdge } from "@/lib/types";
 
 interface UseWebAnimationOptions {
-  nodes: WebNode[]
-  edges: WebEdge[]
+  nodes: WebNode[];
+  edges: WebEdge[];
 }
 
 export function useWebAnimation(
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
-  options: UseWebAnimationOptions
+  options: UseWebAnimationOptions,
 ) {
-  const animFrameRef = useRef<number>(0)
+  const animFrameRef = useRef<number>(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    const dpr = window.devicePixelRatio || 1
-    let width = canvas.offsetWidth
-    let height = canvas.offsetHeight
+    const dpr = window.devicePixelRatio || 1;
+    let width = canvas.offsetWidth;
+    let height = canvas.offsetHeight;
 
     const setSize = () => {
-      width = canvas.offsetWidth
-      height = canvas.offsetHeight
-      canvas.width = width * dpr
-      canvas.height = height * dpr
-      ctx.scale(dpr, dpr)
-    }
-    setSize()
+      width = canvas.offsetWidth;
+      height = canvas.offsetHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    };
+    setSize();
 
     const particles = options.edges
       .filter((e) => e.animated)
-      .map((edge) => ({ edge, offset: Math.random() }))
+      .map((edge) => ({ edge, offset: Math.random() }));
 
-    let lastTime = 0
+    let lastTime = 0;
 
     const draw = (time: number) => {
-      const dt = Math.min((time - lastTime) / 1000, 0.05)
-      lastTime = time
+      const dt = Math.min((time - lastTime) / 1000, 0.05);
+      lastTime = time;
 
-      ctx.clearRect(0, 0, width, height)
+      ctx.clearRect(0, 0, width, height);
 
       // Draw subtle connecting edges
       options.edges.forEach((edge) => {
-        const from = options.nodes[edge.from]
-        const to = options.nodes[edge.to]
-        if (!from || !to) return
-        ctx.beginPath()
-        ctx.moveTo(from.x * width, from.y * height)
-        ctx.lineTo(to.x * width, to.y * height)
-        ctx.strokeStyle = edge.color ?? 'rgba(139, 92, 246, 0.2)'
-        ctx.lineWidth = 1
-        ctx.stroke()
-      })
+        const from = options.nodes[edge.from];
+        const to = options.nodes[edge.to];
+        if (!from || !to) return;
+        ctx.beginPath();
+        ctx.moveTo(from.x * width, from.y * height);
+        ctx.lineTo(to.x * width, to.y * height);
+        ctx.strokeStyle = edge.color ?? "rgba(139, 92, 246, 0.2)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
 
       // Animate subtle data light pulses
       particles.forEach((p) => {
-        p.offset = (p.offset + dt * 0.2) % 1
-        const from = options.nodes[p.edge.from]
-        const to = options.nodes[p.edge.to]
-        if (!from || !to) return
-        const px = from.x * width + (to.x - from.x) * width * p.offset
-        const py = from.y * height + (to.y - from.y) * height * p.offset
-        ctx.beginPath()
-        ctx.arc(px, py, 2.5, 0, Math.PI * 2)
-        ctx.fillStyle = p.edge.color ?? '#38BDF8'
-        ctx.shadowBlur = 8
-        ctx.shadowColor = p.edge.color ?? '#38BDF8'
-        ctx.fill()
-        ctx.shadowBlur = 0
-      })
+        p.offset = (p.offset + dt * 0.2) % 1;
+        const from = options.nodes[p.edge.from];
+        const to = options.nodes[p.edge.to];
+        if (!from || !to) return;
+        const px = from.x * width + (to.x - from.x) * width * p.offset;
+        const py = from.y * height + (to.y - from.y) * height * p.offset;
+        ctx.beginPath();
+        ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = p.edge.color ?? "#38BDF8";
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.edge.color ?? "#38BDF8";
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
 
       // Draw node points
       options.nodes.forEach((node) => {
-        const nx = node.x * width
-        const ny = node.y * height
-        const r = node.radius ?? 4
-        ctx.beginPath()
-        ctx.arc(nx, ny, r, 0, Math.PI * 2)
-        ctx.fillStyle = node.color ?? '#8B5CF6'
-        ctx.shadowBlur = 10
-        ctx.shadowColor = node.color ?? '#8B5CF6'
-        ctx.fill()
-        ctx.shadowBlur = 0
+        const nx = node.x * width;
+        const ny = node.y * height;
+        const r = node.radius ?? 4;
+        ctx.beginPath();
+        ctx.arc(nx, ny, r, 0, Math.PI * 2);
+        ctx.fillStyle = node.color ?? "#8B5CF6";
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = node.color ?? "#8B5CF6";
+        ctx.fill();
+        ctx.shadowBlur = 0;
 
         if (node.label) {
-          ctx.font = `11px Inter, sans-serif`
-          ctx.fillStyle = '#6F7887'
-          ctx.textAlign = 'center'
-          ctx.fillText(node.label, nx, ny + r + 14)
+          ctx.font = `11px Inter, sans-serif`;
+          ctx.fillStyle = "#6F7887";
+          ctx.textAlign = "center";
+          ctx.fillText(node.label, nx, ny + r + 14);
         }
-      })
+      });
 
-      animFrameRef.current = requestAnimationFrame(draw)
-    }
+      animFrameRef.current = requestAnimationFrame(draw);
+    };
 
-    animFrameRef.current = requestAnimationFrame(draw)
+    animFrameRef.current = requestAnimationFrame(draw);
 
-    const handleResize = () => setSize()
-    window.addEventListener('resize', handleResize)
+    const handleResize = () => setSize();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      cancelAnimationFrame(animFrameRef.current)
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [canvasRef, options])
+      cancelAnimationFrame(animFrameRef.current);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [canvasRef, options]);
 }

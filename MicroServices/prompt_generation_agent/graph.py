@@ -1,27 +1,24 @@
-from typing import Dict, Any
-from langgraph.graph import StateGraph, END
 from pathlib import Path
 
-from state import PromptGenerationState
 from config import settings
-from report_discovery import (
-    discover_seo_report,
-    discover_business_report,
-    validate_website_exists,
-    select_best_match,
-)
 from extractors import (
-    extract_website_intelligence,
-    extract_business_intelligence,
     classify_prompt_type,
 )
+from langgraph.graph import END, StateGraph
 from prompt_generator import (
     build_prompt_context,
-    generate_prompt_with_llm,
     build_structured_output,
+    generate_prompt_with_llm,
 )
+from report_discovery import (
+    discover_business_report,
+    discover_seo_report,
+    select_best_match,
+    validate_website_exists,
+)
+from state import PromptGenerationState
+from utils import load_json_file, logger
 from validator import PromptValidator, repair_prompt
-from utils import logger, setup_logging, load_json_file
 
 
 def discover_reports_node(state: PromptGenerationState) -> PromptGenerationState:
@@ -81,14 +78,18 @@ def validate_reports_node(state: PromptGenerationState) -> PromptGenerationState
         website_exists = validate_website_exists(state["seo_data"])
         state["website_exists"] = website_exists
         if not website_exists:
-            state["errors"].append("This version supports existing websites only. SEO report indicates no website or crawl failed.")
+            state["errors"].append(
+                "This version supports existing websites only. SEO report indicates no website or crawl failed."
+            )
         else:
             logger.info("Website exists validated")
 
     return state
 
 
-def load_preprocessed_intelligence_node(state: PromptGenerationState) -> PromptGenerationState:
+def load_preprocessed_intelligence_node(
+    state: PromptGenerationState,
+) -> PromptGenerationState:
     """Load preprocessed intelligence files (much faster than extracting from raw reports)."""
     logger.info("=== Node: load_preprocessed_intelligence ===")
 
@@ -124,9 +125,14 @@ def load_preprocessed_intelligence_node(state: PromptGenerationState) -> PromptG
     if state.get("seo_data"):
         try:
             from extractors import extract_website_intelligence
-            seo_intel = extract_website_intelligence(state["seo_data"], state["seo_report_path"])
+
+            seo_intel = extract_website_intelligence(
+                state["seo_data"], state["seo_report_path"]
+            )
             state["website_intelligence"] = seo_intel.model_dump()
-            logger.info(f"Extracted website intelligence: score={seo_intel.overall_score}")
+            logger.info(
+                f"Extracted website intelligence: score={seo_intel.overall_score}"
+            )
         except Exception as e:
             logger.error(f"Website intelligence extraction failed: {e}")
             state["errors"].append(f"Failed to extract website intelligence: {e}")
@@ -134,9 +140,14 @@ def load_preprocessed_intelligence_node(state: PromptGenerationState) -> PromptG
     if state.get("business_data"):
         try:
             from extractors import extract_business_intelligence
-            biz_intel = extract_business_intelligence(state["business_data"], state["business_report_path"])
+
+            biz_intel = extract_business_intelligence(
+                state["business_data"], state["business_report_path"]
+            )
             state["business_intelligence"] = biz_intel.model_dump()
-            logger.info(f"Extracted business intelligence: {len(biz_intel.service_analysis.services)} services")
+            logger.info(
+                f"Extracted business intelligence: {len(biz_intel.service_analysis.services)} services"
+            )
         except Exception as e:
             logger.error(f"Business intelligence extraction failed: {e}")
             state["errors"].append(f"Failed to extract business intelligence: {e}")
@@ -151,7 +162,8 @@ def classify_prompt_type_node(state: PromptGenerationState) -> PromptGenerationS
         return state
 
     try:
-        from models import WebsiteIntelligence, BusinessIntelligence
+        from models import BusinessIntelligence, WebsiteIntelligence
+
         seo = WebsiteIntelligence(**state["website_intelligence"])
         biz = BusinessIntelligence(**state["business_intelligence"])
 
@@ -172,7 +184,8 @@ def build_prompt_context_node(state: PromptGenerationState) -> PromptGenerationS
         return state
 
     try:
-        from models import WebsiteIntelligence, BusinessIntelligence, PromptType
+        from models import BusinessIntelligence, PromptType, WebsiteIntelligence
+
         seo = WebsiteIntelligence(**state["website_intelligence"])
         biz = BusinessIntelligence(**state["business_intelligence"])
         prompt_type = PromptType(state["prompt_type"])
@@ -200,14 +213,20 @@ def generate_prompt_node(state: PromptGenerationState) -> PromptGenerationState:
         else:
             state["generated_prompt"] = generated
 
-            from models import WebsiteIntelligence, BusinessIntelligence, PromptType
+            from models import BusinessIntelligence, PromptType, WebsiteIntelligence
+
             seo = WebsiteIntelligence(**state["website_intelligence"])
             biz = BusinessIntelligence(**state["business_intelligence"])
             prompt_type = PromptType(state["prompt_type"])
 
             structured = build_structured_output(
-                seo, biz, prompt_type, generated, state["prompt_context"],
-                state["seo_report_path"], state["business_report_path"]
+                seo,
+                biz,
+                prompt_type,
+                generated,
+                state["prompt_context"],
+                state["seo_report_path"],
+                state["business_report_path"],
             )
             state["structured_output"] = structured.model_dump()
             logger.info("Prompt generated and structured output built")
@@ -226,10 +245,13 @@ def validate_prompt_node(state: PromptGenerationState) -> PromptGenerationState:
 
     try:
         from models import StructuredOutput
+
         structured = StructuredOutput(**state["structured_output"])
 
         validator = PromptValidator()
-        is_valid, errors, warnings = validator.validate(structured, state["prompt_context"])
+        is_valid, errors, warnings = validator.validate(
+            structured, state["prompt_context"]
+        )
 
         state["validation_errors"] = errors
         state["validation_warnings"] = warnings
@@ -258,11 +280,15 @@ def validate_prompt_node(state: PromptGenerationState) -> PromptGenerationState:
                 state["structured_output"] = structured.model_dump()
 
                 validator2 = PromptValidator()
-                is_valid2, errors2, warnings2 = validator2.validate(structured, state["prompt_context"])
+                is_valid2, errors2, warnings2 = validator2.validate(
+                    structured, state["prompt_context"]
+                )
                 state["validation_errors"] = errors2
                 state["validation_warnings"] = warnings2
 
-        logger.info(f"Validation complete: valid={is_valid}, errors={len(errors)}, warnings={len(warnings)}")
+        logger.info(
+            f"Validation complete: valid={is_valid}, errors={len(errors)}, warnings={len(warnings)}"
+        )
     except Exception as e:
         logger.error(f"Prompt validation failed: {e}")
         state["errors"].append(f"Validation error: {e}")
@@ -277,9 +303,10 @@ def save_outputs_node(state: PromptGenerationState) -> PromptGenerationState:
         return state
 
     try:
-        from models import StructuredOutput
         import json
         from pathlib import Path
+
+        from models import StructuredOutput
 
         structured = StructuredOutput(**state["structured_output"])
         output_dir = Path(settings.output_dir)

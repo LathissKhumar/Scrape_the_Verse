@@ -2,17 +2,15 @@
 Unit and Integration Tests for Voice Agent Real Telephony & Media Streams.
 """
 
-import asyncio
-import json
 import pytest
 import sniffio
 from httpx import ASGITransport, AsyncClient
+
 from MicroServices.Voice_Agent.audio_utils import AudioUtils
-from MicroServices.Voice_Agent.config.settings import VoiceSettings, get_voice_settings
+from MicroServices.Voice_Agent.config.settings import get_voice_settings
 from MicroServices.Voice_Agent.server import app
 from MicroServices.Voice_Agent.twilio_controller import TwilioController
 from MicroServices.Voice_Agent.vad import VoiceActivityDetector
-from MicroServices.Voice_Agent.voice_engine import VoiceEngine
 
 
 @pytest.fixture(autouse=True)
@@ -128,7 +126,9 @@ async def test_voice_agent_api_endpoints(client):
     assert "tts_voice" in cfg
 
     # 3. TwiML endpoint
-    twiml_res = await client.get("/api/v1/voice/twiml?company_name=Test+Co&has_website=true")
+    twiml_res = await client.get(
+        "/api/v1/voice/twiml?company_name=Test+Co&has_website=true"
+    )
     assert twiml_res.status_code == 200
     assert "application/xml" in twiml_res.headers["content-type"]
     assert "<Response>" in twiml_res.text
@@ -137,7 +137,11 @@ async def test_voice_agent_api_endpoints(client):
     # 4. Status callback
     status_res = await client.post(
         "/api/v1/voice/status-callback",
-        data={"CallSid": "CA123456789", "CallStatus": "completed", "CallDuration": "45"},
+        data={
+            "CallSid": "CA123456789",
+            "CallStatus": "completed",
+            "CallDuration": "45",
+        },
     )
     assert status_res.status_code == 200
     assert status_res.json()["status"] == "received"

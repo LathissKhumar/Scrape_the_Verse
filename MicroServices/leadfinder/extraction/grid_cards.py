@@ -1,9 +1,11 @@
 """Deterministic repeater card extractor with robust e-commerce and catalog support."""
 
 import re
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urljoin
+
 from bs4 import BeautifulSoup, Tag
+
 from leadfinder.config.logging import get_logger
 
 logger = get_logger("GRID_CARD_EXTRACTOR")
@@ -66,8 +68,8 @@ class GridCardExtractor:
     def extract(
         self,
         html: str,
-        target_fields: Optional[list[str]] = None,
-        base_url: Optional[str] = None,
+        target_fields: list[str] | None = None,
+        base_url: str | None = None,
     ) -> list[dict[str, Any]]:
         """Identify repeating card elements and extract structured records."""
         if not html or not html.strip():
@@ -76,7 +78,9 @@ class GridCardExtractor:
         soup = BeautifulSoup(html, "html.parser")
 
         # Remove noisy sidebar filters, navigation menus, header, footer, and carousels
-        for noise in soup.find_all(["nav", "aside", "header", "footer", "script", "style", "noscript"]):
+        for noise in soup.find_all(
+            ["nav", "aside", "header", "footer", "script", "style", "noscript"]
+        ):
             noise.decompose()
 
         for sel in _CAROUSEL_NOISE_SELECTORS:
@@ -104,7 +108,9 @@ class GridCardExtractor:
 
             for cls_name, items in by_class.items():
                 if len(items) >= 2:
-                    score = self._score_item_candidates(items, cls_name=cls_name, tag_name=tag_name)
+                    score = self._score_item_candidates(
+                        items, cls_name=cls_name, tag_name=tag_name
+                    )
                     candidate_containers.append((score, items))
 
         if not candidate_containers:
@@ -116,7 +122,8 @@ class GridCardExtractor:
 
         # Determine primary identifier field if requested
         primary_requested = [
-            f for f in fields
+            f
+            for f in fields
             if any(pk in f.lower().replace("_", "") for pk in _PRIMARY_IDENTIFIERS)
         ]
 
@@ -129,7 +136,10 @@ class GridCardExtractor:
 
             # If primary keys were requested, ensure at least one primary identifier is present
             if primary_requested:
-                has_primary = any(rec.get(pk) is not None and str(rec.get(pk)).strip() for pk in primary_requested)
+                has_primary = any(
+                    rec.get(pk) is not None and str(rec.get(pk)).strip()
+                    for pk in primary_requested
+                )
                 if not has_primary:
                     continue
 
@@ -137,12 +147,17 @@ class GridCardExtractor:
 
         return records
 
-    def _score_item_candidates(self, items: list[Tag], cls_name: str = "", tag_name: str = "") -> float:
+    def _score_item_candidates(
+        self, items: list[Tag], cls_name: str = "", tag_name: str = ""
+    ) -> float:
         """Score candidate card groups based on presence of prices, links, images, and titles."""
         cls_lower = cls_name.lower()
         base_score = float(len(items))
 
-        if any(c in cls_lower for c in self.COMMON_CARD_CLASSES) or tag_name in ("article", "tr"):
+        if any(c in cls_lower for c in self.COMMON_CARD_CLASSES) or tag_name in (
+            "article",
+            "tr",
+        ):
             base_score *= 2.0
 
         items_with_price = 0
@@ -179,18 +194,32 @@ class GridCardExtractor:
         return base_score
 
     def _extract_card_fields(
-        self, card: Tag, target_fields: list[str], base_url: Optional[str] = None
+        self, card: Tag, target_fields: list[str], base_url: str | None = None
     ) -> dict[str, Any]:
         rec: dict[str, Any] = {}
         for f in target_fields:
-            val: Optional[str] = None
+            val: str | None = None
             f_lower = f.lower()
 
-            if f_lower in ("title", "name", "heading", "booktitle", "productname", "product_name"):
+            if f_lower in (
+                "title",
+                "name",
+                "heading",
+                "booktitle",
+                "productname",
+                "product_name",
+            ):
                 val = self._extract_title(card)
             elif f_lower in ("price", "cost", "amount", "pricing", "current_price"):
                 val = self._extract_price(card)
-            elif f_lower in ("details", "description", "specifications", "specs", "features", "summary"):
+            elif f_lower in (
+                "details",
+                "description",
+                "specifications",
+                "specs",
+                "features",
+                "summary",
+            ):
                 val = self._extract_description(card)
             elif f_lower in ("quote", "text", "quotetext", "content", "statement"):
                 val = self._extract_quote(card)
@@ -198,7 +227,15 @@ class GridCardExtractor:
                 val = self._extract_author(card)
             elif f_lower in ("link", "url", "href", "producturl", "pageurl"):
                 val = self._extract_link(card, base_url)
-            elif f_lower in ("image", "img", "thumbnail", "picture", "image_url", "imageurl", "imagesrc"):
+            elif f_lower in (
+                "image",
+                "img",
+                "thumbnail",
+                "picture",
+                "image_url",
+                "imageurl",
+                "imagesrc",
+            ):
                 val = self._extract_image(card, base_url)
             elif f_lower in ("availability", "stock", "status", "instock"):
                 val = self._extract_stock(card)
@@ -216,28 +253,51 @@ class GridCardExtractor:
         return rec
 
     @staticmethod
-    def _extract_title(card: Tag) -> Optional[str]:
+    def _extract_title(card: Tag) -> str | None:
         # 1. Heading tags (h1-h5)
         for heading_tag in ["h1", "h2", "h3", "h4", "h5"]:
             h = card.find(heading_tag)
             if h:
                 t = h.get("title") or h.get_text(strip=True)
-                if t and len(t) > 3 and not any(g in t.lower() for g in ["view", "buy now", "add to cart"]):
+                if (
+                    t
+                    and len(t) > 3
+                    and not any(
+                        g in t.lower() for g in ["view", "buy now", "add to cart"]
+                    )
+                ):
                     return t
 
         # 2. Dedicated product title classes in div or span
         for tag in card.find_all(["div", "span", "p"]):
             tag_cls = " ".join(tag.get("class", [])).lower()
-            if any(k in tag_cls for k in ["title", "name", "heading", "kzdlhz", "4rr01t", "product", "a-size-medium", "a-size-base-plus"]):
+            if any(
+                k in tag_cls
+                for k in [
+                    "title",
+                    "name",
+                    "heading",
+                    "kzdlhz",
+                    "4rr01t",
+                    "product",
+                    "a-size-medium",
+                    "a-size-base-plus",
+                ]
+            ):
                 txt = tag.get_text(strip=True)
-                if len(txt) > 5 and not any(c in txt for c in ["$", "₹", "£", "€", "Rs", "rs."]):
+                if len(txt) > 5 and not any(
+                    c in txt for c in ["$", "₹", "£", "€", "Rs", "rs."]
+                ):
                     return txt
 
         # 3. Product image alt attribute
         img = card.find("img", alt=True)
         if img and img.get("alt"):
             alt_txt = str(img["alt"]).strip()
-            if len(alt_txt) > 5 and not any(g in alt_txt.lower() for g in ["placeholder", "logo", "icon", "star", "rating", "image"]):
+            if len(alt_txt) > 5 and not any(
+                g in alt_txt.lower()
+                for g in ["placeholder", "logo", "icon", "star", "rating", "image"]
+            ):
                 return alt_txt
 
         # 4. Descriptive product link
@@ -245,17 +305,40 @@ class GridCardExtractor:
             a_title = a.get("title") or a.get_text(strip=True)
             if a_title and len(a_title) > 6:
                 a_lower = a_title.lower()
-                if not any(g in a_lower for g in ["view", "buy now", "add to cart", "learn more", "details", "click here", "read more"]):
+                if not any(
+                    g in a_lower
+                    for g in [
+                        "view",
+                        "buy now",
+                        "add to cart",
+                        "learn more",
+                        "details",
+                        "click here",
+                        "read more",
+                    ]
+                ):
                     return a_title
 
         return None
 
     @staticmethod
-    def _extract_price(card: Tag) -> Optional[str]:
+    def _extract_price(card: Tag) -> str | None:
         # 1. Dedicated price classes
         price_el = card.find(
-            class_=lambda c: c
-            and any(p in str(c).lower() for p in ["price", "cost", "amount", "nx9bqj", "30jeq3", "a-price-whole"])
+            class_=lambda c: (
+                c
+                and any(
+                    p in str(c).lower()
+                    for p in [
+                        "price",
+                        "cost",
+                        "amount",
+                        "nx9bqj",
+                        "30jeq3",
+                        "a-price-whole",
+                    ]
+                )
+            )
         )
         raw_price = price_el.get_text(strip=True) if price_el else ""
 
@@ -273,16 +356,33 @@ class GridCardExtractor:
         return None
 
     @staticmethod
-    def _extract_description(card: Tag) -> Optional[str]:
+    def _extract_description(card: Tag) -> str | None:
         ul = card.find(["ul", "ol"])
         if ul:
-            bullets = [li.get_text(strip=True) for li in ul.find_all("li") if li.get_text(strip=True)]
+            bullets = [
+                li.get_text(strip=True)
+                for li in ul.find_all("li")
+                if li.get_text(strip=True)
+            ]
             if bullets:
                 return " | ".join(bullets)
 
         desc_el = card.find(
-            class_=lambda c: c
-            and any(d in str(c).lower() for d in ["spec", "desc", "detail", "feature", "summary", "g4bras", "1xgfaf"])
+            class_=lambda c: (
+                c
+                and any(
+                    d in str(c).lower()
+                    for d in [
+                        "spec",
+                        "desc",
+                        "detail",
+                        "feature",
+                        "summary",
+                        "g4bras",
+                        "1xgfaf",
+                    ]
+                )
+            )
         )
         if desc_el:
             return desc_el.get_text(" | ", strip=True)
@@ -296,20 +396,25 @@ class GridCardExtractor:
         return None
 
     @staticmethod
-    def _extract_quote(card: Tag) -> Optional[str]:
+    def _extract_quote(card: Tag) -> str | None:
         text_el = card.find(
-            class_=lambda c: c
-            and any(t in str(c).lower() for t in ["text", "quote", "content"])
+            class_=lambda c: (
+                c and any(t in str(c).lower() for t in ["text", "quote", "content"])
+            )
         )
         if text_el:
             return text_el.get_text(strip=True)
         return None
 
     @staticmethod
-    def _extract_author(card: Tag) -> Optional[str]:
+    def _extract_author(card: Tag) -> str | None:
         author_el = card.find(
-            class_=lambda c: c
-            and any(a in str(c).lower() for a in ["author", "creator", "writer", "user"])
+            class_=lambda c: (
+                c
+                and any(
+                    a in str(c).lower() for a in ["author", "creator", "writer", "user"]
+                )
+            )
         )
         if author_el:
             return author_el.get_text(strip=True)
@@ -319,7 +424,7 @@ class GridCardExtractor:
         return None
 
     @staticmethod
-    def _extract_link(card: Tag, base_url: Optional[str] = None) -> Optional[str]:
+    def _extract_link(card: Tag, base_url: str | None = None) -> str | None:
         a = card.find("a", href=True)
         if a:
             raw_href = str(a["href"])
@@ -327,14 +432,26 @@ class GridCardExtractor:
         return None
 
     @staticmethod
-    def _extract_image(card: Tag, base_url: Optional[str] = None) -> Optional[str]:
+    def _extract_image(card: Tag, base_url: str | None = None) -> str | None:
         img = card.find("img")
         if img:
             raw_src = None
             lazy_attrs = ["data-src", "data-lazy-src", "data-original", "data-srcset"]
             for attr in lazy_attrs:
                 attr_val = img.get(attr)
-                if attr_val and isinstance(attr_val, str) and not any(p in attr_val.lower() for p in ["placeholder", "blank.gif", "spacer.gif", "data:image/svg"]):
+                if (
+                    attr_val
+                    and isinstance(attr_val, str)
+                    and not any(
+                        p in attr_val.lower()
+                        for p in [
+                            "placeholder",
+                            "blank.gif",
+                            "spacer.gif",
+                            "data:image/svg",
+                        ]
+                    )
+                ):
                     raw_src = attr_val.split(",")[0].strip().split(" ")[0]
                     break
 
@@ -361,21 +478,30 @@ class GridCardExtractor:
         return None
 
     @staticmethod
-    def _extract_stock(card: Tag) -> Optional[str]:
+    def _extract_stock(card: Tag) -> str | None:
         stock_el = card.find(
-            class_=lambda c: c
-            and any(s in str(c).lower() for s in ["stock", "availability", "status"])
+            class_=lambda c: (
+                c
+                and any(
+                    s in str(c).lower() for s in ["stock", "availability", "status"]
+                )
+            )
         )
         if stock_el:
             return stock_el.get_text(strip=True)
         return None
 
     @staticmethod
-    def _extract_rating(card: Tag) -> Optional[str]:
+    def _extract_rating(card: Tag) -> str | None:
         rating_el = card.find(
-            class_=lambda c: c and any(r in str(c).lower() for r in ["rating", "star", "review", "score", "x1dtvi", "5_whn1"])
+            class_=lambda c: (
+                c
+                and any(
+                    r in str(c).lower()
+                    for r in ["rating", "star", "review", "score", "x1dtvi", "5_whn1"]
+                )
+            )
         )
         if rating_el:
             return rating_el.get_text(strip=True)
         return None
-

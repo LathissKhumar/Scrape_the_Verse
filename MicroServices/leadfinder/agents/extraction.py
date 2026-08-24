@@ -1,8 +1,9 @@
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.agents.base import BaseAgent
 from leadfinder.crawler.browser_executor import BrowserExecutor
 from leadfinder.extraction.engine import ExtractionEngine
-from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema, RawPage
+from leadfinder.extraction.schema import ExtractionResult, ExtractionSchema
 from leadfinder.llm.base import LLMClient
 from leadfinder.models.schemas import ScrapingTask
 
@@ -12,9 +13,9 @@ class ExtractionAgent(BaseAgent):
 
     def __init__(
         self,
-        llm_client: Optional[LLMClient] = None,
-        engine: Optional[ExtractionEngine] = None,
-        browser_executor: Optional[BrowserExecutor] = None,
+        llm_client: LLMClient | None = None,
+        engine: ExtractionEngine | None = None,
+        browser_executor: BrowserExecutor | None = None,
     ):
         super().__init__(name="EXTRACTION")
         self.engine = engine or ExtractionEngine(
@@ -26,7 +27,7 @@ class ExtractionAgent(BaseAgent):
         self,
         raw_results: Any,
         task: ScrapingTask,
-        schema: Optional[ExtractionSchema] = None,
+        schema: ExtractionSchema | None = None,
     ) -> ExtractionResult:
         """Extract structured records according to task schema and return ExtractionResult."""
         self.logger.debug(
@@ -43,4 +44,3 @@ class ExtractionAgent(BaseAgent):
             f"Data extracted | strategy={result.strategy_used} | fields={len(task.fields)} | records={len(result.records)}"
         )
         return result
-

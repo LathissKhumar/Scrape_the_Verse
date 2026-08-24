@@ -1,12 +1,13 @@
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
-from unittest.mock import AsyncMock, patch, MagicMock
 from fastapi.testclient import TestClient
 
 from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.pipeline import BrightDataLeadPipeline
 from leadfinder.brightdata.service import BrightDataService
 from leadfinder.config.settings import Settings
-from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
+from leadfinder.models.schemas import ScrapingResult, ScrapingTask
 
 
 def test_pipeline_url_formatting():
@@ -23,10 +24,16 @@ def test_pipeline_url_formatting():
 
     # Company profile URL derivation
     company_subdomain = "https://www.indiamart.com/cosmic-tech-solutions/"
-    assert pipeline.format_company_profile_url(company_subdomain) == "https://www.indiamart.com/cosmic-tech-solutions/profile.html"
+    assert (
+        pipeline.format_company_profile_url(company_subdomain)
+        == "https://www.indiamart.com/cosmic-tech-solutions/profile.html"
+    )
 
     external_site = "https://www.bpackindustries.co.in"
-    assert pipeline.format_company_profile_url(external_site) == "https://www.bpackindustries.co.in"
+    assert (
+        pipeline.format_company_profile_url(external_site)
+        == "https://www.bpackindustries.co.in"
+    )
 
 
 @pytest.mark.asyncio
@@ -62,7 +69,9 @@ async def test_lead_pipeline_discovery_and_enrichment():
     ]
 
     pipeline = BrightDataLeadPipeline(client=mock_client)
-    leads = await pipeline.generate_leads(query_or_url="solar panels", enrich_profiles=True)
+    leads = await pipeline.generate_leads(
+        query_or_url="solar panels", enrich_profiles=True
+    )
 
     assert len(leads) == 1
     lead = leads[0]
@@ -115,7 +124,7 @@ async def test_brightdata_service_execute_task():
 
 def test_api_brightdata_routing_fast_path():
     """Test FastAPI /scrape endpoint fast-path routing when BRIGHTDATA=True."""
-    from leadfinder.main import app, brightdata_service
+    from leadfinder.main import app
 
     # Mock brightdata_service to return immediate success
     mock_service = MagicMock(spec=BrightDataService)

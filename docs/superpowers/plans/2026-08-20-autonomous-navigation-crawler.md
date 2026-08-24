@@ -36,6 +36,7 @@
 from app.models.schemas import ScrapingTask
 from app.graph.state import ScrapingGraphState
 
+
 def test_scraping_task_navigation_fields():
     task = ScrapingTask(
         task_id="t_nav_1",
@@ -92,6 +93,7 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock
 from app.crawler.navigator import InteractiveNavigatorEngine
 
+
 @pytest.mark.asyncio
 async def test_navigator_finds_and_types_search():
     mock_page = MagicMock()
@@ -141,6 +143,7 @@ git commit -m "feat(crawler): implement InteractiveNavigatorEngine for on-site s
 # tests/test_link_harvester.py
 from app.crawler.link_harvester import LinkHarvesterEngine
 
+
 def test_link_harvester_extracts_product_detail_links():
     html = """
     <html><body>
@@ -150,7 +153,9 @@ def test_link_harvester_extracts_product_detail_links():
     </body></html>
     """
     harvester = LinkHarvesterEngine()
-    links = harvester.harvest_detail_links(html, base_url="https://www.flipkart.com", max_links=10)
+    links = harvester.harvest_detail_links(
+        html, base_url="https://www.flipkart.com", max_links=10
+    )
     assert len(links) == 2
     assert "https://www.flipkart.com/redmi-13c/p/itm123" in links
     assert "https://www.flipkart.com/redmi-note-13/p/itm456" in links
@@ -193,6 +198,7 @@ git commit -m "feat(crawler): implement LinkHarvesterEngine for item detail link
 import pytest
 from unittest.mock import AsyncMock, MagicMock
 from app.crawler.pagination_walker import PaginationWalkerEngine
+
 
 @pytest.mark.asyncio
 async def test_pagination_walker_clicks_next():
@@ -246,15 +252,18 @@ from unittest.mock import AsyncMock, MagicMock
 from app.agents.navigation import NavigationAgent
 from app.models.schemas import ScrapingTask
 
+
 @pytest.mark.asyncio
 async def test_navigation_agent_executes_search_and_harvest():
     mock_browser_mgr = MagicMock()
     mock_context = AsyncMock()
     mock_page = AsyncMock()
-    mock_page.content = AsyncMock(return_value="""
+    mock_page.content = AsyncMock(
+        return_value="""
     <div class="product"><a href="/phone-1/p/itm1">Phone 1</a></div>
     <div class="product"><a href="/phone-2/p/itm2">Phone 2</a></div>
-    """)
+    """
+    )
     mock_context.new_page = AsyncMock(return_value=mock_page)
     mock_browser_mgr.create_isolated_context = AsyncMock(return_value=mock_context)
 
@@ -316,6 +325,7 @@ git commit -m "feat(agents): implement NavigationAgent and NavigationPlanner"
 import pytest
 from app.agents.planner import ScrapingPlannerAgent
 
+
 @pytest.mark.asyncio
 async def test_planner_detects_search_and_deep_crawl():
     planner = ScrapingPlannerAgent()
@@ -367,21 +377,26 @@ from app.graph.workflow import create_scraping_workflow
 from app.graph.state import ScrapingGraphState
 from app.models.schemas import ScrapingTask
 
+
 @pytest.mark.asyncio
 async def test_workflow_routes_to_navigation_node():
     mock_nav_agent = MagicMock()
-    mock_nav_agent.run = AsyncMock(return_value=["https://example.com/p/1", "https://example.com/p/2"])
+    mock_nav_agent.run = AsyncMock(
+        return_value=["https://example.com/p/1", "https://example.com/p/2"]
+    )
 
     mock_planner = MagicMock()
-    mock_planner.plan_async = AsyncMock(return_value=ScrapingTask(
-        task_id="t_nav_graph",
-        objective="Search products",
-        target_urls=["https://example.com"],
-        fields=["name", "price"],
-        is_search=True,
-        search_keyword="shoes",
-        deep_crawl=True,
-    ))
+    mock_planner.plan_async = AsyncMock(
+        return_value=ScrapingTask(
+            task_id="t_nav_graph",
+            objective="Search products",
+            target_urls=["https://example.com"],
+            fields=["name", "price"],
+            is_search=True,
+            search_keyword="shoes",
+            deep_crawl=True,
+        )
+    )
 
     wf = create_scraping_workflow(
         planner_agent=mock_planner,

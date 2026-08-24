@@ -1,47 +1,50 @@
-'use client'
-import { motion } from 'framer-motion'
-import { type ReactNode } from 'react'
+"use client";
+import { motion } from "framer-motion";
+import { type ReactNode } from "react";
 
 interface ButtonProps {
-  children: ReactNode
-  variant?: 'primary' | 'secondary' | 'ghost'
-  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
-  className?: string
-  id?: string
-  'data-cursor-hover'?: boolean
+  children: ReactNode;
+  variant?: "primary" | "secondary" | "ghost";
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+  id?: string;
+  "data-cursor-hover"?: boolean;
 }
 
 export function Button({
   children,
-  variant = 'primary',
+  variant = "primary",
   onClick,
-  className = '',
+  className = "",
   id,
-  'data-cursor-hover': dataCursorHover,
+  "data-cursor-hover": dataCursorHover,
 }: ButtonProps) {
   const base =
-    'relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full font-body font-bold text-sm tracking-wide transition-all duration-300 cursor-pointer overflow-hidden outline-none group'
+    "relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full font-body font-bold text-sm tracking-wide transition-all duration-300 cursor-pointer overflow-hidden outline-none group";
 
   const styles = {
     primary: {
-      background: 'linear-gradient(135deg, #38BDF8 0%, #0284C7 50%, #6366F1 100%)',
-      color: '#FFFFFF',
-      boxShadow: '0 10px 30px rgba(56, 189, 248, 0.4), inset 0 1px 1.5px rgba(255, 255, 255, 0.6)',
-      border: '1px solid rgba(255, 255, 255, 0.4)',
+      background:
+        "linear-gradient(135deg, #38BDF8 0%, #0284C7 50%, #6366F1 100%)",
+      color: "#FFFFFF",
+      boxShadow:
+        "0 10px 30px rgba(56, 189, 248, 0.4), inset 0 1px 1.5px rgba(255, 255, 255, 0.6)",
+      border: "1px solid rgba(255, 255, 255, 0.4)",
     },
     secondary: {
-      background: 'rgba(255, 255, 255, 0.08)',
-      color: '#FFFFFF',
-      border: '1px solid rgba(255, 255, 255, 0.25)',
-      backdropFilter: 'blur(16px)',
-      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3)',
+      background: "rgba(255, 255, 255, 0.08)",
+      color: "#FFFFFF",
+      border: "1px solid rgba(255, 255, 255, 0.25)",
+      backdropFilter: "blur(16px)",
+      boxShadow:
+        "0 8px 25px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3)",
     },
     ghost: {
-      background: 'transparent',
-      color: '#E2E8F0',
-      border: '1px solid rgba(255, 255, 255, 0.12)',
+      background: "transparent",
+      color: "#E2E8F0",
+      border: "1px solid rgba(255, 255, 255, 0.12)",
     },
-  }
+  };
 
   return (
     <motion.button
@@ -61,5 +64,5 @@ export function Button({
 
       <span className="relative z-10 flex items-center gap-2">{children}</span>
     </motion.button>
-  )
+  );
 }

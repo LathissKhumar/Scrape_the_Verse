@@ -4,7 +4,7 @@ Tests LangGraph StateGraph compilation, node synthesis, and full workflow.
 """
 
 import os
-import pytest
+
 from seo.seo_agent import create_seo_agent, synthesis_node
 from seo.state import SEOState
 
@@ -18,12 +18,12 @@ def test_agent_graph_compilation():
 
 def test_synthesis_node(sample_pages, sample_links, sample_issues, sample_sitemaps):
     """Verify synthesis node accurately calculates overall score and ranks priority action items."""
-    from seo.analyzers.technical import run_technical_audit
-    from seo.analyzers.onpage import run_onpage_audit
     from seo.analyzers.content import run_content_audit
-    from seo.analyzers.schema import run_schema_audit
     from seo.analyzers.local import run_local_audit
+    from seo.analyzers.onpage import run_onpage_audit
     from seo.analyzers.performance import run_performance_audit
+    from seo.analyzers.schema import run_schema_audit
+    from seo.analyzers.technical import run_technical_audit
 
     # Populate state with analyzer results
     state: SEOState = {
@@ -36,14 +36,16 @@ def test_synthesis_node(sample_pages, sample_links, sample_issues, sample_sitema
         "crawl_summary": {
             "total_pages_crawled": len(sample_pages),
             "total_links": len(sample_links),
-            "duration_seconds": 2.5
+            "duration_seconds": 2.5,
         },
-        "technical_audit": run_technical_audit(sample_pages, sample_links, sample_issues, sample_sitemaps),
+        "technical_audit": run_technical_audit(
+            sample_pages, sample_links, sample_issues, sample_sitemaps
+        ),
         "onpage_audit": run_onpage_audit(sample_pages, sample_issues),
         "content_audit": run_content_audit(sample_pages),
         "schema_audit": run_schema_audit(sample_pages),
         "local_audit": run_local_audit(sample_pages),
-        "performance_audit": run_performance_audit(sample_pages, pagespeed=[])
+        "performance_audit": run_performance_audit(sample_pages, pagespeed=[]),
     }
 
     final_state = synthesis_node(state)
@@ -65,7 +67,7 @@ def test_synthesis_node(sample_pages, sample_links, sample_issues, sample_sitema
 
 def test_exporter(tmp_path, sample_pages, sample_links, sample_issues, sample_sitemaps):
     """Test exporting full state to JSON and multi-tab Excel."""
-    from seo.exporter import export_to_json, export_to_excel
+    from seo.exporter import export_to_excel, export_to_json
 
     state: SEOState = {
         "url": "https://example.com",
@@ -75,7 +77,17 @@ def test_exporter(tmp_path, sample_pages, sample_links, sample_issues, sample_si
         "links": sample_links,
         "issues": sample_issues,
         "sitemaps": sample_sitemaps,
-        "priority_action_items": [{"priority": 1, "category": "Technical", "title": "Fix 404", "action": "Redirect", "impact_score": 9, "estimated_effort": "low", "affected_count": 1}]
+        "priority_action_items": [
+            {
+                "priority": 1,
+                "category": "Technical",
+                "title": "Fix 404",
+                "action": "Redirect",
+                "impact_score": 9,
+                "estimated_effort": "low",
+                "affected_count": 1,
+            }
+        ],
     }
 
     json_path = str(tmp_path / "test_out.json")

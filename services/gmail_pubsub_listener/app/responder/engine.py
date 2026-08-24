@@ -1,18 +1,30 @@
 """Autonomous Auto-Responder Engine for instant thread-aware replies."""
-import asyncio
+
 import logging
-from typing import Optional
+
 import httpx
+
 from app.config import get_settings
 from app.events.models import CommunicationEvent
-from app.persistence.repository import Repository, repository as default_repo
-from app.smtp.sender import OutboundEmail, GmailSMTPSender, smtp_sender as default_sender
+from app.persistence.repository import Repository
+from app.persistence.repository import repository as default_repo
+from app.smtp.sender import (
+    GmailSMTPSender,
+    OutboundEmail,
+)
+from app.smtp.sender import (
+    smtp_sender as default_sender,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class AutoResponder:
-    def __init__(self, repo: Optional[Repository] = None, sender: Optional[GmailSMTPSender] = None):
+    def __init__(
+        self,
+        repo: Repository | None = None,
+        sender: GmailSMTPSender | None = None,
+    ):
         self.repo = repo or default_repo
         self.sender = sender or default_sender
         self.settings = get_settings()
@@ -34,7 +46,10 @@ class AutoResponder:
             return
 
         # Skip automated notifications & bots
-        if any(bot in sender_email.lower() for bot in ["noreply", "no-reply", "mailer-daemon", "notifications@"]):
+        if any(
+            bot in sender_email.lower()
+            for bot in ["noreply", "no-reply", "mailer-daemon", "notifications@"]
+        ):
             return
 
         # Fetch message and classification
@@ -47,18 +62,26 @@ class AutoResponder:
 
         # Do not reply to OOO, Bounces, or Unsubscribes
         if intent in ["OUT_OF_OFFICE", "BOUNCE", "UNSUBSCRIBE"]:
-            logger.info(f"AutoResponder skipped intent '{intent}' for message {message_id}.")
+            logger.info(
+                f"AutoResponder skipped intent '{intent}' for message {message_id}."
+            )
             return
 
-        logger.info(f"AutoResponder generating instant reply for {sender_email} (intent: {intent})...")
+        logger.info(
+            f"AutoResponder generating instant reply for {sender_email} (intent: {intent})..."
+        )
 
         # Generate intelligent reply body
-        reply_body = await self._generate_reply_content(message.text_body or "", intent, message.sender_name)
+        reply_body = await self._generate_reply_content(
+            message.text_body or "", intent, message.sender_name
+        )
 
         # Send thread-aware reply
         reply_req = OutboundEmail(
             to=[sender_email],
-            subject=f"Re: {subject}" if not subject.lower().startswith("re:") else subject,
+            subject=f"Re: {subject}"
+            if not subject.lower().startswith("re:")
+            else subject,
             body_text=reply_body,
             thread_id=thread_id,
             in_reply_to=message.message_id_header,
@@ -66,12 +89,18 @@ class AutoResponder:
 
         res = await self.sender.send(reply_req)
         if res.status == "sent":
-            logger.info(f"AutoResponder successfully delivered reply to {sender_email} on thread {thread_id}!")
+            logger.info(
+                f"AutoResponder successfully delivered reply to {sender_email} on thread {thread_id}!"
+            )
         else:
             logger.warning(f"AutoResponder failed to send reply: {res.error}")
 
-    async def _generate_reply_content(self, inbound_text: str, intent: str, sender_name: Optional[str]) -> str:
-        name_greeting = f"Hi {sender_name.split()[0]},\n\n" if sender_name else "Hello,\n\n"
+    async def _generate_reply_content(
+        self, inbound_text: str, intent: str, sender_name: str | None
+    ) -> str:
+        name_greeting = (
+            f"Hi {sender_name.split()[0]},\n\n" if sender_name else "Hello,\n\n"
+        )
 
         # Try generating customized AI response via local Ollama if running
         ai_reply = await self._generate_ai_reply(inbound_text, intent, sender_name)
@@ -107,7 +136,9 @@ class AutoResponder:
                 "AgencyOS Automated Assistant"
             )
 
-    async def _generate_ai_reply(self, inbound_text: str, intent: str, sender_name: Optional[str]) -> Optional[str]:
+    async def _generate_ai_reply(
+        self, inbound_text: str, intent: str, sender_name: str | None
+    ) -> str | None:
         prompt = (
             f"You are an AI sales assistant for an agency. Write a concise, polite, professional, "
             f"and helpful email reply (2-4 sentences max) to this email:\n\n"

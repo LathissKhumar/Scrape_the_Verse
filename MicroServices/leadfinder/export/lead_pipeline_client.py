@@ -3,7 +3,8 @@ Lead Pipeline Client for Lead Finder.
 Dispatches discovered targets to SDR (:8081) and Lead Manager (:8082).
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 import httpx
 
 
@@ -20,14 +21,14 @@ class LeadPipelineClient:
         self,
         company_name: str,
         website_url: str,
-        campaign_id: Optional[str] = None,
-        primary_contact_name: Optional[str] = None,
-        primary_contact_email: Optional[str] = None,
-        primary_contact_phone: Optional[str] = None,
-        industry: Optional[str] = None,
-        location: Optional[str] = None,
-        metadata: Optional[Dict[str, Any]] = None,
-    ) -> Dict[str, Any]:
+        campaign_id: str | None = None,
+        primary_contact_name: str | None = None,
+        primary_contact_email: str | None = None,
+        primary_contact_phone: str | None = None,
+        industry: str | None = None,
+        location: str | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         """
         Sends discovered company to SDR (:8081) for website crawl + SEO audit.
         SDR automatically packages opportunities and persists the Lead in Lead Manager (:8082).

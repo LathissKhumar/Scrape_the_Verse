@@ -1,5 +1,7 @@
 from unittest.mock import AsyncMock, MagicMock
+
 import pytest
+
 from leadfinder.agents.navigation import NavigationAgent
 from leadfinder.models.schemas import ScrapingTask
 
@@ -9,12 +11,14 @@ async def test_navigation_agent_executes_search_and_harvest():
     mock_browser_mgr = MagicMock()
     mock_context = AsyncMock()
     mock_page = AsyncMock()
-    mock_page.content = AsyncMock(return_value="""
+    mock_page.content = AsyncMock(
+        return_value="""
     <html><body>
       <div class="product"><a href="/phone-1/p/itm1">Phone 1</a></div>
       <div class="product"><a href="/phone-2/p/itm2">Phone 2</a></div>
     </body></html>
-    """)
+    """
+    )
     mock_page.url = "https://www.flipkart.com/search?q=redmi"
     mock_context.new_page = AsyncMock(return_value=mock_page)
     mock_browser_mgr.create_isolated_context = AsyncMock(return_value=mock_context)

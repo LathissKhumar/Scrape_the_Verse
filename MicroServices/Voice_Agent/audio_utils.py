@@ -3,9 +3,8 @@ Audio Utilities for Voice Agent & Twilio Media Streams.
 Handles 8000Hz mulaw codec, 16kHz PCM resampling, base64 framing, and RMS audio energy.
 """
 
-import base64
-from typing import Tuple
 import audioop
+import base64
 
 
 class AudioUtils:

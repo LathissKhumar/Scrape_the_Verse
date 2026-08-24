@@ -13,7 +13,6 @@ Conversation Flow:
 
 import logging
 import urllib.parse
-from typing import Optional
 
 logger = logging.getLogger("TwimletBuilder")
 
@@ -28,7 +27,7 @@ def encode_twimlet_url(twiml_xml: str) -> str:
 
 def build_conversation_tree(
     company_name: str = "Apex Roofing Solutions",
-    contact_name: Optional[str] = "Lathiss",
+    contact_name: str | None = "Lathiss",
     has_website: bool = False,
 ) -> str:
     """
@@ -42,11 +41,11 @@ def build_conversation_tree(
 
     # ── Turn 3: Confirmation / Booking ──────────────────────────────────────────
     booked_xml = (
-        f'<Response>'
+        f"<Response>"
         f'<Say voice="alice">Awesome! I have marked down our 10-minute discovery demo. '
-        f'We sent the calendar invite and digital audit to your inbox. Thank you {name}, talk soon!</Say>'
-        f'<Hangup/>'
-        f'</Response>'
+        f"We sent the calendar invite and digital audit to your inbox. Thank you {name}, talk soon!</Say>"
+        f"<Hangup/>"
+        f"</Response>"
     )
     booked_url = encode_twimlet_url(booked_xml)
 
@@ -65,13 +64,13 @@ def build_conversation_tree(
     pitch_fallback_say = "Thank you for your time. Have a wonderful day!"
 
     pitch_xml = (
-        f'<Response>'
+        f"<Response>"
         f'<Gather input="speech" action="{booked_url}" method="POST" speechTimeout="auto" timeout="5" language="en-US">'
         f'<Say voice="alice">{pitch_say}</Say>'
-        f'</Gather>'
+        f"</Gather>"
         f'<Say voice="alice">{pitch_fallback_say}</Say>'
-        f'<Hangup/>'
-        f'</Response>'
+        f"<Hangup/>"
+        f"</Response>"
     )
     pitch_url = encode_twimlet_url(pitch_xml)
 
@@ -92,15 +91,17 @@ def build_conversation_tree(
     opening_fallback_say = "Thanks for your time. Have a great day!"
 
     opening_xml = (
-        f'<Response>'
+        f"<Response>"
         f'<Gather input="speech" action="{pitch_url}" method="POST" speechTimeout="auto" timeout="5" language="en-US">'
         f'<Say voice="alice">{opening_say}</Say>'
-        f'</Gather>'
+        f"</Gather>"
         f'<Say voice="alice">{opening_fallback_say}</Say>'
-        f'<Hangup/>'
-        f'</Response>'
+        f"<Hangup/>"
+        f"</Response>"
     )
     root_url = encode_twimlet_url(opening_xml)
 
-    logger.info(f"Built Twimlet conversation tree for '{comp}' ({name}): URL length = {len(root_url)} chars")
+    logger.info(
+        f"Built Twimlet conversation tree for '{comp}' ({name}): URL length = {len(root_url)} chars"
+    )
     return root_url

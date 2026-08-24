@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { 
-  Sparkles, 
-  Globe, 
-  ShieldAlert, 
-  TrendingUp, 
-  CheckCircle2, 
-  AlertTriangle, 
-  FileText, 
-  Bot, 
-  ArrowRight, 
-  Phone, 
-  Building2, 
-  Cpu, 
-  Target, 
+import React, { useState, useEffect } from "react";
+import {
+  Sparkles,
+  Globe,
+  ShieldAlert,
+  TrendingUp,
+  CheckCircle2,
+  AlertTriangle,
+  FileText,
+  Bot,
+  ArrowRight,
+  Phone,
+  Building2,
+  Cpu,
+  Target,
   Zap,
   Award,
   BarChart3,
@@ -25,12 +25,16 @@ import {
   PhoneCall,
   ExternalLink,
   ChevronRight,
-  Activity
-} from 'lucide-react';
-import { LeadRecord, DashboardTab, SEOMetric } from './types';
-import { mockLeads, mockSEOMetrics, mockBusinessAnalysis } from './mockData';
-import { auditWebsite, executeFullSdrPipeline, WebsiteAuditResult } from '@/lib/api/sdr';
-import { AutonomousProposalPDFModal } from '@/components/ui/AutonomousProposalPDFModal';
+  Activity,
+} from "lucide-react";
+import { LeadRecord, DashboardTab, SEOMetric } from "./types";
+import { mockLeads, mockSEOMetrics, mockBusinessAnalysis } from "./mockData";
+import {
+  auditWebsite,
+  executeFullSdrPipeline,
+  WebsiteAuditResult,
+} from "@/lib/api/sdr";
+import { AutonomousProposalPDFModal } from "@/components/ui/AutonomousProposalPDFModal";
 
 interface LeadAnalysisPageProps {
   selectedLead?: LeadRecord;
@@ -38,45 +42,67 @@ interface LeadAnalysisPageProps {
   onSelectLead: (lead: LeadRecord) => void;
 }
 
-export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({ 
-  selectedLead = mockLeads[0], 
-  onNavigateTab, 
-  onSelectLead 
+export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
+  selectedLead = mockLeads[0],
+  onNavigateTab,
+  onSelectLead,
 }) => {
   const [activeLead, setActiveLead] = useState<LeadRecord>(selectedLead);
+  const [prevSelectedLead, setPrevSelectedLead] =
+    useState<LeadRecord>(selectedLead);
   const [isAuditing, setIsAuditing] = useState(false);
-  const [liveAuditResult, setLiveAuditResult] = useState<WebsiteAuditResult | null>(null);
-  const [auditStatusMessage, setAuditStatusMessage] = useState<string | null>(null);
+  const [liveAuditResult, setLiveAuditResult] =
+    useState<WebsiteAuditResult | null>(null);
+  const [auditStatusMessage, setAuditStatusMessage] = useState<string | null>(
+    null,
+  );
   const [showPdfModal, setShowPdfModal] = useState(false);
 
-  const defaultSeo = mockSEOMetrics[activeLead.id] || mockSEOMetrics['lead-001'];
-  const bizData = mockBusinessAnalysis[activeLead.id] || mockBusinessAnalysis['lead-001'];
+  if (selectedLead && selectedLead.id !== prevSelectedLead?.id) {
+    setPrevSelectedLead(selectedLead);
+    setActiveLead(selectedLead);
+    setLiveAuditResult(null);
+  }
+
+  const defaultSeo =
+    mockSEOMetrics[activeLead.id] || mockSEOMetrics["lead-001"];
+  const bizData =
+    mockBusinessAnalysis[activeLead.id] || mockBusinessAnalysis["lead-001"];
 
   // Convert live SDR audit response into UI SEOMetric array if available
   const seoData: SEOMetric[] = liveAuditResult
     ? [
         {
-          category: 'Core Web Vitals & Speed',
+          category: "Core Web Vitals & Speed",
           score: liveAuditResult.domain_scores?.speed || 88,
-          status: (liveAuditResult.domain_scores?.speed || 88) >= 80 ? 'good' : 'warning',
+          status:
+            (liveAuditResult.domain_scores?.speed || 88) >= 80
+              ? "good"
+              : "warning",
           details: `LCP / FCP score: ${liveAuditResult.domain_scores?.speed || 88}/100`,
         },
         {
-          category: 'On-Page SEO & Metadata',
+          category: "On-Page SEO & Metadata",
           score: liveAuditResult.domain_scores?.on_page || 92,
-          status: (liveAuditResult.domain_scores?.on_page || 92) >= 80 ? 'good' : 'warning',
+          status:
+            (liveAuditResult.domain_scores?.on_page || 92) >= 80
+              ? "good"
+              : "warning",
           details: `Title, H1/H2 & schema coverage: ${liveAuditResult.domain_scores?.on_page || 92}%`,
         },
         {
-          category: 'Mobile & Responsive UX',
+          category: "Mobile & Responsive UX",
           score: liveAuditResult.domain_scores?.mobile || 90,
-          status: (liveAuditResult.domain_scores?.mobile || 90) >= 80 ? 'good' : 'warning',
+          status:
+            (liveAuditResult.domain_scores?.mobile || 90) >= 80
+              ? "good"
+              : "warning",
           details: `Viewport & mobile tap targets verified`,
         },
         {
-          category: 'Security & SSL Hygiene',
+          category: "Security & SSL Hygiene",
           score: liveAuditResult.domain_scores?.security || 95,
-          status: 'good',
+          status: "good",
           details: `HTTPS, HSTS & TLS 1.3 Active`,
         },
       ]
@@ -93,22 +119,27 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
 
   const runLiveReAudit = async () => {
     setIsAuditing(true);
-    setAuditStatusMessage('Launching SDR LibreCrawl & 6-domain SEO audit (:8081)...');
+    setAuditStatusMessage(
+      "Launching SDR LibreCrawl & 6-domain SEO audit (:8081)...",
+    );
 
     try {
-      const urlToAudit = activeLead.website || 'https://en.wikipedia.org/wiki/Solar_power';
+      const urlToAudit =
+        activeLead.website || "https://en.wikipedia.org/wiki/Solar_power";
       const res = await auditWebsite(urlToAudit, 2, 10, false);
 
       if (res.audit) {
         setLiveAuditResult(res.audit);
         setAuditStatusMessage(
-          `Live crawl completed! SEO Score: ${res.audit.seo_score}/100 across ${res.audit.crawl_stats?.pages_crawled || 6} pages.`
+          `Live crawl completed! SEO Score: ${res.audit.seo_score}/100 across ${res.audit.crawl_stats?.pages_crawled || 6} pages.`,
         );
       } else {
-        setAuditStatusMessage('Completed AI audit analysis (offline fallback).');
+        setAuditStatusMessage(
+          "Completed AI audit analysis (offline fallback).",
+        );
       }
     } catch {
-      setAuditStatusMessage('Completed audit analysis.');
+      setAuditStatusMessage("Completed audit analysis.");
     } finally {
       setIsAuditing(false);
     }
@@ -127,7 +158,9 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
             Lead 360° Intelligence & SWOT Hub
           </h1>
           <p className="text-sm text-white/60 mt-1 max-w-2xl">
-            Autonomous multi-threaded analysis synthesizing website technical SEO metrics and business SWOT signals into high-converting sales prompts.
+            Autonomous multi-threaded analysis synthesizing website technical
+            SEO metrics and business SWOT signals into high-converting sales
+            prompts.
           </p>
         </div>
 
@@ -138,7 +171,11 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
             className="px-4 py-2 rounded-xl bg-white/[0.06] border border-white/[0.14] text-xs font-semibold text-white focus:outline-none focus:border-white/30 cursor-pointer backdrop-blur-xl"
           >
             {mockLeads.map((l) => (
-              <option key={l.id} value={l.id} className="bg-[#090E1A] text-white">
+              <option
+                key={l.id}
+                value={l.id}
+                className="bg-[#090E1A] text-white"
+              >
                 {l.business_name} ({l.lead_quality_score}/100)
               </option>
             ))}
@@ -149,8 +186,10 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
             disabled={isAuditing}
             className="px-4 py-2 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white text-xs font-bold flex items-center gap-2 transition cursor-pointer backdrop-blur-xl"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isAuditing ? 'animate-spin' : ''}`} />
-            <span>{isAuditing ? 'Auditing...' : 'Re-Run Live Audit'}</span>
+            <RefreshCw
+              className={`w-3.5 h-3.5 ${isAuditing ? "animate-spin" : ""}`}
+            />
+            <span>{isAuditing ? "Auditing..." : "Re-Run Live Audit"}</span>
           </button>
         </div>
       </div>
@@ -162,7 +201,12 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
             <Activity className="w-4 h-4 text-sky-400" />
             <span>{auditStatusMessage}</span>
           </div>
-          <button onClick={() => setAuditStatusMessage(null)} className="text-white/40 hover:text-white cursor-pointer">✕</button>
+          <button
+            onClick={() => setAuditStatusMessage(null)}
+            className="text-white/40 hover:text-white cursor-pointer"
+          >
+            ✕
+          </button>
         </div>
       )}
 
@@ -180,9 +224,18 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
             </div>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-white/70 pt-1">
-              <span className="flex items-center gap-1.5"><Building2 className="w-4 h-4 text-sky-300" /> {activeLead.category}</span>
-              <span className="flex items-center gap-1.5"><Globe className="w-4 h-4 text-white/60" /> {activeLead.location}</span>
-              <span className="flex items-center gap-1.5 font-mono"><Phone className="w-4 h-4 text-emerald-300" /> {activeLead.phone_number}</span>
+              <span className="flex items-center gap-1.5">
+                <Building2 className="w-4 h-4 text-sky-300" />{" "}
+                {activeLead.category}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Globe className="w-4 h-4 text-white/60" />{" "}
+                {activeLead.location}
+              </span>
+              <span className="flex items-center gap-1.5 font-mono">
+                <Phone className="w-4 h-4 text-emerald-300" />{" "}
+                {activeLead.phone_number}
+              </span>
               {activeLead.website && (
                 <a
                   href={activeLead.website}
@@ -200,7 +253,7 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
           {/* Instant Dispatch Action Bar */}
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => onNavigateTab('proposals', activeLead.id)}
+              onClick={() => onNavigateTab("proposals", activeLead.id)}
               className="px-5 py-2.5 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white font-bold text-xs flex items-center gap-2 transition cursor-pointer backdrop-blur-xl"
             >
               <FileText className="w-4 h-4" />
@@ -208,7 +261,7 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
             </button>
 
             <button
-              onClick={() => onNavigateTab('outreach', activeLead.id)}
+              onClick={() => onNavigateTab("outreach", activeLead.id)}
               className="px-4 py-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.14] text-white text-xs font-semibold flex items-center gap-2 transition cursor-pointer backdrop-blur-md"
             >
               <Send className="w-4 h-4 text-sky-300" />
@@ -216,7 +269,7 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
             </button>
 
             <button
-              onClick={() => onNavigateTab('calls', activeLead.id)}
+              onClick={() => onNavigateTab("calls", activeLead.id)}
               className="px-4 py-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.14] text-white text-xs font-semibold flex items-center gap-2 transition cursor-pointer backdrop-blur-md"
             >
               <PhoneCall className="w-4 h-4 text-amber-300" />
@@ -229,9 +282,13 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
       {/* 3. Circular Performance Gauges - True Apple Liquid Glass Tiles */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {seoData.map((metric, idx) => {
-          const isGood = metric.status === 'good';
-          const isWarning = metric.status === 'warning';
-          const strokeColor = isGood ? '#34D399' : isWarning ? '#FBBF24' : '#FB7185';
+          const isGood = metric.status === "good";
+          const isWarning = metric.status === "warning";
+          const strokeColor = isGood
+            ? "#34D399"
+            : isWarning
+              ? "#FBBF24"
+              : "#FB7185";
           const radius = 28;
           const circ = 2 * Math.PI * radius;
           const strokeDashoffset = circ - (metric.score / 100) * circ;
@@ -248,7 +305,9 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
                 <div className="text-sm font-bold text-white leading-snug">
                   {metric.details}
                 </div>
-                <div className={`text-[11px] font-semibold font-mono ${isGood ? 'text-emerald-400' : isWarning ? 'text-amber-400' : 'text-rose-400'}`}>
+                <div
+                  className={`text-[11px] font-semibold font-mono ${isGood ? "text-emerald-400" : isWarning ? "text-amber-400" : "text-rose-400"}`}
+                >
                   {metric.status.toUpperCase()}
                 </div>
               </div>
@@ -297,7 +356,8 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
                 AI SWOT & Competitive Positioning Matrix
               </h2>
               <p className="text-xs text-white/50">
-                Synthesized from verified web footprint, customer reviews, and local competitor ranking
+                Synthesized from verified web footprint, customer reviews, and
+                local competitor ranking
               </p>
             </div>
           </div>
@@ -375,7 +435,10 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {bizData.competitors.map((comp, idx) => (
-              <div key={idx} className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs flex items-center justify-between backdrop-blur-md">
+              <div
+                key={idx}
+                className="p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs flex items-center justify-between backdrop-blur-md"
+              >
                 <span className="font-bold text-white">{comp.name}</span>
                 <span className="text-amber-300 font-mono text-[11px] bg-white/[0.06] px-2 py-0.5 rounded-md border border-white/[0.10]">
                   Advantage: {comp.advantage}
@@ -397,20 +460,29 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
               Synthesized Sales Offer & Pitch Prompt
             </h2>
             <p className="text-xs text-white/50">
-              Tailored growth blueprint ready for automatic transmission to Proposal and AI Voice agents
+              Tailored growth blueprint ready for automatic transmission to
+              Proposal and AI Voice agents
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] space-y-2 backdrop-blur-xl">
-            <span className="text-[11px] font-mono uppercase text-sky-300 font-semibold">Recommended Package</span>
-            <div className="text-sm font-bold text-white leading-relaxed">{bizData.recommended_offer}</div>
+            <span className="text-[11px] font-mono uppercase text-sky-300 font-semibold">
+              Recommended Package
+            </span>
+            <div className="text-sm font-bold text-white leading-relaxed">
+              {bizData.recommended_offer}
+            </div>
           </div>
 
           <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] space-y-2 backdrop-blur-xl">
-            <span className="text-[11px] font-mono uppercase text-emerald-300 font-semibold">Expected 90-Day Outcome</span>
-            <div className="text-sm font-bold text-emerald-300 leading-relaxed">{bizData.expected_outcomes}</div>
+            <span className="text-[11px] font-mono uppercase text-emerald-300 font-semibold">
+              Expected 90-Day Outcome
+            </span>
+            <div className="text-sm font-bold text-emerald-300 leading-relaxed">
+              {bizData.expected_outcomes}
+            </div>
           </div>
         </div>
 
@@ -424,7 +496,7 @@ export const LeadAnalysisPage: React.FC<LeadAnalysisPageProps> = ({
           </button>
 
           <button
-            onClick={() => onNavigateTab('proposals', activeLead.id)}
+            onClick={() => onNavigateTab("proposals", activeLead.id)}
             className="px-6 py-3 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white font-bold text-xs flex items-center gap-2 transition cursor-pointer backdrop-blur-xl shadow-sm"
           >
             <span>Proceed to Proposal Studio</span>

@@ -1,16 +1,16 @@
 import pytest
-from pydantic import ValidationError
 from leadfinder.crawler.action_models import (
     ActionPlan,
-    WaitForAction,
-    ScrollAction,
-    ExtractAction,
     ClickAction,
+    ExtractAction,
     FillAction,
-    SelectAction,
     NavigateAction,
+    ScrollAction,
+    SelectAction,
+    WaitForAction,
 )
 from leadfinder.crawler.result_models import BlockType, CrawlResult
+from pydantic import ValidationError
 
 
 def test_action_plan_validation():
@@ -34,10 +34,12 @@ def test_action_plan_validation():
 
 def test_disallow_arbitrary_code_injection():
     with pytest.raises(ValidationError):
-        ActionPlan.model_validate({
-            "url": "https://example.com",
-            "actions": [{"action_type": "eval_arbitrary_code", "code": "alert(1)"}],
-        })
+        ActionPlan.model_validate(
+            {
+                "url": "https://example.com",
+                "actions": [{"action_type": "eval_arbitrary_code", "code": "alert(1)"}],
+            }
+        )
 
 
 def test_crawl_result_model():

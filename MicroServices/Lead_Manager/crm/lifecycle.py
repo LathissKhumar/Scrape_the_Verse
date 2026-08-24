@@ -10,7 +10,9 @@ import os
 import shutil
 from contextlib import asynccontextmanager
 from typing import Optional
+
 import httpx
+
 from ..config.settings import get_settings
 
 logger = logging.getLogger("TwentyCRMLifecycle")
@@ -26,8 +28,8 @@ class TwentyLifecycleManager:
 
     def __init__(
         self,
-        compose_file: Optional[str] = None,
-        base_url: Optional[str] = None,
+        compose_file: str | None = None,
+        base_url: str | None = None,
         idle_timeout_seconds: float = 60.0,
     ):
         settings = get_settings()
@@ -47,7 +49,7 @@ class TwentyLifecycleManager:
         self._active_leases = 0
         self._lock = asyncio.Lock()
         self._is_running = False
-        self._idle_task: Optional[asyncio.Task] = None
+        self._idle_task: asyncio.Task | None = None
 
     @classmethod
     def get_instance(cls) -> "TwentyLifecycleManager":
@@ -82,17 +84,26 @@ class TwentyLifecycleManager:
                 return True
 
             if not os.path.exists(self.compose_file):
-                logger.warning(f"Twenty CRM compose file not found at: {self.compose_file}")
+                logger.warning(
+                    f"Twenty CRM compose file not found at: {self.compose_file}"
+                )
                 return False
 
             if not shutil.which("docker"):
-                logger.warning("Docker is not available on this system. Cannot auto-spin up Twenty CRM.")
+                logger.warning(
+                    "Docker is not available on this system. Cannot auto-spin up Twenty CRM."
+                )
                 return False
 
             logger.info(f"Auto-spinning up Twenty CRM from {self.compose_file}...")
             try:
                 proc = await asyncio.create_subprocess_exec(
-                    "docker", "compose", "-f", self.compose_file, "up", "-d",
+                    "docker",
+                    "compose",
+                    "-f",
+                    self.compose_file,
+                    "up",
+                    "-d",
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
                 )
@@ -105,16 +116,22 @@ class TwentyLifecycleManager:
                 return False
 
             # Poll for readiness
-            logger.info(f"Waiting up to {max_wait_seconds}s for Twenty CRM to become ready...")
+            logger.info(
+                f"Waiting up to {max_wait_seconds}s for Twenty CRM to become ready..."
+            )
             start_time = asyncio.get_event_loop().time()
             while (asyncio.get_event_loop().time() - start_time) < max_wait_seconds:
                 if await self.is_crm_responsive():
                     self._is_running = True
-                    logger.info("Twenty CRM container is now healthy and ready for agent traffic!")
+                    logger.info(
+                        "Twenty CRM container is now healthy and ready for agent traffic!"
+                    )
                     return True
                 await asyncio.sleep(2.0)
 
-            logger.warning("Twenty CRM startup timed out (containers may still be initializing).")
+            logger.warning(
+                "Twenty CRM startup timed out (containers may still be initializing)."
+            )
             return False
 
     async def spin_down(self, force: bool = False) -> bool:
@@ -127,29 +144,39 @@ class TwentyLifecycleManager:
 
         async with self._lock:
             if self._active_leases > 0 and not force:
-                logger.info(f"Twenty CRM has {self._active_leases} active leases. Skipping spin-down.")
+                logger.info(
+                    f"Twenty CRM has {self._active_leases} active leases. Skipping spin-down."
+                )
                 return False
 
             if not os.path.exists(self.compose_file) or not shutil.which("docker"):
                 return False
 
-            logger.info("Auto-spinning down Twenty CRM containers (persisting all database data)...")
+            logger.info(
+                "Auto-spinning down Twenty CRM containers (persisting all database data)..."
+            )
             try:
                 proc = await asyncio.create_subprocess_exec(
-                    "docker", "compose", "-f", self.compose_file, "stop",
+                    "docker",
+                    "compose",
+                    "-f",
+                    self.compose_file,
+                    "stop",
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
                 )
                 stdout, stderr = await proc.communicate()
                 self._is_running = False
-                logger.info("Twenty CRM containers stopped successfully. Memory released.")
+                logger.info(
+                    "Twenty CRM containers stopped successfully. Memory released."
+                )
                 return proc.returncode == 0
             except Exception as e:
                 logger.warning(f"Error stopping docker compose: {e}")
                 return False
 
     @asynccontextmanager
-    async def lease(self, auto_spin_down_delay: Optional[float] = None):
+    async def lease(self, auto_spin_down_delay: float | None = None):
         """
         Context manager for agent operations requiring Twenty CRM.
         Spins up CRM on entry, and decrements lease on exit.
@@ -167,16 +194,24 @@ class TwentyLifecycleManager:
                 self._active_leases = max(0, self._active_leases - 1)
 
             # Schedule delayed idle shutdown if no leases remain
-            delay = auto_spin_down_delay if auto_spin_down_delay is not None else self.idle_timeout
+            delay = (
+                auto_spin_down_delay
+                if auto_spin_down_delay is not None
+                else self.idle_timeout
+            )
             if self._active_leases == 0 and delay > 0:
-                self._idle_task = asyncio.create_task(self._delayed_idle_shutdown(delay))
+                self._idle_task = asyncio.create_task(
+                    self._delayed_idle_shutdown(delay)
+                )
 
     async def _delayed_idle_shutdown(self, delay: float):
         """Waits for idle duration before executing container stop."""
         try:
             await asyncio.sleep(delay)
             if self._active_leases == 0:
-                logger.info(f"No active agent activity for {delay}s. Triggering idle spin-down.")
+                logger.info(
+                    f"No active agent activity for {delay}s. Triggering idle spin-down."
+                )
                 await self.spin_down()
         except asyncio.CancelledError:
             pass

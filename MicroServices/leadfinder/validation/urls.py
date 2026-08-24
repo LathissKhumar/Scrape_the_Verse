@@ -1,6 +1,6 @@
-import re
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlparse
+
 from leadfinder.validation.schemas import UrlMetric
 
 URL_SCHEMES = {"http", "https"}
@@ -28,7 +28,7 @@ class URLValidator:
     def evaluate_urls(
         self,
         records: list[dict[str, Any]],
-        url_fields: Optional[list[str]] = None,
+        url_fields: list[str] | None = None,
     ) -> UrlMetric:
         """Evaluate URL validity across all records for identified URL fields."""
         if not records:
@@ -39,8 +39,12 @@ class URLValidator:
         if not effective_fields:
             sample = records[0]
             effective_fields = [
-                k for k in sample.keys()
-                if any(sub in k.lower() for sub in ["url", "link", "href", "website", "domain"])
+                k
+                for k in sample.keys()
+                if any(
+                    sub in k.lower()
+                    for sub in ["url", "link", "href", "website", "domain"]
+                )
             ]
 
         if not effective_fields:

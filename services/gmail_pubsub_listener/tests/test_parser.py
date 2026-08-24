@@ -1,7 +1,9 @@
 """Tests for MIME email parser."""
+
 import email.message
+
+from app.parser.headers import decode_rfc2047, parse_references, parse_sender
 from app.parser.mime import MIMEParser
-from app.parser.headers import decode_rfc2047, parse_sender, parse_references
 
 
 def test_decode_rfc2047():
@@ -55,7 +57,9 @@ def test_parse_multipart_email():
     msg["In-Reply-To"] = "<out_orig_888@agency.com>"
     msg["References"] = "<out_orig_888@agency.com>"
     msg.set_content("Can you send me your pricing sheet?")
-    msg.add_alternative("<p>Can you send me your <b>pricing sheet</b>?</p>", subtype="html")
+    msg.add_alternative(
+        "<p>Can you send me your <b>pricing sheet</b>?</p>", subtype="html"
+    )
 
     raw_bytes = msg.as_bytes()
     parsed = MIMEParser.parse_rfc822(raw_bytes, uid=102, mailbox="INBOX")

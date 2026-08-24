@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock
+
+import pytest
 
 from leadfinder.agents.extraction import ExtractionAgent
 from leadfinder.extraction.engine import ExtractionEngine

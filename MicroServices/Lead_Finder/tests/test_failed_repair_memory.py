@@ -1,5 +1,3 @@
-import os
-import time
 from leadfinder.healing.failed_memory import FailedRepairMemory
 
 
@@ -20,7 +18,9 @@ def test_failed_repair_memory_recording_and_suppression(tmp_path):
 
     # 3. Record 2nd failure -> suppressed
     failed_mem.record_failure(domain, sig, failing_config, reason="Still bad selector")
-    assert failed_mem.is_suppressed(domain, sig, failing_config, ttl_seconds=3600) is True
+    assert (
+        failed_mem.is_suppressed(domain, sig, failing_config, ttl_seconds=3600) is True
+    )
 
     # 4. Check penalty
     penalty = failed_mem.get_penalty(domain, sig, failing_config)

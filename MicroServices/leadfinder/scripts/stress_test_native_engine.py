@@ -1,7 +1,7 @@
 import asyncio
-from pathlib import Path
 import sys
 import time
+from pathlib import Path
 from typing import Any
 
 # Ensure workspace root is in sys.path
@@ -10,13 +10,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
+
 # Suppress harmless asyncio pipe teardown noise on Windows
 def _silence_unraisablehook(unraisable):
-    if unraisable.exc_type in (ValueError, ResourceWarning) and "closed pipe" in str(unraisable.exc_value or ""):
+    if unraisable.exc_type in (ValueError, ResourceWarning) and "closed pipe" in str(
+        unraisable.exc_value or ""
+    ):
         return
-    if unraisable.exc_type is RuntimeError and "Event loop is closed" in str(unraisable.exc_value or ""):
+    if unraisable.exc_type is RuntimeError and "Event loop is closed" in str(
+        unraisable.exc_value or ""
+    ):
         return
     sys.__unraisablehook__(unraisable)
+
 
 sys.unraisablehook = _silence_unraisablehook
 
@@ -27,8 +33,8 @@ from leadfinder.agents.planner import ScrapingPlannerAgent
 from leadfinder.agents.scraper import ScraperAgent
 from leadfinder.agents.validation import ValidationAgent
 from leadfinder.config.settings import get_settings
-from leadfinder.graph.workflow import create_scraping_workflow
 from leadfinder.graph.state import ScrapingGraphState
+from leadfinder.graph.workflow import create_scraping_workflow
 from leadfinder.llm.ollama_client import OllamaClient
 
 
@@ -82,7 +88,9 @@ async def run_stress_query(
         records = output.records if output else []
         anomalies = output.metadata.get("anomalies", []) if output else ["No output"]
 
-        print(f"\n[RESULT] Status: {status.upper()} | Health: {health:.2f} | Records: {len(records)} | Time: {elapsed:.2f}s")
+        print(
+            f"\n[RESULT] Status: {status.upper()} | Health: {health:.2f} | Records: {len(records)} | Time: {elapsed:.2f}s"
+        )
         if records:
             print(f"Sample Record: {records[0]}")
 
@@ -163,7 +171,9 @@ async def main():
     print(f"Total Tests: {len(results)} | Passed: {total_passed}/{len(results)}")
     for r in results:
         pass_icon = "[PASS]" if r.get("passed") else "[FAIL]"
-        print(f" - {r['test_name']:<45} {pass_icon} | Status={r['status']} | Health={r['health_score']:.2f} | Time={r['elapsed_seconds']:.2f}s")
+        print(
+            f" - {r['test_name']:<45} {pass_icon} | Status={r['status']} | Health={r['health_score']:.2f} | Time={r['elapsed_seconds']:.2f}s"
+        )
 
 
 if __name__ == "__main__":

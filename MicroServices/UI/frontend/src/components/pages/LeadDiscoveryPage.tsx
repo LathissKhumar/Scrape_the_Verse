@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { 
-  Search, 
-  MapPin, 
-  Globe, 
-  Database, 
-  Filter, 
-  Download, 
-  Sparkles, 
-  Zap, 
-  CheckCircle2, 
-  Phone, 
-  ExternalLink, 
+import React, { useState } from "react";
+import {
+  Search,
+  MapPin,
+  Globe,
+  Database,
+  Filter,
+  Download,
+  Sparkles,
+  Zap,
+  CheckCircle2,
+  Phone,
+  ExternalLink,
   RefreshCw,
   Star,
   Layers,
@@ -29,66 +29,74 @@ import {
   SlidersHorizontal,
   ChevronDown,
   Send,
-  AlertCircle
-} from 'lucide-react';
-import { LeadRecord, DashboardTab } from './types';
-import { mockLeads } from './mockData';
-import { searchGoogleMapsLeads, searchBrightDataLeads } from '@/lib/api/leadfinder';
-import { executeFullSdrPipeline } from '@/lib/api/sdr';
-import { createLead } from '@/lib/api/leadManager';
+  AlertCircle,
+} from "lucide-react";
+import { LeadRecord, DashboardTab } from "./types";
+import { mockLeads } from "./mockData";
+import {
+  searchGoogleMapsLeads,
+  searchBrightDataLeads,
+} from "@/lib/api/leadfinder";
+import { executeFullSdrPipeline } from "@/lib/api/sdr";
+import { createLead } from "@/lib/api/leadManager";
 
 interface LeadDiscoveryPageProps {
   onNavigateTab: (tab: DashboardTab, leadId?: string) => void;
   onSelectLead: (lead: LeadRecord) => void;
 }
 
-export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({ 
-  onNavigateTab, 
-  onSelectLead 
+export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
+  onNavigateTab,
+  onSelectLead,
 }) => {
   const [leads, setLeads] = useState<LeadRecord[]>(mockLeads);
-  const [query, setQuery] = useState('Solar Panel EPC Contractors');
-  const [location, setLocation] = useState('Bangalore, India');
-  const [selectedSource, setSelectedSource] = useState<string>('all');
+  const [query, setQuery] = useState("Solar Panel EPC Contractors");
+  const [location, setLocation] = useState("Bangalore, India");
+  const [selectedSource, setSelectedSource] = useState<string>("all");
   const [isHarvesting, setIsHarvesting] = useState(false);
   const [isEnrichingSdr, setIsEnrichingSdr] = useState(false);
-  const [harvestStatus, setHarvestStatus] = useState<{ isLive: boolean; message: string } | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [harvestStatus, setHarvestStatus] = useState<{
+    isLive: boolean;
+    message: string;
+  } | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedLeadIds, setSelectedLeadIds] = useState<string[]>([]);
-  const [activeLeadProfile, setActiveLeadProfile] = useState<LeadRecord | null>(mockLeads[0]);
+  const [activeLeadProfile, setActiveLeadProfile] = useState<LeadRecord | null>(
+    mockLeads[0],
+  );
 
   const sources = [
-    { 
-      id: 'Google Maps', 
-      label: 'Google Maps Places API', 
-      icon: MapPin, 
-      count: '620 Leads', 
-      verified: '100% Phone & Geo',
-      status: 'Connected'
+    {
+      id: "Google Maps",
+      label: "Google Maps Places API",
+      icon: MapPin,
+      count: "620 Leads",
+      verified: "100% Phone & Geo",
+      status: "Connected",
     },
-    { 
-      id: 'IndiaMART', 
-      label: 'IndiaMART B2B Directory', 
-      icon: Database, 
-      count: '410 Leads', 
-      verified: 'GST & Director Verified',
-      status: 'Connected'
+    {
+      id: "IndiaMART",
+      label: "IndiaMART B2B Directory",
+      icon: Database,
+      count: "410 Leads",
+      verified: "GST & Director Verified",
+      status: "Connected",
     },
-    { 
-      id: 'Yelp', 
-      label: 'Yelp Business Registry', 
-      icon: Globe, 
-      count: '250 Leads', 
-      verified: 'Review Sentiment Checked',
-      status: 'Connected'
+    {
+      id: "Yelp",
+      label: "Yelp Business Registry",
+      icon: Globe,
+      count: "250 Leads",
+      verified: "Review Sentiment Checked",
+      status: "Connected",
     },
-    { 
-      id: 'Direct Web', 
-      label: 'Direct Web Crawler', 
-      icon: Cpu, 
-      count: '148 Leads', 
-      verified: 'WHOIS & Sitemaps',
-      status: 'Connected'
+    {
+      id: "Direct Web",
+      label: "Direct Web Crawler",
+      icon: Cpu,
+      count: "148 Leads",
+      verified: "WHOIS & Sitemaps",
+      status: "Connected",
     },
   ];
 
@@ -97,28 +105,31 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
     if (!query) return;
 
     setIsHarvesting(true);
-    setHarvestStatus({ isLive: true, message: `Querying Lead Finder swarm for "${query}"...` });
+    setHarvestStatus({
+      isLive: true,
+      message: `Querying Lead Finder swarm for "${query}"...`,
+    });
 
     try {
-      if (selectedSource === 'IndiaMART') {
+      if (selectedSource === "IndiaMART") {
         const bdRes = await searchBrightDataLeads(query, true);
         if (bdRes.leads && bdRes.leads.length > 0) {
           const transformed: LeadRecord[] = bdRes.leads.map((l, idx) => ({
             id: `bd-${Date.now()}-${idx}`,
             business_name: l.company_name,
             category: l.industry || query,
-            location: l.location || location || 'Global',
-            phone_number: l.contact_phone || '+91 98860 00000',
-            website: l.website || 'https://company.com',
-            source: 'IndiaMART',
-            decision_path: 'website_analysis',
-            stage: 'discovered',
+            location: l.location || location || "Global",
+            phone_number: l.contact_phone || "+91 98860 00000",
+            website: l.website || "https://company.com",
+            source: "IndiaMART",
+            decision_path: "website_analysis",
+            stage: "discovered",
             lead_quality_score: 92,
-            opportunity_priority: 'High',
-            estimated_deal_value: 18500,
-            contact_person: l.contact_name || 'Managing Director',
-            email: l.contact_email || 'info@company.com',
-            last_activity: 'Just now',
+            opportunity_priority: "High",
+            estimated_deal_value: 185,
+            contact_person: l.contact_name || "Managing Director",
+            email: l.contact_email || "info@company.com",
+            last_activity: "Just now",
             created_at: new Date().toISOString(),
           }));
 
@@ -140,20 +151,25 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
           id: `gm-${Date.now()}-${idx}`,
           business_name: l.name,
           category: l.category || query,
-          location: l.address || location || 'Local Area',
-          phone_number: l.phone || '+91 98860 11224',
-          website: l.website || `https://${l.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.in`,
+          location: l.address || location || "Local Area",
+          phone_number: l.phone || "+91 98860 11224",
+          website:
+            l.website ||
+            `https://${l.name.toLowerCase().replace(/[^a-z0-9]/g, "")}.in`,
           rating: l.rating || 4.7,
           reviews_count: l.reviews_count || 42,
-          source: 'Google Maps',
-          decision_path: 'website_analysis',
-          stage: 'discovered',
-          lead_quality_score: Math.min(99, Math.round((l.rating || 4.5) * 19 + 5)),
-          opportunity_priority: (l.rating || 4.5) >= 4.5 ? 'High' : 'Medium',
-          estimated_deal_value: 15000,
-          contact_person: 'Executive Officer',
-          email: `contact@${l.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.in`,
-          last_activity: 'Just now',
+          source: "Google Maps",
+          decision_path: "website_analysis",
+          stage: "discovered",
+          lead_quality_score: Math.min(
+            99,
+            Math.round((l.rating || 4.5) * 19 + 5),
+          ),
+          opportunity_priority: (l.rating || 4.5) >= 4.5 ? "High" : "Medium",
+          estimated_deal_value: 149,
+          contact_person: "Executive Officer",
+          email: `contact@${l.name.toLowerCase().replace(/[^a-z0-9]/g, "")}.in`,
+          last_activity: "Just now",
           created_at: new Date().toISOString(),
         }));
 
@@ -167,22 +183,22 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
         // Fallback demo simulation
         const fallbackLead: LeadRecord = {
           id: `lead-${Date.now()}`,
-          business_name: `${query.split(' ')[0]} Systems Pvt Ltd`,
+          business_name: `${query.split(" ")[0]} Systems Pvt Ltd`,
           category: query,
-          location: location || 'Bangalore, India',
-          phone_number: '+91 98860 11224',
-          website: `https://${query.toLowerCase().replace(/\s+/g, '')}tech.in`,
+          location: location || "Bangalore, India",
+          phone_number: "+91 98860 11224",
+          website: `https://${query.toLowerCase().replace(/\s+/g, "")}tech.in`,
           rating: 4.8,
           reviews_count: 89,
-          source: 'Google Maps',
-          decision_path: 'website_analysis',
-          stage: 'discovered',
+          source: "Google Maps",
+          decision_path: "website_analysis",
+          stage: "discovered",
           lead_quality_score: 96,
-          opportunity_priority: 'High',
-          estimated_deal_value: 16500,
-          contact_person: 'Vikramaditya Roy',
-          email: 'vikram@systems.in',
-          last_activity: 'Just now',
+          opportunity_priority: "High",
+          estimated_deal_value: 165,
+          contact_person: "Vikramaditya Roy",
+          email: "vikram@systems.in",
+          last_activity: "Just now",
           created_at: new Date().toISOString(),
         };
         setLeads((prev) => [fallbackLead, ...prev]);
@@ -196,7 +212,7 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
       // Fallback
       setHarvestStatus({
         isLive: false,
-        message: 'Discovered lead added to workspace queue',
+        message: "Discovered lead added to workspace queue",
       });
     } finally {
       setIsHarvesting(false);
@@ -216,17 +232,19 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
         location: lead.location,
       });
 
-      if (sdrRes.result && sdrRes.result.status === 'PROCESSED') {
+      if (sdrRes.result && sdrRes.result.status === "PROCESSED") {
         const updatedLead: LeadRecord = {
           ...lead,
-          stage: 'analyzed',
+          stage: "analyzed",
           seo_score: sdrRes.result.audit_summary?.seo_score || 88,
           lead_quality_score: sdrRes.result.opportunity_score || 94,
         };
-        setLeads((prev) => prev.map((l) => (l.id === lead.id ? updatedLead : l)));
+        setLeads((prev) =>
+          prev.map((l) => (l.id === lead.id ? updatedLead : l)),
+        );
         setActiveLeadProfile(updatedLead);
         onSelectLead(updatedLead);
-        onNavigateTab('analysis', lead.id);
+        onNavigateTab("analysis", lead.id);
       } else {
         // Direct save to Lead Manager
         await createLead({
@@ -240,23 +258,25 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
           source: lead.source,
         });
         onSelectLead(lead);
-        onNavigateTab('analysis', lead.id);
+        onNavigateTab("analysis", lead.id);
       }
     } catch {
       onSelectLead(lead);
-      onNavigateTab('analysis', lead.id);
+      onNavigateTab("analysis", lead.id);
     } finally {
       setIsEnrichingSdr(false);
     }
   };
 
   const filteredLeads = leads.filter((l) => {
-    const matchesSource = selectedSource === 'all' || l.source.includes(selectedSource);
-    const matchesSearch = 
+    const matchesSource =
+      selectedSource === "all" || l.source.includes(selectedSource);
+    const matchesSearch =
       l.business_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       l.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
       l.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (l.contact_person && l.contact_person.toLowerCase().includes(searchTerm.toLowerCase()));
+      (l.contact_person &&
+        l.contact_person.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesSource && matchesSearch;
   });
 
@@ -264,14 +284,14 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
     if (selectedLeadIds.length === filteredLeads.length) {
       setSelectedLeadIds([]);
     } else {
-      setSelectedLeadIds(filteredLeads.map(l => l.id));
+      setSelectedLeadIds(filteredLeads.map((l) => l.id));
     }
   };
 
   const toggleSelectLead = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setSelectedLeadIds(prev => 
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    setSelectedLeadIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
@@ -288,7 +308,8 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
             Prospect Discovery & Data Enrichment
           </h1>
           <p className="text-sm text-white/60 mt-1 max-w-2xl">
-            Harvest high-intent commercial leads from Google Maps Places, Bright Data B2B directories, and native web crawlers.
+            Harvest high-intent commercial leads from Google Maps Places, Bright
+            Data B2B directories, and native web crawlers.
           </p>
         </div>
 
@@ -305,8 +326,8 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
         <div
           className={`p-3.5 rounded-2xl border flex items-center justify-between gap-3 text-xs backdrop-blur-xl ${
             harvestStatus.isLive
-              ? 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300'
-              : 'bg-white/[0.06] border-white/[0.14] text-white/90'
+              ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-300"
+              : "bg-white/[0.06] border-white/[0.14] text-white/90"
           }`}
         >
           <div className="flex items-center gap-2">
@@ -333,11 +354,13 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
             {sources.map((src) => (
               <button
                 key={src.id}
-                onClick={() => setSelectedSource(selectedSource === src.id ? 'all' : src.id)}
+                onClick={() =>
+                  setSelectedSource(selectedSource === src.id ? "all" : src.id)
+                }
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer flex items-center gap-1.5 ${
                   selectedSource === src.id
-                    ? 'bg-white/[0.18] border-white/[0.28] text-white shadow-sm backdrop-blur-xl'
-                    : 'bg-white/[0.04] border-white/[0.10] text-white/60 hover:text-white hover:bg-white/[0.08]'
+                    ? "bg-white/[0.18] border-white/[0.28] text-white shadow-sm backdrop-blur-xl"
+                    : "bg-white/[0.04] border-white/[0.10] text-white/60 hover:text-white hover:bg-white/[0.08]"
                 }`}
               >
                 <src.icon className="w-3.5 h-3.5" />
@@ -347,9 +370,14 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
           </div>
         </div>
 
-        <form onSubmit={handleLaunchHarvest} className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <form
+          onSubmit={handleLaunchHarvest}
+          className="grid grid-cols-1 md:grid-cols-12 gap-4"
+        >
           <div className="md:col-span-6 space-y-1.5">
-            <label className="text-xs font-mono text-white/50">Target Industry / Keyword</label>
+            <label className="text-xs font-mono text-white/50">
+              Target Industry / Keyword
+            </label>
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
               <input
@@ -363,7 +391,9 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
           </div>
 
           <div className="md:col-span-4 space-y-1.5">
-            <label className="text-xs font-mono text-white/50">Geographic Location</label>
+            <label className="text-xs font-mono text-white/50">
+              Geographic Location
+            </label>
             <div className="relative">
               <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
               <input
@@ -421,7 +451,7 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
 
             {selectedLeadIds.length > 0 && (
               <button
-                onClick={() => onNavigateTab('outreach')}
+                onClick={() => onNavigateTab("outreach")}
                 className="px-4 py-1.5 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white font-bold text-xs transition shadow-sm cursor-pointer flex items-center gap-1.5 backdrop-blur-xl"
               >
                 <Send className="w-3.5 h-3.5" />
@@ -440,7 +470,10 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
                   <th className="py-3 px-4 w-10">
                     <input
                       type="checkbox"
-                      checked={selectedLeadIds.length === filteredLeads.length && filteredLeads.length > 0}
+                      checked={
+                        selectedLeadIds.length === filteredLeads.length &&
+                        filteredLeads.length > 0
+                      }
                       onChange={toggleSelectAll}
                       className="rounded border-white/20 accent-sky-400 cursor-pointer"
                     />
@@ -465,10 +498,13 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
                         onSelectLead(lead);
                       }}
                       className={`hover:bg-white/[0.05] transition-colors cursor-pointer ${
-                        isSelected ? 'bg-white/[0.08]' : ''
+                        isSelected ? "bg-white/[0.08]" : ""
                       }`}
                     >
-                      <td className="py-3.5 px-4" onClick={(e) => toggleSelectLead(lead.id, e)}>
+                      <td
+                        className="py-3.5 px-4"
+                        onClick={(e) => toggleSelectLead(lead.id, e)}
+                      >
                         <input
                           type="checkbox"
                           checked={isChecked}
@@ -481,12 +517,18 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
                         <div className="font-bold text-white text-sm hover:text-sky-300 transition-colors">
                           {lead.business_name}
                         </div>
-                        <div className="text-[11px] text-white/50 mt-0.5">{lead.category} • {lead.location}</div>
+                        <div className="text-[11px] text-white/50 mt-0.5">
+                          {lead.category} • {lead.location}
+                        </div>
                       </td>
 
                       <td className="py-3.5 px-4">
-                        <div className="text-white font-semibold">{lead.contact_person || 'Managing Director'}</div>
-                        <div className="text-[11px] text-sky-300 font-mono mt-0.5">{lead.email || 'verified@lead.com'}</div>
+                        <div className="text-white font-semibold">
+                          {lead.contact_person || "Managing Director"}
+                        </div>
+                        <div className="text-[11px] text-sky-300 font-mono mt-0.5">
+                          {lead.email || "verified@lead.com"}
+                        </div>
                       </td>
 
                       <td className="py-3.5 px-4">
@@ -500,11 +542,14 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
                         {lead.source}
                       </td>
 
-                      <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                      <td
+                        className="py-3.5 px-4 text-right"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <button
                           onClick={() => {
                             onSelectLead(lead);
-                            onNavigateTab('analysis', lead.id);
+                            onNavigateTab("analysis", lead.id);
                           }}
                           className="px-3 py-1.5 rounded-xl bg-white/[0.16] hover:bg-white/[0.24] border border-white/[0.22] text-white font-bold text-xs transition cursor-pointer backdrop-blur-md"
                         >
@@ -530,7 +575,9 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
                     <h3 className="text-base font-bold text-white mt-1">
                       {activeLeadProfile.business_name}
                     </h3>
-                    <p className="text-xs text-white/50">{activeLeadProfile.category}</p>
+                    <p className="text-xs text-white/50">
+                      {activeLeadProfile.category}
+                    </p>
                   </div>
                   <div className="w-10 h-10 rounded-2xl bg-white/[0.12] border border-white/[0.18] text-white font-black text-xs flex items-center justify-center shadow-sm backdrop-blur-xl">
                     {activeLeadProfile.lead_quality_score}
@@ -540,15 +587,22 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
                 <div className="space-y-3 text-xs">
                   <div className="flex items-center justify-between text-white/80">
                     <span className="text-white/40">Decision Maker:</span>
-                    <span className="font-semibold text-white">{activeLeadProfile.contact_person || 'Executive Leadership'}</span>
+                    <span className="font-semibold text-white">
+                      {activeLeadProfile.contact_person ||
+                        "Executive Leadership"}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-white/80">
                     <span className="text-white/40">Verified Email:</span>
-                    <span className="font-mono text-sky-300 font-semibold">{activeLeadProfile.email || 'executive@company.com'}</span>
+                    <span className="font-mono text-sky-300 font-semibold">
+                      {activeLeadProfile.email || "executive@company.com"}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-white/80">
                     <span className="text-white/40">Direct Phone:</span>
-                    <span className="font-mono text-white">{activeLeadProfile.phone_number}</span>
+                    <span className="font-mono text-white">
+                      {activeLeadProfile.phone_number}
+                    </span>
                   </div>
                   {activeLeadProfile.website && (
                     <div className="flex items-center justify-between text-white/80">
@@ -574,7 +628,9 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
 
                 <div className="pt-4 border-t border-white/[0.08] space-y-2">
                   <button
-                    onClick={() => handleSdrEnrichAndRegister(activeLeadProfile)}
+                    onClick={() =>
+                      handleSdrEnrichAndRegister(activeLeadProfile)
+                    }
                     disabled={isEnrichingSdr}
                     className="w-full py-2.5 rounded-xl bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer backdrop-blur-xl"
                   >
@@ -594,7 +650,7 @@ export const LeadDiscoveryPage: React.FC<LeadDiscoveryPageProps> = ({
                   <button
                     onClick={() => {
                       onSelectLead(activeLeadProfile);
-                      onNavigateTab('outreach', activeLeadProfile.id);
+                      onNavigateTab("outreach", activeLeadProfile.id);
                     }}
                     className="w-full py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer backdrop-blur-md"
                   >

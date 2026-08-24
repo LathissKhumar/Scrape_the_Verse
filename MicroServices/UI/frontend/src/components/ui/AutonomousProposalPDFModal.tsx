@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { 
-  FileText, 
-  Download, 
-  Printer, 
-  X, 
-  Sparkles, 
-  CheckCircle2, 
+import React, { useState, useEffect, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
+import {
+  FileText,
+  Download,
+  Printer,
+  X,
+  Sparkles,
+  CheckCircle2,
   ExternalLink,
   Calendar,
   Layers,
   ArrowRight,
   ShieldCheck,
   Check,
-  Copy
-} from 'lucide-react';
-import { LeadRecord } from '@/components/pages/types';
-import { mockLeads } from '@/components/pages/mockData';
+  Copy,
+} from "lucide-react";
+import { LeadRecord } from "@/components/pages/types";
+import { mockLeads } from "@/components/pages/mockData";
 
 interface AutonomousProposalPDFModalProps {
   isOpen: boolean;
@@ -26,51 +26,56 @@ interface AutonomousProposalPDFModalProps {
   lead?: LeadRecord;
 }
 
-export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProps> = ({
-  isOpen,
-  onClose,
-  lead = mockLeads[0],
-}) => {
+const emptySubscribe = () => () => {};
+
+export const AutonomousProposalPDFModal: React.FC<
+  AutonomousProposalPDFModalProps
+> = ({ isOpen, onClose, lead = mockLeads[0] }) => {
   const [activeLead, setActiveLead] = useState<LeadRecord>(lead);
+  const [prevLead, setPrevLead] = useState<LeadRecord>(lead);
   const [copied, setCopied] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Sync if prop changes
-  useEffect(() => {
-    if (lead) setActiveLead(lead);
-  }, [lead]);
+  if (lead && lead.id !== prevLead?.id) {
+    setPrevLead(lead);
+    setActiveLead(lead);
+  }
 
   // Lock background scroll & handle ESC key
   useEffect(() => {
     if (!isOpen) return;
 
     const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") onClose();
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.body.style.overflow = originalOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
 
   if (!isOpen || !mounted) return null;
 
-  const targetWebsite = activeLead.website || `https://${activeLead.business_name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`;
-  const contactName = activeLead.contact_person || (activeLead.email ? activeLead.email.split('@')[0] : 'Aadhish');
-  const currentDate = new Date().toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric'
+  const targetWebsite =
+    activeLead.website ||
+    `https://${activeLead.business_name.toLowerCase().replace(/[^a-z0-9]/g, "")}.com`;
+  const contactName =
+    activeLead.contact_person ||
+    (activeLead.email ? activeLead.email.split("@")[0] : "Aadhish");
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
   });
 
   const handlePrint = () => {
@@ -84,18 +89,17 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
   };
 
   const modalContent = (
-    <div 
+    <div
       className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/85 backdrop-blur-2xl animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       {/* Container Dialog - Fixed Viewport Centered */}
-      <div 
+      <div
         className="relative w-full max-w-4xl bg-[#07090D] border border-white/20 rounded-3xl shadow-[0_30px_100px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col h-[88vh] max-h-[850px] animate-scaleUp"
         onClick={(e) => e.stopPropagation()}
       >
-        
         {/* Top Pinned Control Bar */}
         <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-white/10 bg-[#0B0F19]/95 backdrop-blur-xl shrink-0 z-20">
           <div className="flex items-center gap-3">
@@ -104,12 +108,17 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-white font-display">Autonomous PDF Deliverable Viewer</h3>
+                <h3 className="text-sm font-bold text-white font-display">
+                  Autonomous PDF Deliverable Viewer
+                </h3>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-semibold border border-emerald-500/30">
                   GENERATED :8082
                 </span>
               </div>
-              <p className="text-[11px] text-white/50">High-fidelity client audit document synthesized by Layer 6 Proposal Engine</p>
+              <p className="text-[11px] text-white/50">
+                High-fidelity client audit document synthesized by Layer 6
+                Proposal Engine
+              </p>
             </div>
           </div>
 
@@ -124,7 +133,11 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
               className="hidden sm:block px-3 py-1.5 rounded-xl bg-white/[0.08] border border-white/15 text-xs text-white font-medium focus:outline-none cursor-pointer"
             >
               {mockLeads.map((l) => (
-                <option key={l.id} value={l.id} className="bg-[#0B0F19] text-white">
+                <option
+                  key={l.id}
+                  value={l.id}
+                  className="bg-[#0B0F19] text-white"
+                >
                   {l.business_name}
                 </option>
               ))}
@@ -134,8 +147,14 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
               onClick={handleCopy}
               className="px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] border border-white/15 text-xs font-semibold text-white flex items-center gap-1.5 transition cursor-pointer"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-sky-300" />}
-              <span className="hidden sm:inline">{copied ? 'Copied' : 'Share'}</span>
+              {copied ? (
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
+              ) : (
+                <Copy className="w-3.5 h-3.5 text-sky-300" />
+              )}
+              <span className="hidden sm:inline">
+                {copied ? "Copied" : "Share"}
+              </span>
             </button>
 
             <button
@@ -157,10 +176,10 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
 
         {/* Scrollable PDF Document Canvas - Centered White Paper Document */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#03060E]/90 custom-scrollbar">
-          <div 
+          <div
             id="printable-pdf-document"
             className="w-full max-w-2xl mx-auto bg-white text-slate-900 rounded-xl shadow-2xl p-6 sm:p-10 font-sans text-xs sm:text-sm leading-relaxed space-y-7 print:p-0 print:shadow-none print:rounded-none"
-            style={{ minHeight: '980px' }}
+            style={{ minHeight: "980px" }}
           >
             {/* Header Tagline */}
             <div className="border-b-2 border-sky-800 pb-3">
@@ -171,8 +190,19 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                 Autonomous Sales Audit &amp; Proposal
               </h1>
               <p className="text-[11px] text-slate-600 mt-1">
-                <span className="font-semibold text-slate-800">Prepared for:</span> {activeLead.business_name} | <span className="font-semibold text-slate-800">Target Website:</span>{' '}
-                <a href={targetWebsite} target="_blank" rel="noopener noreferrer" className="text-sky-700 underline">
+                <span className="font-semibold text-slate-800">
+                  Prepared for:
+                </span>{" "}
+                {activeLead.business_name} |{" "}
+                <span className="font-semibold text-slate-800">
+                  Target Website:
+                </span>{" "}
+                <a
+                  href={targetWebsite}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sky-700 underline"
+                >
                   {targetWebsite}
                 </a>
               </p>
@@ -184,7 +214,17 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                 <span>1. Executive Summary &amp; Diagnosis</span>
               </h2>
               <p className="text-[12px] text-slate-700 leading-normal">
-                Dear {contactName.charAt(0).toUpperCase() + contactName.slice(1)}, our autonomous sales intelligence agent evaluated <span className="font-semibold text-slate-900">{activeLead.business_name}</span>&apos;s digital infrastructure, local search presence, and customer conversion funnels. Based on our automated multi-vector audit, we identified high-ROI growth opportunities to automate inbound lead acquisition, optimize mobile search rankings, and increase customer bookings.
+                Dear{" "}
+                {contactName.charAt(0).toUpperCase() + contactName.slice(1)},
+                our autonomous sales intelligence agent evaluated{" "}
+                <span className="font-semibold text-slate-900">
+                  {activeLead.business_name}
+                </span>
+                &apos;s digital infrastructure, local search presence, and
+                customer conversion funnels. Based on our automated multi-vector
+                audit, we identified high-ROI growth opportunities to automate
+                inbound lead acquisition, optimize mobile search rankings, and
+                increase customer bookings.
               </p>
 
               {/* Audit Dimension Table */}
@@ -200,22 +240,40 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                   </thead>
                   <tbody className="divide-y divide-slate-200 text-slate-700">
                     <tr className="hover:bg-slate-50">
-                      <td className="py-2 px-3 font-medium">Mobile &amp; Speed Performance</td>
-                      <td className="py-2 px-3 font-bold text-slate-900">82 / 100</td>
+                      <td className="py-2 px-3 font-medium">
+                        Mobile &amp; Speed Performance
+                      </td>
+                      <td className="py-2 px-3 font-bold text-slate-900">
+                        82 / 100
+                      </td>
                       <td className="py-2 px-3">85 / 100</td>
-                      <td className="py-2 px-3 font-bold text-emerald-700">OPTIMIZED</td>
+                      <td className="py-2 px-3 font-bold text-emerald-700">
+                        OPTIMIZED
+                      </td>
                     </tr>
                     <tr className="hover:bg-slate-50">
-                      <td className="py-2 px-3 font-medium">Search Engine Visibility (SEO)</td>
-                      <td className="py-2 px-3 font-bold text-slate-900">64 / 100</td>
+                      <td className="py-2 px-3 font-medium">
+                        Search Engine Visibility (SEO)
+                      </td>
+                      <td className="py-2 px-3 font-bold text-slate-900">
+                        64 / 100
+                      </td>
                       <td className="py-2 px-3">90 / 100</td>
-                      <td className="py-2 px-3 font-bold text-amber-700">NEEDS UPGRADE</td>
+                      <td className="py-2 px-3 font-bold text-amber-700">
+                        NEEDS UPGRADE
+                      </td>
                     </tr>
                     <tr className="hover:bg-slate-50">
-                      <td className="py-2 px-3 font-medium">Conversion &amp; Lead Capture</td>
-                      <td className="py-2 px-3 font-bold text-slate-900">68.0 / 100</td>
+                      <td className="py-2 px-3 font-medium">
+                        Conversion &amp; Lead Capture
+                      </td>
+                      <td className="py-2 px-3 font-bold text-slate-900">
+                        68.0 / 100
+                      </td>
                       <td className="py-2 px-3">95 / 100</td>
-                      <td className="py-2 px-3 font-bold text-rose-700">HIGH PRIORITY</td>
+                      <td className="py-2 px-3 font-bold text-rose-700">
+                        HIGH PRIORITY
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -228,7 +286,8 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                 2. Recommended Strategic Packages
               </h2>
               <p className="text-[11px] text-slate-600">
-                Below are the tailored implementation packages synthesized specifically for your business:
+                Below are the tailored implementation packages synthesized
+                specifically for your business:
               </p>
 
               {/* Package Deliverables Matrix Table */}
@@ -248,12 +307,20 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                         24/7 Automated Booking &amp; Lead Capture Funnel
                       </td>
                       <td className="py-2.5 px-2.5 text-slate-600">
-                        No automated instant booking mechanism to capture high-intent inquiries 24/7.
+                        No automated instant booking mechanism to capture
+                        high-intent inquiries 24/7.
                       </td>
                       <td className="py-2.5 px-2.5 text-slate-600 space-y-0.5">
-                        <div>• Instant appointment booking widget integration</div>
-                        <div>• Click-to-call and WhatsApp fast-response widget</div>
-                        <div>• Automated lead notification &amp; CRM dispatch pipeline</div>
+                        <div>
+                          • Instant appointment booking widget integration
+                        </div>
+                        <div>
+                          • Click-to-call and WhatsApp fast-response widget
+                        </div>
+                        <div>
+                          • Automated lead notification &amp; CRM dispatch
+                          pipeline
+                        </div>
                       </td>
                       <td className="py-2.5 px-2.5 font-bold text-sky-700 whitespace-nowrap">
                         Score: 85.0
@@ -265,12 +332,19 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                         Core Web Vitals &amp; Speed Boost
                       </td>
                       <td className="py-2.5 px-2.5 text-slate-600">
-                        Slow load speeds (70/100) causing customer drop-off before viewing services.
+                        Slow load speeds (70/100) causing customer drop-off
+                        before viewing services.
                       </td>
                       <td className="py-2.5 px-2.5 text-slate-600 space-y-0.5">
-                        <div>• Image compression and WebP next-gen format conversion</div>
+                        <div>
+                          • Image compression and WebP next-gen format
+                          conversion
+                        </div>
                         <div>• Critical CSS inlining and script deferral</div>
-                        <div>• Server TTFB and caching optimization (&lt;1.8s target)</div>
+                        <div>
+                          • Server TTFB and caching optimization (&lt;1.8s
+                          target)
+                        </div>
                       </td>
                       <td className="py-2.5 px-2.5 font-bold text-sky-700 whitespace-nowrap">
                         Score: 72.5
@@ -282,11 +356,14 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                         Website Redesign &amp; Conversion Architecture
                       </td>
                       <td className="py-2.5 px-2.5 text-slate-600">
-                        Suboptimal UX, low conversion signals (35/100), and mobile layout barriers.
+                        Suboptimal UX, low conversion signals (35/100), and
+                        mobile layout barriers.
                       </td>
                       <td className="py-2.5 px-2.5 text-slate-600 space-y-0.5">
                         <div>• Modern, responsive mobile UX overhaul</div>
-                        <div>• High-conversion booking and contact architecture</div>
+                        <div>
+                          • High-conversion booking and contact architecture
+                        </div>
                         <div>• Speed-optimized clean code framework</div>
                         <div>• Brand identity and trust badges integration</div>
                       </td>
@@ -305,13 +382,18 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
                 3. Next Steps &amp; Implementation Roadmap
               </h2>
               <p className="text-[12px] text-slate-700">
-                We have reserved 3 dedicated Google Meet slots for a 15-minute live demo and implementation walkthrough. Please check your calendar invitation email to select your preferred time slot.
+                We have reserved 3 dedicated Google Meet slots for a 15-minute
+                live demo and implementation walkthrough. Please check your
+                calendar invitation email to select your preferred time slot.
               </p>
             </div>
 
             {/* Document Footer */}
             <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-[10px] text-slate-400 font-mono gap-1">
-              <span>Generated autonomously on {currentDate} | AgencyOS Autonomous Sales System</span>
+              <span>
+                Generated autonomously on {currentDate} | AgencyOS Autonomous
+                Sales System
+              </span>
               <span className="font-semibold text-slate-500">Page 1 of 1</span>
             </div>
           </div>
@@ -321,7 +403,10 @@ export const AutonomousProposalPDFModal: React.FC<AutonomousProposalPDFModalProp
         <div className="px-6 py-3 border-t border-white/10 bg-[#0B0F19] flex items-center justify-between text-xs text-white/50 shrink-0 z-20">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Digital signature &amp; audit checksum verified by MicroService :8082</span>
+            <span>
+              Digital signature &amp; audit checksum verified by MicroService
+              :8082
+            </span>
           </div>
           <button
             onClick={onClose}

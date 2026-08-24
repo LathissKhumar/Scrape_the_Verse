@@ -7,10 +7,11 @@ import asyncio
 import json
 import logging
 import urllib.parse
-from typing import Optional
+
 from fastapi import WebSocket, WebSocketDisconnect
+
 from .audio_utils import AudioUtils
-from .domain.call_session import CallSession, CallStatus, CallTurn
+from .domain.call_session import CallSession, CallStatus
 from .state_machine import VoiceConversationEngine
 from .telephony_adapter import TelephonyAdapter
 from .vad import VoiceActivityDetector
@@ -27,17 +28,17 @@ class MediaStreamSession:
     def __init__(self, websocket: WebSocket, telephony_adapter: TelephonyAdapter):
         self.websocket = websocket
         self.telephony_adapter = telephony_adapter
-        self.stream_sid: Optional[str] = None
-        self.call_sid: Optional[str] = None
-        self.lead_id: Optional[str] = None
+        self.stream_sid: str | None = None
+        self.call_sid: str | None = None
+        self.lead_id: str | None = None
         self.company_name: str = "Valued Business"
-        self.contact_name: Optional[str] = None
+        self.contact_name: str | None = None
         self.has_website: bool = True
 
         self.voice_engine = VoiceEngine()
         self.vad = VoiceActivityDetector(on_barge_in=self._handle_barge_in)
-        self.engine: Optional[VoiceConversationEngine] = None
-        self.current_playback_task: Optional[asyncio.Task] = None
+        self.engine: VoiceConversationEngine | None = None
+        self.current_playback_task: asyncio.Task | None = None
         self.is_active = True
 
     def _handle_barge_in(self) -> None:
@@ -98,7 +99,9 @@ class MediaStreamSession:
         raw_company = custom_params.get("company_name", "Valued Business")
         self.company_name = urllib.parse.unquote_plus(raw_company)
         raw_contact = custom_params.get("contact_name")
-        self.contact_name = urllib.parse.unquote_plus(raw_contact) if raw_contact else None
+        self.contact_name = (
+            urllib.parse.unquote_plus(raw_contact) if raw_contact else None
+        )
         self.has_website = custom_params.get("has_website", "true").lower() == "true"
 
         # Initialize conversation engine
@@ -115,7 +118,9 @@ class MediaStreamSession:
 
         # Generate and play initial greeting
         opening_reply = self.engine.start_conversation()
-        self.current_playback_task = asyncio.create_task(self._play_speech_response(opening_reply))
+        self.current_playback_task = asyncio.create_task(
+            self._play_speech_response(opening_reply)
+        )
 
     async def _handle_media_event(self, msg: dict) -> None:
         """Process incoming 20ms mulaw audio frame from caller."""
@@ -143,13 +148,17 @@ class MediaStreamSession:
         # Execute conversation turn
         turn_result = await self.engine.process_turn_async(user_utterance)
         agent_reply = turn_result["agent_response"]
-        logger.info(f"AI Agent Response: '{agent_reply}' (State: {turn_result['new_state']})")
+        logger.info(
+            f"AI Agent Response: '{agent_reply}' (State: {turn_result['new_state']})"
+        )
 
         # Play agent speech response
         if self.current_playback_task and not self.current_playback_task.done():
             self.current_playback_task.cancel()
 
-        self.current_playback_task = asyncio.create_task(self._play_speech_response(agent_reply))
+        self.current_playback_task = asyncio.create_task(
+            self._play_speech_response(agent_reply)
+        )
 
     async def _play_speech_response(self, text: str) -> None:
         """Synthesize text and stream mulaw frames over WebSocket to Twilio."""

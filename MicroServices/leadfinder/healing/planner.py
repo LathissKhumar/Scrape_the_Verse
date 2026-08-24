@@ -2,12 +2,18 @@
 
 import json
 import re
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlparse
+
 from bs4 import BeautifulSoup
+
 from leadfinder.config.logging import get_logger
 from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, RawPage
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    ExtractionStrategyEnum,
+    RawPage,
+)
 from leadfinder.healing.actions.detector import ActionIssueDetector
 from leadfinder.healing.actions.planner import ActionRepairPlanner
 from leadfinder.healing.failed_memory import FailedRepairMemory
@@ -89,13 +95,13 @@ class HealingPlanner:
 
     def __init__(
         self,
-        llm_client: Optional[LLMClient] = None,
-        memory: Optional[RepairMemory] = None,
-        failed_memory: Optional[FailedRepairMemory] = None,
-        semantic_memory: Optional[SemanticRepairMemory] = None,
-        action_detector: Optional[ActionIssueDetector] = None,
-        action_planner: Optional[ActionRepairPlanner] = None,
-        fingerprinter: Optional[DOMFingerprinter] = None,
+        llm_client: LLMClient | None = None,
+        memory: RepairMemory | None = None,
+        failed_memory: FailedRepairMemory | None = None,
+        semantic_memory: SemanticRepairMemory | None = None,
+        action_detector: ActionIssueDetector | None = None,
+        action_planner: ActionRepairPlanner | None = None,
+        fingerprinter: DOMFingerprinter | None = None,
         confidence_weight: float = 0.35,
         improvement_weight: float = 0.30,
         reliability_weight: float = 0.20,
@@ -107,7 +113,9 @@ class HealingPlanner:
         self.failed_memory = failed_memory or FailedRepairMemory()
         self.semantic_memory = semantic_memory or SemanticRepairMemory()
         self.action_detector = action_detector or ActionIssueDetector()
-        self.action_planner = action_planner or ActionRepairPlanner(llm_client=llm_client)
+        self.action_planner = action_planner or ActionRepairPlanner(
+            llm_client=llm_client
+        )
         self.fingerprinter = fingerprinter or DOMFingerprinter()
         self.confidence_weight = confidence_weight
         self.improvement_weight = improvement_weight
@@ -129,18 +137,32 @@ class HealingPlanner:
         # Expected improvement estimate
         exp_imp = 0.5
         if plan.expected_improvement:
-            exp_imp = sum(plan.expected_improvement.values()) / max(len(plan.expected_improvement), 1)
+            exp_imp = sum(plan.expected_improvement.values()) / max(
+                len(plan.expected_improvement), 1
+            )
 
         strat_rel = _STRATEGY_RELIABILITY_MAP.get(plan.repair_type, 0.50)
 
         # Historical success
-        hist_score = 1.0 if source == "memory" else (0.8 if source == "semantic_memory" else 0.5)
+        hist_score = (
+            1.0 if source == "memory" else (0.8 if source == "semantic_memory" else 0.5)
+        )
 
         # Risk factor
-        risk_penalty = 0.1 if plan.risk_level == "low" else (0.5 if plan.risk_level == "medium" else 1.0)
+        risk_penalty = (
+            0.1
+            if plan.risk_level == "low"
+            else (0.5 if plan.risk_level == "medium" else 1.0)
+        )
 
         # Failed candidate penalty
-        fail_penalty = self.failed_memory.get_penalty(domain, signature, plan.proposed_configuration) if domain and signature else 0.0
+        fail_penalty = (
+            self.failed_memory.get_penalty(
+                domain, signature, plan.proposed_configuration
+            )
+            if domain and signature
+            else 0.0
+        )
 
         score = (
             (self.confidence_weight * conf)
@@ -159,10 +181,12 @@ class HealingPlanner:
         validation: ValidationResult,
         raw_pages: list[RawPage],
         current_schema: ExtractionSchema,
-        failed_attempts: Optional[list[dict[str, Any]]] = None,
+        failed_attempts: list[dict[str, Any]] | None = None,
     ) -> list[RepairCandidate]:
         """Generate, score, and rank repair candidates using memory, actions, LLM, and deterministic heuristics."""
-        logger.debug(f"Generating repair candidates for task_id={task.task_id} (root_cause={diagnosis.root_cause.value})")
+        logger.debug(
+            f"Generating repair candidates for task_id={task.task_id} (root_cause={diagnosis.root_cause.value})"
+        )
         candidates: list[RepairCandidate] = []
         target_url = task.target_urls[0] if task.target_urls else "https://example.com"
         parsed = urlparse(target_url)
@@ -170,10 +194,14 @@ class HealingPlanner:
 
         sample_html = raw_pages[0].get_primary_content() if raw_pages else ""
         field_names = [f.name for f in current_schema.fields]
-        sig = self.memory.generate_signature(url=target_url, html=sample_html, fields=field_names)
+        sig = self.memory.generate_signature(
+            url=target_url, html=sample_html, fields=field_names
+        )
 
         # 1. Check Exact Memory for previously successful repairs on same domain/signature
-        memory_records = self.memory.find_similar_repairs(domain=domain, signature=sig, root_cause=diagnosis.root_cause.value)
+        memory_records = self.memory.find_similar_repairs(
+            domain=domain, signature=sig, root_cause=diagnosis.root_cause.value
+        )
         for mem in memory_records:
             if not self.failed_memory.is_suppressed(domain, sig, mem.successful_patch):
                 mem_plan = RepairPlan(
@@ -182,21 +210,36 @@ class HealingPlanner:
                     affected_fields=diagnosis.affected_fields or field_names,
                     previous_configuration=current_schema.model_dump(),
                     proposed_configuration=mem.successful_patch,
-                    patch={"fields": [{"name": k, "selector": v} for k, v in mem.successful_patch.items()]},
+                    patch={
+                        "fields": [
+                            {"name": k, "selector": v}
+                            for k, v in mem.successful_patch.items()
+                        ]
+                    },
                     reason=f"Reused successful pattern from memory for {mem.domain} ({mem.signature})",
                     confidence=0.92,
                     expected_improvement={"coverage": 0.90},
                     risk_level="low",
                     level=1,
                 )
-                score = self.score_candidate(plan=mem_plan, diagnosis=diagnosis, source="memory", domain=domain, signature=sig)
-                candidates.append(RepairCandidate(plan=mem_plan, score=score, source="memory"))
+                score = self.score_candidate(
+                    plan=mem_plan,
+                    diagnosis=diagnosis,
+                    source="memory",
+                    domain=domain,
+                    signature=sig,
+                )
+                candidates.append(
+                    RepairCandidate(plan=mem_plan, score=score, source="memory")
+                )
 
         # 2. Check Dynamic UI Action Issues (Cookie banner, blocking modal, load-more triggers)
         if sample_html:
             detected_issues = self.action_detector.detect_blocking_issues(sample_html)
             if detected_issues:
-                action_plans = self.action_planner.plan_from_issues(detected_issues, task)
+                action_plans = self.action_planner.plan_from_issues(
+                    detected_issues, task
+                )
                 for a_plan in action_plans:
                     act_repair_plan = RepairPlan(
                         repair_type=RepairType.REPAIR_ACTION_PLAN,
@@ -209,29 +252,62 @@ class HealingPlanner:
                         risk_level="low",
                         level=2,
                     )
-                    if not self.failed_memory.is_suppressed(domain, sig, act_repair_plan.proposed_configuration):
-                        score = self.score_candidate(plan=act_repair_plan, diagnosis=diagnosis, source="action_detector", domain=domain, signature=sig)
-                        candidates.append(RepairCandidate(plan=act_repair_plan, score=score, source="action_detector"))
+                    if not self.failed_memory.is_suppressed(
+                        domain, sig, act_repair_plan.proposed_configuration
+                    ):
+                        score = self.score_candidate(
+                            plan=act_repair_plan,
+                            diagnosis=diagnosis,
+                            source="action_detector",
+                            domain=domain,
+                            signature=sig,
+                        )
+                        candidates.append(
+                            RepairCandidate(
+                                plan=act_repair_plan,
+                                score=score,
+                                source="action_detector",
+                            )
+                        )
 
         # 3. Check Cross-Domain Semantic Memory for structural pattern transfers
         if sample_html:
-            semantic_matches = self.semantic_memory.find_cross_domain_candidates(sample_html, field_names)
+            semantic_matches = self.semantic_memory.find_cross_domain_candidates(
+                sample_html, field_names
+            )
             for smem in semantic_matches:
-                if not self.failed_memory.is_suppressed(domain, sig, smem.successful_patch):
+                if not self.failed_memory.is_suppressed(
+                    domain, sig, smem.successful_patch
+                ):
                     smem_plan = RepairPlan(
                         repair_type=smem.repair_type,
                         target_component="extraction",
                         affected_fields=field_names,
                         proposed_configuration=smem.successful_patch,
-                        patch={"fields": [{"name": k, "selector": v} for k, v in smem.successful_patch.items()]},
+                        patch={
+                            "fields": [
+                                {"name": k, "selector": v}
+                                for k, v in smem.successful_patch.items()
+                            ]
+                        },
                         reason=f"Cross-domain structural pattern transferred from {smem.domain}",
                         confidence=0.78,
                         expected_improvement={"coverage": 0.85},
                         risk_level="medium",
                         level=1,
                     )
-                    score = self.score_candidate(plan=smem_plan, diagnosis=diagnosis, source="semantic_memory", domain=domain, signature=sig)
-                    candidates.append(RepairCandidate(plan=smem_plan, score=score, source="semantic_memory"))
+                    score = self.score_candidate(
+                        plan=smem_plan,
+                        diagnosis=diagnosis,
+                        source="semantic_memory",
+                        domain=domain,
+                        signature=sig,
+                    )
+                    candidates.append(
+                        RepairCandidate(
+                            plan=smem_plan, score=score, source="semantic_memory"
+                        )
+                    )
 
         # 4. Invoke LLM for evidence-grounded candidate generation
         if self.llm_client and sample_html:
@@ -243,9 +319,21 @@ class HealingPlanner:
                 current_schema=current_schema,
                 failed_attempts=failed_attempts,
             )
-            if llm_candidate and not self.failed_memory.is_suppressed(domain, sig, llm_candidate.proposed_configuration):
-                score = self.score_candidate(plan=llm_candidate, diagnosis=diagnosis, source="planner_llm", domain=domain, signature=sig)
-                candidates.append(RepairCandidate(plan=llm_candidate, score=score, source="planner_llm"))
+            if llm_candidate and not self.failed_memory.is_suppressed(
+                domain, sig, llm_candidate.proposed_configuration
+            ):
+                score = self.score_candidate(
+                    plan=llm_candidate,
+                    diagnosis=diagnosis,
+                    source="planner_llm",
+                    domain=domain,
+                    signature=sig,
+                )
+                candidates.append(
+                    RepairCandidate(
+                        plan=llm_candidate, score=score, source="planner_llm"
+                    )
+                )
 
         # 5. Deterministic Heuristics & Alternative Candidates
         deterministic_candidates = self._generate_deterministic_candidates(
@@ -254,9 +342,19 @@ class HealingPlanner:
             raw_pages=raw_pages,
         )
         for d_plan in deterministic_candidates:
-            if not self.failed_memory.is_suppressed(domain, sig, d_plan.proposed_configuration):
-                score = self.score_candidate(plan=d_plan, diagnosis=diagnosis, source="deterministic", domain=domain, signature=sig)
-                candidates.append(RepairCandidate(plan=d_plan, score=score, source="deterministic"))
+            if not self.failed_memory.is_suppressed(
+                domain, sig, d_plan.proposed_configuration
+            ):
+                score = self.score_candidate(
+                    plan=d_plan,
+                    diagnosis=diagnosis,
+                    source="deterministic",
+                    domain=domain,
+                    signature=sig,
+                )
+                candidates.append(
+                    RepairCandidate(plan=d_plan, score=score, source="deterministic")
+                )
 
         # Ensure at least one candidate (fallback to strategy switch or escalate)
         if not candidates:
@@ -269,8 +367,16 @@ class HealingPlanner:
                 confidence=0.70,
                 level=1,
             )
-            score = self.score_candidate(plan=fallback_plan, diagnosis=diagnosis, source="fallback", domain=domain, signature=sig)
-            candidates.append(RepairCandidate(plan=fallback_plan, score=score, source="fallback"))
+            score = self.score_candidate(
+                plan=fallback_plan,
+                diagnosis=diagnosis,
+                source="fallback",
+                domain=domain,
+                signature=sig,
+            )
+            candidates.append(
+                RepairCandidate(plan=fallback_plan, score=score, source="fallback")
+            )
 
         # Deduplicate and sort descending by score
         unique_candidates: list[RepairCandidate] = []
@@ -293,17 +399,32 @@ class HealingPlanner:
         validation: ValidationResult,
         sample_html: str,
         current_schema: ExtractionSchema,
-        failed_attempts: Optional[list[dict[str, Any]]] = None,
-    ) -> Optional[RepairPlan]:
+        failed_attempts: list[dict[str, Any]] | None = None,
+    ) -> RepairPlan | None:
         """Query Qwen3:8b with a clean, script-free HTML snippet and diagnostic context to produce a structured RepairPlan."""
         try:
             # Clean HTML to keep prompt lightweight and fast for local Ollama
             soup = BeautifulSoup(sample_html, "html.parser")
-            for tag in soup(["script", "style", "noscript", "svg", "path", "link", "meta", "header", "footer", "nav"]):
+            for tag in soup(
+                [
+                    "script",
+                    "style",
+                    "noscript",
+                    "svg",
+                    "path",
+                    "link",
+                    "meta",
+                    "header",
+                    "footer",
+                    "nav",
+                ]
+            ):
                 tag.decompose()
 
             # Find main content container or body
-            main_container = soup.find("main") or soup.find("article") or soup.body or soup
+            main_container = (
+                soup.find("main") or soup.find("article") or soup.body or soup
+            )
             raw_snippet = str(main_container) if main_container else str(soup)
             clean_snippet = _WHITESPACE_REGEX.sub(" ", raw_snippet)[:1200]
 
@@ -347,9 +468,21 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
 
             # Sanitize target_component to valid Literal["extraction", "scraper", "collector"]
             raw_target = str(data.get("target_component", "extraction")).lower()
-            if any(k in raw_target for k in ["scraper", "crawler", "browser", "content", "availability", "page"]):
+            if any(
+                k in raw_target
+                for k in [
+                    "scraper",
+                    "crawler",
+                    "browser",
+                    "content",
+                    "availability",
+                    "page",
+                ]
+            ):
                 target_component = "scraper"
-            elif any(k in raw_target for k in ["collector", "network", "proxy", "brightdata"]):
+            elif any(
+                k in raw_target for k in ["collector", "network", "proxy", "brightdata"]
+            ):
                 target_component = "collector"
             else:
                 target_component = "extraction"
@@ -374,12 +507,20 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
                 target_component=target_component,
                 affected_fields=data.get("affected_fields", diagnosis.affected_fields),
                 previous_configuration=current_schema.model_dump(),
-                proposed_configuration=data.get("proposed_configuration", {}) if isinstance(data.get("proposed_configuration"), dict) else {},
-                patch=data.get("patch", {}) if isinstance(data.get("patch"), dict) else {},
+                proposed_configuration=data.get("proposed_configuration", {})
+                if isinstance(data.get("proposed_configuration"), dict)
+                else {},
+                patch=data.get("patch", {})
+                if isinstance(data.get("patch"), dict)
+                else {},
                 reason=data.get("reason", "LLM proposed evidence-based repair"),
                 confidence=conf_val,
-                expected_improvement=data.get("expected_improvement", {"coverage": 0.9}) if isinstance(data.get("expected_improvement"), dict) else {"coverage": 0.9},
-                test_requirements=data.get("test_requirements", []) if isinstance(data.get("test_requirements"), list) else [],
+                expected_improvement=data.get("expected_improvement", {"coverage": 0.9})
+                if isinstance(data.get("expected_improvement"), dict)
+                else {"coverage": 0.9},
+                test_requirements=data.get("test_requirements", [])
+                if isinstance(data.get("test_requirements"), list)
+                else [],
                 risk_level=risk_level,
                 level=1,
             )
@@ -397,14 +538,23 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
         candidates: list[RepairPlan] = []
 
         # If CSS, Regex, or XPath failed and raw page text is present -> offer strategy switch to LLM or Semantic
-        if diagnosis.root_cause in (RootCause.SELECTOR_DRIFT, RootCause.DOM_STRUCTURE_CHANGE, RootCause.EXTRACTION_DEGRADATION):
-            if current_schema.strategy in (ExtractionStrategyEnum.CSS, ExtractionStrategyEnum.REGEX):
+        if diagnosis.root_cause in (
+            RootCause.SELECTOR_DRIFT,
+            RootCause.DOM_STRUCTURE_CHANGE,
+            RootCause.EXTRACTION_DEGRADATION,
+        ):
+            if current_schema.strategy in (
+                ExtractionStrategyEnum.CSS,
+                ExtractionStrategyEnum.REGEX,
+            ):
                 # Candidate 1: Switch to LLM chunking (high fidelity)
                 candidates.append(
                     RepairPlan(
                         repair_type=RepairType.SWITCH_EXTRACTION_STRATEGY,
                         target_component="extraction",
-                        previous_configuration={"strategy": current_schema.strategy.value},
+                        previous_configuration={
+                            "strategy": current_schema.strategy.value
+                        },
                         proposed_configuration={"strategy": "llm"},
                         patch={"strategy": "llm"},
                         reason="Selectors or regex drifted; switch to LLM chunking extraction",
@@ -419,7 +569,9 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
                     RepairPlan(
                         repair_type=RepairType.SWITCH_EXTRACTION_STRATEGY,
                         target_component="extraction",
-                        previous_configuration={"strategy": current_schema.strategy.value},
+                        previous_configuration={
+                            "strategy": current_schema.strategy.value
+                        },
                         proposed_configuration={"strategy": "semantic"},
                         patch={"strategy": "semantic"},
                         reason="Selectors drifted; switch to semantic extraction",
@@ -445,4 +597,3 @@ Propose the smallest evidence-supported repair plan in strict JSON. Do NOT inven
             )
 
         return candidates
-

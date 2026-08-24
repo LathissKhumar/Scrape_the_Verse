@@ -7,22 +7,31 @@ Verifies:
 - Transparent weighted scoring calculation
 """
 
-import pytest
-from LibreCrawl.src.core.benchmark import evaluate_audit_precision_recall, generate_benchmark_report
-from LibreCrawl.src.core.agent_api import generate_agent_summary_json, SEOAgentTools, SCHEMA_VERSION
-from LibreCrawl.src.core.scoring import calculate_transparent_score, create_3layer_finding, calculate_business_priority
+from LibreCrawl.src.core.agent_api import (
+    SCHEMA_VERSION,
+    SEOAgentTools,
+    generate_agent_summary_json,
+)
+from LibreCrawl.src.core.benchmark import (
+    evaluate_audit_precision_recall,
+)
+from LibreCrawl.src.core.scoring import (
+    calculate_business_priority,
+    calculate_transparent_score,
+    create_3layer_finding,
+)
 
 
 def test_evaluate_precision_recall_f1():
     detected = [
         {"url": "https://example.com/a", "rule_id": "missing_title"},
         {"url": "https://example.com/b", "rule_id": "missing_meta_description"},
-        {"url": "https://example.com/c", "rule_id": "broken_link"}  # False positive
+        {"url": "https://example.com/c", "rule_id": "broken_link"},  # False positive
     ]
     ground_truth = [
         {"url": "https://example.com/a", "rule_id": "missing_title"},
         {"url": "https://example.com/b", "rule_id": "missing_meta_description"},
-        {"url": "https://example.com/d", "rule_id": "slow_response"}  # False negative
+        {"url": "https://example.com/d", "rule_id": "slow_response"},  # False negative
     ]
 
     metrics = evaluate_audit_precision_recall(detected, ground_truth)
@@ -41,9 +50,23 @@ def test_generate_agent_summary_json():
         "overall_seo_score": 85,
         "category_scores": {"Technical SEO": 90, "On-Page SEO": 80},
         "crawl_summary": {"duration_seconds": 12.5},
-        "pages": [{"url": "https://atlaskliniek.nl/", "status_code": 200, "title": "Home", "word_count": 500}],
-        "issues": [{"id": "iss_1", "severity": "CRITICAL", "title": "Server Error", "url": "https://atlaskliniek.nl/500"}],
-        "priority_action_items": [{"priority": 1, "title": "Fix 500"}]
+        "pages": [
+            {
+                "url": "https://atlaskliniek.nl/",
+                "status_code": 200,
+                "title": "Home",
+                "word_count": 500,
+            }
+        ],
+        "issues": [
+            {
+                "id": "iss_1",
+                "severity": "CRITICAL",
+                "title": "Server Error",
+                "url": "https://atlaskliniek.nl/500",
+            }
+        ],
+        "priority_action_items": [{"priority": 1, "title": "Fix 500"}],
     }
 
     agent_summary = generate_agent_summary_json(sample_audit)
@@ -59,16 +82,23 @@ def test_seo_agent_tools():
         "overall_seo_score": 88,
         "category_scores": {"Technical SEO": 90},
         "crawl_summary": {"total_pages": 10},
-        "pages": [{"url": "https://atlaskliniek.nl/dentist", "title": "Dentist Amsterdam"}],
-        "issues": [{"category": "Technical", "severity": "CRITICAL", "title": "Broken link"}],
-        "priority_action_items": [{"title": "Fix broken link"}]
+        "pages": [
+            {"url": "https://atlaskliniek.nl/dentist", "title": "Dentist Amsterdam"}
+        ],
+        "issues": [
+            {"category": "Technical", "severity": "CRITICAL", "title": "Broken link"}
+        ],
+        "priority_action_items": [{"title": "Fix broken link"}],
     }
 
     tools = SEOAgentTools(sample_audit)
     assert tools.get_crawl_summary()["overall_score"] == 88
     assert len(tools.get_issues_by_category("Technical")) == 1
     assert len(tools.get_issues_by_severity("CRITICAL")) == 1
-    assert tools.get_page("https://atlaskliniek.nl/dentist")["title"] == "Dentist Amsterdam"
+    assert (
+        tools.get_page("https://atlaskliniek.nl/dentist")["title"]
+        == "Dentist Amsterdam"
+    )
 
 
 def test_transparent_scoring():
@@ -79,7 +109,7 @@ def test_transparent_scoring():
         "Performance": 85.0,
         "Structured Data": 100.0,
         "Internal Linking": 75.0,
-        "Local SEO": 95.0
+        "Local SEO": 95.0,
     }
     result = calculate_transparent_score(cat_scores)
     assert 80.0 <= result["score"] <= 86.0
@@ -98,7 +128,7 @@ def test_3layer_finding_and_business_priority():
         severity="HIGH",
         confidence="high",
         impact=8,
-        effort="low"
+        effort="low",
     )
     assert finding["severity"] == "HIGH"
     assert finding["confidence"] == "high"

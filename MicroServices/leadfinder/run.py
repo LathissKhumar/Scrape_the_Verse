@@ -8,6 +8,7 @@ for _path in (str(_pkg_root), str(_repo_root)):
         sys.path.insert(0, _path)
 
 import uvicorn
+
 from leadfinder.config.settings import get_settings
 
 if __name__ == "__main__":

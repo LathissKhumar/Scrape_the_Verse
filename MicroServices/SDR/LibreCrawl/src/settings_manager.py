@@ -1,9 +1,5 @@
-import json
-import os
-from pathlib import Path
-
 class SettingsManager:
-    def __init__(self, session_id=None, user_id=None, tier='guest'):
+    def __init__(self, session_id=None, user_id=None, tier="guest"):
         """
         Initialize settings manager
         user_id: Database user ID for per-user settings storage
@@ -26,11 +22,16 @@ class SettingsManager:
         # user: Crawler, Export, Issue Exclusion tabs
         user_settings = [
             # Crawler tab
-            'maxDepth', 'maxUrls', 'crawlDelay', 'followRedirects', 'crawlExternalLinks',
+            "maxDepth",
+            "maxUrls",
+            "crawlDelay",
+            "followRedirects",
+            "crawlExternalLinks",
             # Export tab
-            'exportFormat', 'exportFields',
+            "exportFormat",
+            "exportFields",
             # Issues tab
-            'issueExclusionPatterns'
+            "issueExclusionPatterns",
         ]
 
         # extra: all in user + Filters, Requests, Custom CSS, JavaScript tabs
@@ -38,26 +39,44 @@ class SettingsManager:
         #       enableProxy, proxyUrl, customHeaders) are ADMIN ONLY
         extra_settings = user_settings + [
             # Requests tab
-            'userAgent', 'timeout', 'retries', 'acceptLanguage', 'respectRobotsTxt', 'allowCookies',
-            'discoverSitemaps', 'enablePageSpeed', 'googleApiKey',
+            "userAgent",
+            "timeout",
+            "retries",
+            "acceptLanguage",
+            "respectRobotsTxt",
+            "allowCookies",
+            "discoverSitemaps",
+            "enablePageSpeed",
+            "googleApiKey",
             # Filters tab
-            'includeExtensions', 'excludeExtensions', 'includePatterns', 'excludePatterns', 'maxFileSize',
-            'crawlImages',
+            "includeExtensions",
+            "excludeExtensions",
+            "includePatterns",
+            "excludePatterns",
+            "maxFileSize",
+            "crawlImages",
             # JavaScript tab
-            'enableJavaScript', 'jsWaitTime', 'jsTimeout', 'jsBrowser', 'jsHeadless',
-            'jsUserAgent', 'jsViewportWidth', 'jsViewportHeight', 'jsMaxConcurrentPages',
+            "enableJavaScript",
+            "jsWaitTime",
+            "jsTimeout",
+            "jsBrowser",
+            "jsHeadless",
+            "jsUserAgent",
+            "jsViewportWidth",
+            "jsViewportHeight",
+            "jsMaxConcurrentPages",
             # Custom CSS tab
-            'customCSS'
+            "customCSS",
         ]
 
         # admin: all settings including Advanced tab
         admin_settings = list(self.default_settings.keys())
 
         return {
-            'guest': guest_settings,
-            'user': user_settings,
-            'extra': extra_settings,
-            'admin': admin_settings
+            "guest": guest_settings,
+            "user": user_settings,
+            "extra": extra_settings,
+            "admin": admin_settings,
         }
 
     def filter_settings_by_tier(self, settings):
@@ -65,7 +84,7 @@ class SettingsManager:
         allowed = self._get_tier_allowed_settings().get(self.tier, [])
         if not allowed:  # guest gets nothing
             return {}
-        if self.tier == 'admin':  # admin gets everything
+        if self.tier == "admin":  # admin gets everything
             return settings
         # Filter to allowed keys only
         return {k: v for k, v in settings.items() if k in allowed}
@@ -74,64 +93,56 @@ class SettingsManager:
         """Get fresh default settings"""
         return {
             # Crawler settings
-            'maxDepth': 3,
-            'maxUrls': 5000000,
-            'crawlDelay': 1,
-            'followRedirects': True,
-            'crawlExternalLinks': False,
-
+            "maxDepth": 3,
+            "maxUrls": 5000000,
+            "crawlDelay": 1,
+            "followRedirects": True,
+            "crawlExternalLinks": False,
             # Request settings
-            'userAgent': 'LibreCrawl/1.0 (Web Crawler)',
-            'timeout': 10,
-            'retries': 3,
-            'acceptLanguage': 'en-US,en;q=0.9',
-            'respectRobotsTxt': True,
-            'allowCookies': True,
-            'discoverSitemaps': True,
-            'enablePageSpeed': False,
-            'googleApiKey': '',
-
+            "userAgent": "LibreCrawl/1.0 (Web Crawler)",
+            "timeout": 10,
+            "retries": 3,
+            "acceptLanguage": "en-US,en;q=0.9",
+            "respectRobotsTxt": True,
+            "allowCookies": True,
+            "discoverSitemaps": True,
+            "enablePageSpeed": False,
+            "googleApiKey": "",
             # Filter settings
-            'includeExtensions': 'html,htm,php,asp,aspx,jsp',
-            'excludeExtensions': 'pdf,doc,docx,zip,exe,dmg',
-            'includePatterns': '',
-            'excludePatterns': '',
-            'maxFileSize': 50,
-            'crawlImages': False,
-
+            "includeExtensions": "html,htm,php,asp,aspx,jsp",
+            "excludeExtensions": "pdf,doc,docx,zip,exe,dmg",
+            "includePatterns": "",
+            "excludePatterns": "",
+            "maxFileSize": 50,
+            "crawlImages": False,
             # Duplication detection settings
-            'enableDuplicationCheck': True,
-            'duplicationThreshold': 0.85,
-
+            "enableDuplicationCheck": True,
+            "duplicationThreshold": 0.85,
             # Export settings
-            'exportFormat': 'csv',
-            'exportFields': ['url', 'status_code', 'title', 'meta_description', 'h1'],
-
+            "exportFormat": "csv",
+            "exportFields": ["url", "status_code", "title", "meta_description", "h1"],
             # Advanced settings
-            'concurrency': 5,
-            'memoryLimit': 512,
-            'logLevel': 'INFO',
-            'saveSession': False,
-            'enableProxy': False,
-            'proxyUrl': '',
-            'customHeaders': '',
-
+            "concurrency": 5,
+            "memoryLimit": 512,
+            "logLevel": "INFO",
+            "saveSession": False,
+            "enableProxy": False,
+            "proxyUrl": "",
+            "customHeaders": "",
             # JavaScript rendering settings
-            'enableJavaScript': False,
-            'jsWaitTime': 3,
-            'jsTimeout': 30,
-            'jsBrowser': 'chromium',
-            'jsHeadless': True,
-            'jsUserAgent': 'LibreCrawl/1.0 (Web Crawler with JavaScript)',
-            'jsViewportWidth': 1920,
-            'jsViewportHeight': 1080,
-            'jsMaxConcurrentPages': 3,
-
+            "enableJavaScript": False,
+            "jsWaitTime": 3,
+            "jsTimeout": 30,
+            "jsBrowser": "chromium",
+            "jsHeadless": True,
+            "jsUserAgent": "LibreCrawl/1.0 (Web Crawler with JavaScript)",
+            "jsViewportWidth": 1920,
+            "jsViewportHeight": 1080,
+            "jsMaxConcurrentPages": 3,
             # Custom CSS styling
-            'customCSS': '',
-
+            "customCSS": "",
             # Issue exclusion patterns
-            'issueExclusionPatterns': '''# WordPress admin & system paths
+            "issueExclusionPatterns": """# WordPress admin & system paths
 /wp-admin/*
 /wp-content/plugins/*
 /wp-content/themes/*
@@ -335,7 +346,7 @@ class SettingsManager:
 *.swp
 *.map
 *.min.js
-*.min.css'''
+*.min.css""",
         }
 
     def load_settings(self):
@@ -344,6 +355,7 @@ class SettingsManager:
             # If user_id is provided, load from database
             if self.user_id:
                 from src.auth_db import get_user_settings
+
                 saved_settings = get_user_settings(self.user_id)
                 if saved_settings:
                     # Merge with defaults to ensure all keys are present
@@ -374,7 +386,10 @@ class SettingsManager:
             # Load current settings from database to preserve unauthorized keys
             if self.user_id:
                 from src.auth_db import get_user_settings, save_user_settings
-                current_db_settings = get_user_settings(self.user_id) or self.default_settings.copy()
+
+                current_db_settings = (
+                    get_user_settings(self.user_id) or self.default_settings.copy()
+                )
 
                 # Update only the filtered (allowed) keys
                 current_db_settings.update(filtered_settings)
@@ -392,7 +407,7 @@ class SettingsManager:
             return True, "Settings saved successfully (session-specific)"
 
         except Exception as e:
-            return False, f"Error saving settings: {str(e)}"
+            return False, f"Error saving settings: {e!s}"
 
     def get_settings(self):
         """Get current settings"""
@@ -425,43 +440,50 @@ class SettingsManager:
 
             # Validate numeric ranges
             numeric_validations = {
-                'maxDepth': (1, 10),
-                'maxUrls': (1, 5000000),
-                'crawlDelay': (0, 60),
-                'timeout': (1, 120),
-                'retries': (0, 10),
-                'maxFileSize': (1, 1000),
-                'concurrency': (1, 50),
-                'memoryLimit': (64, 4096),
-                'jsWaitTime': (0, 30),
-                'jsTimeout': (5, 120),
-                'jsViewportWidth': (800, 4000),
-                'jsViewportHeight': (600, 3000),
-                'jsMaxConcurrentPages': (1, 10),
-                'duplicationThreshold': (0.0, 1.0)
+                "maxDepth": (1, 10),
+                "maxUrls": (1, 5000000),
+                "crawlDelay": (0, 60),
+                "timeout": (1, 120),
+                "retries": (0, 10),
+                "maxFileSize": (1, 1000),
+                "concurrency": (1, 50),
+                "memoryLimit": (64, 4096),
+                "jsWaitTime": (0, 30),
+                "jsTimeout": (5, 120),
+                "jsViewportWidth": (800, 4000),
+                "jsViewportHeight": (600, 3000),
+                "jsMaxConcurrentPages": (1, 10),
+                "duplicationThreshold": (0.0, 1.0),
             }
 
             for key, (min_val, max_val) in numeric_validations.items():
                 if key in settings:
                     value = settings[key]
-                    if not isinstance(value, (int, float)) or value < min_val or value > max_val:
+                    if (
+                        not isinstance(value, (int, float))
+                        or value < min_val
+                        or value > max_val
+                    ):
                         return False
 
             # Validate string fields are not empty where required
-            required_strings = ['userAgent']
+            required_strings = ["userAgent"]
             for key in required_strings:
                 if key in settings and not settings[key].strip():
                     return False
 
             # Validate export fields is a list
-            if 'exportFields' in settings and not isinstance(settings['exportFields'], list):
+            if "exportFields" in settings and not isinstance(
+                settings["exportFields"], list
+            ):
                 return False
 
             # Validate proxy URL if proxy is enabled
-            if settings.get('enableProxy') and settings.get('proxyUrl'):
+            if settings.get("enableProxy") and settings.get("proxyUrl"):
                 try:
                     from urllib.parse import urlparse
-                    result = urlparse(settings['proxyUrl'])
+
+                    result = urlparse(settings["proxyUrl"])
                     if not all([result.scheme, result.netloc]):
                         return False
                 except:
@@ -477,53 +499,73 @@ class SettingsManager:
         settings = self.get_settings()
 
         return {
-            'max_depth': settings['maxDepth'],
-            'max_urls': settings['maxUrls'],
-            'delay': settings['crawlDelay'],
-            'follow_redirects': settings['followRedirects'],
-            'crawl_external': settings['crawlExternalLinks'],
-            'user_agent': settings['userAgent'],
-            'timeout': settings['timeout'],
-            'retries': settings['retries'],
-            'accept_language': settings['acceptLanguage'],
-            'respect_robots': settings['respectRobotsTxt'],
-            'allow_cookies': settings['allowCookies'],
-            'include_extensions': [ext.strip() for ext in settings['includeExtensions'].split(',') if ext.strip()],
-            'crawl_images': settings.get('crawlImages', False),
-            'exclude_extensions': [ext.strip() for ext in settings['excludeExtensions'].split(',') if ext.strip()],
-            'include_patterns': [p.strip() for p in settings['includePatterns'].split('\n') if p.strip()],
-            'exclude_patterns': [p.strip() for p in settings['excludePatterns'].split('\n') if p.strip()],
-            'max_file_size': settings['maxFileSize'] * 1024 * 1024,  # Convert MB to bytes
-            'concurrency': settings['concurrency'],
-            'memory_limit': settings['memoryLimit'] * 1024 * 1024,  # Convert MB to bytes
-            'log_level': settings['logLevel'],
-            'enable_proxy': settings['enableProxy'],
-            'proxy_url': settings['proxyUrl'] if settings['enableProxy'] else None,
-            'custom_headers': self._parse_custom_headers(settings['customHeaders']),
-            'discover_sitemaps': settings['discoverSitemaps'],
-            'enable_pagespeed': settings['enablePageSpeed'],
-            'google_api_key': settings['googleApiKey'],
-            'enable_javascript': settings['enableJavaScript'],
-            'js_wait_time': settings['jsWaitTime'],
-            'js_timeout': settings['jsTimeout'],
-            'js_browser': settings['jsBrowser'],
-            'js_headless': settings['jsHeadless'],
-            'js_user_agent': settings['jsUserAgent'],
-            'js_viewport_width': settings['jsViewportWidth'],
-            'js_viewport_height': settings['jsViewportHeight'],
-            'js_max_concurrent_pages': settings['jsMaxConcurrentPages'],
-            'issue_exclusion_patterns': [p.strip() for p in settings['issueExclusionPatterns'].split('\n') if p.strip()],
-            'enable_duplication_check': settings['enableDuplicationCheck'],
-            'duplication_threshold': settings['duplicationThreshold']
+            "max_depth": settings["maxDepth"],
+            "max_urls": settings["maxUrls"],
+            "delay": settings["crawlDelay"],
+            "follow_redirects": settings["followRedirects"],
+            "crawl_external": settings["crawlExternalLinks"],
+            "user_agent": settings["userAgent"],
+            "timeout": settings["timeout"],
+            "retries": settings["retries"],
+            "accept_language": settings["acceptLanguage"],
+            "respect_robots": settings["respectRobotsTxt"],
+            "allow_cookies": settings["allowCookies"],
+            "include_extensions": [
+                ext.strip()
+                for ext in settings["includeExtensions"].split(",")
+                if ext.strip()
+            ],
+            "crawl_images": settings.get("crawlImages", False),
+            "exclude_extensions": [
+                ext.strip()
+                for ext in settings["excludeExtensions"].split(",")
+                if ext.strip()
+            ],
+            "include_patterns": [
+                p.strip() for p in settings["includePatterns"].split("\n") if p.strip()
+            ],
+            "exclude_patterns": [
+                p.strip() for p in settings["excludePatterns"].split("\n") if p.strip()
+            ],
+            "max_file_size": settings["maxFileSize"]
+            * 1024
+            * 1024,  # Convert MB to bytes
+            "concurrency": settings["concurrency"],
+            "memory_limit": settings["memoryLimit"]
+            * 1024
+            * 1024,  # Convert MB to bytes
+            "log_level": settings["logLevel"],
+            "enable_proxy": settings["enableProxy"],
+            "proxy_url": settings["proxyUrl"] if settings["enableProxy"] else None,
+            "custom_headers": self._parse_custom_headers(settings["customHeaders"]),
+            "discover_sitemaps": settings["discoverSitemaps"],
+            "enable_pagespeed": settings["enablePageSpeed"],
+            "google_api_key": settings["googleApiKey"],
+            "enable_javascript": settings["enableJavaScript"],
+            "js_wait_time": settings["jsWaitTime"],
+            "js_timeout": settings["jsTimeout"],
+            "js_browser": settings["jsBrowser"],
+            "js_headless": settings["jsHeadless"],
+            "js_user_agent": settings["jsUserAgent"],
+            "js_viewport_width": settings["jsViewportWidth"],
+            "js_viewport_height": settings["jsViewportHeight"],
+            "js_max_concurrent_pages": settings["jsMaxConcurrentPages"],
+            "issue_exclusion_patterns": [
+                p.strip()
+                for p in settings["issueExclusionPatterns"].split("\n")
+                if p.strip()
+            ],
+            "enable_duplication_check": settings["enableDuplicationCheck"],
+            "duplication_threshold": settings["duplicationThreshold"],
         }
 
     def _parse_custom_headers(self, headers_text):
         """Parse custom headers from text format"""
         headers = {}
         if headers_text:
-            for line in headers_text.split('\n'):
+            for line in headers_text.split("\n"):
                 line = line.strip()
-                if ':' in line:
-                    key, value = line.split(':', 1)
+                if ":" in line:
+                    key, value = line.split(":", 1)
                     headers[key.strip()] = value.strip()
         return headers

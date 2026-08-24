@@ -3,7 +3,8 @@ Lead Repository for Async SQLite.
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from ..domain.lead import Lead, utc_now_iso
 from ..domain.stage import LeadStage
 from .database import DatabaseManager
@@ -27,7 +28,9 @@ class LeadRepository:
             stage=LeadStage(row["stage"]),
             fit_score=row["fit_score"],
             opportunity_score=row["opportunity_score"],
-            recommended_services=json.loads(row["recommended_services"]) if row["recommended_services"] else [],
+            recommended_services=json.loads(row["recommended_services"])
+            if row["recommended_services"]
+            else [],
             metadata=json.loads(row["metadata"]) if row["metadata"] else {},
             source=row["source"] or "leadfinder",
             created_at=row["created_at"],
@@ -55,7 +58,9 @@ class LeadRepository:
                     lead.primary_contact_name,
                     lead.primary_contact_email,
                     lead.primary_contact_phone,
-                    lead.stage.value if hasattr(lead.stage, "value") else str(lead.stage),
+                    lead.stage.value
+                    if hasattr(lead.stage, "value")
+                    else str(lead.stage),
                     lead.fit_score,
                     lead.opportunity_score,
                     json.dumps(lead.recommended_services),
@@ -68,17 +73,15 @@ class LeadRepository:
             await conn.commit()
         return lead
 
-    async def get_by_id(self, lead_id: str) -> Optional[Lead]:
+    async def get_by_id(self, lead_id: str) -> Lead | None:
         async with self.db.get_connection() as conn:
-            cursor = await conn.execute(
-                "SELECT * FROM leads WHERE id = ?", (lead_id,)
-            )
+            cursor = await conn.execute("SELECT * FROM leads WHERE id = ?", (lead_id,))
             row = await cursor.fetchone()
             if row:
                 return self._row_to_lead(row)
             return None
 
-    async def get_by_email(self, email: str) -> Optional[Lead]:
+    async def get_by_email(self, email: str) -> Lead | None:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT * FROM leads WHERE primary_contact_email = ? LIMIT 1", (email,)
@@ -88,7 +91,7 @@ class LeadRepository:
                 return self._row_to_lead(row)
             return None
 
-    async def update_stage(self, lead_id: str, new_stage: LeadStage) -> Optional[Lead]:
+    async def update_stage(self, lead_id: str, new_stage: LeadStage) -> Lead | None:
         stage_str = new_stage.value if hasattr(new_stage, "value") else str(new_stage)
         now_str = utc_now_iso()
         async with self.db.get_connection() as conn:
@@ -99,7 +102,7 @@ class LeadRepository:
             await conn.commit()
         return await self.get_by_id(lead_id)
 
-    async def update(self, lead_id: str, updates: Dict[str, Any]) -> Optional[Lead]:
+    async def update(self, lead_id: str, updates: dict[str, Any]) -> Lead | None:
         if not updates:
             return await self.get_by_id(lead_id)
 
@@ -108,7 +111,9 @@ class LeadRepository:
         values = []
 
         for key, val in updates.items():
-            if key in ("recommended_services", "metadata") and isinstance(val, (dict, list)):
+            if key in ("recommended_services", "metadata") and isinstance(
+                val, (dict, list)
+            ):
                 val = json.dumps(val)
             elif key == "stage" and hasattr(val, "value"):
                 val = val.value
@@ -126,13 +131,13 @@ class LeadRepository:
 
     async def list_all(
         self,
-        stage: Optional[LeadStage] = None,
-        campaign_id: Optional[str] = None,
+        stage: LeadStage | None = None,
+        campaign_id: str | None = None,
         limit: int = 100,
         offset: int = 0,
-    ) -> List[Lead]:
+    ) -> list[Lead]:
         query = "SELECT * FROM leads WHERE 1=1"
-        params: List[Any] = []
+        params: list[Any] = []
 
         if stage:
             stage_str = stage.value if hasattr(stage, "value") else str(stage)
@@ -151,7 +156,7 @@ class LeadRepository:
             rows = await cursor.fetchall()
             return [self._row_to_lead(row) for row in rows]
 
-    async def get_pipeline_counts(self) -> Dict[str, int]:
+    async def get_pipeline_counts(self) -> dict[str, int]:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 "SELECT stage, COUNT(*) as count FROM leads GROUP BY stage"

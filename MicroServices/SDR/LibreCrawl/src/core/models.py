@@ -7,8 +7,8 @@ Provides distinct, strictly validated data structures:
 Ensures image-like or asset documents are NEVER represented as HTML pages.
 """
 
-from typing import Dict, Any, List, Optional
-from datetime import datetime, timezone
+from typing import Any
+
 from .resource_classifier import ResourceClassifier
 
 
@@ -21,27 +21,29 @@ def create_page_record(
     title: str = "",
     meta_description: str = "",
     h1: str = "",
-    h2: Optional[List[str]] = None,
-    h3: Optional[List[str]] = None,
+    h2: list[str] | None = None,
+    h3: list[str] | None = None,
     word_count: int = 0,
     canonical_url: str = "",
     robots: str = "",
     lang: str = "",
     charset: str = "",
     viewport: str = "",
-    og_tags: Optional[Dict[str, Any]] = None,
-    twitter_tags: Optional[Dict[str, Any]] = None,
-    json_ld: Optional[List[Dict[str, Any]]] = None,
-    analytics: Optional[Dict[str, Any]] = None,
-    images: Optional[List[Dict[str, Any]]] = None,
-    redirects: Optional[List[Dict[str, Any]]] = None,
-    linked_from: Optional[List[str]] = None,
-    **extra_kwargs
-) -> Dict[str, Any]:
+    og_tags: dict[str, Any] | None = None,
+    twitter_tags: dict[str, Any] | None = None,
+    json_ld: list[dict[str, Any]] | None = None,
+    analytics: dict[str, Any] | None = None,
+    images: list[dict[str, Any]] | None = None,
+    redirects: list[dict[str, Any]] | None = None,
+    linked_from: list[str] | None = None,
+    **extra_kwargs,
+) -> dict[str, Any]:
     """
     Constructs a normalized PageRecord dictionary for HTML pages.
     """
-    classification = ResourceClassifier.classify_resource(url, content_type, is_html_parsed=True)
+    classification = ResourceClassifier.classify_resource(
+        url, content_type, is_html_parsed=True
+    )
 
     record = {
         "url": url,
@@ -70,7 +72,7 @@ def create_page_record(
         "analytics": analytics if isinstance(analytics, dict) else {},
         "images": images if isinstance(images, list) else [],
         "redirects": redirects if isinstance(redirects, list) else [],
-        "linked_from": linked_from if isinstance(linked_from, list) else []
+        "linked_from": linked_from if isinstance(linked_from, list) else [],
     }
 
     # Add extra metadata without overwriting standard fields
@@ -88,9 +90,9 @@ def create_resource_record(
     size_bytes: int = 0,
     response_time_ms: float = 0.0,
     depth: int = 0,
-    linked_from: Optional[List[str]] = None,
-    **extra_kwargs
-) -> Dict[str, Any]:
+    linked_from: list[str] | None = None,
+    **extra_kwargs,
+) -> dict[str, Any]:
     """
     Constructs a normalized ResourceRecord dictionary for non-HTML assets (images, PDFs, CSS, JS, etc.).
     Note: Does NOT contain title, meta_description, h1, canonical, schema, etc.
@@ -108,7 +110,7 @@ def create_resource_record(
         "size_bytes": size_bytes or 0,
         "response_time_ms": response_time_ms,
         "depth": depth,
-        "linked_from": linked_from if isinstance(linked_from, list) else []
+        "linked_from": linked_from if isinstance(linked_from, list) else [],
     }
 
     for k, v in extra_kwargs.items():

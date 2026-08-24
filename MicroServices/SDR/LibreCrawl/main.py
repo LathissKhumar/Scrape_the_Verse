@@ -3,8 +3,8 @@ LibreCrawl - Headless SEO Crawling & Audit Engine
 Entry point redirecting to the headless CLI / API.
 """
 
-import sys
 import os
+import sys
 
 # Ensure package is on sys.path
 package_dir = os.path.dirname(os.path.abspath(__file__))

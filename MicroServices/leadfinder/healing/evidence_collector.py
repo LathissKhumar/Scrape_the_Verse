@@ -1,7 +1,9 @@
 """Repair evidence collector acquiring fresh page snapshots and testing transient recovery."""
 
-from typing import Any, Optional
+from typing import Any
+
 from bs4 import BeautifulSoup
+
 from leadfinder.config.logging import get_logger
 from leadfinder.extraction.engine import ExtractionEngine
 from leadfinder.extraction.schema import ExtractionSchema, RawPage
@@ -17,9 +19,9 @@ class RepairEvidenceCollector:
 
     def __init__(
         self,
-        scraper_agent: Optional[Any] = None,
-        extraction_engine: Optional[ExtractionEngine] = None,
-        validation_engine: Optional[ValidationEngine] = None,
+        scraper_agent: Any | None = None,
+        extraction_engine: ExtractionEngine | None = None,
+        validation_engine: ValidationEngine | None = None,
     ) -> None:
         self.scraper_agent = scraper_agent
         self.extraction_engine = extraction_engine
@@ -31,7 +33,9 @@ class RepairEvidenceCollector:
             logger.warning("No scraper agent configured for RepairEvidenceCollector")
             return []
 
-        logger.debug(f"Fetching fresh page evidence for task_id={task.task_id} from {task.target_urls}")
+        logger.debug(
+            f"Fetching fresh page evidence for task_id={task.task_id} from {task.target_urls}"
+        )
         try:
             raw_dicts = await self.scraper_agent.execute(task=task)
             raw_pages: list[RawPage] = []
@@ -42,14 +46,16 @@ class RepairEvidenceCollector:
                     raw_pages.append(item)
             return raw_pages
         except Exception as error:
-            logger.warning(f"Failed to fetch fresh page evidence for task {task.task_id}: {error}")
+            logger.warning(
+                f"Failed to fetch fresh page evidence for task {task.task_id}: {error}"
+            )
             return []
 
     async def check_transient_recovery(
         self,
         task: ScrapingTask,
-        schema: Optional[ExtractionSchema] = None,
-    ) -> tuple[list[RawPage], bool, Optional[ValidationResult]]:
+        schema: ExtractionSchema | None = None,
+    ) -> tuple[list[RawPage], bool, ValidationResult | None]:
         """Fetch a fresh scrape and verify if the original configuration unexpectedly produces a healthy result (transient glitch)."""
         raw_pages = await self.collect_fresh_pages(task=task)
         if not raw_pages:
@@ -61,7 +67,9 @@ class RepairEvidenceCollector:
         try:
             # Attempt extraction on fresh page with current schema
             raw_dicts = [p.model_dump() for p in raw_pages]
-            ext_call = self.extraction_engine.extract(raw_results=raw_dicts, task=task, schema=schema)
+            ext_call = self.extraction_engine.extract(
+                raw_results=raw_dicts, task=task, schema=schema
+            )
             ext_result = await ext_call if hasattr(ext_call, "__await__") else ext_call
             records = ext_result.records
 
@@ -83,13 +91,22 @@ class RepairEvidenceCollector:
             return raw_pages, False, val_res
 
         except Exception as error:
-            logger.warning(f"Error checking transient recovery on fresh scrape: {error}")
+            logger.warning(
+                f"Error checking transient recovery on fresh scrape: {error}"
+            )
             return raw_pages, False, None
 
-    def summarize_dom_evidence(self, raw_pages: list[RawPage], max_snippet_length: int = 4000) -> dict[str, Any]:
+    def summarize_dom_evidence(
+        self, raw_pages: list[RawPage], max_snippet_length: int = 4000
+    ) -> dict[str, Any]:
         """Extract structured DOM summary (tag counts, candidate class names, containers) from raw pages."""
         if not raw_pages:
-            return {"sample_url": "", "candidate_classes": [], "tag_counts": {}, "html_snippet": ""}
+            return {
+                "sample_url": "",
+                "candidate_classes": [],
+                "tag_counts": {},
+                "html_snippet": "",
+            }
 
         sample_page = raw_pages[0]
         html_content = sample_page.get_primary_content()
@@ -120,4 +137,3 @@ class RepairEvidenceCollector:
             "tag_counts": tag_counts,
             "html_snippet": html_content[:max_snippet_length] if html_content else "",
         }
-

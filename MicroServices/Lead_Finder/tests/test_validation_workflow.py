@@ -1,6 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock
 
+import pytest
 from leadfinder.agents.extraction import ExtractionAgent
 from leadfinder.agents.planner import ScrapingPlannerAgent
 from leadfinder.agents.scraper import ScraperAgent

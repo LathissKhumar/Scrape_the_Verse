@@ -4,6 +4,7 @@ Unit tests for Prompt Generation, Proposal Generator, and Outreach Preparer (Lay
 
 import pytest
 import sniffio
+
 from MicroServices.SDR.opportunity_engine import OpportunityEngine
 from MicroServices.SDR.outreach_preparer import OutreachPreparer
 from MicroServices.SDR.prompt_generator import PromptGenerator

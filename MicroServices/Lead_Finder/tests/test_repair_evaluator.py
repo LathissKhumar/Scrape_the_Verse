@@ -35,9 +35,13 @@ def _make_val_result(
         status="healthy" if health >= 0.80 else "broken",
         record_count=10,
         field_metrics=field_metrics,
-        duplicate_metrics=DuplicateMetric(total_records=10, unique_records=10, duplicate_rate=dup_rate),
+        duplicate_metrics=DuplicateMetric(
+            total_records=10, unique_records=10, duplicate_rate=dup_rate
+        ),
         url_metrics=UrlMetric(total_urls=10, valid_urls=10, valid_rate=1.0),
-        schema_metrics=SchemaMetric(valid_records=10, invalid_records=0, valid_rate=schema_valid),
+        schema_metrics=SchemaMetric(
+            valid_records=10, invalid_records=0, valid_rate=schema_valid
+        ),
         failures=failures or [],
     )
 
@@ -62,10 +66,14 @@ def test_evaluator_accepts_healthy_transition():
         failures=[],
     )
     diagnosis = DiagnosisResult(root_cause=RootCause.SELECTOR_DRIFT, confidence=0.9)
-    plan = RepairPlan(repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Fixed title selector")
+    plan = RepairPlan(
+        repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Fixed title selector"
+    )
 
     evaluator = RepairEvaluator()
-    evaluation = evaluator.evaluate(before=before, after=after, diagnosis=diagnosis, plan=plan)
+    evaluation = evaluator.evaluate(
+        before=before, after=after, diagnosis=diagnosis, plan=plan
+    )
 
     assert evaluation.accepted is True
     assert evaluation.improvement == pytest.approx(0.53)
@@ -86,10 +94,14 @@ def test_evaluator_accepts_small_healthy_bump():
         coverage={"title": 1.0, "price": 0.95},
     )
     diagnosis = DiagnosisResult(root_cause=RootCause.SELECTOR_DRIFT, confidence=0.8)
-    plan = RepairPlan(repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Refined price selector")
+    plan = RepairPlan(
+        repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Refined price selector"
+    )
 
     evaluator = RepairEvaluator()
-    evaluation = evaluator.evaluate(before=before, after=after, diagnosis=diagnosis, plan=plan)
+    evaluation = evaluator.evaluate(
+        before=before, after=after, diagnosis=diagnosis, plan=plan
+    )
 
     assert evaluation.accepted is True
     assert evaluation.improvement == pytest.approx(0.08)
@@ -108,10 +120,15 @@ def test_evaluator_rejects_regression_in_healthy_field():
         coverage={"title": 0.95, "price": 0.95, "rating": 0.30},
     )
     diagnosis = DiagnosisResult(root_cause=RootCause.SELECTOR_DRIFT, confidence=0.8)
-    plan = RepairPlan(repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Updated container and price")
+    plan = RepairPlan(
+        repair_type=RepairType.REPAIR_CSS_SELECTORS,
+        reason="Updated container and price",
+    )
 
     evaluator = RepairEvaluator()
-    evaluation = evaluator.evaluate(before=before, after=after, diagnosis=diagnosis, plan=plan)
+    evaluation = evaluator.evaluate(
+        before=before, after=after, diagnosis=diagnosis, plan=plan
+    )
 
     assert evaluation.accepted is False
     assert evaluation.regression_detected is True
@@ -132,10 +149,14 @@ def test_evaluator_rejects_duplicate_explosion():
         dup_rate=0.45,  # Duplicate explosion
     )
     diagnosis = DiagnosisResult(root_cause=RootCause.SELECTOR_DRIFT, confidence=0.8)
-    plan = RepairPlan(repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Loosened selector")
+    plan = RepairPlan(
+        repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Loosened selector"
+    )
 
     evaluator = RepairEvaluator()
-    evaluation = evaluator.evaluate(before=before, after=after, diagnosis=diagnosis, plan=plan)
+    evaluation = evaluator.evaluate(
+        before=before, after=after, diagnosis=diagnosis, plan=plan
+    )
 
     assert evaluation.accepted is False
     assert evaluation.regression_detected is True
@@ -157,7 +178,9 @@ def test_evaluator_rejects_insufficient_improvement():
     plan = RepairPlan(repair_type=RepairType.REPAIR_CSS_SELECTORS, reason="Small tweak")
 
     evaluator = RepairEvaluator()
-    evaluation = evaluator.evaluate(before=before, after=after, diagnosis=diagnosis, plan=plan)
+    evaluation = evaluator.evaluate(
+        before=before, after=after, diagnosis=diagnosis, plan=plan
+    )
 
     assert evaluation.accepted is False
     assert evaluation.regression_detected is False

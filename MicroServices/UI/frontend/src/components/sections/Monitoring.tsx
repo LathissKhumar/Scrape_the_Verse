@@ -1,44 +1,44 @@
-'use client'
-import { motion, useInView } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { Radio, Bell, ArrowRight } from 'lucide-react'
-import { GradientText } from '@/components/ui/GradientText'
-import { SectionLabel } from '@/components/ui/SectionLabel'
-import { MONITORING_PROSPECTS } from '@/lib/mock-data'
+"use client";
+import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { Radio, Bell, ArrowRight } from "lucide-react";
+import { GradientText } from "@/components/ui/GradientText";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { MONITORING_PROSPECTS } from "@/lib/mock-data";
 
 const STATS = [
   {
     target: 98,
-    suffix: '%',
-    label: 'Self-Healing Accuracy',
-    sub: 'XPath structural recovery rate without human intervention',
+    suffix: "%",
+    label: "Self-Healing Accuracy",
+    sub: "XPath structural recovery rate without human intervention",
     ratio: 0.98,
-    gradient: 'from-sky-400 to-cyan-300',
-    color: '#38BDF8',
+    gradient: "from-sky-400 to-cyan-300",
+    color: "#38BDF8",
   },
   {
     target: 500,
-    suffix: 'M+',
-    label: 'Records Indexed Daily',
-    sub: 'Parallel streaming crawlers with Bright Data proxy mesh',
+    suffix: "M+",
+    label: "Records Indexed Daily",
+    sub: "Parallel streaming crawlers with Bright Data proxy mesh",
     ratio: 0.85,
-    gradient: 'from-indigo-400 to-sky-400',
-    color: '#818CF8',
+    gradient: "from-indigo-400 to-sky-400",
+    color: "#818CF8",
   },
   {
     target: 12,
-    suffix: 'ms',
-    label: 'Global Edge Latency',
-    sub: 'Ultra-low latency extraction cache distributed across 42 regions',
+    suffix: "ms",
+    label: "Global Edge Latency",
+    sub: "Ultra-low latency extraction cache distributed across 42 regions",
     ratio: 0.72,
-    gradient: 'from-emerald-400 to-cyan-400',
-    color: '#34D399',
+    gradient: "from-emerald-400 to-cyan-400",
+    color: "#34D399",
   },
-]
+];
 
 export function Monitoring() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <section
@@ -79,14 +79,20 @@ export function Monitoring() {
             Proven Performance <GradientText>By The Numbers.</GradientText>
           </h2>
           <p className="text-base text-text-secondary max-w-xl mx-auto font-body">
-            High-throughput web scraping backed by self-repairing machine vision models and global proxy networks.
+            High-throughput web scraping backed by self-repairing machine vision
+            models and global proxy networks.
           </p>
         </motion.div>
 
         {/* 3 Morphing Number Counters with SVG Animated Progress Rings */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {STATS.map((stat, i) => (
-            <StatProgressCard key={stat.label} stat={stat} index={i} isInView={isInView} />
+            <StatProgressCard
+              key={stat.label}
+              stat={stat}
+              index={i}
+              isInView={isInView}
+            />
           ))}
         </div>
 
@@ -95,14 +101,16 @@ export function Monitoring() {
           className="max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="glass-level-3 p-8 space-y-6 border-white/20 shadow-2xl rounded-3xl backdrop-blur-2xl">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <span className="font-mono text-xs text-muted uppercase flex items-center gap-2">
                 <Radio className="w-4 h-4 text-sky-400 animate-pulse" />
-                <span className="text-slate-200">MONITORED PROSPECT WATCHLIST</span>
+                <span className="text-slate-200">
+                  MONITORED PROSPECT WATCHLIST
+                </span>
               </span>
               <span className="text-xs font-mono text-emerald-400 font-semibold flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -120,7 +128,9 @@ export function Monitoring() {
                   <div className="space-y-1">
                     <div className="font-bold font-display text-lg text-text-primary flex items-center gap-2">
                       <span>{prospect.name}</span>
-                      <span className="text-xs font-mono text-muted">({prospect.location})</span>
+                      <span className="text-xs font-mono text-muted">
+                        ({prospect.location})
+                      </span>
                     </div>
                     <div className="text-xs font-mono text-rose-400 flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
@@ -142,7 +152,7 @@ export function Monitoring() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
 
 function StatProgressCard({
@@ -150,44 +160,47 @@ function StatProgressCard({
   index,
   isInView,
 }: {
-  stat: typeof STATS[number]
-  index: number
-  isInView: boolean
+  stat: (typeof STATS)[number];
+  index: number;
+  isInView: boolean;
 }) {
-  const [count, setCount] = useState(0)
-  const radius = 54
-  const circumference = 2 * Math.PI * radius
+  const [count, setCount] = useState(0);
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
 
   useEffect(() => {
-    if (!isInView) return
-    let start = 0
-    const duration = 2000
-    const startTime = performance.now()
+    if (!isInView) return;
+    const duration = 2000;
+    const startTime = performance.now();
 
     const updateCounter = (currentTime: number) => {
-      const elapsed = currentTime - startTime
-      const progress = Math.min(elapsed / duration, 1)
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
       // Ease out cubic
-      const easeProgress = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.floor(easeProgress * stat.target))
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(easeProgress * stat.target));
 
       if (progress < 1) {
-        requestAnimationFrame(updateCounter)
+        requestAnimationFrame(updateCounter);
       } else {
-        setCount(stat.target)
+        setCount(stat.target);
       }
-    }
+    };
 
-    const frameId = requestAnimationFrame(updateCounter)
-    return () => cancelAnimationFrame(frameId)
-  }, [isInView, stat.target])
+    const frameId = requestAnimationFrame(updateCounter);
+    return () => cancelAnimationFrame(frameId);
+  }, [isInView, stat.target]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+      transition={{
+        duration: 0.6,
+        delay: index * 0.15,
+        ease: [0.16, 1, 0.3, 1],
+      }}
       whileHover={{ y: -6, scale: 1.02 }}
       data-cursor-hover
       className="glass-level-2 p-8 rounded-3xl border border-white/20 shadow-2xl flex flex-col items-center text-center space-y-6 relative overflow-hidden group"
@@ -223,8 +236,16 @@ function StatProgressCard({
             strokeLinecap="round"
             strokeDasharray={circumference}
             initial={{ strokeDashoffset: circumference }}
-            animate={isInView ? { strokeDashoffset: circumference * (1 - stat.ratio) } : {}}
-            transition={{ duration: 2.2, delay: 0.2 + index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+            animate={
+              isInView
+                ? { strokeDashoffset: circumference * (1 - stat.ratio) }
+                : {}
+            }
+            transition={{
+              duration: 2.2,
+              delay: 0.2 + index * 0.15,
+              ease: [0.16, 1, 0.3, 1],
+            }}
           />
         </svg>
 
@@ -232,15 +253,21 @@ function StatProgressCard({
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="font-mono text-3xl sm:text-4xl font-black text-white tabular-nums leading-none whitespace-nowrap">
             {count}
-            <span className="text-sky-400 text-2xl sm:text-3xl align-middle">{stat.suffix}</span>
+            <span className="text-sky-400 text-2xl sm:text-3xl align-middle">
+              {stat.suffix}
+            </span>
           </span>
         </div>
       </div>
 
       <div className="space-y-2 relative z-10">
-        <h3 className="text-xl font-bold font-display text-text-primary">{stat.label}</h3>
-        <p className="text-xs text-text-secondary leading-relaxed max-w-xs">{stat.sub}</p>
+        <h3 className="text-xl font-bold font-display text-text-primary">
+          {stat.label}
+        </h3>
+        <p className="text-xs text-text-secondary leading-relaxed max-w-xs">
+          {stat.sub}
+        </p>
       </div>
     </motion.div>
-  )
+  );
 }

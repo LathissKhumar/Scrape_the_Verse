@@ -1,1 +1,1 @@
-export { SmoothScrollProvider } from './SmoothScrollProvider'
+export { SmoothScrollProvider } from "./SmoothScrollProvider";

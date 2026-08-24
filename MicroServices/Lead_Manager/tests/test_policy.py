@@ -4,7 +4,6 @@ Unit tests for deterministic state transitions & policy actions.
 
 from MicroServices.Lead_Manager.domain.stage import EmailIntent, LeadStage, TaskType
 from MicroServices.Lead_Manager.policy.actions import (
-    evaluate_stale_lead,
     get_tasks_for_intent,
     get_tasks_for_stage_entry,
 )
@@ -23,7 +22,9 @@ def test_transitions_matrix():
     assert stage == LeadStage.OPPORTUNITY_IDENTIFIED
 
     # OPPORTUNITY_IDENTIFIED -> PROPOSAL_READY
-    stage, valid, _ = evaluate_transition(LeadStage.OPPORTUNITY_IDENTIFIED, "proposal.created")
+    stage, valid, _ = evaluate_transition(
+        LeadStage.OPPORTUNITY_IDENTIFIED, "proposal.created"
+    )
     assert valid is True
     assert stage == LeadStage.PROPOSAL_READY
 
@@ -39,13 +40,17 @@ def test_transitions_matrix():
 
     # CONTACTED -> MEETING_REQUESTED (Prospect requested meeting)
     stage, valid, _ = evaluate_transition(
-        LeadStage.CONTACTED, "email.intent_detected", intent=EmailIntent.REQUEST_MEETING.value
+        LeadStage.CONTACTED,
+        "email.intent_detected",
+        intent=EmailIntent.REQUEST_MEETING.value,
     )
     assert valid is True
     assert stage == LeadStage.MEETING_REQUESTED
 
     # MEETING_REQUESTED -> MEETING_SCHEDULED
-    stage, valid, _ = evaluate_transition(LeadStage.MEETING_REQUESTED, "meeting.scheduled")
+    stage, valid, _ = evaluate_transition(
+        LeadStage.MEETING_REQUESTED, "meeting.scheduled"
+    )
     assert valid is True
     assert stage == LeadStage.MEETING_SCHEDULED
 

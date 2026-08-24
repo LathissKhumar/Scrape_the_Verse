@@ -1,14 +1,12 @@
-from typing import List
+from business_analysis.llm import get_structured_llm
 from business_analysis.schemas.models import (
-    CompetitorAnalysis,
-    Competitor,
     CandidateCompetitor,
+    Competitor,
+    CompetitorAnalysis,
     NodeExecutionStatus,
     NodeStatusEnum,
 )
-from business_analysis.llm import get_structured_llm
 from business_analysis.state import BusinessAnalysisState, get_relevant_evidence
-
 
 COMPETITOR_ANALYSIS_PROMPT = """ROLE: You are an expert Competitive Intelligence & Market Benchmarking Analyst.
 OBJECTIVE: Identify potential local competitors, validate candidate competitors, and construct a structured competitive comparison matrix.
@@ -37,18 +35,32 @@ RULES:
 
 def competitor_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisState:
     relevant_evidence = get_relevant_evidence(state, "competitor")
-    evidence_text = "\n".join([
-        f"[{e.id}] Claim: {e.claim} | Supporting Text: {e.supporting_text or 'N/A'}"
-        for e in relevant_evidence
-    ])
+    evidence_text = "\n".join(
+        [
+            f"[{e.id}] Claim: {e.claim} | Supporting Text: {e.supporting_text or 'N/A'}"
+            for e in relevant_evidence
+        ]
+    )
 
     profile = state.get("business_profile")
     service_analysis = state.get("service_analysis")
     company_name = state["input_business"].company_name
 
-    industry_val = profile.industry.value if profile and hasattr(profile.industry, "value") else state["input_business"].industry
-    location_val = profile.geographic_market.value if profile and hasattr(profile.geographic_market, "value") else state["input_business"].location
-    specializations_val = ", ".join([s.name for s in service_analysis.services]) if service_analysis and service_analysis.services else "Dental Anxiety & Complex Care"
+    industry_val = (
+        profile.industry.value
+        if profile and hasattr(profile.industry, "value")
+        else state["input_business"].industry
+    )
+    location_val = (
+        profile.geographic_market.value
+        if profile and hasattr(profile.geographic_market, "value")
+        else state["input_business"].location
+    )
+    specializations_val = (
+        ", ".join([s.name for s in service_analysis.services])
+        if service_analysis and service_analysis.services
+        else "Dental Anxiety & Complex Care"
+    )
 
     prompt = COMPETITOR_ANALYSIS_PROMPT.format(
         evidence=evidence_text,
@@ -76,7 +88,9 @@ def competitor_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisS
                 trust_signals=["Patient reviews", "Online appointment"],
                 digital_strengths=["Strong general local SEO"],
                 digital_weaknesses=["Lack of specialized anxiety treatment branding"],
-                competitive_gaps=["Does not highlight sedation options for anxious patients"],
+                competitive_gaps=[
+                    "Does not highlight sedation options for anxious patients"
+                ],
             )
             comp_b = Competitor(
                 name="De Lieve Tandarts Amsterdam",
@@ -87,12 +101,24 @@ def competitor_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisS
                 trust_signals=["Anxiety care certification"],
                 digital_strengths=["Strong anxiety care positioning"],
                 digital_weaknesses=["Limited complex case rehabilitation focus"],
-                competitive_gaps=["Does not offer multidisciplinary complex care management"],
+                competitive_gaps=[
+                    "Does not offer multidisciplinary complex care management"
+                ],
             )
             analysis.competitors = [comp_a, comp_b]
             analysis.candidates = [
-                CandidateCompetitor(name=comp_a.name, location=location_val, service_match=["General Dentistry"], is_validated=True),
-                CandidateCompetitor(name=comp_b.name, location=location_val, service_match=["Dental Phobia Care"], is_validated=True),
+                CandidateCompetitor(
+                    name=comp_a.name,
+                    location=location_val,
+                    service_match=["General Dentistry"],
+                    is_validated=True,
+                ),
+                CandidateCompetitor(
+                    name=comp_b.name,
+                    location=location_val,
+                    service_match=["Dental Phobia Care"],
+                    is_validated=True,
+                ),
             ]
 
         # Populate structured comparison matrix if missing
@@ -127,8 +153,17 @@ def competitor_analysis_agent(state: BusinessAnalysisState) -> BusinessAnalysisS
                 }
             analysis.comparison_matrix = matrix
 
-        statuses["competitor_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.85)
+        statuses["competitor_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.85
+        )
         return {**state, "competitor_analysis": analysis, "node_statuses": statuses}
     except Exception as e:
-        statuses["competitor_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e))
-        return {**state, "errors": state.get("errors", []) + [f"CompetitorAnalysisAgent error: {str(e)}"], "node_statuses": statuses}
+        statuses["competitor_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e)
+        )
+        return {
+            **state,
+            "errors": state.get("errors", [])
+            + [f"CompetitorAnalysisAgent error: {e!s}"],
+            "node_statuses": statuses,
+        }

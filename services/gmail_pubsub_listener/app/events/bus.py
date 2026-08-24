@@ -1,7 +1,10 @@
 """In-memory event bus for fast asynchronous pub/sub."""
+
 import asyncio
 import logging
-from typing import Callable, Coroutine, Dict, List, Any
+from collections.abc import Callable, Coroutine
+from typing import Any
+
 from app.events.models import CommunicationEvent
 
 logger = logging.getLogger(__name__)
@@ -11,8 +14,8 @@ EventHandler = Callable[[CommunicationEvent], Coroutine[Any, Any, None]]
 
 class EventBus:
     def __init__(self):
-        self._subscribers: Dict[str, List[EventHandler]] = {}
-        self._wildcard_subscribers: List[EventHandler] = []
+        self._subscribers: dict[str, list[EventHandler]] = {}
+        self._wildcard_subscribers: list[EventHandler] = []
         self._queue: asyncio.Queue = asyncio.Queue()
         self._running = False
         self._consumer_task: asyncio.Task = None
@@ -53,12 +56,18 @@ class EventBus:
         while self._running:
             try:
                 event: CommunicationEvent = await self._queue.get()
-                handlers = self._subscribers.get(event.event_type, []) + self._wildcard_subscribers
+                handlers = (
+                    self._subscribers.get(event.event_type, [])
+                    + self._wildcard_subscribers
+                )
                 for handler in handlers:
                     try:
                         await handler(event)
                     except Exception as e:
-                        logger.error(f"Error in event handler for {event.event_type}: {e}", exc_info=True)
+                        logger.error(
+                            f"Error in event handler for {event.event_type}: {e}",
+                            exc_info=True,
+                        )
                 self._queue.task_done()
             except asyncio.CancelledError:
                 break

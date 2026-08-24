@@ -1,5 +1,6 @@
 import re
-from typing import Any, Optional
+from typing import Any
+
 import httpx
 
 from leadfinder.config.logging import get_logger
@@ -29,7 +30,7 @@ def clean_markdown_fences(content: str) -> str:
 class OllamaClient(LLMClient):
     """Ollama implementation of LLMClient using httpx."""
 
-    def __init__(self, settings: Optional[Settings] = None):
+    def __init__(self, settings: Settings | None = None):
         self._settings = settings or get_settings()
         self._base_url = self._settings.OLLAMA_BASE_URL.rstrip("/")
         self._model = self._settings.OLLAMA_MODEL
@@ -41,8 +42,8 @@ class OllamaClient(LLMClient):
 
     async def invoke(
         self,
-        prompt: Optional[str] = None,
-        system: Optional[str] = None,
+        prompt: str | None = None,
+        system: str | None = None,
         json_mode: bool = False,
         **kwargs: Any,
     ) -> str:
@@ -54,7 +55,8 @@ class OllamaClient(LLMClient):
             "model": self._model,
             "prompt": prompt_text,
             "stream": False,
-            "options": kwargs.get("options") or {
+            "options": kwargs.get("options")
+            or {
                 "temperature": 0.1,
                 "num_predict": 400,
             },
@@ -82,14 +84,16 @@ class OllamaClient(LLMClient):
             ) from e
         except httpx.RequestError as e:
             logger.error(f"HTTP request error when calling Ollama: {e}")
-            raise LLMInvocationError(f"HTTP error communicating with Ollama: {e}") from e
+            raise LLMInvocationError(
+                f"HTTP error communicating with Ollama: {e}"
+            ) from e
 
         return self._process_response(response)
 
     def invoke_sync(
         self,
         prompt: str,
-        system: Optional[str] = None,
+        system: str | None = None,
         json_mode: bool = False,
     ) -> str:
         """Synchronously generate a completion from Ollama."""
@@ -104,7 +108,9 @@ class OllamaClient(LLMClient):
             payload["format"] = "json"
 
         endpoint = f"{self._base_url}/api/generate"
-        logger.debug(f"Invoking Ollama model '{self._model}' synchronously via {endpoint}")
+        logger.debug(
+            f"Invoking Ollama model '{self._model}' synchronously via {endpoint}"
+        )
 
         try:
             with httpx.Client(timeout=self._timeout) as client:
@@ -121,7 +127,9 @@ class OllamaClient(LLMClient):
             ) from e
         except httpx.RequestError as e:
             logger.error(f"HTTP request error when calling Ollama: {e}")
-            raise LLMInvocationError(f"HTTP error communicating with Ollama: {e}") from e
+            raise LLMInvocationError(
+                f"HTTP error communicating with Ollama: {e}"
+            ) from e
 
         return self._process_response(response)
 
@@ -139,7 +147,9 @@ class OllamaClient(LLMClient):
         try:
             data = response.json()
         except Exception as e:
-            raise LLMInvocationError(f"Malformed JSON response from Ollama: {response.text}") from e
+            raise LLMInvocationError(
+                f"Malformed JSON response from Ollama: {response.text}"
+            ) from e
 
         raw_response = data.get("response", "")
         cleaned = clean_markdown_fences(raw_response)
@@ -151,7 +161,7 @@ class OllamaClient(LLMClient):
         try:
             async with httpx.AsyncClient(timeout=min(self._timeout, 10.0)) as client:
                 response = await client.get(endpoint)
-        except httpx.ConnectError as e:
+        except httpx.ConnectError:
             return {
                 "available": False,
                 "model_name": self._model,

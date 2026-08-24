@@ -1,5 +1,7 @@
 from unittest.mock import AsyncMock, MagicMock
+
 import pytest
+
 from leadfinder.agents.planner import ScrapingPlannerAgent
 
 

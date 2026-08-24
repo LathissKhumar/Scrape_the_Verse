@@ -2,7 +2,8 @@
 LangGraph Workflow Nodes for Lead Manager.
 """
 
-from typing import Any, Dict
+from typing import Any
+
 from ..agents.conversation_agent import ConversationAgent
 from ..agents.scheduling_agent import SchedulingAgent
 from ..config.logging import get_logger
@@ -23,7 +24,7 @@ from .state import LeadWorkflowState
 logger = get_logger("WorkflowNodes")
 
 
-async def load_lead_state_node(state: LeadWorkflowState) -> Dict[str, Any]:
+async def load_lead_state_node(state: LeadWorkflowState) -> dict[str, Any]:
     lead_id = state["lead_id"]
     db = get_db_manager()
     lead_repo = LeadRepository(db)
@@ -33,12 +34,14 @@ async def load_lead_state_node(state: LeadWorkflowState) -> Dict[str, Any]:
         return {"validation_error": f"Lead with ID {lead_id} not found."}
 
     return {
-        "current_stage": lead.stage.value if hasattr(lead.stage, "value") else str(lead.stage),
+        "current_stage": lead.stage.value
+        if hasattr(lead.stage, "value")
+        else str(lead.stage),
         "lead_data": lead.to_dict(),
     }
 
 
-async def validate_event_node(state: LeadWorkflowState) -> Dict[str, Any]:
+async def validate_event_node(state: LeadWorkflowState) -> dict[str, Any]:
     if state.get("validation_error"):
         return state
 
@@ -49,7 +52,7 @@ async def validate_event_node(state: LeadWorkflowState) -> Dict[str, Any]:
     return {"validation_error": None}
 
 
-async def evaluate_transition_node(state: LeadWorkflowState) -> Dict[str, Any]:
+async def evaluate_transition_node(state: LeadWorkflowState) -> dict[str, Any]:
     if state.get("validation_error"):
         return state
 
@@ -72,7 +75,7 @@ async def evaluate_transition_node(state: LeadWorkflowState) -> Dict[str, Any]:
     }
 
 
-async def execute_agents_node(state: LeadWorkflowState) -> Dict[str, Any]:
+async def execute_agents_node(state: LeadWorkflowState) -> dict[str, Any]:
     if state.get("validation_error"):
         return state
 
@@ -105,19 +108,24 @@ async def execute_agents_node(state: LeadWorkflowState) -> Dict[str, Any]:
             metadata=payload,
         )
 
-    if (
-        state.get("new_stage") == LeadStage.MEETING_REQUESTED.value
-        or (intent_res and intent_res.get("intent") == EmailIntent.REQUEST_MEETING.value)
+    if state.get("new_stage") == LeadStage.MEETING_REQUESTED.value or (
+        intent_res and intent_res.get("intent") == EmailIntent.REQUEST_MEETING.value
     ):
         sched_agent = SchedulingAgent()
-        proposed_time = payload.get("proposed_time") or payload.get("scheduled_at") or "2026-08-25T14:00:00Z"
+        proposed_time = (
+            payload.get("proposed_time")
+            or payload.get("scheduled_at")
+            or "2026-08-25T14:00:00Z"
+        )
         meeting_obj = await sched_agent.create_meeting_proposal(
             lead_id=lead_id,
             title=f"Discovery Call with {lead_data.get('company_name', 'Prospect')}",
             proposed_time_iso=proposed_time,
             duration_minutes=payload.get("duration_minutes", 30),
             organizer_email="sales@agencyos.local",
-            attendee_email=lead_data.get("primary_contact_email", "prospect@client.com"),
+            attendee_email=lead_data.get(
+                "primary_contact_email", "prospect@client.com"
+            ),
             notes=payload.get("notes"),
         )
         db = get_db_manager()
@@ -131,7 +139,7 @@ async def execute_agents_node(state: LeadWorkflowState) -> Dict[str, Any]:
     }
 
 
-async def update_lead_state_node(state: LeadWorkflowState) -> Dict[str, Any]:
+async def update_lead_state_node(state: LeadWorkflowState) -> dict[str, Any]:
     if state.get("validation_error"):
         return state
 
@@ -164,13 +172,16 @@ async def update_lead_state_node(state: LeadWorkflowState) -> Dict[str, Any]:
         await lead_repo.update_stage(lead_id, LeadStage(new_stage))
 
     if payload.get("recommended_services"):
-        await lead_repo.update(lead_id, {"recommended_services": payload["recommended_services"]})
+        await lead_repo.update(
+            lead_id, {"recommended_services": payload["recommended_services"]}
+        )
 
     updated_lead = await lead_repo.get_by_id(lead_id)
 
     # Synchronize with Twenty CRM
     try:
         from ..crm.twenty_adapter import TwentyCRMAdapter
+
         twenty_adapter = TwentyCRMAdapter.get_instance()
         if updated_lead:
             await twenty_adapter.sync_lead(updated_lead)
@@ -187,7 +198,7 @@ async def update_lead_state_node(state: LeadWorkflowState) -> Dict[str, Any]:
     return {"lead_data": updated_lead.to_dict() if updated_lead else None}
 
 
-async def create_activity_and_tasks_node(state: LeadWorkflowState) -> Dict[str, Any]:
+async def create_activity_and_tasks_node(state: LeadWorkflowState) -> dict[str, Any]:
     if state.get("validation_error"):
         return state
 
@@ -228,18 +239,26 @@ async def create_activity_and_tasks_node(state: LeadWorkflowState) -> Dict[str, 
 
     new_task_objs = []
     if intent_res and "intent" in intent_res:
-        intent_tasks = get_tasks_for_intent(lead_id=lead_id, intent=intent_res["intent"], metadata=intent_res)
+        intent_tasks = get_tasks_for_intent(
+            lead_id=lead_id, intent=intent_res["intent"], metadata=intent_res
+        )
         for t in intent_tasks:
             saved_t = await task_repo.create(t)
             created_tasks.append(saved_t.to_dict())
             new_task_objs.append(t)
 
-    target_stage = LeadStage(new_stage) if new_stage else (
-        LeadStage(state.get("current_stage")) if state.get("is_new_lead") else None
+    target_stage = (
+        LeadStage(new_stage)
+        if new_stage
+        else (
+            LeadStage(state.get("current_stage")) if state.get("is_new_lead") else None
+        )
     )
 
     if target_stage:
-        stage_tasks = get_tasks_for_stage_entry(lead_id=lead_id, new_stage=target_stage, metadata=payload)
+        stage_tasks = get_tasks_for_stage_entry(
+            lead_id=lead_id, new_stage=target_stage, metadata=payload
+        )
         for t in stage_tasks:
             saved_t = await task_repo.create(t)
             created_tasks.append(saved_t.to_dict())
@@ -248,6 +267,7 @@ async def create_activity_and_tasks_node(state: LeadWorkflowState) -> Dict[str, 
     # Synchronize Notes (Call Transcripts) & Tasks with Twenty CRM
     try:
         from ..crm.twenty_adapter import TwentyCRMAdapter
+
         twenty_adapter = TwentyCRMAdapter.get_instance()
         lead_data = state.get("lead_data", {})
         company_name = lead_data.get("company_name", "Prospect")
@@ -275,11 +295,12 @@ async def create_activity_and_tasks_node(state: LeadWorkflowState) -> Dict[str, 
     }
 
 
-async def publish_events_node(state: LeadWorkflowState) -> Dict[str, Any]:
+async def publish_events_node(state: LeadWorkflowState) -> dict[str, Any]:
     if state.get("validation_error"):
         return state
 
     from ..events.publishers import EventPublisher
+
     publisher = EventPublisher.get_instance()
     lead_id = state["lead_id"]
 

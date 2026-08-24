@@ -1,4 +1,3 @@
-import pytest
 from leadfinder.crawler.link_discovery import LinkDiscoveryEngine
 
 

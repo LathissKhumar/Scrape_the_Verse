@@ -56,8 +56,16 @@ class RepairConfidenceScorer:
 
         score = round(max(0.0, min(1.0, raw_score)), 3)
 
-        high_threshold = getattr(self.settings, "HIGH_CONFIDENCE_THRESHOLD", _DEFAULT_HIGH_CONFIDENCE_THRESHOLD)
-        medium_threshold = getattr(self.settings, "MEDIUM_CONFIDENCE_THRESHOLD", _DEFAULT_MEDIUM_CONFIDENCE_THRESHOLD)
+        high_threshold = getattr(
+            self.settings,
+            "HIGH_CONFIDENCE_THRESHOLD",
+            _DEFAULT_HIGH_CONFIDENCE_THRESHOLD,
+        )
+        medium_threshold = getattr(
+            self.settings,
+            "MEDIUM_CONFIDENCE_THRESHOLD",
+            _DEFAULT_MEDIUM_CONFIDENCE_THRESHOLD,
+        )
 
         if score >= high_threshold:
             tier = RepairConfidenceLevel.HIGH
@@ -66,6 +74,7 @@ class RepairConfidenceScorer:
         else:
             tier = RepairConfidenceLevel.LOW
 
-        logger.debug(f"Calculated repair confidence: score={score:.3f} -> tier={tier.value}")
+        logger.debug(
+            f"Calculated repair confidence: score={score:.3f} -> tier={tier.value}"
+        )
         return score, tier
-

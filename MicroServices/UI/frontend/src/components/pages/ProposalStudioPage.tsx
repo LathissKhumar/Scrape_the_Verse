@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { 
-  FileText, 
-  Download, 
-  Send, 
-  Sparkles, 
-  CheckCircle2, 
-  DollarSign, 
-  Clock, 
-  Share2, 
+import React, { useState, useEffect } from "react";
+import {
+  FileText,
+  Download,
+  Send,
+  Sparkles,
+  CheckCircle2,
+  DollarSign,
+  Clock,
+  Share2,
   ArrowRight,
   TrendingUp,
   Award,
@@ -20,12 +20,16 @@ import {
   Copy,
   Check,
   RefreshCw,
-  ThumbsUp
-} from 'lucide-react';
-import { LeadRecord, DashboardTab, Proposal } from './types';
-import { mockLeads, mockProposals } from './mockData';
-import { approveLeadProposal, getLeadOpportunities, OpportunityEntity } from '@/lib/api/leadManager';
-import { AutonomousProposalPDFModal } from '@/components/ui/AutonomousProposalPDFModal';
+  ThumbsUp,
+} from "lucide-react";
+import { LeadRecord, DashboardTab, Proposal } from "./types";
+import { mockLeads, mockProposals } from "./mockData";
+import {
+  approveLeadProposal,
+  getLeadOpportunities,
+  OpportunityEntity,
+} from "@/lib/api/leadManager";
+import { AutonomousProposalPDFModal } from "@/components/ui/AutonomousProposalPDFModal";
 
 interface ProposalStudioPageProps {
   selectedLead?: LeadRecord;
@@ -33,21 +37,33 @@ interface ProposalStudioPageProps {
   onSelectLead: (lead: LeadRecord) => void;
 }
 
-export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({ 
-  selectedLead = mockLeads[0], 
-  onNavigateTab, 
-  onSelectLead 
+export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
+  selectedLead = mockLeads[0],
+  onNavigateTab,
+  onSelectLead,
 }) => {
   const [activeLead, setActiveLead] = useState<LeadRecord>(selectedLead);
-  const baseProposal: Proposal = mockProposals[activeLead.id] || mockProposals['lead-001'];
+  const baseProposal: Proposal =
+    mockProposals[activeLead.id] || mockProposals["lead-001"];
 
-  const [investmentTier, setInvestmentTier] = useState<number>(baseProposal.total_investment);
+  const [investmentTier, setInvestmentTier] = useState<number>(
+    baseProposal.total_investment,
+  );
   const [customDiscount, setCustomDiscount] = useState<number>(0);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
   const [approvalStatus, setApprovalStatus] = useState<string | null>(null);
   const [liveOpps, setLiveOpps] = useState<OpportunityEntity[]>([]);
   const [showPdfModal, setShowPdfModal] = useState(false);
+  const [prevSelectedLead, setPrevSelectedLead] =
+    useState<LeadRecord>(selectedLead);
+
+  if (selectedLead && selectedLead.id !== prevSelectedLead?.id) {
+    setPrevSelectedLead(selectedLead);
+    setActiveLead(selectedLead);
+    const prop = mockProposals[selectedLead.id] || mockProposals["lead-001"];
+    setInvestmentTier(prop.total_investment);
+  }
 
   useEffect(() => {
     async function loadOpps() {
@@ -66,7 +82,7 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
     if (found) {
       setActiveLead(found);
       onSelectLead(found);
-      const newProp = mockProposals[found.id] || mockProposals['lead-001'];
+      const newProp = mockProposals[found.id] || mockProposals["lead-001"];
       setInvestmentTier(newProp.total_investment);
       setApprovalStatus(null);
     }
@@ -86,12 +102,14 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
     try {
       const res = await approveLeadProposal(activeLead.id);
       if (res) {
-        setApprovalStatus('Proposal approved & registered in Lead Manager! Lead advanced to PROPOSAL_READY.');
+        setApprovalStatus(
+          "Proposal approved & registered in Lead Manager! Lead advanced to PROPOSAL_READY.",
+        );
       } else {
-        setApprovalStatus('Proposal approved (offline mode).');
+        setApprovalStatus("Proposal approved (offline mode).");
       }
     } catch {
-      setApprovalStatus('Proposal approved (offline mode).');
+      setApprovalStatus("Proposal approved (offline mode).");
     } finally {
       setIsApproving(false);
     }
@@ -110,7 +128,8 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
             Opportunity & Growth Proposal Studio
           </h1>
           <p className="text-sm text-white/60 mt-1 max-w-2xl">
-            Live interactive proposal generator dynamically calculating tailored technical solutions, ROI projections, and milestone deliverables.
+            Live interactive proposal generator dynamically calculating tailored
+            technical solutions, ROI projections, and milestone deliverables.
           </p>
         </div>
 
@@ -121,7 +140,11 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
             className="px-4 py-2 rounded-xl bg-white/[0.06] border border-white/[0.14] text-xs font-semibold text-white focus:outline-none focus:border-white/30 cursor-pointer backdrop-blur-xl"
           >
             {mockLeads.map((l) => (
-              <option key={l.id} value={l.id} className="bg-[#090E1A] text-white">
+              <option
+                key={l.id}
+                value={l.id}
+                className="bg-[#090E1A] text-white"
+              >
                 {l.business_name}
               </option>
             ))}
@@ -136,7 +159,12 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span>{approvalStatus}</span>
           </div>
-          <button onClick={() => setApprovalStatus(null)} className="text-white/40 hover:text-white cursor-pointer">✕</button>
+          <button
+            onClick={() => setApprovalStatus(null)}
+            className="text-white/40 hover:text-white cursor-pointer"
+          >
+            ✕
+          </button>
         </div>
       )}
 
@@ -169,8 +197,12 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
               onClick={handleCopyLink}
               className="px-4 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.14] text-xs font-medium text-white flex items-center gap-2 transition cursor-pointer backdrop-blur-xl"
             >
-              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-sky-300" />}
-              <span>{copiedLink ? 'Link Copied!' : 'Share Proposal Link'}</span>
+              {copiedLink ? (
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
+              ) : (
+                <Copy className="w-3.5 h-3.5 text-sky-300" />
+              )}
+              <span>{copiedLink ? "Link Copied!" : "Share Proposal Link"}</span>
             </button>
 
             <button
@@ -196,7 +228,9 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
         {/* Pricing & Tier Sliders - Apple Liquid Glass Sub-cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl hover:bg-white/[0.06] transition-all space-y-2">
-            <span className="text-[11px] font-mono uppercase text-white/50 font-semibold">Base Package Tier</span>
+            <span className="text-[11px] font-mono uppercase text-white/50 font-semibold">
+              Base Package Tier
+            </span>
             <div className="text-xl font-bold font-mono text-white">
               ${investmentTier.toLocaleString()}
             </div>
@@ -212,7 +246,9 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
           </div>
 
           <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl hover:bg-white/[0.06] transition-all space-y-2">
-            <span className="text-[11px] font-mono uppercase text-white/50 font-semibold">Strategic Incentive</span>
+            <span className="text-[11px] font-mono uppercase text-white/50 font-semibold">
+              Strategic Incentive
+            </span>
             <div className="text-xl font-bold font-mono text-amber-300">
               -${customDiscount.toLocaleString()}
             </div>
@@ -228,11 +264,15 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
           </div>
 
           <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl hover:bg-white/[0.06] transition-all space-y-2">
-            <span className="text-[11px] font-mono uppercase text-emerald-400 font-semibold">Final Total Investment</span>
+            <span className="text-[11px] font-mono uppercase text-emerald-400 font-semibold">
+              Final Total Investment
+            </span>
             <div className="text-xl font-bold font-mono text-emerald-300">
               ${finalInvestment.toLocaleString()}
             </div>
-            <div className="text-[10px] text-white/50">Projected 90-Day ROI: {baseProposal.roi_estimate}</div>
+            <div className="text-[10px] text-white/50">
+              Projected 90-Day ROI: {baseProposal.roi_estimate}
+            </div>
           </div>
         </div>
       </div>
@@ -245,8 +285,12 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
               SV
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white font-display">{baseProposal.title}</h3>
-              <p className="text-xs text-white/50">Prepared for: {activeLead.business_name}</p>
+              <h3 className="text-lg font-bold text-white font-display">
+                {baseProposal.title}
+              </h3>
+              <p className="text-xs text-white/50">
+                Prepared for: {activeLead.business_name}
+              </p>
             </div>
           </div>
 
@@ -258,15 +302,24 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
         {/* Proposal Body */}
         <div className="space-y-6 text-xs text-white/80">
           <div className="space-y-2">
-            <h4 className="text-xs font-mono uppercase text-sky-400 font-bold">1. Executive Summary</h4>
-            <p className="text-sm text-white/90 leading-relaxed font-sans">{baseProposal.executive_summary}</p>
+            <h4 className="text-xs font-mono uppercase text-sky-400 font-bold">
+              1. Executive Summary
+            </h4>
+            <p className="text-sm text-white/90 leading-relaxed font-sans">
+              {baseProposal.executive_summary}
+            </p>
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-xs font-mono uppercase text-rose-400 font-bold">2. Identified Bottlenecks</h4>
+            <h4 className="text-xs font-mono uppercase text-rose-400 font-bold">
+              2. Identified Bottlenecks
+            </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {baseProposal.identified_problems.map((prob, i) => (
-                <div key={i} className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs text-white/80 flex items-start gap-2.5 backdrop-blur-md">
+                <div
+                  key={i}
+                  className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs text-white/80 flex items-start gap-2.5 backdrop-blur-md"
+                >
                   <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0" />
                   <span>{prob}</span>
                 </div>
@@ -275,22 +328,33 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-xs font-mono uppercase text-sky-400 font-bold">3. Strategic Solution</h4>
+            <h4 className="text-xs font-mono uppercase text-sky-400 font-bold">
+              3. Strategic Solution
+            </h4>
             <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] text-xs text-white/90 leading-relaxed backdrop-blur-md">
               {baseProposal.proposed_solution}
             </div>
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-xs font-mono uppercase text-indigo-300 font-bold">4. Scope of Deliverables</h4>
+            <h4 className="text-xs font-mono uppercase text-indigo-300 font-bold">
+              4. Scope of Deliverables
+            </h4>
             <div className="rounded-2xl border border-white/[0.08] overflow-hidden divide-y divide-white/[0.06]">
               {baseProposal.deliverables.map((del, i) => (
-                <div key={i} className="p-4 flex items-center justify-between gap-4 bg-white/[0.02]">
+                <div
+                  key={i}
+                  className="p-4 flex items-center justify-between gap-4 bg-white/[0.02]"
+                >
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                     <div>
-                      <div className="text-xs font-bold text-white">{del.title}</div>
-                      <div className="text-[11px] text-white/50 font-mono mt-0.5">Timeline: {del.timeline}</div>
+                      <div className="text-xs font-bold text-white">
+                        {del.title}
+                      </div>
+                      <div className="text-[11px] text-white/50 font-mono mt-0.5">
+                        Timeline: {del.timeline}
+                      </div>
                     </div>
                   </div>
                   <div className="text-xs font-mono font-bold text-sky-300">
@@ -316,7 +380,7 @@ export const ProposalStudioPage: React.FC<ProposalStudioPageProps> = ({
               </button>
 
               <button
-                onClick={() => onNavigateTab('calls', activeLead.id)}
+                onClick={() => onNavigateTab("calls", activeLead.id)}
                 className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-white/[0.18] hover:bg-white/[0.26] border border-white/[0.28] text-white text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer backdrop-blur-xl shadow-sm"
               >
                 <span>Schedule AI Review Call</span>

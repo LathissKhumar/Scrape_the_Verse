@@ -10,7 +10,6 @@ Executes real-time end-to-end stress scenarios covering:
 """
 
 import asyncio
-import json
 import os
 import sys
 import time
@@ -22,25 +21,21 @@ from leadfinder.config.settings import get_settings
 from leadfinder.diagnosis.engine import DiagnosisEngine
 from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
 from leadfinder.extraction.engine import ExtractionEngine
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule, RawPage
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    ExtractionStrategyEnum,
+    FieldRule,
+    RawPage,
+)
 from leadfinder.healing.actions.detector import ActionIssueDetector
 from leadfinder.healing.actions.planner import ActionRepairPlanner
-from leadfinder.healing.confidence import RepairConfidenceScorer
 from leadfinder.healing.engine import HealingEngine
 from leadfinder.healing.failed_memory import FailedRepairMemory
-from leadfinder.healing.fingerprint import DOMFingerprinter
-from leadfinder.healing.freshness import RepairFreshnessLifecycle
 from leadfinder.healing.memory import RepairMemory
-from leadfinder.healing.multi_page import MultiPageRepairValidator
-from leadfinder.healing.observability import RepairObservability
-from leadfinder.healing.persistent_memory import PersistentRepairMemory
-from leadfinder.healing.planner import HealingPlanner
-from leadfinder.healing.schemas import RepairConfidenceLevel, RepairType
-from leadfinder.healing.semantic_memory import SemanticRepairMemory
+from leadfinder.healing.schemas import RepairType
 from leadfinder.llm.ollama_client import OllamaClient
 from leadfinder.models.schemas import ScrapingTask
 from leadfinder.validation.engine import ValidationEngine
-from leadfinder.validation.schemas import ValidationResult
 
 logger = get_logger("STRESS_TEST")
 
@@ -51,7 +46,9 @@ def format_header(title: str):
     print("=" * 80)
 
 
-async def run_scenario_1_selector_drift(healer: HealingEngine, extractor: ExtractionEngine, validator: ValidationEngine):
+async def run_scenario_1_selector_drift(
+    healer: HealingEngine, extractor: ExtractionEngine, validator: ValidationEngine
+):
     """Stress Test 1: Severe CSS selector drift on e-commerce catalog."""
     format_header("1. Severe CSS Class Drift & Layout Mutation")
     query = "Extract product name, price, rating, and stock status"
@@ -115,13 +112,17 @@ async def run_scenario_1_selector_drift(healer: HealingEngine, extractor: Extrac
     # 1. Initial extraction attempt (strictly CSS with stale schema)
     t0 = time.time()
     initial_records = extractor.css_extractor.extract(raw_page, stale_schema)
-    initial_val = validator.validate(records=initial_records, task=task, raw_results=[raw_page.model_dump()])
+    initial_val = validator.validate(
+        records=initial_records, task=task, raw_results=[raw_page.model_dump()]
+    )
 
     print(f"\n[Initial Extraction] Extracted: {len(initial_records)} records")
-    print(f"[Initial Validation] Health Score: {initial_val.health_score:.2f} | Status: {initial_val.status.upper()}")
+    print(
+        f"[Initial Validation] Health Score: {initial_val.health_score:.2f} | Status: {initial_val.status.upper()}"
+    )
 
     # 2. Trigger Autonomous Healing
-    print(f"[Healing Agent] Initiating failure diagnosis and self-healing loop...")
+    print("[Healing Agent] Initiating failure diagnosis and self-healing loop...")
     diag_engine = DiagnosisEngine(llm_client=healer.planner.llm_client)
     diagnosis = await diag_engine.diagnose_async(
         task=task,
@@ -129,7 +130,9 @@ async def run_scenario_1_selector_drift(healer: HealingEngine, extractor: Extrac
         raw_results=[raw_page.model_dump()],
         extracted_results=initial_records,
     )
-    print(f"  -> Diagnosis: {diagnosis.root_cause.value} (Confidence: {diagnosis.confidence:.2f})")
+    print(
+        f"  -> Diagnosis: {diagnosis.root_cause.value} (Confidence: {diagnosis.confidence:.2f})"
+    )
     print(f"  -> Strategy:  {diagnosis.repair_strategy.value}")
 
     success, healed_schema, eval_res, records, history = await healer.heal(
@@ -141,9 +144,15 @@ async def run_scenario_1_selector_drift(healer: HealingEngine, extractor: Extrac
     )
     t_elapsed = (time.time() - t0) * 1000.0
 
-    print(f"\n[Healing Result] Success: {success} | Attempts: {len(history)} | Latency: {t_elapsed:.1f}ms")
-    print(f"  -> Health Before: {eval_res.before.health:.2f} -> Health After: {eval_res.after.health:.2f} (Delta: {eval_res.improvement:+.2f})")
-    print(f"  -> Confidence:    {eval_res.confidence_level.value.upper()} (Score: {eval_res.confidence_score:.3f})")
+    print(
+        f"\n[Healing Result] Success: {success} | Attempts: {len(history)} | Latency: {t_elapsed:.1f}ms"
+    )
+    print(
+        f"  -> Health Before: {eval_res.before.health:.2f} -> Health After: {eval_res.after.health:.2f} (Delta: {eval_res.improvement:+.2f})"
+    )
+    print(
+        f"  -> Confidence:    {eval_res.confidence_level.value.upper()} (Score: {eval_res.confidence_score:.3f})"
+    )
     print(f"  -> Extracted Records: {len(records)}")
     for i, r in enumerate(records, start=1):
         print(f"     Record #{i}: {r}")
@@ -184,12 +193,16 @@ async def run_scenario_2_action_repair(healer: HealingEngine):
 
     detector = ActionIssueDetector()
     planner = ActionRepairPlanner()
-    task = ScrapingTask(task_id="stress_s2_action", objective=query, target_urls=[target_url])
+    task = ScrapingTask(
+        task_id="stress_s2_action", objective=query, target_urls=[target_url]
+    )
 
     issues = detector.detect_blocking_issues(html_with_cookie_barrier)
     print(f"\n[Action Detector] Found {len(issues)} interaction barrier(s):")
     for iss in issues:
-        print(f"  -> Barrier: {iss['issue_type']} (Target: {iss['target_selector']}, Action: {iss['recommended_action'].value})")
+        print(
+            f"  -> Barrier: {iss['issue_type']} (Target: {iss['target_selector']}, Action: {iss['recommended_action'].value})"
+        )
 
     action_plans = planner.plan_from_issues(issues, task)
     print(f"[Action Planner] Synthesized {len(action_plans)} ActionPlan candidate(s):")
@@ -197,11 +210,16 @@ async def run_scenario_2_action_repair(healer: HealingEngine):
         print(f"  -> Plan: '{p.description}' ({len(p.actions)} action steps)")
 
     assert len(issues) >= 1
-    assert issues[0]["recommended_action"] == RepairType.REPAIR_ACTION_PLAN or issues[0]["issue_type"] == "COOKIE_CONSENT_BANNER"
+    assert (
+        issues[0]["recommended_action"] == RepairType.REPAIR_ACTION_PLAN
+        or issues[0]["issue_type"] == "COOKIE_CONSENT_BANNER"
+    )
     print("  >>> SCENARIO 2 RESULT: PASSED (ACTION REPAIR PLANNED)")
 
 
-async def run_scenario_3_table_paradigm_shift(healer: HealingEngine, extractor: ExtractionEngine, validator: ValidationEngine):
+async def run_scenario_3_table_paradigm_shift(
+    healer: HealingEngine, extractor: ExtractionEngine, validator: ValidationEngine
+):
     """Stress Test 3: Structural Paradigm Shift (Grid Cards -> HTML Table)."""
     format_header("3. Structural Paradigm Shift: Grid Cards -> HTML Table")
     query = "Extract country name, capital, population, and GDP"
@@ -249,11 +267,17 @@ async def run_scenario_3_table_paradigm_shift(healer: HealingEngine, extractor: 
         ],
     )
 
-    initial_ext = await extractor.extract_async(raw_content=[raw_page], task=task, schema=card_schema)
-    initial_val = validator.validate(records=initial_ext.records, task=task, raw_results=[raw_page.model_dump()])
+    initial_ext = await extractor.extract_async(
+        raw_content=[raw_page], task=task, schema=card_schema
+    )
+    initial_val = validator.validate(
+        records=initial_ext.records, task=task, raw_results=[raw_page.model_dump()]
+    )
 
     print(f"\n[Initial Extraction] Extracted: {len(initial_ext.records)} records")
-    print(f"[Initial Validation] Health Score: {initial_val.health_score:.2f} | Status: {initial_val.status.upper()}")
+    print(
+        f"[Initial Validation] Health Score: {initial_val.health_score:.2f} | Status: {initial_val.status.upper()}"
+    )
 
     diagnosis = DiagnosisResult(
         root_cause=RootCause.TABLE_STRUCTURE_CHANGE,
@@ -269,8 +293,12 @@ async def run_scenario_3_table_paradigm_shift(healer: HealingEngine, extractor: 
         raw_results=[raw_page.model_dump()],
     )
 
-    print(f"\n[Healing Result] Success: {success} | Strategy: {healed_schema.strategy.value.upper()}")
-    print(f"  -> Health Before: {eval_res.before.health:.2f} -> Health After: {eval_res.after.health:.2f}")
+    print(
+        f"\n[Healing Result] Success: {success} | Strategy: {healed_schema.strategy.value.upper()}"
+    )
+    print(
+        f"  -> Health Before: {eval_res.before.health:.2f} -> Health After: {eval_res.after.health:.2f}"
+    )
     print(f"  -> Extracted Tabular Records: {len(records)}")
     for i, r in enumerate(records, start=1):
         print(f"     Row #{i}: {r}")
@@ -289,13 +317,26 @@ async def run_scenario_4_multi_page_consistency(healer: HealingEngine):
     task = ScrapingTask(
         task_id="stress_s4_multipage",
         objective=query,
-        target_urls=["https://store.com/laptops?p=1", "https://store.com/laptops?p=2", "https://store.com/laptops?p=3"],
+        target_urls=[
+            "https://store.com/laptops?p=1",
+            "https://store.com/laptops?p=2",
+            "https://store.com/laptops?p=3",
+        ],
     )
 
     pages = [
-        RawPage(url="https://store.com/laptops?p=1", html="<html><div class='prod'><h3>MacBook Pro</h3><span class='p'>$2000</span></div></html>"),
-        RawPage(url="https://store.com/laptops?p=2", html="<html><div class='prod'><h3>ThinkPad X1</h3><span class='p'>$1800</span></div></html>"),
-        RawPage(url="https://store.com/laptops?p=3", html="<html><div class='prod'><h3>Dell XPS 15</h3><span class='p'>$1900</span></div></html>"),
+        RawPage(
+            url="https://store.com/laptops?p=1",
+            html="<html><div class='prod'><h3>MacBook Pro</h3><span class='p'>$2000</span></div></html>",
+        ),
+        RawPage(
+            url="https://store.com/laptops?p=2",
+            html="<html><div class='prod'><h3>ThinkPad X1</h3><span class='p'>$1800</span></div></html>",
+        ),
+        RawPage(
+            url="https://store.com/laptops?p=3",
+            html="<html><div class='prod'><h3>Dell XPS 15</h3><span class='p'>$1900</span></div></html>",
+        ),
     ]
 
     candidate_schema = ExtractionSchema(
@@ -307,15 +348,24 @@ async def run_scenario_4_multi_page_consistency(healer: HealingEngine):
         ],
     )
 
-    passed, avg_health, metrics, reason = await healer.multi_page_validator.validate_candidate_across_pages(
+    (
+        passed,
+        avg_health,
+        metrics,
+        reason,
+    ) = await healer.multi_page_validator.validate_candidate_across_pages(
         task=task,
         schema=candidate_schema,
         raw_pages=pages,
     )
 
-    print(f"\n[Multi-Page Validation] Passed: {passed} | Average Health: {avg_health:.2f}")
+    print(
+        f"\n[Multi-Page Validation] Passed: {passed} | Average Health: {avg_health:.2f}"
+    )
     for m in metrics:
-        print(f"  -> Page #{m['page_index']} ({m['url']}): {m['records']} records, health={m['health_score']:.2f}")
+        print(
+            f"  -> Page #{m['page_index']} ({m['url']}): {m['records']} records, health={m['health_score']:.2f}"
+        )
 
     assert passed is True
     assert len(metrics) == 3
@@ -327,45 +377,66 @@ async def run_scenario_5_failed_memory_suppression(healer: HealingEngine):
     format_header("5. Failed Candidate Suppression & Anti-Looping Protection")
     domain = "bad-selectors.stress-test.com"
     sig = "sig_bad_123"
-    bad_config = {"fields": [{"name": "title", "selector": ".totally-non-existent-selector"}]}
+    bad_config = {
+        "fields": [{"name": "title", "selector": ".totally-non-existent-selector"}]
+    }
 
     print(f"Domain:    {domain}")
     print(f"Candidate: {bad_config}")
 
     # First rejection
-    healer.failed_memory.record_failure(domain, sig, bad_config, reason="No elements found")
-    print("\n[Attempt 1 Failure Recorded] Suppressed? ->", healer.failed_memory.is_suppressed(domain, sig, bad_config))
+    healer.failed_memory.record_failure(
+        domain, sig, bad_config, reason="No elements found"
+    )
+    print(
+        "\n[Attempt 1 Failure Recorded] Suppressed? ->",
+        healer.failed_memory.is_suppressed(domain, sig, bad_config),
+    )
 
     # Second rejection
-    healer.failed_memory.record_failure(domain, sig, bad_config, reason="Still no elements found")
+    healer.failed_memory.record_failure(
+        domain, sig, bad_config, reason="Still no elements found"
+    )
     suppressed = healer.failed_memory.is_suppressed(domain, sig, bad_config)
     penalty = healer.failed_memory.get_penalty(domain, sig, bad_config)
-    print(f"[Attempt 2 Failure Recorded] Suppressed? -> {suppressed} (Score Penalty: -{penalty:.2f})")
+    print(
+        f"[Attempt 2 Failure Recorded] Suppressed? -> {suppressed} (Score Penalty: -{penalty:.2f})"
+    )
 
     assert suppressed is True
     assert penalty > 0.0
     print("  >>> SCENARIO 5 RESULT: PASSED (FAILED CANDIDATE SUPPRESSED)")
 
 
-async def run_scenario_6_sqlite_instant_reuse(healer: HealingEngine, extractor: ExtractionEngine, task_schema: ExtractionSchema):
+async def run_scenario_6_sqlite_instant_reuse(
+    healer: HealingEngine, extractor: ExtractionEngine, task_schema: ExtractionSchema
+):
     """Stress Test 6: Persistent SQLite Instant Re-Use (<1ms)."""
     format_header("6. Persistent SQLite Instant Re-Use (<1ms)")
     target_url = "https://shop.stress-test.com/gadgets"
     domain = "shop.stress-test.com"
     print(f"Target URL: {target_url} (Re-visiting previously healed domain)")
 
-    sample_html = "<div class='gadget-tile-v3'><h2 class='gadget-title-new'>MacBook</h2></div>"
-    sig = healer.memory.generate_signature(url=target_url, html=sample_html, fields=["product_name", "price"])
+    sample_html = (
+        "<div class='gadget-tile-v3'><h2 class='gadget-title-new'>MacBook</h2></div>"
+    )
+    sig = healer.memory.generate_signature(
+        url=target_url, html=sample_html, fields=["product_name", "price"]
+    )
 
     t0 = time.perf_counter()
-    cached_record = healer.memory.persistent_storage.lookup(domain=domain, signature=sig)
+    cached_record = healer.memory.persistent_storage.lookup(
+        domain=domain, signature=sig
+    )
     t_lookup_ms = (time.perf_counter() - t0) * 1000.0
 
     print(f"\n[Persistent SQLite Lookup] Latency: {t_lookup_ms:.3f} ms")
     if cached_record:
         print(f"  -> Found Cached Strategy: {cached_record.repair_type.value}")
         print(f"  -> Status:                 {cached_record.status.value.upper()}")
-        print(f"  -> Confidence Tier:        {cached_record.confidence_level.value.upper()}")
+        print(
+            f"  -> Confidence Tier:        {cached_record.confidence_level.value.upper()}"
+        )
         print(f"  -> Lifetime Success Count: {cached_record.success_count}")
     else:
         print("  -> Lookup executed (Database query operational)")
@@ -417,7 +488,9 @@ async def main():
     print("  ALL 6 STRESS SCENARIOS COMPLETED WITH 100% PASS RATE")
     print("=" * 80)
     print(f"  Total Healing Sessions Recorded: {obs_summary.get('total_sessions', 0)}")
-    print(f"  Healing Success Rate:            {obs_summary.get('success_rate', 1.0):.1%}")
+    print(
+        f"  Healing Success Rate:            {obs_summary.get('success_rate', 1.0):.1%}"
+    )
     print(f"  Persisted Verified Repairs:      {obs_summary.get('persisted_count', 0)}")
     print("=" * 80 + "\n")
 

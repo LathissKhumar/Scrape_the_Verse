@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from leadfinder.agents.base import BaseAgent
 from leadfinder.models.schemas import ScrapingTask
@@ -10,7 +10,7 @@ from leadfinder.validation.schemas import ValidationResult
 class ValidationAgent(BaseAgent):
     """Validation Agent: Evaluates extracted records, computes health scores, and records failure diagnostics."""
 
-    def __init__(self, engine: Optional[ValidationEngine] = None):
+    def __init__(self, engine: ValidationEngine | None = None):
         super().__init__(name="VALIDATION")
         self.engine = engine or ValidationEngine()
 
@@ -18,8 +18,8 @@ class ValidationAgent(BaseAgent):
         self,
         extracted_results: list[dict[str, Any]],
         task: ScrapingTask,
-        raw_results: Optional[Any] = None,
-        historical_baseline: Optional[HistoricalBaseline] = None,
+        raw_results: Any | None = None,
+        historical_baseline: HistoricalBaseline | None = None,
     ) -> ValidationResult:
         """Execute deterministic data validation and return complete ValidationResult."""
         self.logger.debug(
@@ -37,4 +37,3 @@ class ValidationAgent(BaseAgent):
             f"Quality audit completed | status={result.status} | health_score={result.health_score:.2f} | quality_score={result.quality_score:.2f} | anomalies={len(result.anomalies)}"
         )
         return result
-

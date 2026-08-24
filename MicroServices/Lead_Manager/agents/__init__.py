@@ -9,9 +9,9 @@ from .llm_factory import LLMClient
 from .scheduling_agent import SchedulingAgent
 
 __all__ = [
-    "LLMClient",
     "ConversationAgent",
-    "SchedulingAgent",
     "FollowUpAgent",
+    "LLMClient",
     "LifecycleAgent",
+    "SchedulingAgent",
 ]

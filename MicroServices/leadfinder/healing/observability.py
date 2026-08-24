@@ -4,9 +4,11 @@ import asyncio
 import os
 import threading
 import time
-from typing import Any, Optional
+from typing import Any
 from uuid import uuid4
+
 from pydantic import BaseModel, Field
+
 from leadfinder.config.logging import get_logger
 
 logger = get_logger("REPAIR_OBSERVABILITY")
@@ -31,7 +33,7 @@ class RepairSessionTelemetry(BaseModel):
     confidence_level: str = "low"
     accepted: bool = False
     persisted: bool = False
-    rejection_reason: Optional[str] = None
+    rejection_reason: str | None = None
     duration_ms: float = 0.0
     timestamp: float = Field(default_factory=time.time)
 
@@ -40,7 +42,9 @@ class RepairObservability:
     """Singleton-like telemetry buffer and JSONL log persistence for self-healing operations."""
 
     def __init__(self, log_path: str = "app/.repair_sessions.jsonl") -> None:
-        if not os.path.exists(log_path) and os.path.exists(os.path.join("app", log_path)):
+        if not os.path.exists(log_path) and os.path.exists(
+            os.path.join("app", log_path)
+        ):
             log_path = os.path.join("app", log_path)
         self.log_path = log_path
         self._sessions: list[RepairSessionTelemetry] = []
@@ -75,7 +79,9 @@ class RepairObservability:
             f"confidence={session.confidence_level}"
         )
 
-    def load_all_persisted_sessions(self, limit: Optional[int] = None) -> list[RepairSessionTelemetry]:
+    def load_all_persisted_sessions(
+        self, limit: int | None = None
+    ) -> list[RepairSessionTelemetry]:
         """Read and parse persisted repair sessions from JSONL log with optional tail limit."""
         if not os.path.exists(self.log_path):
             return []
@@ -90,11 +96,17 @@ class RepairObservability:
                     line_str = line.strip()
                     if line_str:
                         try:
-                            loaded.append(RepairSessionTelemetry.model_validate_json(line_str))
+                            loaded.append(
+                                RepairSessionTelemetry.model_validate_json(line_str)
+                            )
                         except Exception as parse_err:
-                            logger.debug(f"Skipping malformed telemetry record: {parse_err}")
+                            logger.debug(
+                                f"Skipping malformed telemetry record: {parse_err}"
+                            )
         except Exception as error:
-            logger.warning(f"Error reading telemetry log from '{self.log_path}': {error}")
+            logger.warning(
+                f"Error reading telemetry log from '{self.log_path}': {error}"
+            )
 
         with self._lock:
             if loaded and not self._sessions:
@@ -173,29 +185,47 @@ class RepairObservability:
             root_causes[rc]["total_improvement"] += session_item.improvement
 
         for rc, data in root_causes.items():
-            data["success_rate"] = round(data["accepted"] / data["total"], 3) if data["total"] > 0 else 0.0
-            data["avg_improvement"] = round(data["total_improvement"] / data["total"], 3) if data["total"] > 0 else 0.0
+            data["success_rate"] = (
+                round(data["accepted"] / data["total"], 3) if data["total"] > 0 else 0.0
+            )
+            data["avg_improvement"] = (
+                round(data["total_improvement"] / data["total"], 3)
+                if data["total"] > 0
+                else 0.0
+            )
 
         # Domain breakdown
         domain_stats: dict[str, dict[str, Any]] = {}
         for session_item in sessions:
             domain_name = session_item.domain
             if domain_name not in domain_stats:
-                domain_stats[domain_name] = {"total": 0, "accepted": 0, "total_improvement": 0.0}
+                domain_stats[domain_name] = {
+                    "total": 0,
+                    "accepted": 0,
+                    "total_improvement": 0.0,
+                }
             domain_stats[domain_name]["total"] += 1
             if session_item.accepted:
                 domain_stats[domain_name]["accepted"] += 1
             domain_stats[domain_name]["total_improvement"] += session_item.improvement
 
         for domain_name, data in domain_stats.items():
-            data["success_rate"] = round(data["accepted"] / data["total"], 3) if data["total"] > 0 else 0.0
-            data["avg_improvement"] = round(data["total_improvement"] / data["total"], 3) if data["total"] > 0 else 0.0
+            data["success_rate"] = (
+                round(data["accepted"] / data["total"], 3) if data["total"] > 0 else 0.0
+            )
+            data["avg_improvement"] = (
+                round(data["total_improvement"] / data["total"], 3)
+                if data["total"] > 0
+                else 0.0
+            )
 
         # Confidence distribution
         confidence_distribution: dict[str, int] = {}
         for session_item in sessions:
             conf_tier = session_item.confidence_level
-            confidence_distribution[conf_tier] = confidence_distribution.get(conf_tier, 0) + 1
+            confidence_distribution[conf_tier] = (
+                confidence_distribution.get(conf_tier, 0) + 1
+            )
 
         # Multi-page stats
         mp_evaluated = sum(1 for s in sessions if s.multi_page_evaluated)
@@ -216,7 +246,9 @@ class RepairObservability:
             "multi_page_stats": {
                 "evaluated": mp_evaluated,
                 "accepted": mp_accepted,
-                "pass_rate": round(mp_accepted / mp_evaluated, 3) if mp_evaluated > 0 else 1.0,
+                "pass_rate": round(mp_accepted / mp_evaluated, 3)
+                if mp_evaluated > 0
+                else 1.0,
             },
         }
 
@@ -240,50 +272,78 @@ class RepairObservability:
             "| :--- | :---: | :---: | :---: | :---: |",
         ]
 
-        for rc, data in sorted(metrics.get("root_causes", {}).items(), key=lambda x: x[1]["total"], reverse=True):
-            lines.append(f"| `{rc}` | {data['total']} | {data['accepted']} | {data['success_rate']*100:.1f}% | +{data['avg_improvement']:.2f} |")
+        for rc, data in sorted(
+            metrics.get("root_causes", {}).items(),
+            key=lambda x: x[1]["total"],
+            reverse=True,
+        ):
+            lines.append(
+                f"| `{rc}` | {data['total']} | {data['accepted']} | {data['success_rate'] * 100:.1f}% | +{data['avg_improvement']:.2f} |"
+            )
 
-        lines.extend([
-            "",
-            "## Domain Performance",
-            "| Domain | Total Attempts | Accepted | Success Rate | Avg Health Gain |",
-            "| :--- | :---: | :---: | :---: | :---: |",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Domain Performance",
+                "| Domain | Total Attempts | Accepted | Success Rate | Avg Health Gain |",
+                "| :--- | :---: | :---: | :---: | :---: |",
+            ]
+        )
 
-        for d, data in sorted(metrics.get("domain_stats", {}).items(), key=lambda x: x[1]["total"], reverse=True):
-            lines.append(f"| `{d}` | {data['total']} | {data['accepted']} | {data['success_rate']*100:.1f}% | +{data['avg_improvement']:.2f} |")
+        for d, data in sorted(
+            metrics.get("domain_stats", {}).items(),
+            key=lambda x: x[1]["total"],
+            reverse=True,
+        ):
+            lines.append(
+                f"| `{d}` | {data['total']} | {data['accepted']} | {data['success_rate'] * 100:.1f}% | +{data['avg_improvement']:.2f} |"
+            )
 
-        lines.extend([
-            "",
-            "## Multi-Page Consistency Validation",
-            f"- **Multi-Page Evaluated Sessions:** `{metrics['multi_page_stats']['evaluated']}`",
-            f"- **Multi-Page Accepted:** `{metrics['multi_page_stats']['accepted']}` ({metrics['multi_page_stats']['pass_rate']*100:.1f}%)",
-            "",
-            "## Confidence Distribution",
-        ])
+        lines.extend(
+            [
+                "",
+                "## Multi-Page Consistency Validation",
+                f"- **Multi-Page Evaluated Sessions:** `{metrics['multi_page_stats']['evaluated']}`",
+                f"- **Multi-Page Accepted:** `{metrics['multi_page_stats']['accepted']}` ({metrics['multi_page_stats']['pass_rate'] * 100:.1f}%)",
+                "",
+                "## Confidence Distribution",
+            ]
+        )
         for conf, count in metrics.get("confidence_distribution", {}).items():
             lines.append(f"- **{conf.upper()} Tier:** `{count}` sessions")
 
         return "\n".join(lines)
 
-    def generate_dashboard_html(self, output_file: Optional[str] = None) -> str:
+    def generate_dashboard_html(self, output_file: str | None = None) -> str:
         """Generate a modern HTML dashboard with visual cards, progress bars, and metrics tables."""
         metrics = self.get_comprehensive_metrics()
         total = metrics["total_sessions"]
         success_pct = round(metrics["success_rate"] * 100, 1)
 
-        rc_rows = "".join([
-            f"<tr><td><code>{rc}</code></td><td>{d['total']}</td><td>{d['accepted']}</td>"
-            f"<td><div class='progress-bar'><div class='fill' style='width:{d['success_rate']*100}%'></div></div>{d['success_rate']*100:.1f}%</td>"
-            f"<td class='gain'>+{d['avg_improvement']:.2f}</td></tr>"
-            for rc, d in sorted(metrics.get("root_causes", {}).items(), key=lambda x: x[1]["total"], reverse=True)
-        ])
+        rc_rows = "".join(
+            [
+                f"<tr><td><code>{rc}</code></td><td>{d['total']}</td><td>{d['accepted']}</td>"
+                f"<td><div class='progress-bar'><div class='fill' style='width:{d['success_rate'] * 100}%'></div></div>{d['success_rate'] * 100:.1f}%</td>"
+                f"<td class='gain'>+{d['avg_improvement']:.2f}</td></tr>"
+                for rc, d in sorted(
+                    metrics.get("root_causes", {}).items(),
+                    key=lambda x: x[1]["total"],
+                    reverse=True,
+                )
+            ]
+        )
 
-        domain_rows = "".join([
-            f"<tr><td><strong>{d}</strong></td><td>{data['total']}</td><td>{data['accepted']}</td>"
-            f"<td>{data['success_rate']*100:.1f}%</td><td class='gain'>+{data['avg_improvement']:.2f}</td></tr>"
-            for d, data in sorted(metrics.get("domain_stats", {}).items(), key=lambda x: x[1]["total"], reverse=True)
-        ])
+        domain_rows = "".join(
+            [
+                f"<tr><td><strong>{d}</strong></td><td>{data['total']}</td><td>{data['accepted']}</td>"
+                f"<td>{data['success_rate'] * 100:.1f}%</td><td class='gain'>+{data['avg_improvement']:.2f}</td></tr>"
+                for d, data in sorted(
+                    metrics.get("domain_stats", {}).items(),
+                    key=lambda x: x[1]["total"],
+                    reverse=True,
+                )
+            ]
+        )
 
         html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -347,11 +407,11 @@ class RepairObservability:
             </div>
             <div class="card">
                 <div class="card-title">Avg Health Gain</div>
-                <div class="card-value highlight">+{metrics.get('avg_improvement', 0.0):.2f}</div>
+                <div class="card-value highlight">+{metrics.get("avg_improvement", 0.0):.2f}</div>
             </div>
             <div class="card">
                 <div class="card-title">Avg Repair Latency</div>
-                <div class="card-value">{metrics['avg_duration_ms']} ms</div>
+                <div class="card-value">{metrics["avg_duration_ms"]} ms</div>
             </div>
         </div>
 
@@ -394,6 +454,7 @@ class RepairObservability:
 
 if __name__ == "__main__":
     import sys
+
     obs = RepairObservability()
     if "--html" in sys.argv:
         out_path = "repair_dashboard.html"
@@ -401,4 +462,3 @@ if __name__ == "__main__":
         print(f"Generated HTML dashboard: {out_path}")
     else:
         print(obs.generate_dashboard_markdown())
-

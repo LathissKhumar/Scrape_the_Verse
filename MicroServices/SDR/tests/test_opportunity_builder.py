@@ -50,4 +50,6 @@ def test_build_opportunities_from_perfect_scores():
 
     opps = OpportunityBuilder.build_opportunities_from_audit(audit_state)
     assert len(opps) >= 1
-    assert any(o["type"] in ("CONVERSION_OPTIMIZATION", "WEBSITE_REDESIGN") for o in opps)
+    assert any(
+        o["type"] in ("CONVERSION_OPTIMIZATION", "WEBSITE_REDESIGN") for o in opps
+    )

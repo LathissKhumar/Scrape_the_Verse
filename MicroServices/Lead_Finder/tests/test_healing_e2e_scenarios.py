@@ -1,21 +1,16 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
 from leadfinder.extraction.schema import (
     ExtractionResult,
     ExtractionSchema,
     ExtractionStrategyEnum,
     FieldRule,
-    RawPage,
 )
 from leadfinder.healing.engine import HealingEngine
-from leadfinder.healing.evaluator import RepairEvaluator
 from leadfinder.healing.evidence_collector import RepairEvidenceCollector
-from leadfinder.healing.executor import RepairExecutor
-from leadfinder.healing.memory import RepairMemory
-from leadfinder.healing.patcher import RepairPatcher
 from leadfinder.healing.planner import HealingPlanner
-from leadfinder.healing.schemas import RepairCandidate, RepairPlan, RepairType
 from leadfinder.models.schemas import ScrapingTask
 from leadfinder.validation.engine import ValidationEngine
 from leadfinder.validation.schemas import (
@@ -64,10 +59,13 @@ async def test_case_1_css_selector_drift_end_to_end():
     )
 
     mock_scraper = MagicMock()
-    mock_scraper.execute = AsyncMock(return_value=[{"html": new_html, "url": "https://store.example.com/laptops"}])
+    mock_scraper.execute = AsyncMock(
+        return_value=[{"html": new_html, "url": "https://store.example.com/laptops"}]
+    )
 
     mock_llm = MagicMock()
-    mock_llm.invoke = AsyncMock(return_value="""
+    mock_llm.invoke = AsyncMock(
+        return_value="""
     {
         "repair_type": "REPAIR_CSS_SELECTORS",
         "target_component": "extraction",
@@ -89,7 +87,8 @@ async def test_case_1_css_selector_drift_end_to_end():
         "expected_improvement": {"product_name_coverage": 1.0, "price_coverage": 1.0},
         "risk_level": "low"
     }
-    """)
+    """
+    )
 
     validation_engine = ValidationEngine()
     planner = HealingPlanner(llm_client=mock_llm)
@@ -107,7 +106,11 @@ async def test_case_1_css_selector_drift_end_to_end():
         status="broken",
         record_count=0,
         failures=[
-            FailureItem(failure_type=FailureTaxonomy.EMPTY_RESULTS, severity="critical", message="Zero records extracted")
+            FailureItem(
+                failure_type=FailureTaxonomy.EMPTY_RESULTS,
+                severity="critical",
+                message="Zero records extracted",
+            )
         ],
     )
     diagnosis = DiagnosisResult(
@@ -143,15 +146,25 @@ async def test_case_2_strategy_switch_css_to_semantic_llm():
         target_urls=["https://example.com/books"],
         fields=["title", "author", "price"],
     )
-    old_schema = ExtractionSchema(strategy=ExtractionStrategyEnum.CSS, base_selector=".nonexistent")
+    old_schema = ExtractionSchema(
+        strategy=ExtractionStrategyEnum.CSS, base_selector=".nonexistent"
+    )
 
     mock_scraper = MagicMock()
-    mock_scraper.execute = AsyncMock(return_value=[{"html": raw_html, "url": "https://example.com/books"}])
+    mock_scraper.execute = AsyncMock(
+        return_value=[{"html": raw_html, "url": "https://example.com/books"}]
+    )
 
     mock_extractor = MagicMock()
     mock_extractor.extract = AsyncMock(
         return_value=ExtractionResult(
-            records=[{"title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "price": "$12"}],
+            records=[
+                {
+                    "title": "The Great Gatsby",
+                    "author": "F. Scott Fitzgerald",
+                    "price": "$12",
+                }
+            ],
             strategy_used="semantic",
         )
     )
@@ -189,7 +202,10 @@ async def test_case_2_strategy_switch_css_to_semantic_llm():
 
     assert success is True
     assert evaluation.accepted is True
-    assert healed_schema.strategy in (ExtractionStrategyEnum.SEMANTIC, ExtractionStrategyEnum.LLM)
+    assert healed_schema.strategy in (
+        ExtractionStrategyEnum.SEMANTIC,
+        ExtractionStrategyEnum.LLM,
+    )
     assert len(records) == 1
     assert records[0]["title"] == "The Great Gatsby"
 
@@ -206,14 +222,19 @@ async def test_case_3_regex_pattern_drift():
     )
     old_schema = ExtractionSchema(
         strategy=ExtractionStrategyEnum.REGEX,
-        fields=[FieldRule(name="phone", regex_pattern=r"^\d{3}-\d{4}$")],  # Old 7-digit pattern fails
+        fields=[
+            FieldRule(name="phone", regex_pattern=r"^\d{3}-\d{4}$")
+        ],  # Old 7-digit pattern fails
     )
 
     mock_scraper = MagicMock()
-    mock_scraper.execute = AsyncMock(return_value=[{"text": text_content, "url": "https://example.com/contact"}])
+    mock_scraper.execute = AsyncMock(
+        return_value=[{"text": text_content, "url": "https://example.com/contact"}]
+    )
 
     mock_llm = MagicMock()
-    mock_llm.invoke = AsyncMock(return_value="""
+    mock_llm.invoke = AsyncMock(
+        return_value="""
     {
         "repair_type": "REPAIR_REGEX_PATTERN",
         "target_component": "extraction",
@@ -224,15 +245,20 @@ async def test_case_3_regex_pattern_drift():
         "confidence": 0.92,
         "risk_level": "low"
     }
-    """)
+    """
+    )
 
     mock_extractor = MagicMock()
     mock_extractor.extract = AsyncMock(
-        return_value=ExtractionResult(records=[{"phone": "+1-800-555-0199"}], strategy_used="regex")
+        return_value=ExtractionResult(
+            records=[{"phone": "+1-800-555-0199"}], strategy_used="regex"
+        )
     )
     mock_validator = MagicMock()
     mock_validator.validate = AsyncMock(
-        return_value=ValidationResult(health_score=0.90, quality_score=0.90, status="healthy", record_count=1)
+        return_value=ValidationResult(
+            health_score=0.90, quality_score=0.90, status="healthy", record_count=1
+        )
     )
 
     engine = HealingEngine(
@@ -243,7 +269,11 @@ async def test_case_3_regex_pattern_drift():
     )
 
     initial_val = ValidationResult(health_score=0.25, status="broken")
-    diagnosis = DiagnosisResult(root_cause=RootCause.REGEX_PATTERN_FAILURE, confidence=0.88, affected_fields=["phone"])
+    diagnosis = DiagnosisResult(
+        root_cause=RootCause.REGEX_PATTERN_FAILURE,
+        confidence=0.88,
+        affected_fields=["phone"],
+    )
 
     success, healed_schema, evaluation, records, history = await engine.heal(
         task=task,
@@ -275,21 +305,30 @@ async def test_case_4_table_structure_repair():
         target_urls=["https://example.com/table"],
         fields=["product", "price"],
     )
-    old_schema = ExtractionSchema(strategy=ExtractionStrategyEnum.CSS, base_selector=".wrong-div")
+    old_schema = ExtractionSchema(
+        strategy=ExtractionStrategyEnum.CSS, base_selector=".wrong-div"
+    )
 
     mock_scraper = MagicMock()
-    mock_scraper.execute = AsyncMock(return_value=[{"html": table_html, "url": "https://example.com/table"}])
+    mock_scraper.execute = AsyncMock(
+        return_value=[{"html": table_html, "url": "https://example.com/table"}]
+    )
 
     mock_extractor = MagicMock()
     mock_extractor.extract = AsyncMock(
         return_value=ExtractionResult(
-            records=[{"product": "Monitor", "price": "$300"}, {"product": "Keyboard", "price": "$80"}],
+            records=[
+                {"product": "Monitor", "price": "$300"},
+                {"product": "Keyboard", "price": "$80"},
+            ],
             strategy_used="table",
         )
     )
     mock_validator = MagicMock()
     mock_validator.validate = AsyncMock(
-        return_value=ValidationResult(health_score=0.95, quality_score=0.95, status="healthy", record_count=2)
+        return_value=ValidationResult(
+            health_score=0.95, quality_score=0.95, status="healthy", record_count=2
+        )
     )
 
     engine = HealingEngine(
@@ -299,7 +338,9 @@ async def test_case_4_table_structure_repair():
     )
 
     initial_val = ValidationResult(health_score=0.10, status="broken")
-    diagnosis = DiagnosisResult(root_cause=RootCause.TABLE_STRUCTURE_CHANGE, confidence=0.9)
+    diagnosis = DiagnosisResult(
+        root_cause=RootCause.TABLE_STRUCTURE_CHANGE, confidence=0.9
+    )
 
     success, healed_schema, evaluation, records, history = await engine.heal(
         task=task,
@@ -317,13 +358,19 @@ async def test_case_4_table_structure_repair():
 async def test_case_5_repeated_failures_escalate():
     """Case 6: Repeated failed repair candidates exhaust retry limit and escalate safely."""
     mock_scraper = MagicMock()
-    mock_scraper.execute = AsyncMock(return_value=[{"html": "<div>Corrupted</div>", "url": "https://example.com"}])
+    mock_scraper.execute = AsyncMock(
+        return_value=[{"html": "<div>Corrupted</div>", "url": "https://example.com"}]
+    )
 
     mock_extractor = MagicMock()
-    mock_extractor.extract = AsyncMock(return_value=ExtractionResult(records=[], strategy_used="none"))
+    mock_extractor.extract = AsyncMock(
+        return_value=ExtractionResult(records=[], strategy_used="none")
+    )
 
     mock_validator = MagicMock()
-    mock_validator.validate = AsyncMock(return_value=ValidationResult(health_score=0.20, status="broken"))
+    mock_validator.validate = AsyncMock(
+        return_value=ValidationResult(health_score=0.20, status="broken")
+    )
 
     engine = HealingEngine(
         evidence_collector=RepairEvidenceCollector(scraper_agent=mock_scraper),
@@ -332,7 +379,9 @@ async def test_case_5_repeated_failures_escalate():
         max_repair_attempts=2,
     )
 
-    task = ScrapingTask(task_id="case_6_esc", objective="Scrape", target_urls=["https://example.com"])
+    task = ScrapingTask(
+        task_id="case_6_esc", objective="Scrape", target_urls=["https://example.com"]
+    )
     diagnosis = DiagnosisResult(root_cause=RootCause.UNKNOWN, confidence=0.40)
     initial_val = ValidationResult(health_score=0.20, status="broken")
     current_schema = ExtractionSchema(strategy=ExtractionStrategyEnum.CSS)

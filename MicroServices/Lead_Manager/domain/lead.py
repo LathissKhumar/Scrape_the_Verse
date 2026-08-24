@@ -3,9 +3,11 @@ Lead Domain Model.
 """
 
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any
 from uuid import uuid4
+
 from pydantic import BaseModel, Field
+
 from .stage import LeadStage
 
 
@@ -15,28 +17,28 @@ def utc_now_iso() -> str:
 
 class Lead(BaseModel):
     id: str = Field(default_factory=lambda: f"lead_{uuid4().hex[:12]}")
-    campaign_id: Optional[str] = None
+    campaign_id: str | None = None
 
     company_name: str
-    industry: Optional[str] = None
-    location: Optional[str] = None
-    website_url: Optional[str] = None
+    industry: str | None = None
+    location: str | None = None
+    website_url: str | None = None
 
-    primary_contact_name: Optional[str] = None
-    primary_contact_email: Optional[str] = None
-    primary_contact_phone: Optional[str] = None
+    primary_contact_name: str | None = None
+    primary_contact_email: str | None = None
+    primary_contact_phone: str | None = None
 
     stage: LeadStage = LeadStage.DISCOVERED
 
-    fit_score: Optional[float] = None
-    opportunity_score: Optional[float] = None
+    fit_score: float | None = None
+    opportunity_score: float | None = None
 
-    recommended_services: List[str] = Field(default_factory=list)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    recommended_services: list[str] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
     source: str = "leadfinder"
     created_at: str = Field(default_factory=utc_now_iso)
     updated_at: str = Field(default_factory=utc_now_iso)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return self.model_dump()

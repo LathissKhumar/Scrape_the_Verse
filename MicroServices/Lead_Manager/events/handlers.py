@@ -2,7 +2,8 @@
 Event Handlers for Lead Manager.
 """
 
-from typing import Any, Dict
+from typing import Any
+
 from ..config.logging import get_logger
 from ..orchestration.graph import get_workflow_app
 
@@ -13,8 +14,8 @@ async def handle_incoming_event(
     event_type: str,
     lead_id: str,
     actor: str = "system",
-    payload: Dict[str, Any] = None,
-) -> Dict[str, Any]:
+    payload: dict[str, Any] = None,
+) -> dict[str, Any]:
     workflow = get_workflow_app()
     state = {
         "event_id": f"evt_{lead_id}",

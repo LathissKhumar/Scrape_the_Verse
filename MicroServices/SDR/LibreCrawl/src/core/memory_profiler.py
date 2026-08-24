@@ -4,9 +4,9 @@ Instead of recursing every object on every call, we measure each item once
 when it enters the crawler and keep a running total. The totals are per
 crawler instance (i.e. per user session).
 """
-import sys
+
 import gc
-import json
+import sys
 import threading
 from collections import defaultdict
 
@@ -21,9 +21,7 @@ def _shallow_dict_size(d):
     size = sys.getsizeof(d)
     for k, v in d.items():
         size += sys.getsizeof(k)
-        if isinstance(v, str):
-            size += sys.getsizeof(v)
-        elif isinstance(v, (int, float, bool)):
+        if isinstance(v, str) or isinstance(v, (int, float, bool)):
             size += sys.getsizeof(v)
         elif isinstance(v, dict):
             size += sys.getsizeof(v)
@@ -112,21 +110,18 @@ class UserMemoryTracker:
 
         total_b = url_b + link_b + issue_b
         return {
-            'crawl_results_deep_mb': round(url_b / 1024 / 1024, 2),
-            'crawl_results_json_mb': 0,  # no longer computed — too expensive
-            'crawl_results_count': url_c,
-            'avg_per_url_kb': round(url_b / url_c / 1024, 2) if url_c else 0,
-
-            'links_deep_mb': round(link_b / 1024 / 1024, 2),
-            'links_json_mb': 0,
-            'links_count': link_c,
-
-            'issues_deep_mb': round(issue_b / 1024 / 1024, 2),
-            'issues_json_mb': 0,
-            'issues_count': issue_c,
-
-            'total_deep_mb': round(total_b / 1024 / 1024, 2),
-            'total_json_mb': 0,
+            "crawl_results_deep_mb": round(url_b / 1024 / 1024, 2),
+            "crawl_results_json_mb": 0,  # no longer computed — too expensive
+            "crawl_results_count": url_c,
+            "avg_per_url_kb": round(url_b / url_c / 1024, 2) if url_c else 0,
+            "links_deep_mb": round(link_b / 1024 / 1024, 2),
+            "links_json_mb": 0,
+            "links_count": link_c,
+            "issues_deep_mb": round(issue_b / 1024 / 1024, 2),
+            "issues_json_mb": 0,
+            "issues_count": issue_c,
+            "total_deep_mb": round(total_b / 1024 / 1024, 2),
+            "total_json_mb": 0,
         }
 
     def reset(self):
@@ -163,12 +158,14 @@ class MemoryProfiler:
 
         breakdown = []
         for obj_type, size_bytes in sorted_types[:20]:
-            breakdown.append({
-                'type': obj_type,
-                'count': type_count[obj_type],
-                'size_mb': round(size_bytes / 1024 / 1024, 2),
-                'avg_size_kb': round(size_bytes / type_count[obj_type] / 1024, 2)
-            })
+            breakdown.append(
+                {
+                    "type": obj_type,
+                    "count": type_count[obj_type],
+                    "size_mb": round(size_bytes / 1024 / 1024, 2),
+                    "avg_size_kb": round(size_bytes / type_count[obj_type] / 1024, 2),
+                }
+            )
 
         return breakdown
 
@@ -181,19 +178,18 @@ class MemoryProfiler:
         total_b = url_b + link_b + issue_b
 
         return {
-            'crawl_results_deep_mb': round(url_b / 1024 / 1024, 2),
-            'crawl_results_json_mb': 0,
-            'crawl_results_count': len(crawl_results),
-            'avg_per_url_kb': round(url_b / len(crawl_results) / 1024, 2) if crawl_results else 0,
-
-            'links_deep_mb': round(link_b / 1024 / 1024, 2),
-            'links_json_mb': 0,
-            'links_count': len(links),
-
-            'issues_deep_mb': round(issue_b / 1024 / 1024, 2),
-            'issues_json_mb': 0,
-            'issues_count': len(issues),
-
-            'total_deep_mb': round(total_b / 1024 / 1024, 2),
-            'total_json_mb': 0,
+            "crawl_results_deep_mb": round(url_b / 1024 / 1024, 2),
+            "crawl_results_json_mb": 0,
+            "crawl_results_count": len(crawl_results),
+            "avg_per_url_kb": round(url_b / len(crawl_results) / 1024, 2)
+            if crawl_results
+            else 0,
+            "links_deep_mb": round(link_b / 1024 / 1024, 2),
+            "links_json_mb": 0,
+            "links_count": len(links),
+            "issues_deep_mb": round(issue_b / 1024 / 1024, 2),
+            "issues_json_mb": 0,
+            "issues_count": len(issues),
+            "total_deep_mb": round(total_b / 1024 / 1024, 2),
+            "total_json_mb": 0,
         }

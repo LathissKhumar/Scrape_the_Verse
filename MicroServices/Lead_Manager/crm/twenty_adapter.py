@@ -5,7 +5,8 @@ with open-source Twenty CRM objects.
 """
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
+
 from ..config.settings import get_settings
 from ..domain.lead import Lead
 from ..domain.opportunity import Opportunity
@@ -23,15 +24,15 @@ class TwentyCRMAdapter:
 
     _instance: Optional["TwentyCRMAdapter"] = None
 
-    def __init__(self, client: Optional[TwentyCRMClient] = None):
+    def __init__(self, client: TwentyCRMClient | None = None):
         settings = get_settings()
         self.enabled = settings.TWENTY_CRM_ENABLED
         self.client = client or TwentyCRMClient(
             base_url=settings.TWENTY_CRM_BASE_URL,
             api_key=settings.TWENTY_CRM_API_KEY,
         )
-        self._lead_company_map: Dict[str, str] = {}  # lead_id -> twenty_company_id
-        self._lead_person_map: Dict[str, str] = {}   # lead_id -> twenty_person_id
+        self._lead_company_map: dict[str, str] = {}  # lead_id -> twenty_company_id
+        self._lead_person_map: dict[str, str] = {}  # lead_id -> twenty_person_id
 
     @classmethod
     def get_instance(cls) -> "TwentyCRMAdapter":
@@ -61,7 +62,7 @@ class TwentyCRMAdapter:
         }
         return mapping.get(stage, "NEW")
 
-    async def sync_lead(self, lead: Lead) -> Dict[str, Any]:
+    async def sync_lead(self, lead: Lead) -> dict[str, Any]:
         """
         Synchronizes a Lead into Twenty CRM as Company + Contact Person.
         """
@@ -76,7 +77,9 @@ class TwentyCRMAdapter:
             industry=lead.industry,
             metadata={"agencyos_lead_id": lead.id, "stage": lead.stage.value},
         )
-        twenty_comp_id = company_res.get("id") or company_res.get("createCompany", {}).get("id")
+        twenty_comp_id = company_res.get("id") or company_res.get(
+            "createCompany", {}
+        ).get("id")
         if twenty_comp_id:
             self._lead_company_map[lead.id] = twenty_comp_id
 
@@ -94,7 +97,9 @@ class TwentyCRMAdapter:
                 phone=lead.primary_contact_phone,
                 company_id=twenty_comp_id,
             )
-            twenty_person_id = person_res.get("id") or person_res.get("createPerson", {}).get("id")
+            twenty_person_id = person_res.get("id") or person_res.get(
+                "createPerson", {}
+            ).get("id")
             if twenty_person_id:
                 self._lead_person_map[lead.id] = twenty_person_id
 
@@ -109,8 +114,8 @@ class TwentyCRMAdapter:
         lead_id: str,
         company_name: str,
         stage: LeadStage,
-        opportunities: List[Opportunity],
-    ) -> List[Dict[str, Any]]:
+        opportunities: list[Opportunity],
+    ) -> list[dict[str, Any]]:
         """
         Synchronizes AgencyOS diagnosed opportunities into Twenty CRM.
         """
@@ -124,7 +129,11 @@ class TwentyCRMAdapter:
         for opp in opportunities:
             opp_name = f"{company_name} - {opp.type.replace('_', ' ').title()}"
             # Estimate offer value based on score/type
-            est_value = 2500.0 if "WEBSITE" in opp.type else (1500.0 if "SEO" in opp.type else 1000.0)
+            est_value = (
+                2500.0
+                if "WEBSITE" in opp.type
+                else (1500.0 if "SEO" in opp.type else 1000.0)
+            )
 
             res = await self.client.create_opportunity(
                 name=opp_name,
@@ -141,11 +150,11 @@ class TwentyCRMAdapter:
         self,
         lead_id: str,
         company_name: str,
-        transcript: List[Dict[str, Any]],
+        transcript: list[dict[str, Any]],
         summary: str,
-        disposition: Optional[str] = None,
-        interest_score: Optional[float] = None,
-    ) -> Dict[str, Any]:
+        disposition: str | None = None,
+        interest_score: float | None = None,
+    ) -> dict[str, Any]:
         """
         Pushes Voice Agent call transcripts and disposition directly to Twenty CRM Notes.
         """
@@ -160,7 +169,11 @@ class TwentyCRMAdapter:
             speaker = t.get("speaker", "unknown").capitalize()
             text = t.get("text", "")
             dialogue_lines.append(f"**{speaker}**: {text}")
-        dialogue_text = "\n".join(dialogue_lines) if dialogue_lines else "No audio dialogue recorded."
+        dialogue_text = (
+            "\n".join(dialogue_lines)
+            if dialogue_lines
+            else "No audio dialogue recorded."
+        )
 
         note_body = (
             f"### Voice Telephony Summary\n"
@@ -180,7 +193,7 @@ class TwentyCRMAdapter:
         )
         return res
 
-    async def sync_task(self, lead_id: str, task: Task) -> Dict[str, Any]:
+    async def sync_task(self, lead_id: str, task: Task) -> dict[str, Any]:
         """
         Pushes AgencyOS tasks into Twenty CRM actionable Tasks.
         """

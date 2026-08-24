@@ -14,6 +14,7 @@ Events hold references to the live dicts rather than copies. A dict mutated
 after emission serializes with its newest values, which is harmless because
 every mutation also emits an update event.
 """
+
 import threading
 import uuid
 
@@ -32,12 +33,12 @@ class CrawlEventLog:
 
     def emit(self, kind, data):
         with self._lock:
-            self._events.append({'kind': kind, 'data': data})
+            self._events.append({"kind": kind, "data": data})
 
     def emit_many(self, kind, items):
         with self._lock:
             for item in items:
-                self._events.append({'kind': kind, 'data': item})
+                self._events.append({"kind": kind, "data": item})
 
     def events_since(self, seq, epoch):
         """Return (reset, events, latest_seq, epoch).

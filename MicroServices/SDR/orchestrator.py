@@ -6,7 +6,8 @@ Opportunity Engine -> Proposal Generator -> Outreach Preparation -> Lead Manager
 
 import os
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 import httpx
 
 _current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -19,10 +20,12 @@ for _p in (_current_dir, _seo_dir, _workspace_root):
 
 from MicroServices.SDR.analysis_orchestrator import AnalysisOrchestrator
 from MicroServices.SDR.normalizer import DataNormalizer
-from MicroServices.SDR.opportunity_engine import OpportunityEngine, SelectedOffer
-from MicroServices.SDR.outreach_preparer import OmnichannelOutreachPack, OutreachPreparer
-from MicroServices.SDR.prompt_generator import PersonalizedPromptPack, PromptGenerator
-from MicroServices.SDR.proposal_generator import ProposalDocument, ProposalGenerator
+from MicroServices.SDR.opportunity_engine import OpportunityEngine
+from MicroServices.SDR.outreach_preparer import (
+    OutreachPreparer,
+)
+from MicroServices.SDR.prompt_generator import PromptGenerator
+from MicroServices.SDR.proposal_generator import ProposalGenerator
 
 
 class SDROrchestrator:
@@ -38,9 +41,9 @@ class SDROrchestrator:
 
     async def process_discovered_prospect(
         self,
-        raw_lead_data: Dict[str, Any],
+        raw_lead_data: dict[str, Any],
         auto_dispatch_to_lead_manager: bool = True,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Executes the entire 10-layer AI SDR intelligence pipeline for a prospect.
         """
@@ -161,7 +164,12 @@ class SDROrchestrator:
                                 "type": o.service_code,
                                 "score": o.priority_score,
                                 "problem_summary": o.problem_addressed,
-                                "evidence": [{"deliverables": o.deliverables, "solution": o.solution_package}],
+                                "evidence": [
+                                    {
+                                        "deliverables": o.deliverables,
+                                        "solution": o.solution_package,
+                                    }
+                                ],
                                 "recommended": o.recommended,
                             }
                             for o in offers
@@ -200,7 +208,7 @@ class SDROrchestrator:
                                     "lead_id": created_lead_id,
                                     "actor": "VoiceAgent",
                                     "payload": {
-                                        "summary": f"Target has no website. Queued for Voice Agent website creation call.",
+                                        "summary": "Target has no website. Queued for Voice Agent website creation call.",
                                         "route": "VOICE_AGENT_PITCH",
                                     },
                                 },

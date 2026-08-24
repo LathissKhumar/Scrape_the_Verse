@@ -2,8 +2,9 @@
 
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 from uuid import uuid4
+
 from pydantic import BaseModel, Field
 
 
@@ -64,14 +65,22 @@ class PerformanceSnapshot(BaseModel):
     """Quantitative performance snapshot of extraction and validation at a given point in time."""
 
     health: float = Field(..., ge=0.0, le=1.0, description="Overall health score.")
-    quality: float = Field(..., ge=0.0, le=1.0, description="Overall data quality score.")
+    quality: float = Field(
+        ..., ge=0.0, le=1.0, description="Overall data quality score."
+    )
     records: int = Field(default=0, ge=0, description="Total extracted record count.")
     field_coverage: dict[str, float] = Field(
         default_factory=dict, description="Field name to coverage ratio (0.0 to 1.0)."
     )
-    duplicate_rate: float = Field(default=0.0, ge=0.0, le=1.0, description="Duplicate record ratio.")
-    schema_valid_rate: float = Field(default=1.0, ge=0.0, le=1.0, description="Schema adherence ratio.")
-    strategy_used: str = Field(default="unknown", description="Extraction strategy that produced records.")
+    duplicate_rate: float = Field(
+        default=0.0, ge=0.0, le=1.0, description="Duplicate record ratio."
+    )
+    schema_valid_rate: float = Field(
+        default=1.0, ge=0.0, le=1.0, description="Schema adherence ratio."
+    )
+    strategy_used: str = Field(
+        default="unknown", description="Extraction strategy that produced records."
+    )
 
 
 class RepairPlan(BaseModel):
@@ -83,7 +92,8 @@ class RepairPlan(BaseModel):
         default="extraction", description="System component receiving the repair."
     )
     affected_fields: list[str] = Field(
-        default_factory=list, description="Specific field names targeted by this repair."
+        default_factory=list,
+        description="Specific field names targeted by this repair.",
     )
     previous_configuration: dict[str, Any] = Field(
         default_factory=dict, description="Configuration snapshot prior to repair."
@@ -92,18 +102,28 @@ class RepairPlan(BaseModel):
         default_factory=dict, description="New proposed configuration parameters."
     )
     patch: dict[str, Any] = Field(
-        default_factory=dict, description="Minimal diff or field-level update instructions."
+        default_factory=dict,
+        description="Minimal diff or field-level update instructions.",
     )
     reason: str = Field(..., description="Diagnostic reasoning justifying this repair.")
-    confidence: float = Field(default=0.5, ge=0.0, le=1.0, description="Confidence in this proposed repair.")
+    confidence: float = Field(
+        default=0.5, ge=0.0, le=1.0, description="Confidence in this proposed repair."
+    )
     expected_improvement: dict[str, float] = Field(
-        default_factory=dict, description="Projected metric gains (e.g. coverage, health)."
+        default_factory=dict,
+        description="Projected metric gains (e.g. coverage, health).",
     )
     test_requirements: list[str] = Field(
-        default_factory=list, description="Criteria that must be verified during canary execution."
+        default_factory=list,
+        description="Criteria that must be verified during canary execution.",
     )
     risk_level: Literal["low", "medium", "high"] = Field(default="low")
-    level: int = Field(default=1, ge=1, le=3, description="Hierarchy level: 1=extraction, 2=scraper, 3=collector.")
+    level: int = Field(
+        default=1,
+        ge=1,
+        le=3,
+        description="Hierarchy level: 1=extraction, 2=scraper, 3=collector.",
+    )
 
 
 class RepairCandidate(BaseModel):
@@ -112,7 +132,10 @@ class RepairCandidate(BaseModel):
     plan: RepairPlan
     score: float = Field(default=0.0, description="Overall ranking score (0.0 to 1.0).")
     rank: int = Field(default=1, ge=1, description="Priority rank among candidates.")
-    source: str = Field(default="planner_llm", description="Source of candidate: planner_llm, memory, or fallback.")
+    source: str = Field(
+        default="planner_llm",
+        description="Source of candidate: planner_llm, memory, or fallback.",
+    )
 
 
 class RepairEvaluation(BaseModel):
@@ -121,22 +144,33 @@ class RepairEvaluation(BaseModel):
     repair_id: str
     before: PerformanceSnapshot
     after: PerformanceSnapshot
-    improvement: float = Field(..., description="Delta change in health score (after.health - before.health).")
+    improvement: float = Field(
+        ..., description="Delta change in health score (after.health - before.health)."
+    )
     critical_failure_resolved: bool = Field(
-        default=False, description="True if diagnosis-identified critical failure was eliminated."
+        default=False,
+        description="True if diagnosis-identified critical failure was eliminated.",
     )
     regression_detected: bool = Field(
-        default=False, description="True if previously healthy fields or quality metrics degraded."
+        default=False,
+        description="True if previously healthy fields or quality metrics degraded.",
     )
-    accepted: bool = Field(default=False, description="True if repair meets all acceptance criteria.")
-    rejection_reason: Optional[str] = Field(
+    accepted: bool = Field(
+        default=False, description="True if repair meets all acceptance criteria."
+    )
+    rejection_reason: str | None = Field(
         default=None, description="Detailed explanation if repair was rejected."
     )
-    confidence_score: float = Field(default=0.85, ge=0.0, le=1.0, description="Calculated repair confidence score.")
-    confidence_level: RepairConfidenceLevel = Field(
-        default=RepairConfidenceLevel.HIGH, description="Confidence tier: high, medium, or low."
+    confidence_score: float = Field(
+        default=0.85, ge=0.0, le=1.0, description="Calculated repair confidence score."
     )
-    multi_page_evaluated: bool = Field(default=False, description="True if validated across multiple pages.")
+    confidence_level: RepairConfidenceLevel = Field(
+        default=RepairConfidenceLevel.HIGH,
+        description="Confidence tier: high, medium, or low.",
+    )
+    multi_page_evaluated: bool = Field(
+        default=False, description="True if validated across multiple pages."
+    )
     multi_page_results: list[dict[str, Any]] = Field(
         default_factory=list, description="Multi-page canary validation metrics."
     )
@@ -159,9 +193,8 @@ class RepairMemoryRecord(BaseModel):
     confidence_level: RepairConfidenceLevel = Field(default=RepairConfidenceLevel.HIGH)
     success_count: int = Field(default=1, ge=0)
     failure_count: int = Field(default=0, ge=0)
-    last_used_at: Optional[str] = None
-    structural_fingerprint: Optional[str] = None
+    last_used_at: str | None = None
+    structural_fingerprint: str | None = None
     timestamp: str = Field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
-

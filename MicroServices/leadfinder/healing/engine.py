@@ -2,8 +2,9 @@
 
 import json
 import time
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlparse
+
 from leadfinder.config.logging import get_logger
 from leadfinder.diagnosis.schemas import DiagnosisResult
 from leadfinder.extraction.engine import ExtractionEngine
@@ -40,20 +41,20 @@ class HealingEngine:
 
     def __init__(
         self,
-        evidence_collector: Optional[RepairEvidenceCollector] = None,
-        planner: Optional[HealingPlanner] = None,
-        executor: Optional[RepairExecutor] = None,
-        evaluator: Optional[RepairEvaluator] = None,
-        memory: Optional[RepairMemory] = None,
-        extraction_engine: Optional[ExtractionEngine] = None,
-        validation_engine: Optional[ValidationEngine] = None,
-        multi_page_validator: Optional[MultiPageRepairValidator] = None,
-        failed_memory: Optional[FailedRepairMemory] = None,
-        observability: Optional[RepairObservability] = None,
-        semantic_memory: Optional[SemanticRepairMemory] = None,
-        fingerprinter: Optional[DOMFingerprinter] = None,
-        freshness: Optional[RepairFreshnessLifecycle] = None,
-        action_executor: Optional[ActionRepairExecutor] = None,
+        evidence_collector: RepairEvidenceCollector | None = None,
+        planner: HealingPlanner | None = None,
+        executor: RepairExecutor | None = None,
+        evaluator: RepairEvaluator | None = None,
+        memory: RepairMemory | None = None,
+        extraction_engine: ExtractionEngine | None = None,
+        validation_engine: ValidationEngine | None = None,
+        multi_page_validator: MultiPageRepairValidator | None = None,
+        failed_memory: FailedRepairMemory | None = None,
+        observability: RepairObservability | None = None,
+        semantic_memory: SemanticRepairMemory | None = None,
+        fingerprinter: DOMFingerprinter | None = None,
+        freshness: RepairFreshnessLifecycle | None = None,
+        action_executor: ActionRepairExecutor | None = None,
         max_repair_attempts: int = 3,
     ) -> None:
         self.evidence_collector = evidence_collector or RepairEvidenceCollector()
@@ -71,7 +72,9 @@ class HealingEngine:
         self.observability = observability or RepairObservability()
         self.semantic_memory = semantic_memory or SemanticRepairMemory()
         self.fingerprinter = fingerprinter or DOMFingerprinter()
-        self.freshness = freshness or RepairFreshnessLifecycle(fingerprinter=self.fingerprinter)
+        self.freshness = freshness or RepairFreshnessLifecycle(
+            fingerprinter=self.fingerprinter
+        )
         self.action_executor = action_executor or ActionRepairExecutor()
         self.max_repair_attempts = max_repair_attempts
 
@@ -81,9 +84,15 @@ class HealingEngine:
         diagnosis: DiagnosisResult,
         validation: ValidationResult,
         current_schema: ExtractionSchema,
-        scraper_config: Optional[dict[str, Any]] = None,
-        raw_results: Optional[list[dict[str, Any]]] = None,
-    ) -> tuple[bool, Optional[ExtractionSchema], RepairEvaluation, list[dict[str, Any]], list[dict[str, Any]]]:
+        scraper_config: dict[str, Any] | None = None,
+        raw_results: list[dict[str, Any]] | None = None,
+    ) -> tuple[
+        bool,
+        ExtractionSchema | None,
+        RepairEvaluation,
+        list[dict[str, Any]],
+        list[dict[str, Any]],
+    ]:
         """Execute autonomous self-healing loop with multi-page verification, confidence gating, and failed candidate learning:
 
         Returns:
@@ -91,14 +100,20 @@ class HealingEngine:
         """
         task_id = task.task_id
         start_time = time.time()
-        logger.debug(f"Starting self-healing loop for task_id={task_id} (root_cause={diagnosis.root_cause.value})")
+        logger.debug(
+            f"Starting self-healing loop for task_id={task_id} (root_cause={diagnosis.root_cause.value})"
+        )
 
         repair_history: list[dict[str, Any]] = []
         target_url = task.target_urls[0] if task.target_urls else "https://example.com"
         domain = urlparse(target_url).netloc.lower()
 
         # Step 1: Collect fresh live page evidence & check for transient recovery
-        raw_pages, is_recovered, recovery_val = await self.evidence_collector.check_transient_recovery(
+        (
+            raw_pages,
+            is_recovered,
+            recovery_val,
+        ) = await self.evidence_collector.check_transient_recovery(
             task=task,
             schema=current_schema,
         )
@@ -107,7 +122,11 @@ class HealingEngine:
             raw_pages = [RawPage(**r) for r in raw_results]
 
         sample_html = raw_pages[0].get_primary_content() if raw_pages else ""
-        current_fp = self.fingerprinter.generate_fingerprint(sample_html) if sample_html else None
+        current_fp = (
+            self.fingerprinter.generate_fingerprint(sample_html)
+            if sample_html
+            else None
+        )
 
         if is_recovered and recovery_val:
             logger.debug(f"Task {task_id} recovered transiently without repair needed.")
@@ -131,14 +150,16 @@ class HealingEngine:
             )
             ext_res = await ext_call if hasattr(ext_call, "__await__") else ext_call
 
-            repair_history.append({
-                "attempt": 1,
-                "repair_type": RepairType.NO_REPAIR_REQUIRED.value,
-                "confidence": 1.0,
-                "health_before": validation.health_score,
-                "health_after": recovery_val.health_score,
-                "accepted": True,
-            })
+            repair_history.append(
+                {
+                    "attempt": 1,
+                    "repair_type": RepairType.NO_REPAIR_REQUIRED.value,
+                    "confidence": 1.0,
+                    "health_before": validation.health_score,
+                    "health_after": recovery_val.health_score,
+                    "accepted": True,
+                }
+            )
 
             # Record telemetry
             self.observability.record_session(
@@ -170,7 +191,9 @@ class HealingEngine:
         )
 
         if not candidates:
-            logger.warning(f"No repair candidates could be generated for task {task_id}.")
+            logger.warning(
+                f"No repair candidates could be generated for task {task_id}."
+            )
             fallback_eval = RepairEvaluation(
                 repair_id="none",
                 before=self.evaluator.snapshot(validation),
@@ -199,7 +222,7 @@ class HealingEngine:
 
         # Step 3: Bounded repair candidate execution and canary validation
         attempts_budget = min(len(candidates), self.max_repair_attempts)
-        last_eval: Optional[RepairEvaluation] = None
+        last_eval: RepairEvaluation | None = None
 
         sig = self.memory.generate_signature(
             url=target_url,
@@ -231,7 +254,9 @@ class HealingEngine:
                 task=task,
                 schema=candidate_schema,
             )
-            canary_extraction = await ext_call if hasattr(ext_call, "__await__") else ext_call
+            canary_extraction = (
+                await ext_call if hasattr(ext_call, "__await__") else ext_call
+            )
 
             # Canary validation: validate extracted records
             val_call = self.validation_engine.validate(
@@ -239,10 +264,17 @@ class HealingEngine:
                 task=task,
                 raw_results=raw_dicts,
             )
-            canary_validation = await val_call if hasattr(val_call, "__await__") else val_call
+            canary_validation = (
+                await val_call if hasattr(val_call, "__await__") else val_call
+            )
 
             # Step 3b: Multi-Page Canary Validation (if enabled and multiple pages available)
-            mp_passed, mp_score, mp_metrics, mp_reason = await self.multi_page_validator.validate_candidate_across_pages(
+            (
+                mp_passed,
+                mp_score,
+                mp_metrics,
+                mp_reason,
+            ) = await self.multi_page_validator.validate_candidate_across_pages(
                 task=task,
                 schema=candidate_schema,
                 raw_pages=raw_pages,
@@ -288,8 +320,15 @@ class HealingEngine:
 
                 # Persist to memory based on confidence tier
                 persisted = False
-                if evaluation.confidence_level in (RepairConfidenceLevel.HIGH, RepairConfidenceLevel.MEDIUM):
-                    fresh_status = RepairFreshnessStatus.ACTIVE if evaluation.confidence_level == RepairConfidenceLevel.HIGH else RepairFreshnessStatus.PROBATION
+                if evaluation.confidence_level in (
+                    RepairConfidenceLevel.HIGH,
+                    RepairConfidenceLevel.MEDIUM,
+                ):
+                    fresh_status = (
+                        RepairFreshnessStatus.ACTIVE
+                        if evaluation.confidence_level == RepairConfidenceLevel.HIGH
+                        else RepairFreshnessStatus.PROBATION
+                    )
                     rec = RepairMemoryRecord(
                         domain=domain,
                         signature=sig,
@@ -301,7 +340,9 @@ class HealingEngine:
                         strategy=canary_extraction.strategy_used,
                         status=fresh_status,
                         confidence_level=evaluation.confidence_level,
-                        structural_fingerprint=json.dumps(current_fp) if current_fp else None,
+                        structural_fingerprint=json.dumps(current_fp)
+                        if current_fp
+                        else None,
                     )
                     self.memory.record_success(rec)
                     if sample_html:
@@ -316,7 +357,8 @@ class HealingEngine:
                         root_cause=diagnosis.root_cause.value,
                         initial_health=validation.health_score,
                         final_health=canary_validation.health_score,
-                        improvement=canary_validation.health_score - validation.health_score,
+                        improvement=canary_validation.health_score
+                        - validation.health_score,
                         attempts_count=attempt_num,
                         candidates_generated=len(candidates),
                         multi_page_evaluated=evaluation.multi_page_evaluated,
@@ -328,7 +370,13 @@ class HealingEngine:
                         duration_ms=(time.time() - start_time) * 1000.0,
                     )
                 )
-                return True, candidate_schema, evaluation, canary_extraction.records, repair_history
+                return (
+                    True,
+                    candidate_schema,
+                    evaluation,
+                    canary_extraction.records,
+                    repair_history,
+                )
 
             # If rejected, record candidate failure in failed repair memory
             logger.warning(
@@ -342,7 +390,9 @@ class HealingEngine:
             )
 
         # All attempts exhausted
-        logger.error(f"Self-healing exhausted {attempts_budget} attempt(s) for task_id={task_id}. Escalating.")
+        logger.error(
+            f"Self-healing exhausted {attempts_budget} attempt(s) for task_id={task_id}. Escalating."
+        )
         if not last_eval:
             last_eval = RepairEvaluation(
                 repair_id="exhausted",
@@ -373,4 +423,3 @@ class HealingEngine:
             )
         )
         return False, None, last_eval, [], repair_history
-

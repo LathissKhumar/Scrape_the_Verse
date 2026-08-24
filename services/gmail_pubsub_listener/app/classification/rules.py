@@ -1,6 +1,7 @@
 """Deterministic rule-based intent classifier for zero-cost immediate classification."""
+
 import re
-from typing import Optional
+
 from app.persistence.models import ClassificationRecord
 
 
@@ -44,19 +45,26 @@ class RuleClassifier:
     ]
 
     REQUEST_MEETING_PATTERNS = [
-        re.compile(r"(schedule|book|set\s+up)\s+a\s+(call|meeting|chat|demo)", re.IGNORECASE),
+        re.compile(
+            r"(schedule|book|set\s+up)\s+a\s+(call|meeting|chat|demo)", re.IGNORECASE
+        ),
         re.compile(r"calendar\s+link", re.IGNORECASE),
         re.compile(r"are\s+you\s+available\s+(on|for|this|next)", re.IGNORECASE),
         re.compile(r"let('s|\s+us)\s+(talk|chat|connect|meet)", re.IGNORECASE),
     ]
 
     REQUEST_PRICING_PATTERNS = [
-        re.compile(r"(send|what\s+is|share)\s+(the\s+)?(pricing|price|rate\s+card|cost|quote)", re.IGNORECASE),
+        re.compile(
+            r"(send|what\s+is|share)\s+(the\s+)?(pricing|price|rate\s+card|cost|quote)",
+            re.IGNORECASE,
+        ),
         re.compile(r"how\s+much\s+does\s+it\s+cost", re.IGNORECASE),
     ]
 
     @classmethod
-    def classify(cls, message_id: str, subject: Optional[str], body: Optional[str]) -> Optional[ClassificationRecord]:
+    def classify(
+        cls, message_id: str, subject: str | None, body: str | None
+    ) -> ClassificationRecord | None:
         full_text = f"{subject or ''}\n{body or ''}".strip()
         if not full_text:
             return None

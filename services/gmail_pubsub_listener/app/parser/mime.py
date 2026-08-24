@@ -1,24 +1,27 @@
 """MIME message parser converting raw RFC822 bytes to EmailMessage."""
+
 import email
 import email.policy
 import email.utils
 import hashlib
 from datetime import datetime, timezone
-from typing import Optional
+
+from app.parser.body import extract_body_parts
 from app.parser.headers import (
+    clean_message_id,
     decode_rfc2047,
     parse_address_list,
-    parse_sender,
     parse_references,
-    clean_message_id,
+    parse_sender,
 )
-from app.parser.body import extract_body_parts
 from app.persistence.models import EmailMessage
 
 
 class MIMEParser:
     @staticmethod
-    def parse_rfc822(raw_bytes: bytes, uid: int = 0, mailbox: str = "INBOX") -> EmailMessage:
+    def parse_rfc822(
+        raw_bytes: bytes, uid: int = 0, mailbox: str = "INBOX"
+    ) -> EmailMessage:
         """Parses raw email bytes into the canonical EmailMessage model."""
         raw_hash = hashlib.sha256(raw_bytes).hexdigest()
         msg = email.message_from_bytes(raw_bytes, policy=email.policy.default)

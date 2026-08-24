@@ -1,8 +1,10 @@
 """Event definitions and payload schemas."""
+
+import uuid
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Dict, Optional
-import uuid
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -22,7 +24,9 @@ class EventTypes(str, Enum):
 class CommunicationEvent(BaseModel):
     id: str = Field(default_factory=lambda: f"evt_{uuid.uuid4().hex[:12]}")
     event_type: str
-    aggregate_type: Optional[str] = None
-    aggregate_id: Optional[str] = None
-    payload: Dict[str, Any] = Field(default_factory=dict)
-    created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    aggregate_type: str | None = None
+    aggregate_id: str | None = None
+    payload: dict[str, Any] = Field(default_factory=dict)
+    created_at: str = Field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )

@@ -1,4 +1,5 @@
 """Sitemap discovery and parsing"""
+
 import gzip
 import xml.etree.ElementTree as ET
 from urllib.parse import urlparse
@@ -27,7 +28,7 @@ class SitemapParser:
             f"{base_domain}/sitemap.xml",
             f"{base_domain}/sitemap_index.xml",
             f"{base_domain}/sitemaps.xml",
-            f"{base_domain}/sitemap/sitemap.xml"
+            f"{base_domain}/sitemap/sitemap.xml",
         ]
 
         # Check robots.txt for sitemap declarations
@@ -54,10 +55,10 @@ class SitemapParser:
             response = self.session.get(robots_url, timeout=self.timeout)
 
             if response.status_code == 200:
-                for line in response.text.split('\n'):
+                for line in response.text.split("\n"):
                     line = line.strip()
-                    if line.lower().startswith('sitemap:'):
-                        sitemap_url = line.split(':', 1)[1].strip()
+                    if line.lower().startswith("sitemap:"):
+                        sitemap_url = line.split(":", 1)[1].strip()
                         sitemaps.append(sitemap_url)
 
         except Exception as e:
@@ -84,7 +85,10 @@ class SitemapParser:
 
             # Handle compressed sitemaps
             content = response.content
-            if sitemap_url.endswith('.gz') or response.headers.get('content-encoding') == 'gzip':
+            if (
+                sitemap_url.endswith(".gz")
+                or response.headers.get("content-encoding") == "gzip"
+            ):
                 try:
                     content = gzip.decompress(content)
                 except:
@@ -99,28 +103,30 @@ class SitemapParser:
 
             # Remove namespace prefixes for easier parsing
             for elem in root.iter():
-                if '}' in elem.tag:
-                    elem.tag = elem.tag.split('}')[1]
+                if "}" in elem.tag:
+                    elem.tag = elem.tag.split("}")[1]
 
             all_urls = []
 
             # Check if this is a sitemap index (contains other sitemaps)
-            sitemaps = root.findall('.//sitemap')
+            sitemaps = root.findall(".//sitemap")
             if sitemaps:
                 print(f"Found sitemap index with {len(sitemaps)} nested sitemaps")
                 for sitemap in sitemaps:
-                    loc_elem = sitemap.find('loc')
+                    loc_elem = sitemap.find("loc")
                     if loc_elem is not None and loc_elem.text:
                         nested_url = loc_elem.text.strip()
-                        nested_urls = self._parse_sitemap(nested_url, depth + 1, max_depth)
+                        nested_urls = self._parse_sitemap(
+                            nested_url, depth + 1, max_depth
+                        )
                         all_urls.extend(nested_urls)
 
             # Extract URLs from sitemap
-            urls = root.findall('.//url')
+            urls = root.findall(".//url")
             if urls:
                 print(f"Found {len(urls)} URLs in sitemap")
                 for url_elem in urls:
-                    loc_elem = url_elem.find('loc')
+                    loc_elem = url_elem.find("loc")
                     if loc_elem is not None and loc_elem.text:
                         url = loc_elem.text.strip()
                         all_urls.append(url)

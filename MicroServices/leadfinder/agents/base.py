@@ -1,4 +1,5 @@
 from abc import ABC
+
 from leadfinder.config.logging import get_logger
 
 

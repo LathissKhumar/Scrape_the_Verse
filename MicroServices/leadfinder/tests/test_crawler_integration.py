@@ -1,4 +1,5 @@
 import pytest
+
 from leadfinder.agents.scraper import ScraperAgent
 from leadfinder.crawler.browser_executor import BrowserExecutor
 from leadfinder.crawler.config import CrawlerConfig

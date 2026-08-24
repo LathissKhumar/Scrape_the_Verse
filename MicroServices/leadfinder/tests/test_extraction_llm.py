@@ -1,5 +1,7 @@
 import json
+
 import pytest
+
 from leadfinder.extraction.llm import LLMExtractor
 from leadfinder.models.schemas import ScrapingTask
 from leadfinder.tests.conftest import MockLLMClient
@@ -7,10 +9,12 @@ from leadfinder.tests.conftest import MockLLMClient
 
 @pytest.mark.asyncio
 async def test_llm_extractor_async_success():
-    mock_response = json.dumps([
-        {"product_name": "Gadget Pro", "price": "$199.99", "rating": 4.8},
-        {"product_name": "Gadget Mini", "price": "$99.99", "rating": 4.2},
-    ])
+    mock_response = json.dumps(
+        [
+            {"product_name": "Gadget Pro", "price": "$199.99", "rating": 4.8},
+            {"product_name": "Gadget Mini", "price": "$99.99", "rating": 4.2},
+        ]
+    )
     mock_llm = MockLLMClient(response_text=mock_response)
     extractor = LLMExtractor(llm_client=mock_llm)
 
@@ -28,9 +32,11 @@ async def test_llm_extractor_async_success():
 
 
 def test_llm_extractor_sync_success():
-    mock_response = json.dumps([
-        {"company": "Acme Corp", "employees": 500},
-    ])
+    mock_response = json.dumps(
+        [
+            {"company": "Acme Corp", "employees": 500},
+        ]
+    )
     mock_llm = MockLLMClient(response_text=mock_response)
     extractor = LLMExtractor(llm_client=mock_llm)
 

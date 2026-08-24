@@ -2,11 +2,12 @@
 Async SQLite Database Manager for Lead Manager.
 """
 
-from contextlib import asynccontextmanager
-import json
 import os
-from typing import AsyncGenerator, Optional
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 import aiosqlite
+
 from ..config.logging import get_logger
 from ..config.settings import Settings, get_settings
 
@@ -133,7 +134,7 @@ CREATE INDEX IF NOT EXISTS idx_meetings_lead ON meetings (lead_id);
 
 
 class DatabaseManager:
-    def __init__(self, settings: Optional[Settings] = None, db_path: Optional[str] = None):
+    def __init__(self, settings: Settings | None = None, db_path: str | None = None):
         self.settings = settings or get_settings()
         self.db_path = db_path or self.settings.LEAD_MANAGER_DB_PATH
 
@@ -156,10 +157,12 @@ class DatabaseManager:
         logger.info(f"Database initialized at {self.db_path}")
 
 
-_db_manager: Optional[DatabaseManager] = None
+_db_manager: DatabaseManager | None = None
 
 
-def get_db_manager(settings: Optional[Settings] = None, db_path: Optional[str] = None) -> DatabaseManager:
+def get_db_manager(
+    settings: Settings | None = None, db_path: str | None = None
+) -> DatabaseManager:
     global _db_manager
     if _db_manager is None or db_path is not None:
         _db_manager = DatabaseManager(settings=settings, db_path=db_path)

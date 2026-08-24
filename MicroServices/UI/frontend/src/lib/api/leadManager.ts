@@ -3,26 +3,26 @@
  * System of Record, Deterministic 17-Stage State Machine, Tasks, Activities, Proposals, Meetings, and Twenty CRM Lifecycle.
  */
 
-import { API_URLS, safeFetch } from './client';
+import { API_URLS, safeFetch } from "./client";
 
 export type LeadStageType =
-  | 'DISCOVERED'
-  | 'QUALIFIED'
-  | 'RESEARCHED'
-  | 'OPPORTUNITY_IDENTIFIED'
-  | 'PROPOSAL_READY'
-  | 'HUMAN_APPROVAL'
-  | 'CONTACT_READY'
-  | 'CONTACTED'
-  | 'ENGAGED'
-  | 'NOT_INTERESTED'
-  | 'REQUEST_INFO'
-  | 'MEETING_REQUESTED'
-  | 'MEETING_SCHEDULED'
-  | 'NEGOTIATION'
-  | 'WON'
-  | 'LOST'
-  | 'DISQUALIFIED';
+  | "DISCOVERED"
+  | "QUALIFIED"
+  | "RESEARCHED"
+  | "OPPORTUNITY_IDENTIFIED"
+  | "PROPOSAL_READY"
+  | "HUMAN_APPROVAL"
+  | "CONTACT_READY"
+  | "CONTACTED"
+  | "ENGAGED"
+  | "NOT_INTERESTED"
+  | "REQUEST_INFO"
+  | "MEETING_REQUESTED"
+  | "MEETING_SCHEDULED"
+  | "NEGOTIATION"
+  | "WON"
+  | "LOST"
+  | "DISQUALIFIED";
 
 export interface LeadEntity {
   id: string;
@@ -64,7 +64,7 @@ export interface TaskEntity {
   id: string;
   lead_id: string;
   type: string;
-  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'FAILED';
+  status: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "FAILED";
   due_at?: string;
   assigned_to: string;
   title?: string;
@@ -95,7 +95,7 @@ export interface MeetingEntity {
   scheduled_at?: string;
   duration_minutes: number;
   timezone: string;
-  status: 'REQUESTED' | 'PROPOSED' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
+  status: "REQUESTED" | "PROPOSED" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
   meeting_url?: string;
   ics_content?: string;
   organizer_email?: string;
@@ -105,7 +105,7 @@ export interface MeetingEntity {
 }
 
 export interface TwentyCrmStatus {
-  crm: 'twenty';
+  crm: "twenty";
   enabled: boolean;
   base_url: string;
   is_responsive: boolean;
@@ -122,12 +122,12 @@ export async function getLeads(params?: {
   offset?: number;
 }): Promise<{ leads: LeadEntity[]; isLive: boolean; error: string | null }> {
   const query = new URLSearchParams();
-  if (params?.stage) query.set('stage', params.stage);
-  if (params?.campaign_id) query.set('campaign_id', params.campaign_id);
-  if (params?.limit) query.set('limit', String(params.limit));
-  if (params?.offset) query.set('offset', String(params.offset));
+  if (params?.stage) query.set("stage", params.stage);
+  if (params?.campaign_id) query.set("campaign_id", params.campaign_id);
+  if (params?.limit) query.set("limit", String(params.limit));
+  if (params?.offset) query.set("offset", String(params.offset));
 
-  const url = `${API_URLS.LEAD_MANAGER}/api/v1/leads${query.toString() ? `?${query.toString()}` : ''}`;
+  const url = `${API_URLS.LEAD_MANAGER}/api/v1/leads${query.toString() ? `?${query.toString()}` : ""}`;
   const res = await safeFetch<LeadEntity[]>(url);
 
   return {
@@ -141,7 +141,9 @@ export async function getLeads(params?: {
  * Fetch pipeline stats.
  */
 export async function getPipelineStats(): Promise<PipelineStats | null> {
-  const res = await safeFetch<PipelineStats>(`${API_URLS.LEAD_MANAGER}/api/v1/leads/pipeline/stats`);
+  const res = await safeFetch<PipelineStats>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads/pipeline/stats`,
+  );
   return res.data;
 }
 
@@ -149,18 +151,25 @@ export async function getPipelineStats(): Promise<PipelineStats | null> {
  * Fetch single lead by ID.
  */
 export async function getLeadById(leadId: string): Promise<LeadEntity | null> {
-  const res = await safeFetch<LeadEntity>(`${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}`);
+  const res = await safeFetch<LeadEntity>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}`,
+  );
   return res.data;
 }
 
 /**
  * Create a new lead in Lead Manager.
  */
-export async function createLead(leadData: Partial<LeadEntity>): Promise<{ lead: LeadEntity | null; error: string | null }> {
-  const res = await safeFetch<LeadEntity>(`${API_URLS.LEAD_MANAGER}/api/v1/leads`, {
-    method: 'POST',
-    body: JSON.stringify(leadData),
-  });
+export async function createLead(
+  leadData: Partial<LeadEntity>,
+): Promise<{ lead: LeadEntity | null; error: string | null }> {
+  const res = await safeFetch<LeadEntity>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads`,
+    {
+      method: "POST",
+      body: JSON.stringify(leadData),
+    },
+  );
   return { lead: res.data, error: res.error };
 }
 
@@ -169,12 +178,15 @@ export async function createLead(leadData: Partial<LeadEntity>): Promise<{ lead:
  */
 export async function updateLead(
   leadId: string,
-  updates: Partial<LeadEntity>
+  updates: Partial<LeadEntity>,
 ): Promise<{ lead: LeadEntity | null; error: string | null }> {
-  const res = await safeFetch<LeadEntity>(`${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}`, {
-    method: 'PATCH',
-    body: JSON.stringify(updates),
-  });
+  const res = await safeFetch<LeadEntity>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(updates),
+    },
+  );
   return { lead: res.data, error: res.error };
 }
 
@@ -184,15 +196,15 @@ export async function updateLead(
 export async function ingestLifecycleEvent(
   eventType: string,
   leadId: string,
-  actor: string = 'human',
-  payload: Record<string, unknown> = {}
+  actor: string = "human",
+  payload: Record<string, unknown> = {},
 ): Promise<{ success: boolean; newStage?: string; error?: string }> {
   const res = await safeFetch<{
     status: string;
     new_stage?: string;
     transition_valid: boolean;
   }>(`${API_URLS.LEAD_MANAGER}/api/v1/events`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({
       type: eventType,
       lead_id: leadId,
@@ -210,15 +222,19 @@ export async function ingestLifecycleEvent(
 
   return {
     success: false,
-    error: res.error || 'Failed to ingest lifecycle event',
+    error: res.error || "Failed to ingest lifecycle event",
   };
 }
 
 /**
  * Fetch lead activities.
  */
-export async function getLeadActivities(leadId: string): Promise<ActivityEntity[]> {
-  const res = await safeFetch<ActivityEntity[]>(`${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/activities`);
+export async function getLeadActivities(
+  leadId: string,
+): Promise<ActivityEntity[]> {
+  const res = await safeFetch<ActivityEntity[]>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/activities`,
+  );
   return res.data || [];
 }
 
@@ -226,7 +242,9 @@ export async function getLeadActivities(leadId: string): Promise<ActivityEntity[
  * Fetch lead tasks.
  */
 export async function getLeadTasks(leadId: string): Promise<TaskEntity[]> {
-  const res = await safeFetch<TaskEntity[]>(`${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/tasks`);
+  const res = await safeFetch<TaskEntity[]>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/tasks`,
+  );
   return res.data || [];
 }
 
@@ -235,31 +253,43 @@ export async function getLeadTasks(leadId: string): Promise<TaskEntity[]> {
  */
 export async function updateTaskStatus(
   taskId: string,
-  status: TaskEntity['status'],
-  metadata?: Record<string, unknown>
+  status: TaskEntity["status"],
+  metadata?: Record<string, unknown>,
 ): Promise<TaskEntity | null> {
-  const res = await safeFetch<TaskEntity>(`${API_URLS.LEAD_MANAGER}/api/v1/tasks/${taskId}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ status, metadata }),
-  });
+  const res = await safeFetch<TaskEntity>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/tasks/${taskId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ status, metadata }),
+    },
+  );
   return res.data;
 }
 
 /**
  * Fetch lead opportunities.
  */
-export async function getLeadOpportunities(leadId: string): Promise<OpportunityEntity[]> {
-  const res = await safeFetch<OpportunityEntity[]>(`${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/opportunities`);
+export async function getLeadOpportunities(
+  leadId: string,
+): Promise<OpportunityEntity[]> {
+  const res = await safeFetch<OpportunityEntity[]>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/opportunities`,
+  );
   return res.data || [];
 }
 
 /**
  * Approve proposal (human-in-the-loop).
  */
-export async function approveLeadProposal(leadId: string): Promise<LeadEntity | null> {
-  const res = await safeFetch<LeadEntity>(`${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/approve-proposal`, {
-    method: 'POST',
-  });
+export async function approveLeadProposal(
+  leadId: string,
+): Promise<LeadEntity | null> {
+  const res = await safeFetch<LeadEntity>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/leads/${leadId}/approve-proposal`,
+    {
+      method: "POST",
+    },
+  );
   return res.data;
 }
 
@@ -275,10 +305,13 @@ export async function scheduleMeeting(meetingData: {
   attendee_email?: string;
   notes?: string;
 }): Promise<{ meeting: MeetingEntity | null; error: string | null }> {
-  const res = await safeFetch<MeetingEntity>(`${API_URLS.LEAD_MANAGER}/api/v1/meetings`, {
-    method: 'POST',
-    body: JSON.stringify(meetingData),
-  });
+  const res = await safeFetch<MeetingEntity>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/meetings`,
+    {
+      method: "POST",
+      body: JSON.stringify(meetingData),
+    },
+  );
   return { meeting: res.data, error: res.error };
 }
 
@@ -286,23 +319,29 @@ export async function scheduleMeeting(meetingData: {
  * Twenty CRM Docker status & lifecycle controls.
  */
 export async function getTwentyCrmStatus(): Promise<TwentyCrmStatus | null> {
-  const res = await safeFetch<TwentyCrmStatus>(`${API_URLS.LEAD_MANAGER}/api/v1/crm/status`);
+  const res = await safeFetch<TwentyCrmStatus>(
+    `${API_URLS.LEAD_MANAGER}/api/v1/crm/status`,
+  );
   return res.data;
 }
 
-export async function spinUpTwentyCrm(maxWait: number = 45): Promise<{ success: boolean; status: string }> {
+export async function spinUpTwentyCrm(
+  maxWait: number = 45,
+): Promise<{ success: boolean; status: string }> {
   const res = await safeFetch<{ success: boolean; status: string }>(
     `${API_URLS.LEAD_MANAGER}/api/v1/crm/spin-up?max_wait=${maxWait}`,
-    { method: 'POST' },
-    60000
+    { method: "POST" },
+    60000,
   );
-  return res.data || { success: false, status: 'failed' };
+  return res.data || { success: false, status: "failed" };
 }
 
-export async function spinDownTwentyCrm(force: boolean = false): Promise<{ success: boolean; status: string }> {
+export async function spinDownTwentyCrm(
+  force: boolean = false,
+): Promise<{ success: boolean; status: string }> {
   const res = await safeFetch<{ success: boolean; status: string }>(
     `${API_URLS.LEAD_MANAGER}/api/v1/crm/spin-down?force=${force}`,
-    { method: 'POST' }
+    { method: "POST" },
   );
-  return res.data || { success: false, status: 'failed' };
+  return res.data || { success: false, status: "failed" };
 }

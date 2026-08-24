@@ -3,7 +3,6 @@ FollowUp Agent for Lead Manager.
 Scans for stale leads and generates follow-up tasks.
 """
 
-from typing import List, Optional
 from ..config.logging import get_logger
 from ..config.settings import Settings, get_settings
 from ..domain.task import LeadTask
@@ -19,15 +18,15 @@ class FollowUpAgent:
         self,
         lead_repo: LeadRepository,
         task_repo: TaskRepository,
-        settings: Optional[Settings] = None,
+        settings: Settings | None = None,
     ):
         self.lead_repo = lead_repo
         self.task_repo = task_repo
         self.settings = settings or get_settings()
 
-    async def scan_and_generate_followup_tasks(self) -> List[LeadTask]:
+    async def scan_and_generate_followup_tasks(self) -> list[LeadTask]:
         all_leads = await self.lead_repo.list_all(limit=1000)
-        generated_tasks: List[LeadTask] = []
+        generated_tasks: list[LeadTask] = []
 
         for lead in all_leads:
             lead_dict = lead.to_dict()
@@ -40,12 +39,15 @@ class FollowUpAgent:
             if stale_task:
                 existing_tasks = await self.task_repo.get_by_lead_id(lead.id)
                 has_active = any(
-                    t.type == stale_task.type and t.status.value in ("PENDING", "IN_PROGRESS")
+                    t.type == stale_task.type
+                    and t.status.value in ("PENDING", "IN_PROGRESS")
                     for t in existing_tasks
                 )
                 if not has_active:
                     created = await self.task_repo.create(stale_task)
                     generated_tasks.append(created)
-                    logger.info(f"Generated follow-up task {created.id} for lead {lead.id}")
+                    logger.info(
+                        f"Generated follow-up task {created.id} for lead {lead.id}"
+                    )
 
         return generated_tasks

@@ -2,9 +2,11 @@
 A2A Agent Card & Invocation Route for Lead Manager.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
+
 from .skills import A2ASkillsHandler
 
 a2a_router = APIRouter(tags=["Agent-to-Agent (A2A)"])
@@ -12,8 +14,8 @@ a2a_router = APIRouter(tags=["Agent-to-Agent (A2A)"])
 
 class A2AInvokePayload(BaseModel):
     skill: str
-    parameters: Dict[str, Any] = Field(default_factory=dict)
-    caller_agent: Optional[str] = "unknown"
+    parameters: dict[str, Any] = Field(default_factory=dict)
+    caller_agent: str | None = "unknown"
 
 
 @a2a_router.get("/.well-known/agent.json")
@@ -31,17 +33,26 @@ async def serve_agent_card():
             {
                 "name": "create_lead",
                 "description": "Register a newly discovered lead into the system of record.",
-                "parameters": {"company_name": "string (required)", "website_url": "string (optional)"},
+                "parameters": {
+                    "company_name": "string (required)",
+                    "website_url": "string (optional)",
+                },
             },
             {
                 "name": "ingest_event",
                 "description": "Process a lifecycle event (email, audit, proposal, meeting) through the state machine.",
-                "parameters": {"event_type": "string (required)", "lead_id": "string (required)"},
+                "parameters": {
+                    "event_type": "string (required)",
+                    "lead_id": "string (required)",
+                },
             },
             {
                 "name": "get_lead_status",
                 "description": "Query the current stage, opportunities, and tasks for a given lead.",
-                "parameters": {"lead_id": "string (optional)", "email": "string (optional)"},
+                "parameters": {
+                    "lead_id": "string (optional)",
+                    "email": "string (optional)",
+                },
             },
         ],
     }

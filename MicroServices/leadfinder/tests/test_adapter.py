@@ -1,4 +1,5 @@
 import pytest
+
 from leadfinder.brightdata.adapter import build_collector_inputs
 from leadfinder.models.schemas import ScrapingTask
 

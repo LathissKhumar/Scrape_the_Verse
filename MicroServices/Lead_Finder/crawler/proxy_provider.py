@@ -1,25 +1,25 @@
 """Proxy provider interface for legitimate infrastructure network routing."""
 
-from typing import Dict, List, Optional
 from pydantic import BaseModel
 
 
 class ProxyConfig(BaseModel):
     """Proxy server configuration."""
+
     server: str
-    username: Optional[str] = None
-    password: Optional[str] = None
-    bypass: Optional[str] = None
+    username: str | None = None
+    password: str | None = None
+    bypass: str | None = None
 
 
 class ProxyProvider:
     """Provides proxy configuration for infrastructure network routing (never used to evade blocks)."""
 
-    def __init__(self, proxies: Optional[List[ProxyConfig]] = None):
+    def __init__(self, proxies: list[ProxyConfig] | None = None):
         self._proxies = proxies or []
         self._current_index = 0
 
-    def get_proxy(self) -> Optional[Dict[str, str]]:
+    def get_proxy(self) -> dict[str, str] | None:
         """Return next configured proxy dictionary for Playwright launch arguments."""
         if not self._proxies:
             return None

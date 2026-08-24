@@ -2,9 +2,9 @@
 System prompts, template definitions, and section schemas for Prompt Generation Agent.
 """
 
-from typing import Dict, Any, List
+from typing import Any
 
-REQUIRED_SECTIONS: List[str] = [
+REQUIRED_SECTIONS: list[str] = [
     "ROLE",
     "BUSINESS CONTEXT",
     "BUSINESS GOALS",
@@ -95,9 +95,9 @@ This is an implementation prompt for Bolt.new/Lovable/v0 - not an analysis repor
 
 def build_repair_prompt(
     original_prompt: str,
-    errors: List[str],
-    warnings: List[str],
-    context: Dict[str, Any],
+    errors: list[str],
+    warnings: list[str],
+    context: dict[str, Any],
 ) -> str:
     """Build repair prompt for fixing validation issues."""
     repair_lines = []

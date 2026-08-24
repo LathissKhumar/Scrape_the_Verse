@@ -1,5 +1,8 @@
-import pytest
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    ExtractionStrategyEnum,
+    FieldRule,
+)
 from leadfinder.healing.patcher import RepairPatcher
 from leadfinder.healing.schemas import RepairPlan, RepairType
 
@@ -83,7 +86,9 @@ def test_patch_regex_pattern():
         target_component="extraction",
         affected_fields=["phone"],
         reason="Phone format changed to international",
-        patch={"fields": [{"name": "phone", "regex_pattern": r"\+\d{1,3}-\d{3}-\d{4}"}]},
+        patch={
+            "fields": [{"name": "phone", "regex_pattern": r"\+\d{1,3}-\d{3}-\d{4}"}]
+        },
     )
 
     patched = RepairPatcher.apply_patch(schema=original_schema, plan=plan)

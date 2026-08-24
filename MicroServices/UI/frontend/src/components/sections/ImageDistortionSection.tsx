@@ -1,24 +1,35 @@
-'use client'
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { SectionLabel } from '@/components/ui/SectionLabel'
-import { GradientText } from '@/components/ui/GradientText'
+"use client";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { GradientText } from "@/components/ui/GradientText";
 
 export function ImageDistortionSection() {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 85%', 'end 30%'],
-  })
+    offset: ["start 85%", "end 30%"],
+  });
 
   // Scroll driven transforms: scale 0.8 -> 1, rotate -5deg -> 0deg
-  const scale = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [0.8, 0.9, 0.98, 1])
-  const rotate = useTransform(scrollYProgress, [0, 0.4, 0.8, 1], [-5, -2, 0, 0])
-  const textX = useTransform(scrollYProgress, [0, 0.5], [60, 0])
-  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1])
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.8, 1],
+    [0.8, 0.9, 0.98, 1],
+  );
+  const rotate = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.8, 1],
+    [-5, -2, 0, 0],
+  );
+  const textX = useTransform(scrollYProgress, [0, 0.5], [60, 0]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
 
   // Force a true square glass panel with no star polygon.
-  const clipPath = useTransform(scrollYProgress, () => 'inset(0% 0% 0% 0% round 0px)')
+  const clipPath = useTransform(
+    scrollYProgress,
+    () => "inset(0% 0% 0% 0% round 0px)",
+  );
 
   return (
     <section
@@ -48,7 +59,8 @@ export function ImageDistortionSection() {
                     Neural DOM Synthesis
                   </span>
                   <p className="text-xs text-slate-100 font-body max-w-xs drop-shadow-md">
-                    Continuous geometry morphing aligns raw HTML structures with semantic entities in real time.
+                    Continuous geometry morphing aligns raw HTML structures with
+                    semantic entities in real time.
                   </p>
                 </div>
 
@@ -70,15 +82,18 @@ export function ImageDistortionSection() {
               Meets Web Reality.
             </h2>
             <p className="text-base sm:text-lg text-text-secondary font-body leading-relaxed max-w-xl">
-              We do not treat scraping as static queries. We craft autonomous intelligence agents that continuously inspect the evolving web — where layout morphs, anti-bot defenses, and DOM updates resolve themselves instantly.
+              We do not treat scraping as static queries. We craft autonomous
+              intelligence agents that continuously inspect the evolving web —
+              where layout morphs, anti-bot defenses, and DOM updates resolve
+              themselves instantly.
             </p>
 
             <div className="flex flex-wrap gap-2.5 pt-2">
               {[
-                'Multi-Modal LLM Vision',
-                'Zero-Downtime Repair',
-                'Real-time Morphing',
-                'Autonomous Schema Sync',
+                "Multi-Modal LLM Vision",
+                "Zero-Downtime Repair",
+                "Real-time Morphing",
+                "Autonomous Schema Sync",
               ].map((tag) => (
                 <span
                   key={tag}
@@ -93,5 +108,5 @@ export function ImageDistortionSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

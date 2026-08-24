@@ -2,7 +2,7 @@
 
 import asyncio
 import urllib.parse
-from typing import Any, Optional
+from typing import Any
 
 from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.config.logging import get_logger
@@ -24,8 +24,8 @@ class BrightDataLeadPipeline:
 
     def __init__(
         self,
-        client: Optional[BrightDataClient] = None,
-        settings: Optional[Settings] = None,
+        client: BrightDataClient | None = None,
+        settings: Settings | None = None,
     ) -> None:
         self._settings = settings or get_settings()
         self.client = client or BrightDataClient(settings=self._settings)
@@ -56,7 +56,9 @@ class BrightDataLeadPipeline:
     def format_company_profile_url(self, catalog_url: str) -> str:
         """Derive the profile URL from a company catalog URL."""
         normalized_url = catalog_url.strip().rstrip("/")
-        if not normalized_url.startswith("http://") and not normalized_url.startswith("https://"):
+        if not normalized_url.startswith("http://") and not normalized_url.startswith(
+            "https://"
+        ):
             normalized_url = f"https://{normalized_url}"
 
         # If it's already a profile/aboutus URL, preserve it
@@ -73,36 +75,52 @@ class BrightDataLeadPipeline:
         """Run Discovery Collector (Collector 1) to find supplier leads and catalog URLs."""
         target_url = self.format_search_url(query_or_url)
         collector_id = self.discovery_collector_id
-        logger.info(f"Running Tier 1 Discovery on '{target_url}' with collector '{collector_id}'")
+        logger.info(
+            f"Running Tier 1 Discovery on '{target_url}' with collector '{collector_id}'"
+        )
 
         try:
             # First attempt REST trigger
             inputs = [{"url": target_url}]
-            results = await self.client.scrape_and_collect(collector_id=collector_id, inputs=inputs)
+            results = await self.client.scrape_and_collect(
+                collector_id=collector_id, inputs=inputs
+            )
             if results:
                 return results
         except Exception as error:
-            logger.warning(f"REST trigger failed or returned empty ({error}). Falling back to CLI runner...")
+            logger.warning(
+                f"REST trigger failed or returned empty ({error}). Falling back to CLI runner..."
+            )
 
         # Fallback to direct CLI runner
-        return await self.client.scrape_via_cli(collector_id=collector_id, url=target_url)
+        return await self.client.scrape_via_cli(
+            collector_id=collector_id, url=target_url
+        )
 
     async def enrich_company(self, company_url: str) -> dict[str, Any]:
         """Run Company Profile Collector (Collector 2) on a single company catalog/profile URL."""
         profile_url = self.format_company_profile_url(company_url)
         collector_id = self.company_collector_id
-        logger.debug(f"Enriching company profile for '{profile_url}' with collector '{collector_id}'")
+        logger.debug(
+            f"Enriching company profile for '{profile_url}' with collector '{collector_id}'"
+        )
 
         try:
             inputs = [{"url": profile_url}]
-            results = await self.client.scrape_and_collect(collector_id=collector_id, inputs=inputs)
+            results = await self.client.scrape_and_collect(
+                collector_id=collector_id, inputs=inputs
+            )
             if results and isinstance(results, list):
                 return results[0]
         except Exception as error:
-            logger.debug(f"REST enrichment failed for '{profile_url}' ({error}). Trying CLI runner...")
+            logger.debug(
+                f"REST enrichment failed for '{profile_url}' ({error}). Trying CLI runner..."
+            )
 
         try:
-            results = await self.client.scrape_via_cli(collector_id=collector_id, url=profile_url)
+            results = await self.client.scrape_via_cli(
+                collector_id=collector_id, url=profile_url
+            )
             if results and isinstance(results, list):
                 return results[0]
         except Exception as error:
@@ -153,11 +171,14 @@ class BrightDataLeadPipeline:
             return discovery_leads
 
         # Tier 2: Concurrent Profile Enrichment
-        logger.info(f"Starting Tier 2 Profile Enrichment for {len(discovery_leads)} lead(s)...")
+        logger.info(
+            f"Starting Tier 2 Profile Enrichment for {len(discovery_leads)} lead(s)..."
+        )
         enriched_leads = await self.enrich_companies_batch(
             discovery_leads=discovery_leads,
             max_concurrency=max_concurrency,
         )
-        logger.info(f"Lead Generation pipeline completed successfully with {len(enriched_leads)} enriched lead(s)")
+        logger.info(
+            f"Lead Generation pipeline completed successfully with {len(enriched_leads)} enriched lead(s)"
+        )
         return enriched_leads
-

@@ -1,20 +1,27 @@
-from typing import List, Any
+from typing import Any
+
 from business_analysis.schemas.models import (
+    AnalysisCompleteness,
     BusinessScore,
-    ScoreCategory,
     NodeExecutionStatus,
     NodeStatusEnum,
-    AnalysisCompleteness,
+    ScoreCategory,
 )
-from business_analysis.llm import get_structured_llm
 from business_analysis.state import BusinessAnalysisState
 
 
-def calculate_business_fit(profile: Any = None, market: Any = None, competitor: Any = None) -> int:
+def calculate_business_fit(
+    profile: Any = None, market: Any = None, competitor: Any = None
+) -> int:
     if not profile:
         return 50
     ind = getattr(profile, "industry", None)
-    if not ind or ind == "Not specified" or getattr(ind, "status", None) == "UNKNOWN" or getattr(ind, "value", None) == "Not specified":
+    if (
+        not ind
+        or ind == "Not specified"
+        or getattr(ind, "status", None) == "UNKNOWN"
+        or getattr(ind, "value", None) == "Not specified"
+    ):
         return 50
     score = 85
     if competitor and getattr(competitor, "competitors", None):
@@ -22,13 +29,19 @@ def calculate_business_fit(profile: Any = None, market: Any = None, competitor: 
     return min(100, score)
 
 
-def calculate_digital_need(profile: Any = None, market: Any = None, service: Any = None, competitor: Any = None) -> int:
+def calculate_digital_need(
+    profile: Any = None, market: Any = None, service: Any = None, competitor: Any = None
+) -> int:
     """Calculate digital need from service gaps and competitor pressure."""
     score = 60
     if service and getattr(service, "key_gaps", None):
         score += min(20, len(service.key_gaps) * 5)
     if service and getattr(service, "services", None):
-        low_vis = sum(1 for s in service.services if getattr(s, "visibility", None) and s.visibility.value in ["low", "none"])
+        low_vis = sum(
+            1
+            for s in service.services
+            if getattr(s, "visibility", None) and s.visibility.value in ["low", "none"]
+        )
         score += min(10, low_vis * 5)
     if competitor and getattr(competitor, "identified_gaps", None):
         score += 5
@@ -42,22 +55,35 @@ def calculate_opportunity_value(opportunities: Any = None, problems: Any = None)
 def calculate_evidence_confidence(evidence: Any = None, problems: Any = None) -> int:
     if not evidence:
         return 50
-    return int(round((sum(getattr(e, "confidence", 0.5) for e in evidence) / len(evidence)) * 100))
+    return int(
+        round(
+            (sum(getattr(e, "confidence", 0.5) for e in evidence) / len(evidence)) * 100
+        )
+    )
 
 
 def calculate_serviceability(profile: Any = None, opportunities: Any = None) -> int:
     return 90
 
 
-def calculate_overall_score(fit: int, need: int, opp_val: int, confidence: int, serviceability: int, completeness: int = 100) -> int:
-    return int(round(
-        (fit * 0.20) +
-        (need * 0.20) +
-        (opp_val * 0.20) +
-        (confidence * 0.15) +
-        (serviceability * 0.10) +
-        (completeness * 0.15)
-    ))
+def calculate_overall_score(
+    fit: int,
+    need: int,
+    opp_val: int,
+    confidence: int,
+    serviceability: int,
+    completeness: int = 100,
+) -> int:
+    return int(
+        round(
+            (fit * 0.20)
+            + (need * 0.20)
+            + (opp_val * 0.20)
+            + (confidence * 0.15)
+            + (serviceability * 0.10)
+            + (completeness * 0.15)
+        )
+    )
 
 
 def _node_completeness(statuses: dict, node_name: str, output_obj: Any) -> float:
@@ -97,11 +123,22 @@ def business_scoring_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
     competitor_comp = _node_completeness(statuses, "competitor_analysis", competitor)
     service_comp = _node_completeness(statuses, "service_analysis", service)
     problem_comp = _node_completeness(statuses, "business_problem", problems or None)
-    opportunity_comp = _node_completeness(statuses, "opportunity", opportunities or None)
+    opportunity_comp = _node_completeness(
+        statuses, "opportunity", opportunities or None
+    )
 
     overall_completeness = round(
-        (profile_comp + market_comp + customer_comp + competitor_comp +
-         service_comp + problem_comp + opportunity_comp) / 7.0, 1
+        (
+            profile_comp
+            + market_comp
+            + customer_comp
+            + competitor_comp
+            + service_comp
+            + problem_comp
+            + opportunity_comp
+        )
+        / 7.0,
+        1,
     )
 
     completeness = AnalysisCompleteness(
@@ -123,7 +160,9 @@ def business_scoring_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
     serviceability = 90
     comp_score = int(round(overall_completeness))
 
-    overall_score = calculate_overall_score(fit, need, opp_val, confidence, serviceability, comp_score)
+    overall_score = calculate_overall_score(
+        fit, need, opp_val, confidence, serviceability, comp_score
+    )
 
     if overall_score >= 80:
         priority = ScoreCategory.VERY_HIGH
@@ -136,12 +175,18 @@ def business_scoring_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
 
     # Enforce penalty if critical agents failed
     has_critical_failure = (
-        statuses.get("business_problem", NodeExecutionStatus()).status == NodeStatusEnum.FAILED or
-        statuses.get("opportunity", NodeExecutionStatus()).status == NodeStatusEnum.FAILED or
-        not problems or not opportunities
+        statuses.get("business_problem", NodeExecutionStatus()).status
+        == NodeStatusEnum.FAILED
+        or statuses.get("opportunity", NodeExecutionStatus()).status
+        == NodeStatusEnum.FAILED
+        or not problems
+        or not opportunities
     )
 
-    if has_critical_failure and priority in [ScoreCategory.HIGH, ScoreCategory.VERY_HIGH]:
+    if has_critical_failure and priority in [
+        ScoreCategory.HIGH,
+        ScoreCategory.VERY_HIGH,
+    ]:
         priority = ScoreCategory.MEDIUM
         overall_score = min(overall_score, 60)
 
@@ -180,7 +225,9 @@ def business_scoring_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
     )
 
     updated_statuses = dict(statuses)
-    updated_statuses["business_scoring"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=1.0)
+    updated_statuses["business_scoring"] = NodeExecutionStatus(
+        status=NodeStatusEnum.SUCCESS, confidence=1.0
+    )
 
     result = {
         **state,
@@ -189,5 +236,7 @@ def business_scoring_agent(state: BusinessAnalysisState) -> BusinessAnalysisStat
         "node_statuses": updated_statuses,
     }
     if skipped_warnings:
-        result["errors"] = state.get("errors", []) + [f"[WARNING] {w}" for w in skipped_warnings]
+        result["errors"] = state.get("errors", []) + [
+            f"[WARNING] {w}" for w in skipped_warnings
+        ]
     return result

@@ -3,7 +3,8 @@ Activity Repository for Async SQLite.
 """
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from ..domain.activity import LeadActivity
 from .database import DatabaseManager
 
@@ -46,7 +47,7 @@ class ActivityRepository:
 
     async def get_by_lead_id(
         self, lead_id: str, limit: int = 100, offset: int = 0
-    ) -> List[LeadActivity]:
+    ) -> list[LeadActivity]:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 """
@@ -60,7 +61,7 @@ class ActivityRepository:
             rows = await cursor.fetchall()
             return [self._row_to_activity(row) for row in rows]
 
-    async def list_recent(self, limit: int = 50) -> List[LeadActivity]:
+    async def list_recent(self, limit: int = 50) -> list[LeadActivity]:
         async with self.db.get_connection() as conn:
             cursor = await conn.execute(
                 """

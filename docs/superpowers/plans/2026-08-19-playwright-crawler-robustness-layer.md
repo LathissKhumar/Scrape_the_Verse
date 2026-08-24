@@ -36,10 +36,17 @@
 import pytest
 from app.crawler.url_validator import UrlSecurityValidator, SSRFSecurityError
 
+
 def test_valid_public_urls():
     validator = UrlSecurityValidator()
-    assert validator.validate_url("https://example.com/page") == "https://example.com/page"
-    assert validator.validate_url("http://books.toscrape.com") == "http://books.toscrape.com"
+    assert (
+        validator.validate_url("https://example.com/page") == "https://example.com/page"
+    )
+    assert (
+        validator.validate_url("http://books.toscrape.com")
+        == "http://books.toscrape.com"
+    )
+
 
 def test_block_invalid_schemes():
     validator = UrlSecurityValidator()
@@ -47,6 +54,7 @@ def test_block_invalid_schemes():
         validator.validate_url("ftp://example.com/file")
     with pytest.raises(SSRFSecurityError, match="Invalid scheme"):
         validator.validate_url("file:///etc/passwd")
+
 
 def test_block_private_ips_and_localhost():
     validator = UrlSecurityValidator()
@@ -89,8 +97,14 @@ Run: `pytest tests/test_url_validator.py`
 ```python
 # tests/test_action_executor.py
 import pytest
-from app.crawler.action_models import ActionPlan, WaitForAction, ScrollAction, ExtractAction
+from app.crawler.action_models import (
+    ActionPlan,
+    WaitForAction,
+    ScrollAction,
+    ExtractAction,
+)
 from app.crawler.action_executor import ActionPlanExecutor
+
 
 def test_action_plan_validation():
     plan = ActionPlan(
@@ -98,15 +112,19 @@ def test_action_plan_validation():
         actions=[
             WaitForAction(selector=".product-item", timeout_ms=5000),
             ScrollAction(max_iterations=3),
-            ExtractAction(fields={"title": "h1", "price": ".price"})
-        ]
+            ExtractAction(fields={"title": "h1", "price": ".price"}),
+        ],
     )
     assert len(plan.actions) == 3
     assert plan.actions[0].action_type == "wait_for"
 
+
 def test_disallow_arbitrary_code():
     with pytest.raises(ValueError):
-        ActionPlan(url="https://example.com", actions=[{"action_type": "eval_arbitrary_code", "code": "alert(1)"}])
+        ActionPlan(
+            url="https://example.com",
+            actions=[{"action_type": "eval_arbitrary_code", "code": "alert(1)"}],
+        )
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -141,25 +159,35 @@ import pytest
 from app.crawler.block_detector import BlockDetector
 from app.crawler.result_models import BlockType
 
+
 def test_detect_http_status_blocks():
     detector = BlockDetector()
-    blocked, b_type, diag = detector.detect_block(429, {}, "Too Many Requests", "https://example.com")
+    blocked, b_type, diag = detector.detect_block(
+        429, {}, "Too Many Requests", "https://example.com"
+    )
     assert blocked is True
     assert b_type == BlockType.RATE_LIMITED
 
-    blocked, b_type, diag = detector.detect_block(403, {}, "Access Denied", "https://example.com")
+    blocked, b_type, diag = detector.detect_block(
+        403, {}, "Access Denied", "https://example.com"
+    )
     assert blocked is True
     assert b_type == BlockType.ACCESS_DENIED
+
 
 def test_detect_captcha_and_challenge_in_html():
     detector = BlockDetector()
     html_cf = "<html><body><h1>Attention Required! | Cloudflare</h1><div>Please complete security check</div></body></html>"
-    blocked, b_type, diag = detector.detect_block(200, {}, html_cf, "https://example.com")
+    blocked, b_type, diag = detector.detect_block(
+        200, {}, html_cf, "https://example.com"
+    )
     assert blocked is True
     assert b_type == BlockType.SECURITY_CHALLENGE
 
     html_fk = "<html><body><h1>Are you a human?</h1><p>Flipkart reCAPTCHA Confirming...</p></body></html>"
-    blocked, b_type, diag = detector.detect_block(200, {}, html_fk, "https://flipkart.com")
+    blocked, b_type, diag = detector.detect_block(
+        200, {}, html_fk, "https://flipkart.com"
+    )
     assert blocked is True
     assert b_type == BlockType.CAPTCHA
 ```

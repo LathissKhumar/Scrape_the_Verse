@@ -3,8 +3,10 @@ API route tests for Lead Manager.
 """
 
 import os
+
 import pytest
 from httpx import ASGITransport, AsyncClient
+
 from MicroServices.Lead_Manager.domain.stage import LeadStage
 from MicroServices.Lead_Manager.main import app
 from MicroServices.Lead_Manager.repository.database import get_db_manager
@@ -25,7 +27,9 @@ async def setup_db():
 
 @pytest.mark.asyncio
 async def test_lead_api_lifecycle():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
         # 1. Health check
         res = await client.get("/health")
         assert res.status_code == 200

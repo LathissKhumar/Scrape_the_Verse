@@ -1,4 +1,5 @@
 """SMTP email sender supporting thread-aware replies and TLS."""
+
 import asyncio
 import email.message
 import email.utils
@@ -7,47 +8,50 @@ import smtplib
 import ssl
 import uuid
 from datetime import datetime, timezone
-from typing import List, Optional
+
 from pydantic import BaseModel, Field
+
 from app.config import get_settings
-from app.events.bus import EventBus, event_bus as default_bus
+from app.events.bus import EventBus
+from app.events.bus import event_bus as default_bus
 from app.events.models import CommunicationEvent, EventTypes
 from app.persistence.models import OutboundMessageRecord
-from app.persistence.repository import Repository, repository as default_repo
+from app.persistence.repository import Repository
+from app.persistence.repository import repository as default_repo
 
 logger = logging.getLogger(__name__)
 
 
 class OutboundEmail(BaseModel):
-    to: List[str]
+    to: list[str]
     subject: str
     body_text: str
-    body_html: Optional[str] = None
-    cc: List[str] = Field(default_factory=list)
-    bcc: List[str] = Field(default_factory=list)
-    lead_id: Optional[str] = None
-    thread_id: Optional[str] = None
-    in_reply_to: Optional[str] = None
-    references: List[str] = Field(default_factory=list)
+    body_html: str | None = None
+    cc: list[str] = Field(default_factory=list)
+    bcc: list[str] = Field(default_factory=list)
+    lead_id: str | None = None
+    thread_id: str | None = None
+    in_reply_to: str | None = None
+    references: list[str] = Field(default_factory=list)
 
 
 class SendResult(BaseModel):
     status: str
     message_id: str
-    provider_message_id: Optional[str] = None
+    provider_message_id: str | None = None
     sent_at: str
-    error: Optional[str] = None
+    error: str | None = None
 
 
 class GmailSMTPSender:
     def __init__(
         self,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        email_address: Optional[str] = None,
-        password: Optional[str] = None,
-        repo: Optional[Repository] = None,
-        bus: Optional[EventBus] = None,
+        host: str | None = None,
+        port: int | None = None,
+        email_address: str | None = None,
+        password: str | None = None,
+        repo: Repository | None = None,
+        bus: EventBus | None = None,
     ):
         settings = get_settings()
         self.host = host or settings.SMTP_SERVER
@@ -67,7 +71,9 @@ class GmailSMTPSender:
         references = list(email_req.references)
 
         if email_req.thread_id and not in_reply_to:
-            thread_messages = await self.repo.get_messages_by_thread(email_req.thread_id)
+            thread_messages = await self.repo.get_messages_by_thread(
+                email_req.thread_id
+            )
             if thread_messages:
                 last_msg = thread_messages[-1]
                 if last_msg.message_id_header:
@@ -85,7 +91,11 @@ class GmailSMTPSender:
             msg["Bcc"] = ", ".join(email_req.bcc)
         msg["Subject"] = email_req.subject
         msg["Date"] = email.utils.formatdate(localtime=True)
-        msg["Message-ID"] = email.utils.make_msgid(domain=self.email_address.split("@")[-1] if "@" in self.email_address else "gmail.com")
+        msg["Message-ID"] = email.utils.make_msgid(
+            domain=self.email_address.split("@")[-1]
+            if "@" in self.email_address
+            else "gmail.com"
+        )
 
         if in_reply_to:
             msg["In-Reply-To"] = f"<{in_reply_to.strip('<>')}>"
@@ -113,7 +123,9 @@ class GmailSMTPSender:
 
         # Perform SMTP transmission in thread
         try:
-            await asyncio.to_thread(self._transmit_smtp, msg, email_req.to + email_req.cc + email_req.bcc)
+            await asyncio.to_thread(
+                self._transmit_smtp, msg, email_req.to + email_req.cc + email_req.bcc
+            )
 
             outbound_record.status = "SENT"
             await self.repo.save_outbound_message(outbound_record)
@@ -165,13 +177,18 @@ class GmailSMTPSender:
                 error=str(e),
             )
 
-    def _get_oauth2_access_token(self) -> Optional[str]:
+    def _get_oauth2_access_token(self) -> str | None:
         """Fetches a fresh access token using the OAuth refresh token."""
         settings = get_settings()
-        if not (settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET and settings.GOOGLE_REFRESH_TOKEN):
+        if not (
+            settings.GOOGLE_CLIENT_ID
+            and settings.GOOGLE_CLIENT_SECRET
+            and settings.GOOGLE_REFRESH_TOKEN
+        ):
             return None
         try:
             import httpx
+
             resp = httpx.post(
                 "https://oauth2.googleapis.com/token",
                 data={
@@ -188,7 +205,9 @@ class GmailSMTPSender:
             logger.warning(f"Failed to refresh OAuth token for SMTP: {e}")
         return None
 
-    def _transmit_smtp(self, msg: email.message.EmailMessage, recipients: List[str]) -> None:
+    def _transmit_smtp(
+        self, msg: email.message.EmailMessage, recipients: list[str]
+    ) -> None:
         settings = get_settings()
         email_address = self.email_address or settings.GMAIL_ADDRESS
         password = self.password or settings.GMAIL_APP_PASSWORD
@@ -205,7 +224,9 @@ class GmailSMTPSender:
                 if clean_pwd:
                     server.login(email_address, clean_pwd)
                 elif access_token:
-                    auth_string = f"user={email_address}\x01auth=Bearer {access_token}\x01\x01"
+                    auth_string = (
+                        f"user={email_address}\x01auth=Bearer {access_token}\x01\x01"
+                    )
                     server.auth("XOAUTH2", lambda: auth_string)
                 else:
                     raise ValueError("No valid credentials for SMTP transmission.")
@@ -216,7 +237,9 @@ class GmailSMTPSender:
                 if clean_pwd:
                     server.login(email_address, clean_pwd)
                 elif access_token:
-                    auth_string = f"user={email_address}\x01auth=Bearer {access_token}\x01\x01"
+                    auth_string = (
+                        f"user={email_address}\x01auth=Bearer {access_token}\x01\x01"
+                    )
                     server.auth("XOAUTH2", lambda: auth_string)
                 else:
                     raise ValueError("No valid credentials for SMTP transmission.")

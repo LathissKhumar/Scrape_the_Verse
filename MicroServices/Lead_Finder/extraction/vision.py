@@ -1,8 +1,6 @@
 """Vision-based text and data extraction using multimodal models."""
 
-from typing import Optional
 import httpx
-
 from leadfinder.config.logging import get_logger
 from leadfinder.config.settings import get_settings
 
@@ -20,7 +18,7 @@ class VisionTextExtractor:
     def __init__(
         self,
         model_name: str = "gemma4:e2b",
-        client: Optional[httpx.AsyncClient] = None,
+        client: httpx.AsyncClient | None = None,
     ) -> None:
         self.settings = get_settings()
         self.model_name = model_name
@@ -51,4 +49,3 @@ class VisionTextExtractor:
             logger.warning(f"Vision OCR extraction failed: {error}")
 
         return ""
-

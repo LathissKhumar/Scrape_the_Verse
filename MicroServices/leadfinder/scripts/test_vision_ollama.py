@@ -1,11 +1,12 @@
 import asyncio
 import base64
-import sys
 import os
+import sys
+
 sys.path.insert(0, os.path.abspath("."))
 
 from playwright.async_api import async_playwright
-from leadfinder.extraction.vision import VisionTextExtractor
+
 
 async def test_vision():
     async with async_playwright() as p:
@@ -35,6 +36,7 @@ async def test_vision():
 
         # Let's test standard prompt directly via Ollama
         import httpx
+
         payload = {
             "model": "gemma4:e2b",
             "prompt": "What text is written in this image?",
@@ -42,8 +44,11 @@ async def test_vision():
             "stream": False,
         }
         async with httpx.AsyncClient(timeout=60.0) as client:
-            resp = await client.post("http://localhost:11434/api/generate", json=payload)
+            resp = await client.post(
+                "http://localhost:11434/api/generate", json=payload
+            )
             print("Direct Ollama response:", resp.json().get("response"))
+
 
 if __name__ == "__main__":
     asyncio.run(test_vision())

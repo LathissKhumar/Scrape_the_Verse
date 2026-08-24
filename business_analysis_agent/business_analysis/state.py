@@ -1,57 +1,128 @@
-from typing import TypedDict, List, Optional, Dict, Any
+from typing import TypedDict
+
 from business_analysis.schemas.models import (
+    AnalysisCompleteness,
     BusinessInput,
-    Evidence,
-    BusinessProfile,
-    MarketAnalysis,
-    CustomerAnalysis,
-    CompetitorAnalysis,
-    ServiceAnalysis,
     BusinessProblem,
-    Opportunity,
+    BusinessProfile,
     BusinessScore,
+    CompetitorAnalysis,
+    CustomerAnalysis,
+    Evidence,
     FinalBusinessAnalysis,
+    MarketAnalysis,
     NodeExecutionStatus,
     NodeStatusEnum,
-    AnalysisCompleteness,
+    Opportunity,
     QualityGateResult,
-    WebsiteAnalysisResult,
+    ServiceAnalysis,
     SourceType,
+    WebsiteAnalysisResult,
 )
 
 
 class BusinessAnalysisState(TypedDict):
     input_business: BusinessInput
-    evidence: List[Evidence]
-    business_profile: Optional[BusinessProfile]
-    market_analysis: Optional[MarketAnalysis]
-    customer_analysis: Optional[CustomerAnalysis]
-    competitor_analysis: Optional[CompetitorAnalysis]
-    service_analysis: Optional[ServiceAnalysis]
-    business_problems: List[BusinessProblem]
-    opportunities: List[Opportunity]
-    business_score: Optional[BusinessScore]
-    final_report: Optional[FinalBusinessAnalysis]
-    website_analysis: Optional[WebsiteAnalysisResult]
-    node_statuses: Dict[str, NodeExecutionStatus]
-    completeness: Optional[AnalysisCompleteness]
-    quality_gate: Optional[QualityGateResult]
-    errors: List[str]
+    evidence: list[Evidence]
+    business_profile: BusinessProfile | None
+    market_analysis: MarketAnalysis | None
+    customer_analysis: CustomerAnalysis | None
+    competitor_analysis: CompetitorAnalysis | None
+    service_analysis: ServiceAnalysis | None
+    business_problems: list[BusinessProblem]
+    opportunities: list[Opportunity]
+    business_score: BusinessScore | None
+    final_report: FinalBusinessAnalysis | None
+    website_analysis: WebsiteAnalysisResult | None
+    node_statuses: dict[str, NodeExecutionStatus]
+    completeness: AnalysisCompleteness | None
+    quality_gate: QualityGateResult | None
+    errors: list[str]
 
 
-def get_relevant_evidence(state: BusinessAnalysisState, category: str) -> List[Evidence]:
+def get_relevant_evidence(
+    state: BusinessAnalysisState, category: str
+) -> list[Evidence]:
     evidence_list = state.get("evidence", [])
     if not evidence_list:
         return []
 
     category_keywords = {
-        "business": ["company", "name", "location", "industry", "description", "established", "clinic", "practice", "headquartered", "official"],
-        "market": ["industry", "market", "location", "area", "city", "digital", "adoption", "competition", "trends"],
-        "customer": ["customer", "client", "patient", "target", "phobia", "anxiety", "problem", "rehabilitation", "care", "need"],
-        "competitor": ["location", "city", "industry", "competitor", "clinic", "practice", "dentist", "services"],
-        "service": ["service", "product", "care", "treatment", "dentistry", "anxiety", "case", "management", "offerings"],
-        "problem": ["description", "service", "customer", "anxiety", "problem", "additional", "gaps", "friction"],
-        "opportunity": ["service", "problem", "digital", "seo", "content", "website", "opportunity"],
+        "business": [
+            "company",
+            "name",
+            "location",
+            "industry",
+            "description",
+            "established",
+            "clinic",
+            "practice",
+            "headquartered",
+            "official",
+        ],
+        "market": [
+            "industry",
+            "market",
+            "location",
+            "area",
+            "city",
+            "digital",
+            "adoption",
+            "competition",
+            "trends",
+        ],
+        "customer": [
+            "customer",
+            "client",
+            "patient",
+            "target",
+            "phobia",
+            "anxiety",
+            "problem",
+            "rehabilitation",
+            "care",
+            "need",
+        ],
+        "competitor": [
+            "location",
+            "city",
+            "industry",
+            "competitor",
+            "clinic",
+            "practice",
+            "dentist",
+            "services",
+        ],
+        "service": [
+            "service",
+            "product",
+            "care",
+            "treatment",
+            "dentistry",
+            "anxiety",
+            "case",
+            "management",
+            "offerings",
+        ],
+        "problem": [
+            "description",
+            "service",
+            "customer",
+            "anxiety",
+            "problem",
+            "additional",
+            "gaps",
+            "friction",
+        ],
+        "opportunity": [
+            "service",
+            "problem",
+            "digital",
+            "seo",
+            "content",
+            "website",
+            "opportunity",
+        ],
     }
 
     keywords = category_keywords.get(category.lower(), [])
@@ -148,7 +219,6 @@ def create_initial_state(business_input: BusinessInput) -> BusinessAnalysisState
             )
         )
 
-
     if business_input.additional_info:
         initial_evidence.append(
             Evidence(
@@ -162,16 +232,36 @@ def create_initial_state(business_input: BusinessInput) -> BusinessAnalysisState
         )
 
     initial_statuses = {
-        "collect_initial_evidence": NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=1.0),
-        "business_profile": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "market_analysis": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "customer_analysis": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "competitor_analysis": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "service_analysis": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "business_problem": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "opportunity": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "business_scoring": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
-        "quality_gate": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0),
+        "collect_initial_evidence": NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=1.0
+        ),
+        "business_profile": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "market_analysis": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "customer_analysis": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "competitor_analysis": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "service_analysis": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "business_problem": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "opportunity": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "business_scoring": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
+        "quality_gate": NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        ),
     }
 
     return BusinessAnalysisState(

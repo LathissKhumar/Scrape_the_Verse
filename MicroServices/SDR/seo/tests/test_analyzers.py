@@ -3,18 +3,19 @@ Unit Tests for SEO Domain Analyzers
 Tests technical, on-page, content, schema, local, and performance analyzers.
 """
 
-import pytest
-from seo.analyzers.technical import run_technical_audit
-from seo.analyzers.onpage import run_onpage_audit
 from seo.analyzers.content import run_content_audit
-from seo.analyzers.schema import run_schema_audit
 from seo.analyzers.local import run_local_audit
+from seo.analyzers.onpage import run_onpage_audit
 from seo.analyzers.performance import run_performance_audit
+from seo.analyzers.schema import run_schema_audit
+from seo.analyzers.technical import run_technical_audit
 
 
 def test_technical_audit(sample_pages, sample_links, sample_issues, sample_sitemaps):
     """Verify technical audit detects 4xx errors, missing canonicals, deep crawl depth, and sitemaps."""
-    result = run_technical_audit(sample_pages, sample_links, sample_issues, sample_sitemaps)
+    result = run_technical_audit(
+        sample_pages, sample_links, sample_issues, sample_sitemaps
+    )
 
     assert result["category"] == "Technical SEO"
     assert 0 <= result["score"] <= 100

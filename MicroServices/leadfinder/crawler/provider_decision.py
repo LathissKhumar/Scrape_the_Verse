@@ -1,7 +1,8 @@
 """Intelligent anti-bot and provider recovery decision engine."""
 
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.config.logging import get_logger
 from leadfinder.crawler.result_models import BlockType, CrawlResult
 
@@ -42,7 +43,11 @@ class ProviderDecisionEngine:
         if crawl_result.blocked:
             if crawl_result.block_type == BlockType.RATE_LIMITED:
                 return FailureNature.RATE_LIMITED
-            if crawl_result.block_type in (BlockType.CAPTCHA, BlockType.SECURITY_CHALLENGE, BlockType.ACCESS_DENIED):
+            if crawl_result.block_type in (
+                BlockType.CAPTCHA,
+                BlockType.SECURITY_CHALLENGE,
+                BlockType.ACCESS_DENIED,
+            ):
                 return FailureNature.BOT_BLOCKED
             if crawl_result.block_type == BlockType.AUTH_REQUIRED:
                 return FailureNature.AUTH_REQUIRED
@@ -52,7 +57,12 @@ class ProviderDecisionEngine:
 
         if "timeout" in err or status in (408, 504):
             return FailureNature.TIMEOUT
-        if "network" in err or "econnreset" in err or "enotfound" in err or status in (502,):
+        if (
+            "network" in err
+            or "econnreset" in err
+            or "enotfound" in err
+            or status in (502,)
+        ):
             return FailureNature.TRANSIENT_NETWORK
         if status in (404, 410):
             return FailureNature.INVALID_PAGE
@@ -69,24 +79,44 @@ class ProviderDecisionEngine:
     ) -> tuple[ProviderRecommendation, str]:
         """Determine next recovery action based on failure nature and attempt budget."""
         nature = self.classify_failure(crawl_result)
-        logger.info(f"Crawl failure classified as '{nature.value}' on attempt {attempt}")
+        logger.info(
+            f"Crawl failure classified as '{nature.value}' on attempt {attempt}"
+        )
 
         # 1. Bot block or Rate limit -> fallback to Bright Data if available
         if nature in (FailureNature.BOT_BLOCKED, FailureNature.RATE_LIMITED):
             if brightdata_configured:
-                return ProviderRecommendation.BRIGHTDATA_FALLBACK, "WAF/CAPTCHA challenge detected; escalating to Bright Data DCA cloud scraper."
-            return ProviderRecommendation.ABORT, "Bot blocked and cloud proxy unconfigured."
+                return (
+                    ProviderRecommendation.BRIGHTDATA_FALLBACK,
+                    "WAF/CAPTCHA challenge detected; escalating to Bright Data DCA cloud scraper.",
+                )
+            return (
+                ProviderRecommendation.ABORT,
+                "Bot blocked and cloud proxy unconfigured.",
+            )
 
         # 2. Transient network failure -> local retry with backoff
         if nature == FailureNature.TRANSIENT_NETWORK and attempt <= 2:
-            return ProviderRecommendation.LOCAL_RETRY_BACKOFF, f"Transient network issue; retrying locally with backoff (attempt {attempt})."
+            return (
+                ProviderRecommendation.LOCAL_RETRY_BACKOFF,
+                f"Transient network issue; retrying locally with backoff (attempt {attempt}).",
+            )
 
         # 3. Timeout -> increase timeout locally
         if nature == FailureNature.TIMEOUT and attempt <= 2:
-            return ProviderRecommendation.INCREASE_TIMEOUT, f"Page load timeout; retrying with extended timeout (attempt {attempt})."
+            return (
+                ProviderRecommendation.INCREASE_TIMEOUT,
+                f"Page load timeout; retrying with extended timeout (attempt {attempt}).",
+            )
 
         # 4. Incomplete JS rendering -> normal healing with action/crawler adaptation
         if nature == FailureNature.JS_RENDERING:
-            return ProviderRecommendation.NORMAL_HEALING, "Empty or partial DOM; proceeding to crawler/action healing."
+            return (
+                ProviderRecommendation.NORMAL_HEALING,
+                "Empty or partial DOM; proceeding to crawler/action healing.",
+            )
 
-        return ProviderRecommendation.NORMAL_HEALING, "Proceeding to standard diagnosis and extraction healing."
+        return (
+            ProviderRecommendation.NORMAL_HEALING,
+            "Proceeding to standard diagnosis and extraction healing.",
+        )

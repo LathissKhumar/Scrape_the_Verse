@@ -1,19 +1,15 @@
 """Demonstration script for Dynamic Action Repair and Self-Healing Lifecycle."""
 
-import asyncio
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from leadfinder.extraction.schema import ExtractionSchema, FieldRule
 from leadfinder.healing.actions.detector import ActionIssueDetector
 from leadfinder.healing.actions.planner import ActionRepairPlanner
 from leadfinder.healing.confidence import RepairConfidenceScorer
 from leadfinder.healing.fingerprint import DOMFingerprinter
-from leadfinder.healing.freshness import RepairFreshnessLifecycle
 from leadfinder.healing.observability import RepairObservability, RepairSessionTelemetry
-from leadfinder.healing.schemas import RepairConfidenceLevel, RepairFreshnessStatus, RepairMemoryRecord, RepairType
 from leadfinder.models.schemas import ScrapingTask
 
 
@@ -40,12 +36,18 @@ def run_demonstration():
     """
     detector = ActionIssueDetector()
     planner = ActionRepairPlanner()
-    task = ScrapingTask(task_id="demo_action_01", objective="extract products", target_urls=["https://store.example.com"])
+    task = ScrapingTask(
+        task_id="demo_action_01",
+        objective="extract products",
+        target_urls=["https://store.example.com"],
+    )
 
     issues = detector.detect_blocking_issues(html_with_cookie)
     print(f"\n[Step 1] Detected UI Interaction Issues: {len(issues)}")
     for iss in issues:
-        print(f"  -> Issue: {iss['issue_type']} (Target: {iss['target_selector']}, Action: {iss['recommended_action'].value})")
+        print(
+            f"  -> Issue: {iss['issue_type']} (Target: {iss['target_selector']}, Action: {iss['recommended_action'].value})"
+        )
 
     action_plans = planner.plan_from_issues(issues, task)
     print(f"[Step 2] Synthesized Action Plans: {len(action_plans)}")
@@ -62,21 +64,25 @@ def run_demonstration():
         multi_page_score=1.00,
         attempt_number=1,
     )
-    print(f"\n[Step 3] Calculated Repair Confidence:")
+    print("\n[Step 3] Calculated Repair Confidence:")
     print(f"  -> Confidence Score: {score:.3f}")
     print(f"  -> Assigned Tier:     {tier.value.upper()} (Action: Persist to SQLite)")
 
     # 3. DOM Structural Fingerprinting & Drift Detection
     fingerprinter = DOMFingerprinter()
     fp_original = fingerprinter.generate_fingerprint(html_with_cookie)
-    html_redesigned = "<html><body><table><tr><td>Table product</td></tr></table></body></html>"
+    html_redesigned = (
+        "<html><body><table><tr><td>Table product</td></tr></table></body></html>"
+    )
     fp_redesigned = fingerprinter.generate_fingerprint(html_redesigned)
 
     drift_score = fingerprinter.compute_drift_score(fp_original, fp_redesigned)
     is_drift = fingerprinter.is_significant_drift(fp_original, fp_redesigned)
-    print(f"\n[Step 4] DOM Structural Drift Detection:")
+    print("\n[Step 4] DOM Structural Drift Detection:")
     print(f"  -> Drift Score:       {drift_score:.3f}")
-    print(f"  -> Significant Drift: {is_drift} (Status: STALE marked for re-validation)")
+    print(
+        f"  -> Significant Drift: {is_drift} (Status: STALE marked for re-validation)"
+    )
 
     # 4. Observability & Telemetry
     obs = RepairObservability(log_path=".repair_sessions.jsonl")
@@ -99,7 +105,7 @@ def run_demonstration():
         )
     )
     summary = obs.get_summary()
-    print(f"\n[Step 5] Observability Summary:")
+    print("\n[Step 5] Observability Summary:")
     print(f"  -> Total Sessions:    {summary['total_sessions']}")
     print(f"  -> Success Rate:      {summary['success_rate']:.1%}")
     print(f"  -> Persisted Count:   {summary['persisted_count']}")

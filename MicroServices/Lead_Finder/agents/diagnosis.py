@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from leadfinder.agents.base import BaseAgent
 from leadfinder.diagnosis.engine import DiagnosisEngine
@@ -13,8 +13,8 @@ class DiagnosisAgent(BaseAgent):
 
     def __init__(
         self,
-        llm_client: Optional[LLMClient] = None,
-        engine: Optional[DiagnosisEngine] = None,
+        llm_client: LLMClient | None = None,
+        engine: DiagnosisEngine | None = None,
     ):
         super().__init__(name="DIAGNOSIS")
         self.engine = engine or DiagnosisEngine(llm_client=llm_client)
@@ -23,9 +23,9 @@ class DiagnosisAgent(BaseAgent):
         self,
         task: ScrapingTask,
         validation_result: ValidationResult,
-        raw_results: Optional[Any] = None,
-        extracted_results: Optional[list[dict[str, Any]]] = None,
-        scraper_metadata: Optional[dict[str, Any]] = None,
+        raw_results: Any | None = None,
+        extracted_results: list[dict[str, Any]] | None = None,
+        scraper_metadata: dict[str, Any] | None = None,
     ) -> DiagnosisResult:
         """Analyze validation results and evidence to produce structured DiagnosisResult."""
         self.logger.debug(
@@ -44,4 +44,3 @@ class DiagnosisAgent(BaseAgent):
             f"Degradation diagnosed | root_cause={result.root_cause.value} | confidence={result.confidence:.2f} | repair_strategy={result.repair_strategy.value}"
         )
         return result
-

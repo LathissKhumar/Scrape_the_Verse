@@ -10,19 +10,36 @@ Provides explicit boolean indicators:
 """
 
 import os
-import re
+from typing import Any
 from urllib.parse import urlparse
-from typing import Dict, Any, Tuple, Optional
-
 
 ALLOWED_RESOURCE_TYPES = {
-    "html", "image", "css", "javascript", "pdf", 
-    "font", "video", "audio", "xml", "json", "binary", "unknown"
+    "html",
+    "image",
+    "css",
+    "javascript",
+    "pdf",
+    "font",
+    "video",
+    "audio",
+    "xml",
+    "json",
+    "binary",
+    "unknown",
 }
 
 IMAGE_EXTENSIONS = {
-    ".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", 
-    ".ico", ".bmp", ".tiff", ".avif", ".heic"
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".svg",
+    ".webp",
+    ".ico",
+    ".bmp",
+    ".tiff",
+    ".avif",
+    ".heic",
 }
 CSS_EXTENSIONS = {".css"}
 JS_EXTENSIONS = {".js", ".mjs", ".cjs"}
@@ -47,9 +64,9 @@ class ResourceClassifier:
     def classify_resource(
         url: str,
         content_type: str = "",
-        response_body: Optional[bytes] = None,
-        is_html_parsed: bool = False
-    ) -> Dict[str, Any]:
+        response_body: bytes | None = None,
+        is_html_parsed: bool = False,
+    ) -> dict[str, Any]:
         """
         Classifies a URL / response resource and returns a dictionary of flags.
         """
@@ -71,7 +88,11 @@ class ResourceClassifier:
             resource_type = "javascript"
         elif "application/pdf" in ct_clean:
             resource_type = "pdf"
-        elif ct_clean.startswith("font/") or "application/x-font" in ct_clean or "font-woff" in ct_clean:
+        elif (
+            ct_clean.startswith("font/")
+            or "application/x-font" in ct_clean
+            or "font-woff" in ct_clean
+        ):
             resource_type = "font"
         elif ct_clean.startswith("video/"):
             resource_type = "video"
@@ -81,7 +102,12 @@ class ResourceClassifier:
             resource_type = "xml"
         elif "application/json" in ct_clean or "text/json" in ct_clean:
             resource_type = "json"
-        elif ct_clean in ("application/octet-stream", "application/zip", "application/x-tar", "application/gzip"):
+        elif ct_clean in (
+            "application/octet-stream",
+            "application/zip",
+            "application/x-tar",
+            "application/gzip",
+        ):
             resource_type = "binary"
 
         # 2. Evidence Level 2: HTML Parsing Success
@@ -114,12 +140,20 @@ class ResourceClassifier:
 
         # 4. Evidence Level 4: Magic Bytes Inspection (if body provided)
         if resource_type == "unknown" and response_body and len(response_body) > 4:
-            if response_body.startswith(b"<!DOCTYPE") or response_body.startswith(b"<html") or response_body.startswith(b"<?xml"):
+            if (
+                response_body.startswith(b"<!DOCTYPE")
+                or response_body.startswith(b"<html")
+                or response_body.startswith(b"<?xml")
+            ):
                 if b"<html" in response_body[:500].lower():
                     resource_type = "html"
                 elif b"<?xml" in response_body[:100].lower():
                     resource_type = "xml"
-            elif response_body.startswith(b"\x89PNG") or response_body.startswith(b"\xff\xd8\xff") or response_body.startswith(b"GIF8"):
+            elif (
+                response_body.startswith(b"\x89PNG")
+                or response_body.startswith(b"\xff\xd8\xff")
+                or response_body.startswith(b"GIF8")
+            ):
                 resource_type = "image"
             elif response_body.startswith(b"%PDF"):
                 resource_type = "pdf"
@@ -132,11 +166,11 @@ class ResourceClassifier:
         elif ext in JS_EXTENSIONS and resource_type != "javascript":
             resource_type = "javascript"
 
-        is_html_document = (resource_type == "html")
-        
+        is_html_document = resource_type == "html"
+
         # Indexable document: HTML or PDF documents
         is_indexable_document = resource_type in ("html", "pdf")
-        
+
         # SEO page: Indexable HTML pages intended for search engines
         is_seo_page = is_html_document
 
@@ -145,5 +179,5 @@ class ResourceClassifier:
             "is_html_document": is_html_document,
             "is_indexable_document": is_indexable_document,
             "is_seo_page": is_seo_page,
-            "content_type": ct_clean
+            "content_type": ct_clean,
         }

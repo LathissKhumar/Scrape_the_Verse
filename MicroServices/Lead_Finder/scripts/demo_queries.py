@@ -10,8 +10,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..",
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from leadfinder.brightdata.client import BrightDataClient
-from leadfinder.brightdata.registry import default_scraper_registry
-from leadfinder.brightdata.schemas import FieldDefinition, ScrapeTargetRequest
 from leadfinder.brightdata.service import BrightDataService
 from leadfinder.config.logging import get_logger, setup_logging
 from leadfinder.config.settings import get_settings
@@ -54,15 +52,21 @@ async def main():
     print("\n" + "-" * 75)
     print("QUERY 2: 'restaurents in tambaram'")
     print("-" * 75)
-    print("-> System Classification: Geographic Local Search (Category='restaurants', Location='Tambaram')")
+    print(
+        "-> System Classification: Geographic Local Search (Category='restaurants', Location='Tambaram')"
+    )
     print("-> Selected Engine: Google Maps Collector")
     print("-> Orchestrator Action: REUSE existing Collector (c_mt1qfvqx1051f3m8r9)")
     print("-> Fetching live records from Google Maps...")
 
     t0 = time.time()
-    restaurant_leads = await gmaps_service.get_local_leads(query="restaurants", location="Tambaram")
+    restaurant_leads = await gmaps_service.get_local_leads(
+        query="restaurants", location="Tambaram"
+    )
     t_restaurants = round(time.time() - t0, 2)
-    print(f"-> Extracted {len(restaurant_leads)} leads in {t_restaurants}s. Sample Output:")
+    print(
+        f"-> Extracted {len(restaurant_leads)} leads in {t_restaurants}s. Sample Output:"
+    )
     print(json.dumps(restaurant_leads[:2], indent=2))
 
     # -------------------------------------------------------------
@@ -76,7 +80,9 @@ async def main():
     print("-> Orchestrator Decision: [CREATE NEW SCRAPER USING BRIGHT DATA CLI]")
     print("   - Action: 'create'")
     print("   - Status: 'creating'")
-    print("   - Execution: Would spawn CLI `brightdata scraper create https://www.amazon.com` in background")
+    print(
+        "   - Execution: Would spawn CLI `brightdata scraper create https://www.amazon.com` in background"
+    )
     print("   - (Stopped execution as requested without calling external CLI create)")
 
     print("\n" + "=" * 75)

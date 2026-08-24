@@ -1,4 +1,3 @@
-import pytest
 from leadfinder.healing.memory import RepairMemory
 from leadfinder.healing.schemas import RepairMemoryRecord, RepairType
 
@@ -44,7 +43,9 @@ def test_record_and_retrieve_repair_memory():
     memory.record_success(record)
 
     # Exact signature match
-    matches = memory.find_similar_repairs(domain="books.toscrape.com", signature="sig_abc123")
+    matches = memory.find_similar_repairs(
+        domain="books.toscrape.com", signature="sig_abc123"
+    )
     assert len(matches) == 1
     assert matches[0].successful_patch == {"title": "h3 a"}
 

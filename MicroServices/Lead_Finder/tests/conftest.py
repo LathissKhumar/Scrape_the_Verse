@@ -1,32 +1,34 @@
 import json
-from typing import Any, Optional
+from typing import Any
+
 import pytest
 from fastapi.testclient import TestClient
-
 from leadfinder.config.settings import Settings
 from leadfinder.llm.base import LLMClient
-from leadfinder.models.schemas import ScrapingRequest, ScrapingTask
 from leadfinder.main import app
+from leadfinder.models.schemas import ScrapingRequest
 
 
 class MockLLMClient(LLMClient):
     """Mock LLM client returning configurable responses."""
 
-    def __init__(self, response_text: Optional[str] = None, model: str = "qwen3:8b"):
+    def __init__(self, response_text: str | None = None, model: str = "qwen3:8b"):
         self._model = model
-        self.response_text = response_text or json.dumps({
-            "objective": "Scrape product catalog for pricing and ratings",
-            "target_urls": ["https://example.com/products"],
-            "fields": ["product_name", "price", "rating"],
-            "output_schema": {
-                "product_name": "string",
-                "price": "string",
-                "rating": "number"
-            },
-            "max_records": 50,
-            "constraints": ["Extract in-stock items only"],
-            "source_requirements": ["JavaScript rendering needed"]
-        })
+        self.response_text = response_text or json.dumps(
+            {
+                "objective": "Scrape product catalog for pricing and ratings",
+                "target_urls": ["https://example.com/products"],
+                "fields": ["product_name", "price", "rating"],
+                "output_schema": {
+                    "product_name": "string",
+                    "price": "string",
+                    "rating": "number",
+                },
+                "max_records": 50,
+                "constraints": ["Extract in-stock items only"],
+                "source_requirements": ["JavaScript rendering needed"],
+            }
+        )
         self.invoked_prompts: list[str] = []
 
     @property
@@ -36,7 +38,7 @@ class MockLLMClient(LLMClient):
     async def invoke(
         self,
         prompt: str,
-        system: Optional[str] = None,
+        system: str | None = None,
         json_mode: bool = False,
     ) -> str:
         self.invoked_prompts.append(prompt)
@@ -45,7 +47,7 @@ class MockLLMClient(LLMClient):
     def invoke_sync(
         self,
         prompt: str,
-        system: Optional[str] = None,
+        system: str | None = None,
         json_mode: bool = False,
     ) -> str:
         self.invoked_prompts.append(prompt)
@@ -56,7 +58,7 @@ class MockLLMClient(LLMClient):
             "available": True,
             "model_name": self._model,
             "model_installed": True,
-            "available_models": [self._model]
+            "available_models": [self._model],
         }
 
 

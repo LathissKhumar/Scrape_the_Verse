@@ -48,5 +48,7 @@ def test_provider_decision_timeout_increases_limit():
     nature = engine.classify_failure(crawl_res)
     assert nature == FailureNature.TIMEOUT
 
-    rec, reason = engine.decide_action(crawl_res, attempt=1, brightdata_configured=False)
+    rec, reason = engine.decide_action(
+        crawl_res, attempt=1, brightdata_configured=False
+    )
     assert rec == ProviderRecommendation.INCREASE_TIMEOUT

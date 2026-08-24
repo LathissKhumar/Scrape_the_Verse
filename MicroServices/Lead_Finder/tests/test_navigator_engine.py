@@ -1,4 +1,5 @@
 from unittest.mock import AsyncMock, MagicMock
+
 import pytest
 from leadfinder.crawler.navigator import InteractiveNavigatorEngine
 

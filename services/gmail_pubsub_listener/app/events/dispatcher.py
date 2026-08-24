@@ -1,18 +1,21 @@
 """Event dispatcher sending events downstream and recording persistence."""
+
 import json
 import logging
-from typing import Optional
+
 import httpx
+
 from app.config import get_settings
 from app.events.models import CommunicationEvent
 from app.persistence.models import EventRecord
-from app.persistence.repository import Repository, repository as default_repo
+from app.persistence.repository import Repository
+from app.persistence.repository import repository as default_repo
 
 logger = logging.getLogger(__name__)
 
 
 class EventDispatcher:
-    def __init__(self, repo: Optional[Repository] = None):
+    def __init__(self, repo: Repository | None = None):
         self.repo = repo or default_repo
         self.settings = get_settings()
 
@@ -33,7 +36,11 @@ class EventDispatcher:
         # 2. Dispatch downstream asynchronously so callers are never blocked
         async def _dispatch():
             try:
-                if event.event_type in ["email.received", "email.classified", "lead.email.correlated"]:
+                if event.event_type in [
+                    "email.received",
+                    "email.classified",
+                    "lead.email.correlated",
+                ]:
                     await self._notify_lead_manager(event)
                 elif event.event_type in ["email.sent", "thread.updated"]:
                     await self._notify_sdr_service(event)
@@ -45,7 +52,9 @@ class EventDispatcher:
         asyncio.create_task(_dispatch())
 
     async def _notify_lead_manager(self, event: CommunicationEvent) -> None:
-        url = f"{self.settings.LEAD_MANAGER_URL.rstrip('/')}/api/v1/events/inbound-email"
+        url = (
+            f"{self.settings.LEAD_MANAGER_URL.rstrip('/')}/api/v1/events/inbound-email"
+        )
         try:
             async with httpx.AsyncClient(timeout=3.0) as client:
                 await client.post(url, json=event.model_dump())

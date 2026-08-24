@@ -1,19 +1,18 @@
-import concurrent.futures
-from typing import Annotated, List, Dict
 from datetime import datetime
-from langgraph.graph import StateGraph, START, END
 
-from business_analysis.state import BusinessAnalysisState
-from business_analysis.agents.business_profile import business_profile_agent
-from business_analysis.agents.market_analysis import market_analysis_agent
-from business_analysis.agents.customer_analysis import customer_analysis_agent
-from business_analysis.agents.competitor_analysis import competitor_analysis_agent
-from business_analysis.agents.service_analysis import service_analysis_agent
+from langgraph.graph import END, START, StateGraph
+
 from business_analysis.agents.business_problem import business_problem_agent
-from business_analysis.agents.opportunity import opportunity_agent
+from business_analysis.agents.business_profile import business_profile_agent
 from business_analysis.agents.business_scoring import business_scoring_agent
+from business_analysis.agents.competitor_analysis import competitor_analysis_agent
+from business_analysis.agents.customer_analysis import customer_analysis_agent
+from business_analysis.agents.market_analysis import market_analysis_agent
+from business_analysis.agents.opportunity import opportunity_agent
 from business_analysis.agents.quality_gate import quality_gate_agent
-from business_analysis.schemas.models import FinalBusinessAnalysis, Evidence
+from business_analysis.agents.service_analysis import service_analysis_agent
+from business_analysis.schemas.models import FinalBusinessAnalysis
+from business_analysis.state import BusinessAnalysisState
 
 
 def collect_initial_evidence(state: BusinessAnalysisState) -> BusinessAnalysisState:
@@ -47,11 +46,11 @@ def run_parallel_analysis(state: BusinessAnalysisState) -> BusinessAnalysisState
         "competitor_analysis": competitor_result.get("competitor_analysis"),
         "service_analysis": service_result.get("service_analysis"),
         "node_statuses": merged_statuses,
-        "errors": state.get("errors", []) + 
-                  market_result.get("errors", []) + 
-                  customer_result.get("errors", []) + 
-                  competitor_result.get("errors", []) + 
-                  service_result.get("errors", []),
+        "errors": state.get("errors", [])
+        + market_result.get("errors", [])
+        + customer_result.get("errors", [])
+        + competitor_result.get("errors", [])
+        + service_result.get("errors", []),
     }
 
 
@@ -77,20 +76,36 @@ def run_quality_gate_node(state: BusinessAnalysisState) -> BusinessAnalysisState
 
 def generate_final_report(state: BusinessAnalysisState) -> BusinessAnalysisState:
     required = [
-        "business_profile", "market_analysis", "customer_analysis",
-        "competitor_analysis", "service_analysis", "business_score"
+        "business_profile",
+        "market_analysis",
+        "customer_analysis",
+        "competitor_analysis",
+        "service_analysis",
+        "business_score",
     ]
 
     for key in required:
         if not state.get(key):
-            return {**state, "errors": state.get("errors", []) + [f"{key} not available for final report"]}
+            return {
+                **state,
+                "errors": state.get("errors", [])
+                + [f"{key} not available for final report"],
+            }
 
     input_business = state["input_business"]
     all_errors = state.get("errors", [])
 
     # Separate genuine errors from warnings
-    hard_errors = [e for e in all_errors if not e.startswith(("[WARNING]", "[QG]", "[ServiceAnalysis]"))]
-    warn_entries = [e for e in all_errors if e.startswith(("[WARNING]", "[QG]", "[ServiceAnalysis]"))]
+    hard_errors = [
+        e
+        for e in all_errors
+        if not e.startswith(("[WARNING]", "[QG]", "[ServiceAnalysis]"))
+    ]
+    warn_entries = [
+        e
+        for e in all_errors
+        if e.startswith(("[WARNING]", "[QG]", "[ServiceAnalysis]"))
+    ]
 
     report = FinalBusinessAnalysis(
         company_name=input_business.company_name,
@@ -116,7 +131,6 @@ def generate_final_report(state: BusinessAnalysisState) -> BusinessAnalysisState
     )
 
     return {**state, "final_report": report}
-
 
 
 def build_business_analysis_graph():

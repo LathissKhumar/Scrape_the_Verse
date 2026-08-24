@@ -1,6 +1,6 @@
-from typing import Any, Optional
-from bs4 import BeautifulSoup
+from typing import Any
 
+from bs4 import BeautifulSoup
 from leadfinder.extraction.chunking import ContentChunker
 from leadfinder.extraction.semantic import SemanticFilter
 from leadfinder.models.schemas import ScrapingTask
@@ -12,8 +12,8 @@ class DiagnosisEvidenceBuilder:
 
     def __init__(
         self,
-        chunker: Optional[ContentChunker] = None,
-        semantic_filter: Optional[SemanticFilter] = None,
+        chunker: ContentChunker | None = None,
+        semantic_filter: SemanticFilter | None = None,
     ):
         self.chunker = chunker or ContentChunker(chunk_size=1200, chunk_overlap=150)
         self.semantic_filter = semantic_filter or SemanticFilter(top_k=2)
@@ -56,9 +56,9 @@ class DiagnosisEvidenceBuilder:
         self,
         task: ScrapingTask,
         validation_result: ValidationResult,
-        raw_results: Optional[Any] = None,
-        extracted_results: Optional[list[dict[str, Any]]] = None,
-        scraper_metadata: Optional[dict[str, Any]] = None,
+        raw_results: Any | None = None,
+        extracted_results: list[dict[str, Any]] | None = None,
+        scraper_metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Compile a concise, structured evidence package."""
         affected_fields: list[str] = []
@@ -70,7 +70,11 @@ class DiagnosisEvidenceBuilder:
         raw_str = ""
         if isinstance(raw_results, str):
             raw_str = raw_results
-        elif isinstance(raw_results, list) and raw_results and isinstance(raw_results[0], dict):
+        elif (
+            isinstance(raw_results, list)
+            and raw_results
+            and isinstance(raw_results[0], dict)
+        ):
             raw_str = raw_results[0].get("html", "") or str(raw_results[0])
         elif isinstance(raw_results, dict):
             raw_str = raw_results.get("html", "") or str(raw_results)

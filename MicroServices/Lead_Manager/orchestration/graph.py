@@ -2,8 +2,8 @@
 LangGraph Workflow Graph Construction for Lead Manager.
 """
 
-from typing import Optional
 from langgraph.graph import END, START, StateGraph
+
 from .nodes import (
     create_activity_and_tasks_node,
     evaluate_transition_node,

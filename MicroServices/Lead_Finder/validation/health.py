@@ -1,4 +1,3 @@
-from typing import Any, Optional
 from leadfinder.validation.schemas import (
     DuplicateMetric,
     FieldMetric,
@@ -27,7 +26,7 @@ UNSTABLE_THRESHOLD = 0.40
 class HealthScorer:
     """Computes deterministic health score and quality score based on standardized weighted dimensions."""
 
-    def __init__(self, weights: Optional[dict[str, float]] = None):
+    def __init__(self, weights: dict[str, float] | None = None):
         self.weights = weights or DEFAULT_HEALTH_WEIGHTS
 
     def calculate_health_score(
@@ -37,7 +36,7 @@ class HealthScorer:
         duplicate_metrics: DuplicateMetric,
         url_metrics: UrlMetric,
         schema_metrics: SchemaMetric,
-        expected_max_records: Optional[int] = None,
+        expected_max_records: int | None = None,
     ) -> tuple[float, float, ValidationStatus]:
         """Calculate health_score, quality_score, and validation status."""
         if record_count == 0:
@@ -54,13 +53,15 @@ class HealthScorer:
         if expected_max_records and expected_max_records > 0:
             # Ratio of extracted to expected up to 1.0
             ratio = record_count / expected_max_records
-            s_count = min(1.0, max(0.2, ratio if ratio <= 1.0 else 1.0))
+            s_count = min(1.0, max(0.2, min(ratio, 1.0)))
         else:
             s_count = 1.0 if record_count >= 1 else 0.0
 
         # 4. Type validity dimension (fraction of records without invalid type count)
         type_failures = sum(m.invalid_type_count for m in field_metrics.values())
-        s_type = max(0.0, 1.0 - (type_failures / (record_count * max(1, len(field_metrics)))))
+        s_type = max(
+            0.0, 1.0 - (type_failures / (record_count * max(1, len(field_metrics))))
+        )
 
         # 5. URL validity dimension
         s_url = url_metrics.valid_rate
@@ -71,8 +72,12 @@ class HealthScorer:
         # 7. Extraction consistency dimension (penalty if placeholder count is high or single field collapse)
         min_cov = min(coverages) if coverages else 1.0
         total_placeholders = sum(m.placeholder_count for m in field_metrics.values())
-        placeholder_ratio = total_placeholders / (record_count * max(1, len(field_metrics)))
-        s_consistency = max(0.0, (min_cov * 0.7) + ((1.0 - min(1.0, placeholder_ratio)) * 0.3))
+        placeholder_ratio = total_placeholders / (
+            record_count * max(1, len(field_metrics))
+        )
+        s_consistency = max(
+            0.0, (min_cov * 0.7) + ((1.0 - min(1.0, placeholder_ratio)) * 0.3)
+        )
 
         # Weighted Health Score sum
         w = self.weights
@@ -88,10 +93,7 @@ class HealthScorer:
 
         # Quality Score reflects intrinsic data completeness and validity
         quality_score = (
-            0.40 * s_completeness
-            + 0.30 * s_type
-            + 0.15 * s_url
-            + 0.15 * s_dup
+            0.40 * s_completeness + 0.30 * s_type + 0.15 * s_url + 0.15 * s_dup
         )
 
         health_score = round(max(0.0, min(1.0, health_score)), 4)

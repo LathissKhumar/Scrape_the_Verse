@@ -2,6 +2,7 @@
 
 import os
 import tempfile
+
 import pytest
 
 from leadfinder.brightdata.registry import (
@@ -17,7 +18,7 @@ def temp_registry():
     """Create a fresh ScraperRegistry with a temporary SQLite database."""
     with tempfile.NamedTemporaryFile(suffix=".sqlite", delete=False) as f:
         db_path = f.name
-    
+
     registry = ScraperRegistry(db_path=db_path)
     yield registry
 
@@ -34,7 +35,9 @@ def test_normalize_url():
     # Auto-prepend https
     assert normalize_url("example.com/products") == "https://example.com/products"
     # Remove trailing slash
-    assert normalize_url("https://example.com/products/") == "https://example.com/products"
+    assert (
+        normalize_url("https://example.com/products/") == "https://example.com/products"
+    )
     # Strip tracking parameters
     raw = "https://example.com/products?utm_source=google&category=shoes&utm_medium=cpc&ref=123"
     assert normalize_url(raw) == "https://example.com/products?category=shoes"
@@ -72,7 +75,9 @@ def test_registry_create_and_find_compatible(temp_registry):
     assert temp_registry.find_compatible(norm_url, s_hash) is None
 
     # Create record
-    record = temp_registry.create_record(target_url=url, fields=fields, description="Extract items")
+    record = temp_registry.create_record(
+        target_url=url, fields=fields, description="Extract items"
+    )
     assert record.status == CollectorStatus.CREATING
     assert record.collector_id is None
     assert record.schema_hash == s_hash

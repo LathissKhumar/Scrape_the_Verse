@@ -1,46 +1,53 @@
-'use client'
-import { motion } from 'framer-motion'
-import { GradientText } from '@/components/ui/GradientText'
-import { SectionLabel } from '@/components/ui/SectionLabel'
-import { CheckCircle } from 'lucide-react'
+"use client";
+import { motion } from "framer-motion";
+import { GradientText } from "@/components/ui/GradientText";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { CheckCircle } from "lucide-react";
 
 const STEPS = [
   {
-    num: '01',
-    title: 'Lead Discovered',
-    content: 'Atlas Kliniek found via directory scraping. Amsterdam, dental services, website URL extracted.',
+    num: "01",
+    title: "Lead Discovered",
+    content:
+      "Atlas Kliniek found via directory scraping. Amsterdam, dental services, website URL extracted.",
   },
   {
-    num: '02',
-    title: 'Lead Normalized',
-    content: 'Business profile created: B2C dental clinic, Amsterdam, specialized services, existing website.',
+    num: "02",
+    title: "Lead Normalized",
+    content:
+      "Business profile created: B2C dental clinic, Amsterdam, specialized services, existing website.",
   },
   {
-    num: '03',
-    title: 'Website Audited',
-    content: 'SEO score: 72/100. 39 pages missing meta descriptions. 24 titles too long. No dedicated service pages found. H1 missing on key pages.',
+    num: "03",
+    title: "Website Audited",
+    content:
+      "SEO score: 72/100. 39 pages missing meta descriptions. 24 titles too long. No dedicated service pages found. H1 missing on key pages.",
   },
   {
-    num: '04',
-    title: 'Business Analyzed',
-    content: 'Core service: Dental Anxiety Treatment. Primary customer: anxiety patients. Customer needs: gentle techniques, extended consultations, sedation options.',
+    num: "04",
+    title: "Business Analyzed",
+    content:
+      "Core service: Dental Anxiety Treatment. Primary customer: anxiety patients. Customer needs: gentle techniques, extended consultations, sedation options.",
   },
   {
-    num: '05',
-    title: 'Opportunity Detected',
-    content: 'No dedicated Dental Anxiety Treatment page exists — despite being the core service and primary customer search intent.',
+    num: "05",
+    title: "Opportunity Detected",
+    content:
+      "No dedicated Dental Anxiety Treatment page exists — despite being the core service and primary customer search intent.",
   },
   {
-    num: '06',
-    title: 'Service Recommended',
-    content: 'SEO optimization + dedicated service page development + content improvement for anxiety treatment.',
+    num: "06",
+    title: "Service Recommended",
+    content:
+      "SEO optimization + dedicated service page development + content improvement for anxiety treatment.",
   },
   {
-    num: '07',
-    title: 'Prompt Generated',
-    content: 'Implementation-ready spec delivered. Architecture, page content, SEO rules, UX guidelines, conversion flow — ready to paste into Lovable, v0, or Claude Code.',
+    num: "07",
+    title: "Prompt Generated",
+    content:
+      "Implementation-ready spec delivered. Architecture, page content, SEO rules, UX guidelines, conversion flow — ready to paste into Lovable, v0, or Claude Code.",
   },
-]
+];
 
 export function LiveExample() {
   return (
@@ -55,12 +62,12 @@ export function LiveExample() {
           className="text-center space-y-3"
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-15%' }}
+          viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <SectionLabel label="REAL EXAMPLE" />
           <h2 className="text-4xl md:text-5xl font-bold font-display tracking-tight text-text-primary">
-            Watch the Pipeline Run on a{' '}
+            Watch the Pipeline Run on a{" "}
             <GradientText>Real Business</GradientText>
           </h2>
           <p className="text-base text-text-secondary font-body">
@@ -79,7 +86,7 @@ export function LiveExample() {
                 key={step.num}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: '-10%' }}
+                viewport={{ once: true, margin: "-10%" }}
                 transition={{
                   delay: i * 0.12,
                   duration: 0.55,
@@ -111,5 +118,5 @@ export function LiveExample() {
         </div>
       </div>
     </section>
-  )
+  );
 }

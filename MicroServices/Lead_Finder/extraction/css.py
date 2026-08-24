@@ -1,6 +1,7 @@
 """Deterministic CSS selector-based structured extraction."""
 
 from typing import Any
+
 from bs4 import BeautifulSoup
 from leadfinder.extraction.schema import ExtractionSchema, RawPage
 
@@ -31,7 +32,9 @@ class CSSExtractor:
                 for field_rule in schema.fields:
                     if field_rule.selector:
                         for elem in soup.select(field_rule.selector):
-                            parent = elem.find_parent(["article", "li", "tr", "section", "div"])
+                            parent = elem.find_parent(
+                                ["article", "li", "tr", "section", "div"]
+                            )
                             if parent and parent not in discovered_containers:
                                 discovered_containers.append(parent)
                 containers = discovered_containers if discovered_containers else [soup]
@@ -65,4 +68,3 @@ class CSSExtractor:
                 records.append(record)
 
         return records
-

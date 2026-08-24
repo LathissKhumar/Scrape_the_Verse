@@ -1,15 +1,15 @@
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.agents.base import BaseAgent
 from leadfinder.config.logging import get_logger
 from leadfinder.diagnosis.schemas import DiagnosisResult
 from leadfinder.extraction.engine import ExtractionEngine
-from leadfinder.extraction.schema import ExtractionSchema, RawPage
+from leadfinder.extraction.schema import ExtractionSchema
 from leadfinder.healing.engine import HealingEngine
 from leadfinder.healing.evaluator import RepairEvaluator
 from leadfinder.healing.evidence_collector import RepairEvidenceCollector
 from leadfinder.healing.executor import RepairExecutor
 from leadfinder.healing.memory import RepairMemory
-from leadfinder.healing.patcher import RepairPatcher
 from leadfinder.healing.planner import HealingPlanner
 from leadfinder.healing.schemas import RepairEvaluation
 from leadfinder.llm.base import LLMClient
@@ -25,11 +25,11 @@ class HealingAgent(BaseAgent):
 
     def __init__(
         self,
-        llm_client: Optional[LLMClient] = None,
-        scraper_agent: Optional[Any] = None,
-        extraction_engine: Optional[ExtractionEngine] = None,
-        validation_engine: Optional[ValidationEngine] = None,
-        memory: Optional[RepairMemory] = None,
+        llm_client: LLMClient | None = None,
+        scraper_agent: Any | None = None,
+        extraction_engine: ExtractionEngine | None = None,
+        validation_engine: ValidationEngine | None = None,
+        memory: RepairMemory | None = None,
         max_repair_attempts: int = 3,
     ):
         super().__init__(name="HEALING")
@@ -62,13 +62,25 @@ class HealingAgent(BaseAgent):
         task: ScrapingTask,
         diagnosis: DiagnosisResult,
         validation: ValidationResult,
-        current_schema: Optional[ExtractionSchema] = None,
-        raw_results: Optional[list[dict[str, Any]]] = None,
-        scraper_config: Optional[dict[str, Any]] = None,
-    ) -> tuple[bool, Optional[ExtractionSchema], RepairEvaluation, list[dict[str, Any]], list[dict[str, Any]]]:
+        current_schema: ExtractionSchema | None = None,
+        raw_results: list[dict[str, Any]] | None = None,
+        scraper_config: dict[str, Any] | None = None,
+    ) -> tuple[
+        bool,
+        ExtractionSchema | None,
+        RepairEvaluation,
+        list[dict[str, Any]],
+        list[dict[str, Any]],
+    ]:
         """Execute self-healing loop for the given task and diagnostic failure report."""
         schema = current_schema or ExtractionSchema()
-        success, healed_schema, evaluation, healed_records, history = await self.engine.heal(
+        (
+            success,
+            healed_schema,
+            evaluation,
+            healed_records,
+            history,
+        ) = await self.engine.heal(
             task=task,
             diagnosis=diagnosis,
             validation=validation,
@@ -86,4 +98,3 @@ class HealingAgent(BaseAgent):
                 f"Self-healing exhausted | attempts={len(history)} | initial_health={validation.health_score:.2f} | reason={evaluation.rejection_reason or 'exhausted'}"
             )
         return success, healed_schema, evaluation, healed_records, history
-

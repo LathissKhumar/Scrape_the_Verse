@@ -1,8 +1,8 @@
 import pytest
-from leadfinder.extraction.grid_cards import GridCardExtractor
 from leadfinder.extraction.engine import ExtractionEngine
 from leadfinder.extraction.schema import RawPage
 from leadfinder.models.schemas import ScrapingTask
+
 
 @pytest.mark.asyncio
 async def test_lazy_loading_placeholder_precedence():
@@ -39,6 +39,7 @@ async def test_lazy_loading_placeholder_precedence():
     assert records[1]["image"] == "https://cdn.example.com/real-image-2.jpg"
     assert records[2]["image"] == "https://cdn.example.com/real-image-3.jpg"
 
+
 @pytest.mark.asyncio
 async def test_css_background_image_extraction():
     html = """
@@ -68,6 +69,7 @@ async def test_css_background_image_extraction():
     assert len(records) == 2
     assert records[0]["image"] == "https://cdn.example.com/hero1.jpg"
     assert records[1]["image"] == "https://realestate.example.com/media/hero2.png"
+
 
 @pytest.mark.asyncio
 async def test_html_entity_unescaping():

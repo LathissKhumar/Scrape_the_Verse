@@ -5,7 +5,8 @@ import json
 import os
 import sqlite3
 import time
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.config.logging import get_logger
 from leadfinder.config.settings import get_settings
 
@@ -97,18 +98,28 @@ class FailedRepairMemory:
         except Exception as error:
             logger.debug(f"Failed to persist failure record to SQLite: {error}")
 
-        logger.debug(f"Recorded failed repair candidate for {domain} (fp={fingerprint}, reason='{reason[:40]}')")
+        logger.debug(
+            f"Recorded failed repair candidate for {domain} (fp={fingerprint}, reason='{reason[:40]}')"
+        )
 
     def is_suppressed(
         self,
         domain: str,
         signature: str,
         config: dict[str, Any],
-        ttl_seconds: Optional[int] = None,
+        ttl_seconds: int | None = None,
     ) -> bool:
         """Check if this candidate has repeatedly failed within the active TTL window."""
         fingerprint = self.generate_fingerprint(config)
-        ttl = ttl_seconds if ttl_seconds is not None else getattr(self.settings, "FAILED_REPAIR_TTL_SECONDS", _DEFAULT_FAILED_REPAIR_TTL_SECONDS)
+        ttl = (
+            ttl_seconds
+            if ttl_seconds is not None
+            else getattr(
+                self.settings,
+                "FAILED_REPAIR_TTL_SECONDS",
+                _DEFAULT_FAILED_REPAIR_TTL_SECONDS,
+            )
+        )
         now = time.time()
         key = f"{domain}:{signature}:{fingerprint}"
 
@@ -116,7 +127,9 @@ class FailedRepairMemory:
         if key in self._memory_cache:
             record = self._memory_cache[key]
             if (now - record["updated_at"]) < ttl and record["failure_count"] >= 2:
-                logger.debug(f"Candidate {fingerprint} suppressed via memory (failures={record['failure_count']})")
+                logger.debug(
+                    f"Candidate {fingerprint} suppressed via memory (failures={record['failure_count']})"
+                )
                 return True
 
         # 2. Check SQLite
@@ -134,7 +147,9 @@ class FailedRepairMemory:
                 if row:
                     count, updated_at = row[0], row[1]
                     if (now - updated_at) < ttl and count >= 2:
-                        logger.debug(f"Candidate {fingerprint} suppressed via SQLite (failures={count})")
+                        logger.debug(
+                            f"Candidate {fingerprint} suppressed via SQLite (failures={count})"
+                        )
                         return True
         except Exception:
             pass
@@ -148,4 +163,3 @@ class FailedRepairMemory:
         if key in self._memory_cache:
             return min(0.5, self._memory_cache[key]["failure_count"] * 0.20)
         return 0.0
-

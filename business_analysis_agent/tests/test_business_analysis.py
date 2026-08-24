@@ -1,37 +1,35 @@
-import pytest
-from unittest.mock import Mock, patch, MagicMock
-from pydantic import ValidationError
+from unittest.mock import Mock, patch
 
+import pytest
+from business_analysis.graph import build_business_analysis_graph
 from business_analysis.schemas.models import (
+    AgencyService,
     BusinessInput,
-    Evidence,
-    BusinessProfile,
-    BusinessType,
     BusinessModel,
+    BusinessProblem,
+    BusinessProfile,
+    BusinessScore,
+    BusinessType,
     CompanyScale,
-    MarketAnalysis,
-    MarketCondition,
-    DigitalAdoptionLevel,
+    Competitor,
+    CompetitorAnalysis,
     CustomerAnalysis,
     CustomerSegment,
-    JourneyStage,
-    CompetitorAnalysis,
-    Competitor,
-    ServiceAnalysis,
-    Service,
-    ServiceImportance,
-    ServiceVisibility,
-    BusinessProblem,
-    ProblemSeverity,
-    Opportunity,
-    AgencyService,
-    BusinessScore,
-    ScoreCategory,
+    DigitalAdoptionLevel,
+    Evidence,
     FinalBusinessAnalysis,
+    MarketAnalysis,
+    MarketCondition,
+    Opportunity,
+    ProblemSeverity,
+    ScoreCategory,
+    Service,
+    ServiceAnalysis,
+    ServiceVisibility,
     SourceType,
 )
-from business_analysis.state import BusinessAnalysisState, create_initial_state
-from business_analysis.graph import build_business_analysis_graph
+from business_analysis.state import create_initial_state
+from pydantic import ValidationError
 
 
 class TestInputValidation:
@@ -270,8 +268,8 @@ class TestBusinessScoringCalculations:
         from business_analysis.agents.business_scoring import (
             calculate_business_fit,
             calculate_digital_need,
-            calculate_opportunity_value,
             calculate_evidence_confidence,
+            calculate_opportunity_value,
             calculate_serviceability,
         )
 
@@ -319,7 +317,12 @@ class TestBusinessScoringCalculations:
             )
         ]
         evidence = [
-            Evidence(claim="Test", source="test", source_type=SourceType.MANUAL_INPUT, confidence=0.9),
+            Evidence(
+                claim="Test",
+                source="test",
+                source_type=SourceType.MANUAL_INPUT,
+                confidence=0.9,
+            ),
         ]
 
         bf = calculate_business_fit(profile, market, competitor)
@@ -536,41 +539,86 @@ class TestQualityGateHardening:
     """Quality gate must properly detect SKIPPED/FAILED nodes and not over-report PASSED."""
 
     def _make_state_with_skipped_nodes(self):
-        from business_analysis.state import create_initial_state
         from business_analysis.schemas.models import (
-            NodeExecutionStatus, NodeStatusEnum, BusinessProfile, BusinessType,
-            BusinessModel, CompanyScale, ServiceAnalysis, ServiceVisibility,
-            BusinessProblem, ProblemType, ProblemStatus, ProblemSeverity,
-            Opportunity, AgencyService, BusinessScore, ScoreCategory, AnalysisCompleteness,
+            AgencyService,
+            AnalysisCompleteness,
+            BusinessModel,
+            BusinessProblem,
+            BusinessProfile,
+            BusinessScore,
+            BusinessType,
+            CompanyScale,
+            NodeExecutionStatus,
+            NodeStatusEnum,
+            Opportunity,
+            ProblemSeverity,
+            ProblemStatus,
+            ProblemType,
+            ScoreCategory,
+            ServiceAnalysis,
+            ServiceVisibility,
         )
-        input_data = BusinessInput(company_name="Test Co", industry="Dental", location="Amsterdam")
+        from business_analysis.state import create_initial_state
+
+        input_data = BusinessInput(
+            company_name="Test Co", industry="Dental", location="Amsterdam"
+        )
         state = create_initial_state(input_data)
 
         statuses = dict(state["node_statuses"])
-        statuses["business_profile"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
-        statuses["market_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0)
-        statuses["customer_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0)
-        statuses["competitor_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0)
-        statuses["service_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
-        statuses["business_problem"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.85)
-        statuses["opportunity"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.85)
+        statuses["business_profile"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.9
+        )
+        statuses["market_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        )
+        statuses["customer_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        )
+        statuses["competitor_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        )
+        statuses["service_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.9
+        )
+        statuses["business_problem"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.85
+        )
+        statuses["opportunity"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.85
+        )
 
-        problems = [BusinessProblem(
-            problem="Visibility gap", evidence_ids=["ev1"],
-            business_impact=8, confidence=0.85, reasoning="Gap",
-            type=ProblemType.SERVICE_VISIBILITY, status=ProblemStatus.POTENTIAL,
-            severity=ProblemSeverity.HIGH,
-        )]
-        opps = [Opportunity(
-            problem_reference="Visibility gap",
-            opportunity="Build landing pages",
-            recommended_services=[AgencyService.LOCAL_SEO],
-            priority=8, rationale="Key gap",
-        )]
+        problems = [
+            BusinessProblem(
+                problem="Visibility gap",
+                evidence_ids=["ev1"],
+                business_impact=8,
+                confidence=0.85,
+                reasoning="Gap",
+                type=ProblemType.SERVICE_VISIBILITY,
+                status=ProblemStatus.POTENTIAL,
+                severity=ProblemSeverity.HIGH,
+            )
+        ]
+        opps = [
+            Opportunity(
+                problem_reference="Visibility gap",
+                opportunity="Build landing pages",
+                recommended_services=[AgencyService.LOCAL_SEO],
+                priority=8,
+                rationale="Key gap",
+            )
+        ]
         score = BusinessScore(
-            business_fit=80, digital_need=65, opportunity_value=80,
-            evidence_confidence=90, serviceability=90, analysis_completeness=57,
-            overall_score=77, priority=ScoreCategory.HIGH, score_explanation="Test",
+            business_fit=80,
+            digital_need=65,
+            opportunity_value=80,
+            evidence_confidence=90,
+            serviceability=90,
+            analysis_completeness=57,
+            overall_score=77,
+            priority=ScoreCategory.HIGH,
+            score_explanation="Test",
         )
         profile = BusinessProfile(
             business_type=BusinessType.LOCAL_SERVICE,
@@ -596,7 +644,9 @@ class TestQualityGateHardening:
             "market_analysis": None,
             "customer_analysis": None,
             "competitor_analysis": None,
-            "service_analysis": ServiceAnalysis(services=[], overall_visibility=ServiceVisibility.LOW),
+            "service_analysis": ServiceAnalysis(
+                services=[], overall_visibility=ServiceVisibility.LOW
+            ),
             "business_problems": problems,
             "opportunities": opps,
             "business_score": score,
@@ -607,6 +657,7 @@ class TestQualityGateHardening:
     def test_skipped_important_nodes_prevent_passed(self):
         """Market/customer/competitor SKIPPED → quality status must NOT be PASSED."""
         from business_analysis.agents.quality_gate import quality_gate_agent
+
         state = self._make_state_with_skipped_nodes()
         result = quality_gate_agent(state)
         qg = result["quality_gate"]
@@ -619,6 +670,7 @@ class TestQualityGateHardening:
     def test_skipped_nodes_produce_warnings(self):
         """SKIPPED market/customer/competitor must appear in QG warnings."""
         from business_analysis.agents.quality_gate import quality_gate_agent
+
         state = self._make_state_with_skipped_nodes()
         result = quality_gate_agent(state)
         qg = result["quality_gate"]
@@ -629,25 +681,51 @@ class TestQualityGateHardening:
 
     def test_failed_problem_node_caps_priority(self):
         """If BusinessProblemAgent FAILED, final priority must NOT be VERY_HIGH."""
+        from business_analysis.agents.business_scoring import business_scoring_agent
         from business_analysis.schemas.models import (
-            NodeExecutionStatus, NodeStatusEnum, BusinessScore, ScoreCategory,
-            BusinessProfile, BusinessType, BusinessModel, CompanyScale,
-            MarketAnalysis, MarketCondition, DigitalAdoptionLevel,
-            CustomerAnalysis, CompetitorAnalysis, ServiceAnalysis, ServiceVisibility,
+            BusinessModel,
+            BusinessProfile,
+            BusinessType,
+            CompanyScale,
+            CompetitorAnalysis,
+            CustomerAnalysis,
+            DigitalAdoptionLevel,
+            MarketAnalysis,
+            MarketCondition,
+            NodeExecutionStatus,
+            NodeStatusEnum,
+            ScoreCategory,
+            ServiceAnalysis,
+            ServiceVisibility,
         )
         from business_analysis.state import create_initial_state
-        from business_analysis.agents.business_scoring import business_scoring_agent
 
-        input_data = BusinessInput(company_name="Test Co", industry="Dental", location="Amsterdam")
+        input_data = BusinessInput(
+            company_name="Test Co", industry="Dental", location="Amsterdam"
+        )
         state = create_initial_state(input_data)
         statuses = dict(state["node_statuses"])
-        statuses["business_problem"] = NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0)
-        statuses["opportunity"] = NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0)
-        statuses["business_profile"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
-        statuses["market_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.8)
-        statuses["customer_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.8)
-        statuses["competitor_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.8)
-        statuses["service_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.8)
+        statuses["business_problem"] = NodeExecutionStatus(
+            status=NodeStatusEnum.FAILED, confidence=0.0
+        )
+        statuses["opportunity"] = NodeExecutionStatus(
+            status=NodeStatusEnum.FAILED, confidence=0.0
+        )
+        statuses["business_profile"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.9
+        )
+        statuses["market_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.8
+        )
+        statuses["customer_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.8
+        )
+        statuses["competitor_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.8
+        )
+        statuses["service_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.8
+        )
 
         state_with_failure = {
             **state,
@@ -658,12 +736,17 @@ class TestQualityGateHardening:
                 geographic_market="Amsterdam",
                 company_scale=CompanyScale.SMALL,
             ),
-            "market_analysis": MarketAnalysis(market_condition=MarketCondition.GROWING, digital_adoption=DigitalAdoptionLevel.MODERATE),
+            "market_analysis": MarketAnalysis(
+                market_condition=MarketCondition.GROWING,
+                digital_adoption=DigitalAdoptionLevel.MODERATE,
+            ),
             "customer_analysis": CustomerAnalysis(),
             "competitor_analysis": CompetitorAnalysis(),
-            "service_analysis": ServiceAnalysis(overall_visibility=ServiceVisibility.MODERATE),
+            "service_analysis": ServiceAnalysis(
+                overall_visibility=ServiceVisibility.MODERATE
+            ),
             "business_problems": [],  # FAILED — no problems
-            "opportunities": [],       # FAILED — no opportunities
+            "opportunities": [],  # FAILED — no opportunities
             "node_statuses": statuses,
         }
 
@@ -680,16 +763,19 @@ class TestQualityGateHardening:
         """With failed critical checks, quality_status must be NEEDS_REVIEW."""
         from business_analysis.agents.quality_gate import quality_gate_agent
         from business_analysis.state import create_initial_state
-        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
 
-        input_data = BusinessInput(company_name="Test Co", industry="Dental", location="Amsterdam")
+        input_data = BusinessInput(
+            company_name="Test Co", industry="Dental", location="Amsterdam"
+        )
         state = create_initial_state(input_data)
         # Deliberately minimal state — no agents ran successfully
         result = quality_gate_agent(state)
         qg = result["quality_gate"]
-        assert qg.quality_status in ["NEEDS_REVIEW", "FAILED", "PASSED_WITH_WARNINGS"], (
-            f"Expected NEEDS_REVIEW/FAILED when no agents ran, got: {qg.quality_status}"
-        )
+        assert qg.quality_status in [
+            "NEEDS_REVIEW",
+            "FAILED",
+            "PASSED_WITH_WARNINGS",
+        ], f"Expected NEEDS_REVIEW/FAILED when no agents ran, got: {qg.quality_status}"
         assert len(qg.failed_checks) > 0 or len(qg.warnings) > 0
 
 
@@ -709,7 +795,7 @@ class TestServiceValidation:
     def test_malformed_service_name_backslash_rejected(self):
         """Service names containing backslash patterns are rejected."""
         with pytest.raises(Exception):
-            Service(name='\\\"test\\\"', description="test")
+            Service(name='\\"test\\"', description="test")
 
     def test_valid_service_names_accepted(self):
         """Valid service names must pass through without error."""
@@ -717,7 +803,9 @@ class TestServiceValidation:
         assert svc.name == "Dental Anxiety Treatment"
 
     def test_valid_complex_case_management(self):
-        svc = Service(name="Complex Case Management", description="Multidisciplinary planning")
+        svc = Service(
+            name="Complex Case Management", description="Multidisciplinary planning"
+        )
         assert svc.name == "Complex Case Management"
 
     def test_service_name_stripped_whitespace(self):
@@ -731,62 +819,103 @@ class TestCompletenessAccuracy:
 
     def test_skipped_market_node_gives_zero_completeness(self):
         """Market node SKIPPED → market_completeness = 0."""
-        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
         from business_analysis.agents.business_scoring import _node_completeness
+        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
 
-        statuses = {"market_analysis": NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0)}
+        statuses = {
+            "market_analysis": NodeExecutionStatus(
+                status=NodeStatusEnum.SKIPPED, confidence=0.0
+            )
+        }
         comp = _node_completeness(statuses, "market_analysis", None)
         assert comp == 0.0, f"Expected 0.0 for SKIPPED node, got {comp}"
 
     def test_failed_node_gives_zero_completeness(self):
         """Node FAILED → completeness = 0."""
-        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
         from business_analysis.agents.business_scoring import _node_completeness
+        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
 
-        statuses = {"customer_analysis": NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0)}
+        statuses = {
+            "customer_analysis": NodeExecutionStatus(
+                status=NodeStatusEnum.FAILED, confidence=0.0
+            )
+        }
         comp = _node_completeness(statuses, "customer_analysis", object())
         assert comp == 0.0, f"Expected 0.0 for FAILED node, got {comp}"
 
     def test_success_node_gives_nonzero_completeness(self):
         """Node SUCCESS with output → completeness > 60."""
-        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
         from business_analysis.agents.business_scoring import _node_completeness
+        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
 
-        statuses = {"business_profile": NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.95)}
+        statuses = {
+            "business_profile": NodeExecutionStatus(
+                status=NodeStatusEnum.SUCCESS, confidence=0.95
+            )
+        }
         comp = _node_completeness(statuses, "business_profile", object())
         assert comp > 60.0, f"Expected >60 for SUCCESS node, got {comp}"
 
     def test_partial_node_gives_50_completeness(self):
         """Node PARTIAL → completeness = 50."""
-        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
         from business_analysis.agents.business_scoring import _node_completeness
+        from business_analysis.schemas.models import NodeExecutionStatus, NodeStatusEnum
 
-        statuses = {"service_analysis": NodeExecutionStatus(status=NodeStatusEnum.PARTIAL, confidence=0.5)}
+        statuses = {
+            "service_analysis": NodeExecutionStatus(
+                status=NodeStatusEnum.PARTIAL, confidence=0.5
+            )
+        }
         comp = _node_completeness(statuses, "service_analysis", object())
         assert comp == 50.0, f"Expected 50.0 for PARTIAL node, got {comp}"
 
     def test_overall_completeness_penalized_by_skipped(self):
         """Overall completeness must be reduced when multiple nodes are SKIPPED."""
+        from business_analysis.agents.business_scoring import business_scoring_agent
         from business_analysis.schemas.models import (
-            NodeExecutionStatus, NodeStatusEnum, BusinessProfile, BusinessType,
-            BusinessModel, CompanyScale, MarketAnalysis, MarketCondition,
-            DigitalAdoptionLevel, CustomerAnalysis, CompetitorAnalysis,
-            ServiceAnalysis, ServiceVisibility,
+            BusinessModel,
+            BusinessProfile,
+            BusinessType,
+            CompanyScale,
+            CompetitorAnalysis,
+            CustomerAnalysis,
+            DigitalAdoptionLevel,
+            MarketAnalysis,
+            MarketCondition,
+            NodeExecutionStatus,
+            NodeStatusEnum,
+            ServiceAnalysis,
+            ServiceVisibility,
         )
         from business_analysis.state import create_initial_state
-        from business_analysis.agents.business_scoring import business_scoring_agent
 
-        input_data = BusinessInput(company_name="Test Co", industry="Dental", location="Amsterdam")
+        input_data = BusinessInput(
+            company_name="Test Co", industry="Dental", location="Amsterdam"
+        )
         state = create_initial_state(input_data)
         statuses = dict(state["node_statuses"])
         # 4 out of 7 are SKIPPED
-        statuses["business_profile"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
-        statuses["market_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0)
-        statuses["customer_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0)
-        statuses["competitor_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SKIPPED, confidence=0.0)
-        statuses["service_analysis"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
-        statuses["business_problem"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
-        statuses["opportunity"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.9)
+        statuses["business_profile"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.9
+        )
+        statuses["market_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        )
+        statuses["customer_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        )
+        statuses["competitor_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SKIPPED, confidence=0.0
+        )
+        statuses["service_analysis"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.9
+        )
+        statuses["business_problem"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.9
+        )
+        statuses["opportunity"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.9
+        )
 
         test_state = {
             **state,
@@ -797,14 +926,24 @@ class TestCompletenessAccuracy:
                 geographic_market="Amsterdam",
                 company_scale=CompanyScale.SMALL,
             ),
-            "market_analysis": MarketAnalysis(market_condition=MarketCondition.UNKNOWN, digital_adoption=DigitalAdoptionLevel.UNKNOWN),
+            "market_analysis": MarketAnalysis(
+                market_condition=MarketCondition.UNKNOWN,
+                digital_adoption=DigitalAdoptionLevel.UNKNOWN,
+            ),
             "customer_analysis": CustomerAnalysis(),
             "competitor_analysis": CompetitorAnalysis(),
-            "service_analysis": ServiceAnalysis(overall_visibility=ServiceVisibility.MODERATE),
-            "business_problems": [BusinessProblem(
-                problem="Gap", evidence_ids=["e1"], business_impact=8,
-                confidence=0.8, reasoning="Gap exists",
-            )],
+            "service_analysis": ServiceAnalysis(
+                overall_visibility=ServiceVisibility.MODERATE
+            ),
+            "business_problems": [
+                BusinessProblem(
+                    problem="Gap",
+                    evidence_ids=["e1"],
+                    business_impact=8,
+                    confidence=0.8,
+                    reasoning="Gap exists",
+                )
+            ],
             "opportunities": [],
             "node_statuses": statuses,
         }
@@ -814,24 +953,42 @@ class TestCompletenessAccuracy:
         assert completeness_obj.overall_analysis_completeness < 80.0, (
             f"Expected overall_completeness < 80 with 4 SKIPPED nodes, got {completeness_obj.overall_analysis_completeness}"
         )
-        assert completeness_obj.market_completeness == 0.0, "Market SKIPPED must have 0 completeness"
-        assert completeness_obj.customer_completeness == 0.0, "Customer SKIPPED must have 0 completeness"
+        assert completeness_obj.market_completeness == 0.0, (
+            "Market SKIPPED must have 0 completeness"
+        )
+        assert completeness_obj.customer_completeness == 0.0, (
+            "Customer SKIPPED must have 0 completeness"
+        )
 
 
 class TestSDRBrief:
     """SDR Opportunity Brief must be generated with required fields."""
 
     def _make_full_report(self):
+
         from business_analysis.schemas.models import (
-            BusinessProfile, BusinessType, BusinessModel, CompanyScale,
-            MarketAnalysis, MarketCondition, DigitalAdoptionLevel,
-            CustomerAnalysis, CustomerSegment,
-            CompetitorAnalysis, ServiceAnalysis, ServiceVisibility,
-            BusinessProblem, ProblemType, ProblemStatus, ProblemSeverity,
-            Opportunity, AgencyService, BusinessScore, ScoreCategory,
-            QualityGateResult, AnalysisCompleteness,
+            AgencyService,
+            AnalysisCompleteness,
+            BusinessModel,
+            BusinessProblem,
+            BusinessProfile,
+            BusinessScore,
+            BusinessType,
+            CompanyScale,
+            CompetitorAnalysis,
+            CustomerAnalysis,
+            DigitalAdoptionLevel,
+            MarketAnalysis,
+            MarketCondition,
+            Opportunity,
+            ProblemSeverity,
+            ProblemStatus,
+            ProblemType,
+            QualityGateResult,
+            ScoreCategory,
+            ServiceAnalysis,
+            ServiceVisibility,
         )
-        from datetime import datetime
 
         profile = BusinessProfile(
             business_type=BusinessType.LOCAL_SERVICE,
@@ -846,49 +1003,81 @@ class TestSDRBrief:
             industry="Dental Services",
             location="Amsterdam",
             business_profile=profile,
-            market_analysis=MarketAnalysis(market_condition=MarketCondition.GROWING, digital_adoption=DigitalAdoptionLevel.MODERATE),
+            market_analysis=MarketAnalysis(
+                market_condition=MarketCondition.GROWING,
+                digital_adoption=DigitalAdoptionLevel.MODERATE,
+            ),
             customer_analysis=CustomerAnalysis(
-                segments=[CustomerSegment(segment_name="Dental Anxiety Patients", is_primary=True)],
+                segments=[
+                    CustomerSegment(
+                        segment_name="Dental Anxiety Patients", is_primary=True
+                    )
+                ],
                 primary_customers=["Dental Anxiety Patients"],
             ),
             competitor_analysis=CompetitorAnalysis(),
-            service_analysis=ServiceAnalysis(overall_visibility=ServiceVisibility.MODERATE),
-            business_problems=[BusinessProblem(
-                problem="Service visibility gap",
-                title="Specialized Service Visibility Gap",
-                evidence_ids=["ev1"],
-                business_impact=9, urgency=8, confidence=0.9,
-                type=ProblemType.SERVICE_VISIBILITY, status=ProblemStatus.POTENTIAL,
-                severity=ProblemSeverity.HIGH,
-            )],
-            opportunities=[Opportunity(
-                problem_reference="Service visibility gap",
-                opportunity="Build service landing pages",
-                recommended_services=[AgencyService.LOCAL_SEO, AgencyService.CONTENT],
-                priority=9, rationale="High value",
-                expected_business_outcome="Improved discovery",
-            )],
+            service_analysis=ServiceAnalysis(
+                overall_visibility=ServiceVisibility.MODERATE
+            ),
+            business_problems=[
+                BusinessProblem(
+                    problem="Service visibility gap",
+                    title="Specialized Service Visibility Gap",
+                    evidence_ids=["ev1"],
+                    business_impact=9,
+                    urgency=8,
+                    confidence=0.9,
+                    type=ProblemType.SERVICE_VISIBILITY,
+                    status=ProblemStatus.POTENTIAL,
+                    severity=ProblemSeverity.HIGH,
+                )
+            ],
+            opportunities=[
+                Opportunity(
+                    problem_reference="Service visibility gap",
+                    opportunity="Build service landing pages",
+                    recommended_services=[
+                        AgencyService.LOCAL_SEO,
+                        AgencyService.CONTENT,
+                    ],
+                    priority=9,
+                    rationale="High value",
+                    expected_business_outcome="Improved discovery",
+                )
+            ],
             business_score=BusinessScore(
-                business_fit=85, digital_need=65, opportunity_value=85,
-                evidence_confidence=90, serviceability=90, analysis_completeness=57,
-                overall_score=77, priority=ScoreCategory.HIGH, score_explanation="Test",
+                business_fit=85,
+                digital_need=65,
+                opportunity_value=85,
+                evidence_confidence=90,
+                serviceability=90,
+                analysis_completeness=57,
+                overall_score=77,
+                priority=ScoreCategory.HIGH,
+                score_explanation="Test",
             ),
             completeness=AnalysisCompleteness(
-                profile_completeness=96.0, market_completeness=0.0,
-                customer_completeness=0.0, competitor_completeness=0.0,
-                service_completeness=96.0, problem_completeness=94.0,
-                opportunity_completeness=94.0, overall_analysis_completeness=57.0,
+                profile_completeness=96.0,
+                market_completeness=0.0,
+                customer_completeness=0.0,
+                competitor_completeness=0.0,
+                service_completeness=96.0,
+                problem_completeness=94.0,
+                opportunity_completeness=94.0,
+                overall_analysis_completeness=57.0,
             ),
             quality_gate=QualityGateResult(
                 quality_status="PASSED_WITH_WARNINGS",
                 warnings=["Market analysis unavailable"],
             ),
-            errors=[], warnings=["[QG] Market analysis unavailable"],
+            errors=[],
+            warnings=["[QG] Market analysis unavailable"],
         )
 
     def test_sdr_brief_generated(self):
         """SDR brief markdown must be non-empty and contain key sections."""
         from main import generate_sdr_brief_markdown
+
         report = self._make_full_report()
         brief = generate_sdr_brief_markdown(report)
         assert brief, "SDR brief must not be empty"
@@ -901,6 +1090,7 @@ class TestSDRBrief:
     def test_sdr_brief_contains_recommended_services(self):
         """SDR brief must list the recommended services."""
         from main import generate_sdr_brief_markdown
+
         report = self._make_full_report()
         brief = generate_sdr_brief_markdown(report)
         assert "LOCAL_SEO" in brief or "local_seo" in brief.lower()
@@ -908,6 +1098,7 @@ class TestSDRBrief:
     def test_sdr_brief_includes_caveats_when_warnings_exist(self):
         """SDR brief must include Caveats section when quality gate has warnings."""
         from main import generate_sdr_brief_markdown
+
         report = self._make_full_report()
         brief = generate_sdr_brief_markdown(report)
         assert "Caveats" in brief or "Market analysis unavailable" in brief
@@ -915,6 +1106,7 @@ class TestSDRBrief:
     def test_sdr_brief_includes_verification_required(self):
         """SDR brief must include a verification section."""
         from main import generate_sdr_brief_markdown
+
         report = self._make_full_report()
         brief = generate_sdr_brief_markdown(report)
         assert "Verification" in brief
@@ -927,15 +1119,28 @@ class TestWarningVsErrorSeparation:
         """[ServiceAnalysis] prefixed messages must appear in warnings, not hard errors."""
         from business_analysis.graph import generate_final_report
         from business_analysis.schemas.models import (
-            BusinessProfile, BusinessType, BusinessModel, CompanyScale,
-            MarketAnalysis, MarketCondition, DigitalAdoptionLevel,
-            CustomerAnalysis, CompetitorAnalysis, ServiceAnalysis, ServiceVisibility,
-            BusinessProblem, Opportunity, AgencyService, BusinessScore, ScoreCategory,
-            NodeExecutionStatus, NodeStatusEnum,
+            AgencyService,
+            BusinessModel,
+            BusinessProblem,
+            BusinessProfile,
+            BusinessScore,
+            BusinessType,
+            CompanyScale,
+            CompetitorAnalysis,
+            CustomerAnalysis,
+            DigitalAdoptionLevel,
+            MarketAnalysis,
+            MarketCondition,
+            Opportunity,
+            ScoreCategory,
+            ServiceAnalysis,
+            ServiceVisibility,
         )
         from business_analysis.state import create_initial_state
 
-        input_data = BusinessInput(company_name="Test Co", industry="Dental", location="Amsterdam")
+        input_data = BusinessInput(
+            company_name="Test Co", industry="Dental", location="Amsterdam"
+        )
         state = create_initial_state(input_data)
         state = {
             **state,
@@ -946,16 +1151,43 @@ class TestWarningVsErrorSeparation:
                 geographic_market="Amsterdam",
                 company_scale=CompanyScale.SMALL,
             ),
-            "market_analysis": MarketAnalysis(market_condition=MarketCondition.UNKNOWN, digital_adoption=DigitalAdoptionLevel.UNKNOWN),
+            "market_analysis": MarketAnalysis(
+                market_condition=MarketCondition.UNKNOWN,
+                digital_adoption=DigitalAdoptionLevel.UNKNOWN,
+            ),
             "customer_analysis": CustomerAnalysis(),
             "competitor_analysis": CompetitorAnalysis(),
-            "service_analysis": ServiceAnalysis(overall_visibility=ServiceVisibility.MODERATE),
-            "business_problems": [BusinessProblem(problem="Gap", evidence_ids=["e1"], business_impact=7, confidence=0.8, reasoning="test")],
-            "opportunities": [Opportunity(problem_reference="Gap", opportunity="Fix gap", recommended_services=[AgencyService.LOCAL_SEO], priority=8, rationale="High value")],
+            "service_analysis": ServiceAnalysis(
+                overall_visibility=ServiceVisibility.MODERATE
+            ),
+            "business_problems": [
+                BusinessProblem(
+                    problem="Gap",
+                    evidence_ids=["e1"],
+                    business_impact=7,
+                    confidence=0.8,
+                    reasoning="test",
+                )
+            ],
+            "opportunities": [
+                Opportunity(
+                    problem_reference="Gap",
+                    opportunity="Fix gap",
+                    recommended_services=[AgencyService.LOCAL_SEO],
+                    priority=8,
+                    rationale="High value",
+                )
+            ],
             "business_score": BusinessScore(
-                business_fit=80, digital_need=65, opportunity_value=80,
-                evidence_confidence=90, serviceability=90, analysis_completeness=57,
-                overall_score=75, priority=ScoreCategory.HIGH, score_explanation="test",
+                business_fit=80,
+                digital_need=65,
+                opportunity_value=80,
+                evidence_confidence=90,
+                serviceability=90,
+                analysis_completeness=57,
+                overall_score=75,
+                priority=ScoreCategory.HIGH,
+                score_explanation="test",
             ),
             "errors": [
                 "[ServiceAnalysis] Rejected malformed service: 'target_customers=Dental' — name malformed",
@@ -966,14 +1198,17 @@ class TestWarningVsErrorSeparation:
         report = result["final_report"]
         assert report is not None
         # Hard errors must NOT contain ServiceAnalysis prefixed messages
-        assert all(not e.startswith("[ServiceAnalysis]") for e in report.errors), \
+        assert all(not e.startswith("[ServiceAnalysis]") for e in report.errors), (
             f"ServiceAnalysis warnings appeared in report.errors: {report.errors}"
+        )
         # Warnings must contain the ServiceAnalysis message
-        assert any("[ServiceAnalysis]" in w for w in report.warnings), \
+        assert any("[ServiceAnalysis]" in w for w in report.warnings), (
             f"ServiceAnalysis message missing from report.warnings: {report.warnings}"
+        )
         # Hard error must still be in report.errors
-        assert any("BusinessProfileAgent" in e for e in report.errors), \
+        assert any("BusinessProfileAgent" in e for e in report.errors), (
             f"Hard error not in report.errors: {report.errors}"
+        )
 
 
 if __name__ == "__main__":

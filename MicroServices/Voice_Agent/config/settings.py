@@ -2,8 +2,6 @@
 Voice Agent Configuration & Settings.
 """
 
-from functools import lru_cache
-from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -16,7 +14,7 @@ class VoiceSettings(BaseSettings):
 
     APP_ENV: str = "development"
     LOG_LEVEL: str = "INFO"
-    API_SECRET_KEY: Optional[str] = None
+    API_SECRET_KEY: str | None = None
 
     VOICE_AGENT_PORT: int = 8084
     LEAD_MANAGER_API_PORT: int = 8082
@@ -26,12 +24,12 @@ class VoiceSettings(BaseSettings):
     VOICE_PUBLIC_BASE_URL: str = "http://localhost:8084"
 
     # Twilio Telephony Credentials
-    TWILIO_ACCOUNT_SID: Optional[str] = None  # ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    TWILIO_AUTH_TOKEN: Optional[str] = None
-    TWILIO_API_KEY_SID: Optional[str] = None  # SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    TWILIO_API_KEY_SECRET: Optional[str] = None
-    TWILIO_PHONE_NUMBER: Optional[str] = None
-    PERSONAL_MOBILE_NUMBER: Optional[str] = None
+    TWILIO_ACCOUNT_SID: str | None = None  # ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    TWILIO_AUTH_TOKEN: str | None = None
+    TWILIO_API_KEY_SID: str | None = None  # SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    TWILIO_API_KEY_SECRET: str | None = None
+    TWILIO_PHONE_NUMBER: str | None = None
+    PERSONAL_MOBILE_NUMBER: str | None = None
 
     # Audio & Voice Engines
     VOICE_TTS_VOICE: str = "en-US-JennyNeural"
@@ -43,7 +41,7 @@ class VoiceSettings(BaseSettings):
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "qwen3:8b"
     OLLAMA_TIMEOUT_SECONDS: float = 60.0
-    GEMINI_API_KEY: Optional[str] = None
+    GEMINI_API_KEY: str | None = None
     GEMINI_MODEL: str = "gemini-2.0-flash"
 
 

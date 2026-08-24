@@ -12,10 +12,7 @@ def test_validation_engine_healthy_evaluation():
         fields=["title", "price"],
         output_schema={"title": "string", "price": "string"},
     )
-    records = [
-        {"title": f"Book {i}", "price": f"${i * 5}"}
-        for i in range(1, 51)
-    ]
+    records = [{"title": f"Book {i}", "price": f"${i * 5}"} for i in range(1, 51)]
 
     result = engine.validate(records=records, task=task)
     assert result.status == "healthy"
@@ -34,7 +31,11 @@ def test_validation_engine_degraded_evaluation():
     )
     # email and ceo have low coverage
     records = [
-        {"name": f"Company {i}", "ceo": "N/A" if i > 5 else "CEO", "email": None if i > 10 else "a@b.com"}
+        {
+            "name": f"Company {i}",
+            "ceo": "N/A" if i > 5 else "CEO",
+            "email": None if i > 10 else "a@b.com",
+        }
         for i in range(50)
     ]
 

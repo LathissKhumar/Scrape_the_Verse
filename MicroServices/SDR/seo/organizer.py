@@ -12,19 +12,19 @@ Guarantees:
 - Automated validation and integrity reporting in summary/validation.json
 """
 
+import hashlib
+import json
 import os
 import re
 import sys
-import json
-import hashlib
 import urllib.parse
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional, Tuple, Set
-
+from typing import Any
 
 # -----------------------------------------------------------------------------
 # 1. URL & ID Normalization Utilities
 # -----------------------------------------------------------------------------
+
 
 def extract_domain(url_or_domain: str) -> str:
     """
@@ -32,45 +32,46 @@ def extract_domain(url_or_domain: str) -> str:
     """
     if not url_or_domain:
         return "unknown_domain"
-    
+
     if "://" not in url_or_domain:
         url_or_domain = "https://" + url_or_domain
 
     parsed = urllib.parse.urlparse(url_or_domain)
     hostname = parsed.hostname or url_or_domain
     hostname = hostname.lower()
-    
+
     # Strip common leading prefixes
-    if hostname.startswith("www."):
-        hostname = hostname[4:]
-        
+    hostname = hostname.removeprefix("www.")
+
     # Remove any invalid filesystem characters
-    clean_domain = re.sub(r'[^\w\.-]', '_', hostname)
+    clean_domain = re.sub(r"[^\w\.-]", "_", hostname)
     return clean_domain or "unknown_domain"
 
 
-def normalize_url(url: Optional[str]) -> str:
+def normalize_url(url: str | None) -> str:
     """
     Normalize URL: remove fragments, lowercase scheme/host, preserve path & query parameters.
     """
     if not url or not isinstance(url, str):
         return ""
-    
+
     url = url.strip()
     if not url:
         return ""
-        
+
     parsed = urllib.parse.urlparse(url)
     scheme = (parsed.scheme or "https").lower()
     netloc = parsed.netloc.lower()
     path = parsed.path or "/"
-    
+
     # Normalize duplicate slashes in path (preserve leading slash)
-    path = re.sub(r'/{2,}', '/', path)
-    
+    path = re.sub(r"/{2,}", "/", path)
+
     query = parsed.query
     # Rebuild without fragment
-    normalized = urllib.parse.urlunparse((scheme, netloc, path, parsed.params, query, ""))
+    normalized = urllib.parse.urlunparse(
+        (scheme, netloc, path, parsed.params, query, "")
+    )
     return normalized
 
 
@@ -80,7 +81,7 @@ def generate_stable_id(prefix: str, *components: Any) -> str:
     Example: generate_stable_id("page", "https://example.com/about") -> "page_a1b2c3d4e5f6"
     """
     raw_str = "|".join(str(c).strip() for c in components if c is not None)
-    digest = hashlib.sha256(raw_str.encode('utf-8')).hexdigest()[:12]
+    digest = hashlib.sha256(raw_str.encode("utf-8")).hexdigest()[:12]
     return f"{prefix}_{digest}" if prefix else digest
 
 
@@ -88,8 +89,8 @@ def sanitize_filename(name: str) -> str:
     """Convert a path or slug into a valid safe filename."""
     if not name or name == "/":
         return "homepage"
-    clean = re.sub(r'[^\w\-]', '_', name.strip('/'))
-    clean = re.sub(r'_+', '_', clean)
+    clean = re.sub(r"[^\w\-]", "_", name.strip("/"))
+    clean = re.sub(r"_+", "_", clean)
     return clean[:80] or "page"
 
 
@@ -97,28 +98,30 @@ def sanitize_filename(name: str) -> str:
 # 2. Missing Value Policy & Sanitization
 # -----------------------------------------------------------------------------
 
-def handle_missing_value(val: Any, default_type: str = "scalar", reason: Optional[str] = None) -> Any:
+
+def handle_missing_value(
+    val: Any, default_type: str = "scalar", reason: str | None = None
+) -> Any:
     """
     Implements the strict missing value policy.
     Never invents missing values; preserves truthfulness.
     """
     if val is not None and val != "":
         return val
-    
+
     if default_type == "list":
         return []
     elif default_type == "dict":
         return {}
-    
+
     return None
 
 
-def create_status_field(value: Any, status: str = "available", reason: Optional[str] = None) -> Dict[str, Any]:
+def create_status_field(
+    value: Any, status: str = "available", reason: str | None = None
+) -> dict[str, Any]:
     """Helper for metadata-accompanied metric values (e.g. PageSpeed 429)."""
-    res = {
-        "value": value,
-        "status": status
-    }
+    res = {"value": value, "status": status}
     if reason:
         res["reason"] = reason
     return res
@@ -128,7 +131,8 @@ def create_status_field(value: Any, status: str = "available", reason: Optional[
 # 3. Model Normalizers
 # -----------------------------------------------------------------------------
 
-def normalize_page(raw_page: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
+
+def normalize_page(raw_page: dict[str, Any]) -> tuple[dict[str, Any], str]:
     """
     Extracts and standardizes page-level information according to section 3.
     Returns: (normalized_page_dict, page_id)
@@ -144,7 +148,9 @@ def normalize_page(raw_page: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
         "h1": raw_page.get("h1") or None,
         "h2": raw_page.get("h2") if isinstance(raw_page.get("h2"), list) else [],
         "h3": raw_page.get("h3") if isinstance(raw_page.get("h3"), list) else [],
-        "word_count": int(raw_page.get("word_count", 0)) if raw_page.get("word_count") is not None else 0
+        "word_count": int(raw_page.get("word_count", 0))
+        if raw_page.get("word_count") is not None
+        else 0,
     }
 
     # Technical sub-object
@@ -153,13 +159,17 @@ def normalize_page(raw_page: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
         "robots": raw_page.get("robots") or None,
         "language": raw_page.get("lang") or None,
         "charset": raw_page.get("charset") or None,
-        "viewport": raw_page.get("viewport") or None
+        "viewport": raw_page.get("viewport") or None,
     }
 
     # Social sub-object
     social_data = {
-        "og_tags": raw_page.get("og_tags") if isinstance(raw_page.get("og_tags"), dict) else {},
-        "twitter_tags": raw_page.get("twitter_tags") if isinstance(raw_page.get("twitter_tags"), dict) else {}
+        "og_tags": raw_page.get("og_tags")
+        if isinstance(raw_page.get("og_tags"), dict)
+        else {},
+        "twitter_tags": raw_page.get("twitter_tags")
+        if isinstance(raw_page.get("twitter_tags"), dict)
+        else {},
     }
 
     # Response times
@@ -197,13 +207,15 @@ def normalize_page(raw_page: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
         "analytics": raw_page.get("analytics") or {},
         "images": raw_page.get("images") or [],
         "redirects": raw_page.get("redirects") or [],
-        "linked_from": [normalize_url(u) for u in raw_page.get("linked_from", []) if u]
+        "linked_from": [normalize_url(u) for u in raw_page.get("linked_from", []) if u],
     }
 
     return normalized, page_id
 
 
-def normalize_issue(raw_issue: Dict[str, Any], page_lookup: Dict[str, str]) -> Tuple[Dict[str, Any], str]:
+def normalize_issue(
+    raw_issue: dict[str, Any], page_lookup: dict[str, str]
+) -> tuple[dict[str, Any], str]:
     """
     Standardizes issue record and produces a deterministic issue ID.
     Returns: (normalized_issue_dict, issue_id)
@@ -212,7 +224,7 @@ def normalize_issue(raw_issue: Dict[str, Any], page_lookup: Dict[str, str]) -> T
     issue_type = str(raw_issue.get("type") or "general_issue").strip().lower()
     raw_url = raw_issue.get("url") or ""
     norm_url = normalize_url(raw_url)
-    
+
     issue_id = generate_stable_id("iss", category, issue_type, norm_url)
     page_id = page_lookup.get(norm_url)
 
@@ -230,7 +242,11 @@ def normalize_issue(raw_issue: Dict[str, Any], page_lookup: Dict[str, str]) -> T
         severity = "info"
 
     details = raw_issue.get("details") or raw_issue.get("description") or ""
-    issue_title = raw_issue.get("issue") or raw_issue.get("title") or issue_type.replace("_", " ").title()
+    issue_title = (
+        raw_issue.get("issue")
+        or raw_issue.get("title")
+        or issue_type.replace("_", " ").title()
+    )
 
     normalized = {
         "id": issue_id,
@@ -242,22 +258,24 @@ def normalize_issue(raw_issue: Dict[str, Any], page_lookup: Dict[str, str]) -> T
         "title": issue_title,
         "description": details,
         "recommendation": raw_issue.get("recommendation") or None,
-        "evidence": raw_issue.get("evidence") if isinstance(raw_issue.get("evidence"), dict) else {}
+        "evidence": raw_issue.get("evidence")
+        if isinstance(raw_issue.get("evidence"), dict)
+        else {},
     }
 
     return normalized, issue_id
 
 
-def normalize_link(raw_link: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
+def normalize_link(raw_link: dict[str, Any]) -> tuple[dict[str, Any], str]:
     """
     Standardizes link record and produces a deterministic link ID.
     """
     src = normalize_url(raw_link.get("source_url") or "")
     tgt = normalize_url(raw_link.get("target_url") or "")
     anchor = str(raw_link.get("anchor_text") or "").strip()
-    
+
     link_id = generate_stable_id("lnk", src, tgt, anchor)
-    
+
     status_code = raw_link.get("status_code")
     if status_code is None:
         status_code = raw_link.get("target_status")
@@ -275,13 +293,15 @@ def normalize_link(raw_link: Dict[str, Any]) -> Tuple[Dict[str, Any], str]:
         "internal": bool(raw_link.get("internal", True)),
         "status_code": status_code,
         "target_domain": raw_link.get("target_domain") or extract_domain(tgt),
-        "placement": raw_link.get("placement") or "body"
+        "placement": raw_link.get("placement") or "body",
     }
 
     return normalized, link_id
 
 
-def normalize_image(raw_img: Dict[str, Any], source_page_url: str) -> Tuple[Dict[str, Any], str]:
+def normalize_image(
+    raw_img: dict[str, Any], source_page_url: str
+) -> tuple[dict[str, Any], str]:
     """
     Standardizes image record and produces a deterministic image ID.
     """
@@ -296,7 +316,7 @@ def normalize_image(raw_img: Dict[str, Any], source_page_url: str) -> Tuple[Dict
         "width": raw_img.get("width") or None,
         "height": raw_img.get("height") or None,
         "source_page": norm_source,
-        "has_alt": bool(raw_img.get("alt") and str(raw_img.get("alt")).strip())
+        "has_alt": bool(raw_img.get("alt") and str(raw_img.get("alt")).strip()),
     }
 
     return normalized, img_id
@@ -306,30 +326,31 @@ def normalize_image(raw_img: Dict[str, Any], source_page_url: str) -> Tuple[Dict
 # 4. Master Organizer Engine
 # -----------------------------------------------------------------------------
 
+
 class WebsiteDataOrganizer:
     """
     Deconstructs raw crawl JSON into the normalized 23-section directory tree under `report/<domain>/`.
     """
 
-    def __init__(self, raw_data: Dict[str, Any], base_dir: str = "report"):
+    def __init__(self, raw_data: dict[str, Any], base_dir: str = "report"):
         self.raw_data = raw_data
         self.base_dir = base_dir
-        
+
         # Detect domain
         raw_url = raw_data.get("base_url") or raw_data.get("url") or ""
         if not raw_url and raw_data.get("pages"):
             raw_url = raw_data["pages"][0].get("url", "")
-            
+
         self.domain = extract_domain(raw_data.get("base_domain") or raw_url)
         self.website_root = os.path.join(self.base_dir, self.domain)
-        
+
         # Internal registries
-        self.pages_by_id: Dict[str, Dict[str, Any]] = {}
-        self.page_url_to_id: Dict[str, str] = {}
-        self.issues_by_id: Dict[str, Dict[str, Any]] = {}
-        self.links_by_id: Dict[str, Dict[str, Any]] = {}
-        self.images_by_id: Dict[str, Dict[str, Any]] = {}
-        self.unclassified_data: Dict[str, Any] = {}
+        self.pages_by_id: dict[str, dict[str, Any]] = {}
+        self.page_url_to_id: dict[str, str] = {}
+        self.issues_by_id: dict[str, dict[str, Any]] = {}
+        self.links_by_id: dict[str, dict[str, Any]] = {}
+        self.images_by_id: dict[str, dict[str, Any]] = {}
+        self.unclassified_data: dict[str, Any] = {}
 
     def _write_json(self, rel_path: str, data: Any) -> str:
         """Write JSON to a subpath inside the website directory."""
@@ -347,7 +368,7 @@ class WebsiteDataOrganizer:
             f.write(text)
         return rel_path
 
-    def process(self) -> Dict[str, Any]:
+    def process(self) -> dict[str, Any]:
         """
         Executes full normalization, saves files, runs validation, and returns master index.
         """
@@ -376,20 +397,22 @@ class WebsiteDataOrganizer:
                 page_file_name = f"{slug_name}_{p_id[-6:]}.json"
                 self._write_json(f"pages/{page_file_name}", norm_p)
 
-                page_index_entries.append({
-                    "page_id": p_id,
-                    "url": norm_p["url"],
-                    "status_code": norm_p["status_code"],
-                    "depth": norm_p["depth"],
-                    "title": norm_p["seo"]["title"],
-                    "word_count": norm_p["seo"]["word_count"],
-                    "file": f"pages/{page_file_name}"
-                })
+                page_index_entries.append(
+                    {
+                        "page_id": p_id,
+                        "url": norm_p["url"],
+                        "status_code": norm_p["status_code"],
+                        "depth": norm_p["depth"],
+                        "title": norm_p["seo"]["title"],
+                        "word_count": norm_p["seo"]["word_count"],
+                        "file": f"pages/{page_file_name}",
+                    }
+                )
 
-        self._write_json("pages/index.json", {
-            "total_pages": len(page_index_entries),
-            "pages": page_index_entries
-        })
+        self._write_json(
+            "pages/index.json",
+            {"total_pages": len(page_index_entries), "pages": page_index_entries},
+        )
 
         # ---------------------------------------------------------------------
         # 3. ISSUES CENTRALIZATION & DEDUPLICATION
@@ -406,7 +429,7 @@ class WebsiteDataOrganizer:
         medium_issues = [i for i in all_issues if i["severity"] == "medium"]
         low_issues = [i for i in all_issues if i["severity"] in ("low", "info")]
 
-        by_cat: Dict[str, List[Dict[str, Any]]] = {}
+        by_cat: dict[str, list[dict[str, Any]]] = {}
         for i in all_issues:
             cat = i["category"]
             by_cat.setdefault(cat, []).append(i)
@@ -430,18 +453,20 @@ class WebsiteDataOrganizer:
         all_links = list(self.links_by_id.values())
         internal_links = [l for l in all_links if l["internal"]]
         external_links = [l for l in all_links if not l["internal"]]
-        broken_links = [l for l in all_links if l.get("status_code") and l["status_code"] >= 400]
+        broken_links = [
+            l for l in all_links if l.get("status_code") and l["status_code"] >= 400
+        ]
 
         # Anchor text frequency map
-        anchor_map: Dict[str, int] = {}
+        anchor_map: dict[str, int] = {}
         for l in all_links:
             txt = l.get("anchor_text")
             if txt:
                 anchor_map[txt] = anchor_map.get(txt, 0) + 1
 
         # Link Architecture (in-degrees and out-degrees)
-        in_degree: Dict[str, int] = {}
-        out_degree: Dict[str, int] = {}
+        in_degree: dict[str, int] = {}
+        out_degree: dict[str, int] = {}
         for l in internal_links:
             src = l["source_url"]
             tgt = l["target_url"]
@@ -449,7 +474,12 @@ class WebsiteDataOrganizer:
             in_degree[tgt] = in_degree.get(tgt, 0) + 1
 
         all_crawled_urls = set(self.page_url_to_id.keys())
-        orphan_pages = [u for u in all_crawled_urls if in_degree.get(u, 0) == 0 and u != normalize_url(self.raw_data.get("base_url", ""))]
+        orphan_pages = [
+            u
+            for u in all_crawled_urls
+            if in_degree.get(u, 0) == 0
+            and u != normalize_url(self.raw_data.get("base_url", ""))
+        ]
 
         architecture_data = {
             "total_links": len(all_links),
@@ -457,7 +487,11 @@ class WebsiteDataOrganizer:
             "external_links_count": len(external_links),
             "broken_links_count": len(broken_links),
             "orphan_pages": orphan_pages,
-            "top_linked_pages": sorted([{"url": u, "inbound_links": c} for u, c in in_degree.items()], key=lambda x: x["inbound_links"], reverse=True)[:20]
+            "top_linked_pages": sorted(
+                [{"url": u, "inbound_links": c} for u, c in in_degree.items()],
+                key=lambda x: x["inbound_links"],
+                reverse=True,
+            )[:20],
         }
 
         self._write_json("links/all.json", all_links)
@@ -482,11 +516,18 @@ class WebsiteDataOrganizer:
 
         self._write_json("images/all.json", all_images)
         self._write_json("images/missing_alt.json", missing_alt)
-        self._write_json("images/statistics.json", {
-            "total_images": len(all_images),
-            "images_missing_alt": len(missing_alt),
-            "alt_text_coverage_percent": round(((len(all_images) - len(missing_alt)) / max(len(all_images), 1)) * 100, 2)
-        })
+        self._write_json(
+            "images/statistics.json",
+            {
+                "total_images": len(all_images),
+                "images_missing_alt": len(missing_alt),
+                "alt_text_coverage_percent": round(
+                    ((len(all_images) - len(missing_alt)) / max(len(all_images), 1))
+                    * 100,
+                    2,
+                ),
+            },
+        )
 
         # ---------------------------------------------------------------------
         # 6. TECHNICAL SEO DOMAIN
@@ -499,24 +540,48 @@ class WebsiteDataOrganizer:
         for p in self.pages_by_id.values():
             canon = p["technical"].get("canonical")
             if canon:
-                canonicals_data.append({"url": p["url"], "canonical": canon, "is_self_referential": canon == p["url"]})
+                canonicals_data.append(
+                    {
+                        "url": p["url"],
+                        "canonical": canon,
+                        "is_self_referential": canon == p["url"],
+                    }
+                )
             else:
-                canonicals_data.append({"url": p["url"], "canonical": None, "is_self_referential": False})
+                canonicals_data.append(
+                    {"url": p["url"], "canonical": None, "is_self_referential": False}
+                )
 
             rob = p["technical"].get("robots")
             if rob:
-                robots_data.append({"url": p["url"], "robots": rob, "noindex": "noindex" in rob.lower()})
+                robots_data.append(
+                    {
+                        "url": p["url"],
+                        "robots": rob,
+                        "noindex": "noindex" in rob.lower(),
+                    }
+                )
 
             sc = p["status_code"]
             if sc and sc >= 400:
-                errors_data.append({"url": p["url"], "status_code": sc, "content_type": p["content_type"]})
+                errors_data.append(
+                    {
+                        "url": p["url"],
+                        "status_code": sc,
+                        "content_type": p["content_type"],
+                    }
+                )
 
             if p.get("redirects"):
                 redirects_data.append({"url": p["url"], "chain": p["redirects"]})
 
-        sitemaps_info = self.raw_data.get("sitemaps", {"discovered": [], "urls_found": 0})
+        sitemaps_info = self.raw_data.get(
+            "sitemaps", {"discovered": [], "urls_found": 0}
+        )
 
-        self._write_json("technical/audit.json", self.raw_data.get("technical_audit") or {})
+        self._write_json(
+            "technical/audit.json", self.raw_data.get("technical_audit") or {}
+        )
         self._write_json("technical/canonicals.json", canonicals_data)
         self._write_json("technical/robots.json", robots_data)
         self._write_json("technical/sitemap.json", sitemaps_info)
@@ -532,27 +597,45 @@ class WebsiteDataOrganizer:
 
         for p in self.pages_by_id.values():
             t = p["seo"].get("title") or ""
-            titles_data.append({
-                "url": p["url"],
-                "title": t or None,
-                "length": len(t),
-                "status": "missing" if not t else ("too_long" if len(t) > 60 else ("too_short" if len(t) < 30 else "optimal"))
-            })
+            titles_data.append(
+                {
+                    "url": p["url"],
+                    "title": t or None,
+                    "length": len(t),
+                    "status": "missing"
+                    if not t
+                    else (
+                        "too_long"
+                        if len(t) > 60
+                        else ("too_short" if len(t) < 30 else "optimal")
+                    ),
+                }
+            )
 
             m = p["seo"].get("meta_description") or ""
-            metas_data.append({
-                "url": p["url"],
-                "meta_description": m or None,
-                "length": len(m),
-                "status": "missing" if not m else ("too_long" if len(m) > 160 else ("too_short" if len(m) < 120 else "optimal"))
-            })
+            metas_data.append(
+                {
+                    "url": p["url"],
+                    "meta_description": m or None,
+                    "length": len(m),
+                    "status": "missing"
+                    if not m
+                    else (
+                        "too_long"
+                        if len(m) > 160
+                        else ("too_short" if len(m) < 120 else "optimal")
+                    ),
+                }
+            )
 
-            headings_data.append({
-                "url": p["url"],
-                "h1": p["seo"].get("h1"),
-                "h2_count": len(p["seo"].get("h2", [])),
-                "h3_count": len(p["seo"].get("h3", []))
-            })
+            headings_data.append(
+                {
+                    "url": p["url"],
+                    "h1": p["seo"].get("h1"),
+                    "h2_count": len(p["seo"].get("h2", [])),
+                    "h3_count": len(p["seo"].get("h3", [])),
+                }
+            )
 
         self._write_json("onpage/audit.json", self.raw_data.get("onpage_audit") or {})
         self._write_json("onpage/titles.json", titles_data)
@@ -563,39 +646,58 @@ class WebsiteDataOrganizer:
         # ---------------------------------------------------------------------
         # 8. CONTENT SEO DOMAIN
         # ---------------------------------------------------------------------
-        thin_pages = [p for p in self.pages_by_id.values() if p["seo"]["word_count"] < 300 and (p["status_code"] or 0) == 200]
-        
+        thin_pages = [
+            p
+            for p in self.pages_by_id.values()
+            if p["seo"]["word_count"] < 300 and (p["status_code"] or 0) == 200
+        ]
+
         # Duplicate titles grouping
-        title_occurrences: Dict[str, List[str]] = {}
+        title_occurrences: dict[str, list[str]] = {}
         for p in self.pages_by_id.values():
             t = p["seo"].get("title")
             if t:
                 title_occurrences.setdefault(t, []).append(p["url"])
-        duplicate_titles = {t: urls for t, urls in title_occurrences.items() if len(urls) > 1}
+        duplicate_titles = {
+            t: urls for t, urls in title_occurrences.items() if len(urls) > 1
+        }
 
         total_words = sum(p["seo"]["word_count"] for p in self.pages_by_id.values())
         avg_words = round(total_words / max(len(self.pages_by_id), 1), 1)
 
         self._write_json("content/audit.json", self.raw_data.get("content_audit") or {})
-        self._write_json("content/thin_content.json", [{"url": p["url"], "word_count": p["seo"]["word_count"]} for p in thin_pages])
+        self._write_json(
+            "content/thin_content.json",
+            [
+                {"url": p["url"], "word_count": p["seo"]["word_count"]}
+                for p in thin_pages
+            ],
+        )
         self._write_json("content/duplicate_titles.json", duplicate_titles)
-        self._write_json("content/content_metrics.json", {
-            "total_word_count": total_words,
-            "average_word_count": avg_words,
-            "thin_pages_count": len(thin_pages),
-            "duplicate_titles_count": len(duplicate_titles)
-        })
+        self._write_json(
+            "content/content_metrics.json",
+            {
+                "total_word_count": total_words,
+                "average_word_count": avg_words,
+                "thin_pages_count": len(thin_pages),
+                "duplicate_titles_count": len(duplicate_titles),
+            },
+        )
 
         # ---------------------------------------------------------------------
         # 9. PERFORMANCE DOMAIN
         # ---------------------------------------------------------------------
-        slow_pages = [p for p in self.pages_by_id.values() if (p.get("response_time_ms") or 0) > 1500]
+        slow_pages = [
+            p
+            for p in self.pages_by_id.values()
+            if (p.get("response_time_ms") or 0) > 1500
+        ]
         page_perf = [
             {
                 "url": p["url"],
                 "response_time_ms": p.get("response_time_ms"),
                 "render_time_ms": p.get("render_time_ms"),
-                "status_code": p.get("status_code")
+                "status_code": p.get("status_code"),
             }
             for p in self.pages_by_id.values()
         ]
@@ -607,15 +709,20 @@ class WebsiteDataOrganizer:
             if not isinstance(ps, dict):
                 continue
             if ps.get("mobile", {}).get("error") or ps.get("desktop", {}).get("error"):
-                norm_pagespeed.append({
-                    "url": ps.get("url"),
-                    "status": "unavailable",
-                    "reason": ps.get("mobile", {}).get("error") or ps.get("desktop", {}).get("error")
-                })
+                norm_pagespeed.append(
+                    {
+                        "url": ps.get("url"),
+                        "status": "unavailable",
+                        "reason": ps.get("mobile", {}).get("error")
+                        or ps.get("desktop", {}).get("error"),
+                    }
+                )
             else:
                 norm_pagespeed.append(ps)
 
-        self._write_json("performance/audit.json", self.raw_data.get("performance_audit") or {})
+        self._write_json(
+            "performance/audit.json", self.raw_data.get("performance_audit") or {}
+        )
         self._write_json("performance/page_performance.json", page_perf)
         self._write_json("performance/slow_pages.json", slow_pages)
         self._write_json("performance/pagespeed.json", norm_pagespeed)
@@ -624,7 +731,7 @@ class WebsiteDataOrganizer:
         # 10. STRUCTURED DATA / SCHEMA DOMAIN
         # ---------------------------------------------------------------------
         detected_schemas = []
-        schema_types_count: Dict[str, int] = {}
+        schema_types_count: dict[str, int] = {}
         missing_schema_pages = []
 
         for p in self.pages_by_id.values():
@@ -636,7 +743,9 @@ class WebsiteDataOrganizer:
                     if t:
                         if isinstance(t, list):
                             for sub_t in t:
-                                schema_types_count[sub_t] = schema_types_count.get(sub_t, 0) + 1
+                                schema_types_count[sub_t] = (
+                                    schema_types_count.get(sub_t, 0) + 1
+                                )
                         else:
                             schema_types_count[t] = schema_types_count.get(t, 0) + 1
             else:
@@ -653,20 +762,23 @@ class WebsiteDataOrganizer:
         # ---------------------------------------------------------------------
         local_audit = self.raw_data.get("local_audit") or {}
         self._write_json("local/audit.json", local_audit)
-        self._write_json("local/business_schema.json", local_audit.get("metrics", {}).get("local_business_schema") or {})
+        self._write_json(
+            "local/business_schema.json",
+            local_audit.get("metrics", {}).get("local_business_schema") or {},
+        )
         self._write_json("local/local_signals.json", local_audit.get("metrics") or {})
 
         # ---------------------------------------------------------------------
         # 12. ANALYTICS DOMAIN
         # ---------------------------------------------------------------------
-        analytics_summary: Dict[str, Any] = {
+        analytics_summary: dict[str, Any] = {
             "google_analytics": False,
             "ga4_id": None,
             "gtm_id": None,
             "facebook_pixel": False,
             "hotjar": False,
             "mixpanel": False,
-            "detected_on_pages": []
+            "detected_on_pages": [],
         }
 
         for p in self.pages_by_id.values():
@@ -687,7 +799,12 @@ class WebsiteDataOrganizer:
         # 13. RECOMMENDATIONS
         # ---------------------------------------------------------------------
         raw_recs = self.raw_data.get("priority_action_items", [])
-        quick_wins = [r for r in raw_recs if str(r.get("estimated_effort", "")).lower() == "low" and r.get("impact_score", 0) >= 6]
+        quick_wins = [
+            r
+            for r in raw_recs
+            if str(r.get("estimated_effort", "")).lower() == "low"
+            and r.get("impact_score", 0) >= 6
+        ]
         high_impact = [r for r in raw_recs if r.get("impact_score", 0) >= 8]
 
         self._write_json("recommendations/all.json", raw_recs)
@@ -710,25 +827,52 @@ class WebsiteDataOrganizer:
             "links_analyzed": len(self.links_by_id),
             "issues_detected": len(self.issues_by_id),
             "images_cataloged": len(self.images_by_id),
-            "duration_seconds": self.raw_data.get("crawl_summary", {}).get("duration_seconds", 0),
-            "timestamp": datetime.now(timezone.utc).isoformat()
+            "duration_seconds": self.raw_data.get("crawl_summary", {}).get(
+                "duration_seconds", 0
+            ),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
         self._write_json("summary/overview.json", summary_overview)
         self._write_json("summary/category_scores.json", cat_scores)
-        self._write_json("summary/metrics.json", self.raw_data.get("crawl_summary") or {})
-        
-        md_content = self.raw_data.get("detailed_report_markdown") or f"# SEO Report for {self.domain}\nOverall Score: {overall_score}/100"
+        self._write_json(
+            "summary/metrics.json", self.raw_data.get("crawl_summary") or {}
+        )
+
+        md_content = (
+            self.raw_data.get("detailed_report_markdown")
+            or f"# SEO Report for {self.domain}\nOverall Score: {overall_score}/100"
+        )
         self._write_text("summary/executive_summary.md", md_content)
 
         # ---------------------------------------------------------------------
         # 15. UNCLASSIFIED EXTRA FIELDS (Guarantee zero data loss)
         # ---------------------------------------------------------------------
         standard_keys = {
-            "crawl_id", "base_url", "url", "base_domain", "status", "summary", "crawl_summary",
-            "pages", "links", "issues", "sitemaps", "pagespeed", "overall_seo_score", "category_scores",
-            "technical_audit", "onpage_audit", "content_audit", "schema_audit", "local_audit",
-            "performance_audit", "priority_action_items", "detailed_report_markdown", "errors", "crawl_config"
+            "crawl_id",
+            "base_url",
+            "url",
+            "base_domain",
+            "status",
+            "summary",
+            "crawl_summary",
+            "pages",
+            "links",
+            "issues",
+            "sitemaps",
+            "pagespeed",
+            "overall_seo_score",
+            "category_scores",
+            "technical_audit",
+            "onpage_audit",
+            "content_audit",
+            "schema_audit",
+            "local_audit",
+            "performance_audit",
+            "priority_action_items",
+            "detailed_report_markdown",
+            "errors",
+            "crawl_config",
         }
         for k, v in self.raw_data.items():
             if k not in standard_keys:
@@ -761,7 +905,7 @@ class WebsiteDataOrganizer:
             "unique_images_cataloged": len(self.images_by_id),
             "data_loss": False,
             "broken_page_references": 0,
-            "validation_timestamp": datetime.now(timezone.utc).isoformat()
+            "validation_timestamp": datetime.now(timezone.utc).isoformat(),
         }
         self._write_json("summary/validation.json", validation_result)
 
@@ -770,7 +914,8 @@ class WebsiteDataOrganizer:
         # ---------------------------------------------------------------------
         master_index = {
             "domain": self.domain,
-            "crawl_id": self.raw_data.get("crawl_id") or generate_stable_id("crawl", self.domain),
+            "crawl_id": self.raw_data.get("crawl_id")
+            or generate_stable_id("crawl", self.domain),
             "created_at": datetime.now(timezone.utc).isoformat(),
             "overall_score": overall_score,
             "files": {
@@ -789,9 +934,9 @@ class WebsiteDataOrganizer:
                 "recommendations": "recommendations/all.json",
                 "summary": "summary/overview.json",
                 "validation": "summary/validation.json",
-                "executive_summary": "summary/executive_summary.md"
+                "executive_summary": "summary/executive_summary.md",
             },
-            "validation": validation_result
+            "validation": validation_result,
         }
 
         self._write_json("index.json", master_index)
@@ -817,8 +962,8 @@ class WebsiteDataOrganizer:
 | **Issues Detected** | `{len(self.issues_by_id)}` |
 | **Images Cataloged** | `{len(self.images_by_id)}` |
 | **Duplicate Issues Removed** | `{max(0, dup_issues_removed)}` |
-| **Data Loss** | `{'❌ DETECTED — check validation.json' if validation_result['data_loss'] else '✅ None'}` |
-| **Validation** | `{'✅ PASSED' if validation_result['valid'] else '❌ FAILED'}` |
+| **Data Loss** | `{"❌ DETECTED — check validation.json" if validation_result["data_loss"] else "✅ None"}` |
+| **Validation** | `{"✅ PASSED" if validation_result["valid"] else "❌ FAILED"}` |
 
 ---
 
@@ -854,7 +999,7 @@ class WebsiteDataOrganizer:
         for cat, score in cat_scores.items():
             report_md += f"| {cat} | `{score}/100` |\n"
 
-        report_md += f"""
+        report_md += """
 ---
 
 ## 🚀 Fix Priority Order
@@ -895,7 +1040,10 @@ class WebsiteDataOrganizer:
 # Standalone CLI / Helper Functions
 # -----------------------------------------------------------------------------
 
-def organize_website_crawl(raw_data: Dict[str, Any], base_dir: str = "report") -> Dict[str, Any]:
+
+def organize_website_crawl(
+    raw_data: dict[str, Any], base_dir: str = "report"
+) -> dict[str, Any]:
     """Convenience helper to organize a crawl dictionary into report/<domain>/."""
     organizer = WebsiteDataOrganizer(raw_data, base_dir=base_dir)
     return organizer.process()
@@ -923,14 +1071,16 @@ def main():
     print(f"\n[Data Organizer] Processing crawl payload from: {json_path}")
     organizer = WebsiteDataOrganizer(data, base_dir=out_dir)
     result = organizer.process()
-    
+
     domain = result["domain"]
     root = os.path.join(out_dir, domain)
     val = result["validation"]
 
     print(f"\nWebsite data successfully organized under: {root}")
     print(f"  - Pages Normalized: {val['normalized_pages_count']}")
-    print(f"  - Issues Deduplicated: {val['normalized_issues_count']} (removed {val['duplicate_issues_deduplicated']} duplicates)")
+    print(
+        f"  - Issues Deduplicated: {val['normalized_issues_count']} (removed {val['duplicate_issues_deduplicated']} duplicates)"
+    )
     print(f"  - Links Analyzed: {val['normalized_links_count']}")
     print(f"  - Images Cataloged: {val['unique_images_cataloged']}")
     print(f"  - Master Index: {os.path.join(root, 'index.json')}")

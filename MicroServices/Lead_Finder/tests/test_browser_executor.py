@@ -1,8 +1,12 @@
 import pytest
-from leadfinder.crawler.browser_manager import BrowserManager
+from leadfinder.crawler.action_models import (
+    ActionPlan,
+    ExtractAction,
+    WaitForAction,
+)
 from leadfinder.crawler.browser_executor import BrowserExecutor
+from leadfinder.crawler.browser_manager import BrowserManager
 from leadfinder.crawler.config import CrawlerConfig
-from leadfinder.crawler.action_models import ActionPlan, WaitForAction, ScrollAction, ExtractAction
 from leadfinder.crawler.result_models import BlockType
 
 

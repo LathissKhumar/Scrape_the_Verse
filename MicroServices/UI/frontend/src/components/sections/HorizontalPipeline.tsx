@@ -1,59 +1,59 @@
-'use client'
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { GradientText } from '@/components/ui/GradientText'
-import { SectionLabel } from '@/components/ui/SectionLabel'
+"use client";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { GradientText } from "@/components/ui/GradientText";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const PIPELINE_CARDS = [
   {
-    num: '01',
-    title: 'Lead Discovery',
-    desc: 'AI finds businesses from IndiaMART, Yelp, Google Maps, and Avvo automatically',
-    badge: 'DISCOVERY',
+    num: "01",
+    title: "Lead Discovery",
+    desc: "AI finds businesses from IndiaMART, Yelp, Google Maps, and Avvo automatically",
+    badge: "DISCOVERY",
   },
   {
-    num: '02',
-    title: 'Normalization',
-    desc: 'Every source unified into one clean business profile with a single schema',
-    badge: 'NORMALIZE',
+    num: "02",
+    title: "Normalization",
+    desc: "Every source unified into one clean business profile with a single schema",
+    badge: "NORMALIZE",
   },
   {
-    num: '03',
-    title: 'Website Audit',
-    desc: 'Full SEO and technical crawl with page-level findings and opportunity gaps',
-    badge: 'SEO AUDIT',
+    num: "03",
+    title: "Website Audit",
+    desc: "Full SEO and technical crawl with page-level findings and opportunity gaps",
+    badge: "SEO AUDIT",
   },
   {
-    num: '04',
-    title: 'Business Intelligence',
-    desc: 'Market, customer, competitor and service context built by specialized agents',
-    badge: 'INTELLIGENCE',
+    num: "04",
+    title: "Business Intelligence",
+    desc: "Market, customer, competitor and service context built by specialized agents",
+    badge: "INTELLIGENCE",
   },
   {
-    num: '05',
-    title: 'Opportunity Detection',
-    desc: 'Evidence-backed gaps mapped to specific digital service opportunities',
-    badge: 'OPPORTUNITY',
+    num: "05",
+    title: "Opportunity Detection",
+    desc: "Evidence-backed gaps mapped to specific digital service opportunities",
+    badge: "OPPORTUNITY",
   },
   {
-    num: '06',
-    title: 'Prompt Generation',
-    desc: 'Implementation-ready website spec generated automatically for any AI builder',
-    badge: 'GENERATION',
+    num: "06",
+    title: "Prompt Generation",
+    desc: "Implementation-ready website spec generated automatically for any AI builder",
+    badge: "GENERATION",
   },
   {
-    num: '07',
-    title: 'Outreach & CRM',
-    desc: 'Personalized pitch drafted and lead tracked through the full pipeline',
-    badge: 'OUTREACH',
+    num: "07",
+    title: "Outreach & CRM",
+    desc: "Personalized pitch drafted and lead tracked through the full pipeline",
+    badge: "OUTREACH",
   },
-]
+];
 
 // Duplicate items for continuous seamless horizontal marquee loop
-const MARQUEE_CARDS = [...PIPELINE_CARDS, ...PIPELINE_CARDS]
+const MARQUEE_CARDS = [...PIPELINE_CARDS, ...PIPELINE_CARDS];
 
 export function HorizontalPipeline() {
-  const [isPaused, setIsPaused] = useState(false)
+  const [isPaused, setIsPaused] = useState(false);
 
   return (
     <section
@@ -77,14 +77,14 @@ export function HorizontalPipeline() {
         <motion.div
           className="flex items-stretch gap-6 w-max will-change-transform py-3 px-6"
           animate={{
-            x: ['0%', '-50%'],
+            x: ["0%", "-50%"],
           }}
           transition={{
             x: {
               repeat: Infinity,
-              repeatType: 'loop',
+              repeatType: "loop",
               duration: 35,
-              ease: 'linear',
+              ease: "linear",
             },
           }}
         >
@@ -101,10 +101,10 @@ export function HorizontalPipeline() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
 
-function PipelineCard({ card }: { card: typeof PIPELINE_CARDS[number] }) {
+function PipelineCard({ card }: { card: (typeof PIPELINE_CARDS)[number] }) {
   return (
     <>
       {/* Top */}
@@ -122,7 +122,9 @@ function PipelineCard({ card }: { card: typeof PIPELINE_CARDS[number] }) {
         <h3 className="text-lg sm:text-xl font-bold font-display text-white group-hover:text-sky-300 transition-colors">
           {card.title}
         </h3>
-        <p className="text-xs sm:text-sm font-body text-slate-300/80 leading-relaxed">{card.desc}</p>
+        <p className="text-xs sm:text-sm font-body text-slate-300/80 leading-relaxed">
+          {card.desc}
+        </p>
       </div>
 
       {/* Footer */}
@@ -136,5 +138,5 @@ function PipelineCard({ card }: { card: typeof PIPELINE_CARDS[number] }) {
         </span>
       </div>
     </>
-  )
+  );
 }

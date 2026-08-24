@@ -1,6 +1,6 @@
-import re
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 from urllib.parse import urlparse
+
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -23,7 +23,7 @@ class ScrapingRequest(BaseModel):
         min_length=1,
         description="Plain-language description of the scraping objective, requirements, or target URLs.",
     )
-    max_records: Optional[int] = Field(
+    max_records: int | None = Field(
         default=None,
         gt=0,
         description="Optional maximum number of records to scrape.",
@@ -69,15 +69,15 @@ class ScrapingTask(BaseModel):
         default_factory=list,
         description="Extracted field names requested by the user.",
     )
-    output_schema: Optional[dict[str, Any]] = Field(
+    output_schema: dict[str, Any] | None = Field(
         default=None,
         description="Type mapping or structure for the requested fields (e.g. {'name': 'string'}).",
     )
-    max_records: Optional[int] = Field(
+    max_records: int | None = Field(
         default=None,
         description="Limit on records to scrape if specified.",
     )
-    min_records: Optional[int] = Field(
+    min_records: int | None = Field(
         default=None,
         description="Minimum expected records for bulk/listing requests.",
     )
@@ -97,7 +97,7 @@ class ScrapingTask(BaseModel):
         default=False,
         description="Whether this task involves autonomous on-site searching.",
     )
-    search_keyword: Optional[str] = Field(
+    search_keyword: str | None = Field(
         default=None,
         description="Search keyword to type into site search inputs.",
     )
@@ -122,7 +122,7 @@ class ScrapingTask(BaseModel):
 class ScrapingResult(BaseModel):
     """Canonical result schema of a scraping workflow."""
 
-    task_id: Optional[str] = Field(
+    task_id: str | None = Field(
         default=None,
         description="Unique identifier of the scraping task.",
     )
@@ -138,7 +138,7 @@ class ScrapingResult(BaseModel):
         default_factory=dict,
         description="Execution metadata (timing, attempts, collector info).",
     )
-    error: Optional[str] = Field(
+    error: str | None = Field(
         default=None,
         description="Error description if status is failed or partial.",
     )

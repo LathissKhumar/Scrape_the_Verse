@@ -1,29 +1,50 @@
-import pytest
-import httpx
 from unittest.mock import AsyncMock, patch
 
+import httpx
+import pytest
 from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.exceptions import (
     BrightDataAuthError,
     BrightDataConfigError,
-    BrightDataError,
-    BrightDataJobError,
     BrightDataTimeoutError,
 )
 from leadfinder.config.settings import Settings
 
 
 def test_brightdata_is_configured_flag():
-    unconfigured = BrightDataClient(Settings(BRIGHTDATA=False, BRIGHTDATA_API_KEY=None, BRIGHTDATA_COLLECTOR_ID=None))
+    unconfigured = BrightDataClient(
+        Settings(
+            BRIGHTDATA=False, BRIGHTDATA_API_KEY=None, BRIGHTDATA_COLLECTOR_ID=None
+        )
+    )
     assert unconfigured.is_configured is False
 
-    disabled_even_with_keys = BrightDataClient(Settings(BRIGHTDATA=False, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    disabled_even_with_keys = BrightDataClient(
+        Settings(
+            BRIGHTDATA=False,
+            BRIGHTDATA_API_KEY="valid_key",
+            BRIGHTDATA_COLLECTOR_ID="col_123",
+        )
+    )
     assert disabled_even_with_keys.is_configured is False
 
-    partial_key = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID=None, BRIGHTDATA_DISCOVERY_COLLECTOR_ID=None))
+    partial_key = BrightDataClient(
+        Settings(
+            BRIGHTDATA=True,
+            BRIGHTDATA_API_KEY="valid_key",
+            BRIGHTDATA_COLLECTOR_ID=None,
+            BRIGHTDATA_DISCOVERY_COLLECTOR_ID=None,
+        )
+    )
     assert partial_key.is_configured is False
 
-    configured = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="valid_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    configured = BrightDataClient(
+        Settings(
+            BRIGHTDATA=True,
+            BRIGHTDATA_API_KEY="valid_key",
+            BRIGHTDATA_COLLECTOR_ID="col_123",
+        )
+    )
     assert configured.is_configured is True
 
 
@@ -37,7 +58,13 @@ async def test_brightdata_unconfigured_raises():
 
 @pytest.mark.asyncio
 async def test_brightdata_trigger_scraper_success():
-    client = BrightDataClient(Settings(BRIGHTDATA=True, BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(
+            BRIGHTDATA=True,
+            BRIGHTDATA_API_KEY="test_key",
+            BRIGHTDATA_COLLECTOR_ID="col_123",
+        )
+    )
 
     mock_response = httpx.Response(
         status_code=200,
@@ -53,7 +80,9 @@ async def test_brightdata_trigger_scraper_success():
 
 @pytest.mark.asyncio
 async def test_brightdata_trigger_auth_error():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="bad_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(BRIGHTDATA_API_KEY="bad_key", BRIGHTDATA_COLLECTOR_ID="col_123")
+    )
 
     mock_response = httpx.Response(
         status_code=401,
@@ -69,16 +98,24 @@ async def test_brightdata_trigger_auth_error():
 
 @pytest.mark.asyncio
 async def test_brightdata_trigger_timeout():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123")
+    )
 
-    with patch("httpx.AsyncClient.post", side_effect=httpx.TimeoutException("Timed out")):
-        with pytest.raises(BrightDataTimeoutError):
-            await client.trigger_scraper(inputs=[])
+    with (
+        patch(
+            "httpx.AsyncClient.post", side_effect=httpx.TimeoutException("Timed out")
+        ),
+        pytest.raises(BrightDataTimeoutError),
+    ):
+        await client.trigger_scraper(inputs=[])
 
 
 @pytest.mark.asyncio
 async def test_brightdata_get_job_status_running():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123")
+    )
 
     mock_response = httpx.Response(
         status_code=200,
@@ -94,7 +131,9 @@ async def test_brightdata_get_job_status_running():
 
 @pytest.mark.asyncio
 async def test_brightdata_get_job_status_completed_array():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123")
+    )
 
     mock_response = httpx.Response(
         status_code=200,
@@ -112,7 +151,9 @@ async def test_brightdata_get_job_status_completed_array():
 
 @pytest.mark.asyncio
 async def test_brightdata_get_job_status_failed():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123")
+    )
 
     mock_response = httpx.Response(
         status_code=200,
@@ -129,11 +170,14 @@ async def test_brightdata_get_job_status_failed():
 
 @pytest.mark.asyncio
 async def test_brightdata_scrape_and_collect_success():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123")
+    )
 
-    with patch.object(client, "trigger_scraper", new_callable=AsyncMock) as mock_trigger, \
-         patch.object(client, "get_job_status", new_callable=AsyncMock) as mock_status:
-
+    with (
+        patch.object(client, "trigger_scraper", new_callable=AsyncMock) as mock_trigger,
+        patch.object(client, "get_job_status", new_callable=AsyncMock) as mock_status,
+    ):
         mock_trigger.return_value = "job_123"
         # First poll returns running, second poll returns completed
         mock_status.side_effect = [
@@ -141,18 +185,23 @@ async def test_brightdata_scrape_and_collect_success():
             {"status": "completed", "data": [{"name": "Widget A", "price": "$25"}]},
         ]
 
-        results = await client.scrape_and_collect(inputs=[{"url": "https://example.com"}], poll_interval=0.01)
+        results = await client.scrape_and_collect(
+            inputs=[{"url": "https://example.com"}], poll_interval=0.01
+        )
         assert len(results) == 1
         assert results[0]["name"] == "Widget A"
 
 
 @pytest.mark.asyncio
 async def test_brightdata_scrape_and_collect_polling_timeout():
-    client = BrightDataClient(Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123"))
+    client = BrightDataClient(
+        Settings(BRIGHTDATA_API_KEY="test_key", BRIGHTDATA_COLLECTOR_ID="col_123")
+    )
 
-    with patch.object(client, "trigger_scraper", new_callable=AsyncMock) as mock_trigger, \
-         patch.object(client, "get_job_status", new_callable=AsyncMock) as mock_status:
-
+    with (
+        patch.object(client, "trigger_scraper", new_callable=AsyncMock) as mock_trigger,
+        patch.object(client, "get_job_status", new_callable=AsyncMock) as mock_status,
+    ):
         mock_trigger.return_value = "job_123"
         mock_status.return_value = {"status": "running"}
 
@@ -168,6 +217,7 @@ async def test_brightdata_scrape_and_collect_polling_timeout():
 @pytest.mark.asyncio
 async def test_live_brightdata_integration():
     import os
+
     if not os.getenv("RUN_LIVE_BRIGHTDATA_TESTS"):
         pytest.skip("Live cloud test skipped. Set RUN_LIVE_BRIGHTDATA_TESTS=1 to run.")
 

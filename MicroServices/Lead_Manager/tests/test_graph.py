@@ -3,7 +3,9 @@ Unit tests for LangGraph state machine execution.
 """
 
 import os
+
 import pytest
+
 from MicroServices.Lead_Manager.domain.lead import Lead
 from MicroServices.Lead_Manager.domain.stage import EmailIntent, LeadStage, TaskType
 from MicroServices.Lead_Manager.orchestration.graph import get_workflow_app

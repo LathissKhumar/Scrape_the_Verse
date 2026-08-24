@@ -1,8 +1,8 @@
 import json
+
 from leadfinder.healing.fingerprint import DOMFingerprinter
 from leadfinder.healing.freshness import RepairFreshnessLifecycle
 from leadfinder.healing.schemas import (
-    RepairConfidenceLevel,
     RepairFreshnessStatus,
     RepairMemoryRecord,
     RepairType,
@@ -32,7 +32,9 @@ def test_dom_fingerprinter_drift_detection():
 def test_repair_freshness_lifecycle():
     freshness = RepairFreshnessLifecycle()
     fingerprinter = DOMFingerprinter()
-    html_base = "<html><body><div class='product-card'><h3>Item</h3></div></body></html>"
+    html_base = (
+        "<html><body><div class='product-card'><h3>Item</h3></div></body></html>"
+    )
     fp_base = fingerprinter.generate_fingerprint(html_base)
 
     rec = RepairMemoryRecord(

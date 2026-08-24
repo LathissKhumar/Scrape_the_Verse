@@ -1,7 +1,8 @@
 """Configuration settings for the Communication Service."""
+
 import os
 from functools import lru_cache
-from typing import Optional
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _service_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,9 +21,9 @@ class Settings(BaseSettings):
     GMAIL_APP_PASSWORD: str = ""
 
     # OAuth fallback credentials
-    GOOGLE_CLIENT_ID: Optional[str] = None
-    GOOGLE_CLIENT_SECRET: Optional[str] = None
-    GOOGLE_REFRESH_TOKEN: Optional[str] = None
+    GOOGLE_CLIENT_ID: str | None = None
+    GOOGLE_CLIENT_SECRET: str | None = None
+    GOOGLE_REFRESH_TOKEN: str | None = None
 
     # IMAP settings
     IMAP_SERVER: str = "imap.gmail.com"
@@ -58,6 +59,6 @@ class Settings(BaseSettings):
     )
 
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     return Settings()

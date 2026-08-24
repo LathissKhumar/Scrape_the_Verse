@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { 
-  Send, 
-  Mail, 
-  Share2, 
-  PhoneCall, 
-  Sparkles, 
-  Copy, 
-  Check, 
-  CheckCircle2, 
-  Clock, 
-  Layers, 
+import React, { useState, useEffect } from "react";
+import {
+  Send,
+  Mail,
+  Share2,
+  PhoneCall,
+  Sparkles,
+  Copy,
+  Check,
+  CheckCircle2,
+  Clock,
+  Layers,
   ArrowRight,
   TrendingUp,
   MessageSquare,
@@ -21,11 +21,11 @@ import {
   BarChart3,
   Calendar,
   Users,
-  RefreshCw
-} from 'lucide-react';
-import { LeadRecord, DashboardTab, OutreachAsset } from './types';
-import { mockLeads, mockOutreachAssets } from './mockData';
-import { ingestLifecycleEvent } from '@/lib/api/leadManager';
+  RefreshCw,
+} from "lucide-react";
+import { LeadRecord, DashboardTab, OutreachAsset } from "./types";
+import { mockLeads, mockOutreachAssets } from "./mockData";
+import { ingestLifecycleEvent } from "@/lib/api/leadManager";
 
 interface OutreachHubPageProps {
   selectedLead?: LeadRecord;
@@ -33,62 +33,70 @@ interface OutreachHubPageProps {
   onSelectLead: (lead: LeadRecord) => void;
 }
 
-export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({ 
-  selectedLead = mockLeads[0], 
-  onNavigateTab, 
-  onSelectLead 
+export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
+  selectedLead = mockLeads[0],
+  onNavigateTab,
+  onSelectLead,
 }) => {
   const [activeLead, setActiveLead] = useState<LeadRecord>(selectedLead);
+  const [prevSelectedLead, setPrevSelectedLead] =
+    useState<LeadRecord>(selectedLead);
   const [selectedStep, setSelectedStep] = useState<number>(1);
   const [copied, setCopied] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sentSuccess, setSentSuccess] = useState(false);
   const [eventStatus, setEventStatus] = useState<string | null>(null);
 
+  if (selectedLead && selectedLead.id !== prevSelectedLead?.id) {
+    setPrevSelectedLead(selectedLead);
+    setActiveLead(selectedLead);
+  }
+
   const sequenceSteps = [
     {
       step: 1,
-      day: 'Day 1',
-      channel: 'email',
+      day: "Day 1",
+      channel: "email",
       icon: Mail,
-      title: 'Initial Technical Audit Email',
+      title: "Initial Technical Audit Email",
       subject: `Quick question regarding ${activeLead.business_name}'s web performance`,
-      body: `Hi ${activeLead.contact_person || 'there'},\n\nI was reviewing ${activeLead.business_name}'s digital presence in ${activeLead.location} and noticed your mobile page speed is currently scoring below average, resulting in an estimated loss of 15-20 qualified inquiries per month.\n\nWe prepared a complimentary 3-point technical audit report outlining how you can capture market share from local competitors.\n\nWould you be open to a 5-minute review call this week?`,
-      stats: { sent: 420, openRate: '68.4%', replyRate: '24.1%' }
+      body: `Hi ${activeLead.contact_person || "there"},\n\nI was reviewing ${activeLead.business_name}'s digital presence in ${activeLead.location} and noticed your mobile page speed is currently scoring below average, resulting in an estimated loss of 15-20 qualified inquiries per month.\n\nWe prepared a complimentary 3-point technical audit report outlining how you can capture market share from local competitors.\n\nWould you be open to a 5-minute review call this week?`,
+      stats: { sent: 420, openRate: "68.4%", replyRate: "24.1%" },
     },
     {
       step: 2,
-      day: 'Day 3',
-      channel: 'linkedin',
+      day: "Day 3",
+      channel: "linkedin",
       icon: Share2,
-      title: 'LinkedIn Executive Connection',
-      subject: 'LinkedIn InMail Direct Connection',
-      body: `Hi ${activeLead.contact_person || 'there'} - noticed your impressive work leading ${activeLead.business_name}. We recently generated a comparative growth diagnostic vs top local providers in ${activeLead.location}.\n\nThought you might find the breakdown valuable. Would love to connect!`,
-      stats: { sent: 310, openRate: '79.2%', replyRate: '31.0%' }
+      title: "LinkedIn Executive Connection",
+      subject: "LinkedIn InMail Direct Connection",
+      body: `Hi ${activeLead.contact_person || "there"} - noticed your impressive work leading ${activeLead.business_name}. We recently generated a comparative growth diagnostic vs top local providers in ${activeLead.location}.\n\nThought you might find the breakdown valuable. Would love to connect!`,
+      stats: { sent: 310, openRate: "79.2%", replyRate: "31.0%" },
     },
     {
       step: 3,
-      day: 'Day 5',
-      channel: 'email',
+      day: "Day 5",
+      channel: "email",
       icon: Mail,
-      title: 'Value-Add Proposal & Case Study',
+      title: "Value-Add Proposal & Case Study",
       subject: `Case Study: +180% inbound inquiries for ${activeLead.category}`,
-      body: `Hi ${activeLead.contact_person || 'there'},\n\nFollowing up on my previous note. We just published a case study demonstrating how a similar company in ${activeLead.category} doubled their commercial client bookings in 60 days.\n\nHere is your custom proposal link: https://app.scrapetheverse.com/p/${activeLead.id}\n\nLet me know if you'd like to walk through the numbers together.`,
-      stats: { sent: 240, openRate: '62.0%', replyRate: '19.5%' }
+      body: `Hi ${activeLead.contact_person || "there"},\n\nFollowing up on my previous note. We just published a case study demonstrating how a similar company in ${activeLead.category} doubled their commercial client bookings in 60 days.\n\nHere is your custom proposal link: https://app.scrapetheverse.com/p/${activeLead.id}\n\nLet me know if you'd like to walk through the numbers together.`,
+      stats: { sent: 240, openRate: "62.0%", replyRate: "19.5%" },
     },
     {
       step: 4,
-      day: 'Day 7',
-      channel: 'call_script',
+      day: "Day 7",
+      channel: "call_script",
       icon: PhoneCall,
-      title: 'AI SDR Outbound Call Pitch',
-      subject: 'Direct Executive Phone Follow-up',
-      body: `Opening Script:\n"Hello ${activeLead.contact_person || 'Sir/Ma\'am'}, calling from Growth Engineering. I sent over an executive proposal regarding ${activeLead.business_name}'s market positioning in ${activeLead.location}. Did you have a moment to review the benchmark numbers?"`,
-      stats: { sent: 94, openRate: '100%', replyRate: '24.7% Booked' }
-    }
+      title: "AI SDR Outbound Call Pitch",
+      subject: "Direct Executive Phone Follow-up",
+      body: `Opening Script:\n"Hello ${activeLead.contact_person || "Sir/Ma'am"}, calling from Growth Engineering. I sent over an executive proposal regarding ${activeLead.business_name}'s market positioning in ${activeLead.location}. Did you have a moment to review the benchmark numbers?"`,
+      stats: { sent: 94, openRate: "100%", replyRate: "24.7% Booked" },
+    },
   ];
 
-  const currentStep = sequenceSteps.find(s => s.step === selectedStep) || sequenceSteps[0];
+  const currentStep =
+    sequenceSteps.find((s) => s.step === selectedStep) || sequenceSteps[0];
 
   const handleSelectLeadChange = (leadId: string) => {
     const found = mockLeads.find((l) => l.id === leadId);
@@ -110,24 +118,31 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
     setEventStatus(null);
 
     try {
-      const res = await ingestLifecycleEvent('email.sent', activeLead.id, 'human', {
-        step: selectedStep,
-        channel: currentStep.channel,
-        subject: currentStep.subject,
-      });
+      const res = await ingestLifecycleEvent(
+        "email.sent",
+        activeLead.id,
+        "human",
+        {
+          step: selectedStep,
+          channel: currentStep.channel,
+          subject: currentStep.subject,
+        },
+      );
 
       setIsSending(false);
       setSentSuccess(true);
       if (res.success) {
-        setEventStatus(`Outreach dispatched! Lead Manager transition: ${res.newStage || 'CONTACTED'}`);
+        setEventStatus(
+          `Outreach dispatched! Lead Manager transition: ${res.newStage || "CONTACTED"}`,
+        );
       } else {
-        setEventStatus('Outreach dispatched successfully (offline demo mode).');
+        setEventStatus("Outreach dispatched successfully (offline demo mode).");
       }
       setTimeout(() => setSentSuccess(false), 4000);
     } catch {
       setIsSending(false);
       setSentSuccess(true);
-      setEventStatus('Outreach dispatched successfully.');
+      setEventStatus("Outreach dispatched successfully.");
       setTimeout(() => setSentSuccess(false), 4000);
     }
   };
@@ -145,7 +160,8 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
             Outreach Sequences & Campaign Hub
           </h1>
           <p className="text-sm text-white/60 mt-1 max-w-2xl">
-            Automate personalized 4-step multi-channel outreach campaigns across Email, LinkedIn, and outbound phone pitches.
+            Automate personalized 4-step multi-channel outreach campaigns across
+            Email, LinkedIn, and outbound phone pitches.
           </p>
         </div>
 
@@ -156,7 +172,11 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
             className="px-4 py-2 rounded-xl bg-white/[0.06] border border-white/[0.14] text-xs font-semibold text-white focus:outline-none focus:border-white/30 cursor-pointer backdrop-blur-xl"
           >
             {mockLeads.map((l) => (
-              <option key={l.id} value={l.id} className="bg-[#090E1A] text-white">
+              <option
+                key={l.id}
+                value={l.id}
+                className="bg-[#090E1A] text-white"
+              >
                 {l.business_name}
               </option>
             ))}
@@ -171,7 +191,12 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span>{eventStatus}</span>
           </div>
-          <button onClick={() => setEventStatus(null)} className="text-white/40 hover:text-white cursor-pointer">✕</button>
+          <button
+            onClick={() => setEventStatus(null)}
+            className="text-white/40 hover:text-white cursor-pointer"
+          >
+            ✕
+          </button>
         </div>
       )}
 
@@ -186,8 +211,8 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
               onClick={() => setSelectedStep(step.step)}
               className={`p-6 rounded-[28px] border transition-all cursor-pointer space-y-2 backdrop-blur-[36px] backdrop-saturate-[150%] ${
                 isSelected
-                  ? 'bg-white/[0.13] border-white/[0.30] shadow-[0_16px_48px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.28)] scale-[1.02]'
-                  : 'bg-white/[0.075] border-white/[0.18] shadow-[0_12px_36px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.2)] hover:border-white/[0.28] hover:bg-white/[0.11]'
+                  ? "bg-white/[0.13] border-white/[0.30] shadow-[0_16px_48px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.28)] scale-[1.02]"
+                  : "bg-white/[0.075] border-white/[0.18] shadow-[0_12px_36px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.2)] hover:border-white/[0.28] hover:bg-white/[0.11]"
               }`}
             >
               <div className="flex items-center justify-between">
@@ -199,16 +224,22 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
                 </div>
               </div>
 
-              <h3 className="font-bold text-white text-sm mt-1">{step.title}</h3>
+              <h3 className="font-bold text-white text-sm mt-1">
+                {step.title}
+              </h3>
 
               <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/[0.08] font-mono text-[10px]">
                 <div>
                   <span className="text-white/40">Open Rate</span>
-                  <div className="text-white font-bold">{step.stats.openRate}</div>
+                  <div className="text-white font-bold">
+                    {step.stats.openRate}
+                  </div>
                 </div>
                 <div>
                   <span className="text-white/40">Reply / Book</span>
-                  <div className="text-emerald-400 font-bold">{step.stats.replyRate}</div>
+                  <div className="text-emerald-400 font-bold">
+                    {step.stats.replyRate}
+                  </div>
                 </div>
               </div>
             </div>
@@ -225,27 +256,39 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
               <Sliders className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white tracking-tight">Campaign Parameters</h2>
-              <p className="text-xs text-white/50">Target recipient & trigger rules</p>
+              <h2 className="text-base font-bold text-white tracking-tight">
+                Campaign Parameters
+              </h2>
+              <p className="text-xs text-white/50">
+                Target recipient & trigger rules
+              </p>
             </div>
           </div>
 
           <div className="p-5 rounded-2xl bg-white/[0.035] border border-white/[0.08] backdrop-blur-xl space-y-2.5 text-xs">
             <div className="flex justify-between">
               <span className="text-white/40">Target Account:</span>
-              <span className="font-bold text-white">{activeLead.business_name}</span>
+              <span className="font-bold text-white">
+                {activeLead.business_name}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-white/40">Contact Person:</span>
-              <span className="font-semibold text-white/80">{activeLead.contact_person || 'Executive Leadership'}</span>
+              <span className="font-semibold text-white/80">
+                {activeLead.contact_person || "Executive Leadership"}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-white/40">Email Address:</span>
-              <span className="font-mono text-sky-300">{activeLead.email || 'direct@lead.com'}</span>
+              <span className="font-mono text-sky-300">
+                {activeLead.email || "direct@lead.com"}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-white/40">Phone:</span>
-              <span className="font-mono text-white">{activeLead.phone_number}</span>
+              <span className="font-mono text-white">
+                {activeLead.phone_number}
+              </span>
             </div>
           </div>
 
@@ -316,11 +359,13 @@ export const OutreachHubPage: React.FC<OutreachHubPageProps> = ({
           <div className="pt-2 flex items-center justify-between text-xs text-white/50">
             <span className="flex items-center gap-1.5">
               <span>Personalization Merge Tags:</span>
-              <strong className="text-sky-300">Active (4 Fields Injected)</strong>
+              <strong className="text-sky-300">
+                Active (4 Fields Injected)
+              </strong>
             </span>
 
             <button
-              onClick={() => onNavigateTab('proposals', activeLead.id)}
+              onClick={() => onNavigateTab("proposals", activeLead.id)}
               className="text-sky-300 hover:text-white font-semibold flex items-center gap-1 hover:underline cursor-pointer"
             >
               <span>View Attached Proposal</span>

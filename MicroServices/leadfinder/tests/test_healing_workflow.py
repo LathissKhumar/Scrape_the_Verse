@@ -1,24 +1,30 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
-from leadfinder.agents.diagnosis import DiagnosisAgent
-from leadfinder.agents.healing import HealingAgent
-from leadfinder.agents.planner import ScrapingPlannerAgent
-from leadfinder.agents.scraper import ScraperAgent
-from leadfinder.agents.validation import ValidationAgent
+
+import pytest
+
 from leadfinder.diagnosis.schemas import DiagnosisResult, RootCause
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    ExtractionStrategyEnum,
+    FieldRule,
+)
 from leadfinder.graph.state import ScrapingGraphState
 from leadfinder.graph.workflow import create_scraping_workflow
-from leadfinder.healing.schemas import PerformanceSnapshot, RepairEvaluation, RepairPlan, RepairType
-from leadfinder.models.schemas import ScrapingRequest, ScrapingResult, ScrapingTask
-from leadfinder.validation.schemas import FieldMetric, ValidationResult
+from leadfinder.healing.schemas import (
+    PerformanceSnapshot,
+    RepairEvaluation,
+)
+from leadfinder.models.schemas import ScrapingTask
+from leadfinder.validation.schemas import ValidationResult
 
 
 @pytest.mark.asyncio
 async def test_workflow_healthy_bypasses_healing():
     mock_planner = MagicMock()
     mock_planner.plan_async = AsyncMock(
-        return_value=ScrapingTask(task_id="t1", objective="Scrape", target_urls=["https://example.com"])
+        return_value=ScrapingTask(
+            task_id="t1", objective="Scrape", target_urls=["https://example.com"]
+        )
     )
 
     mock_scraper = MagicMock()
@@ -26,7 +32,9 @@ async def test_workflow_healthy_bypasses_healing():
 
     mock_validator = MagicMock()
     mock_validator.validate = AsyncMock(
-        return_value=ValidationResult(health_score=0.95, quality_score=0.95, status="healthy", record_count=1)
+        return_value=ValidationResult(
+            health_score=0.95, quality_score=0.95, status="healthy", record_count=1
+        )
     )
 
     workflow = create_scraping_workflow(
@@ -53,16 +61,22 @@ async def test_workflow_healthy_bypasses_healing():
 async def test_workflow_source_data_quality_bypasses_repair():
     mock_planner = MagicMock()
     mock_planner.plan_async = AsyncMock(
-        return_value=ScrapingTask(task_id="t1", objective="Scrape", target_urls=["https://example.com"])
+        return_value=ScrapingTask(
+            task_id="t1", objective="Scrape", target_urls=["https://example.com"]
+        )
     )
 
     mock_scraper = MagicMock()
-    mock_scraper.execute = AsyncMock(return_value=[{"html": "<div>No data on source</div>"}])
+    mock_scraper.execute = AsyncMock(
+        return_value=[{"html": "<div>No data on source</div>"}]
+    )
 
     mock_validator = MagicMock()
     # Degraded validation
     mock_validator.validate = AsyncMock(
-        return_value=ValidationResult(health_score=0.40, status="degraded", record_count=0)
+        return_value=ValidationResult(
+            health_score=0.40, status="degraded", record_count=0
+        )
     )
 
     mock_diagnosis = MagicMock()
@@ -98,21 +112,35 @@ async def test_workflow_source_data_quality_bypasses_repair():
 async def test_workflow_heals_broken_scrape_successfully():
     mock_planner = MagicMock()
     mock_planner.plan_async = AsyncMock(
-        return_value=ScrapingTask(task_id="t1", objective="Scrape products", target_urls=["https://example.com"])
+        return_value=ScrapingTask(
+            task_id="t1",
+            objective="Scrape products",
+            target_urls=["https://example.com"],
+        )
     )
 
     mock_scraper = MagicMock()
-    mock_scraper.execute = AsyncMock(return_value=[{"html": "<div class='product-item'><h2 class='name'>Phone</h2></div>"}])
+    mock_scraper.execute = AsyncMock(
+        return_value=[
+            {"html": "<div class='product-item'><h2 class='name'>Phone</h2></div>"}
+        ]
+    )
 
     mock_validator = MagicMock()
     # Initial validation is broken
     mock_validator.validate = AsyncMock(
-        return_value=ValidationResult(health_score=0.30, quality_score=0.35, status="broken", record_count=0)
+        return_value=ValidationResult(
+            health_score=0.30, quality_score=0.35, status="broken", record_count=0
+        )
     )
 
     mock_diagnosis = MagicMock()
     mock_diagnosis.diagnose = AsyncMock(
-        return_value=DiagnosisResult(root_cause=RootCause.SELECTOR_DRIFT, confidence=0.90, affected_fields=["name"])
+        return_value=DiagnosisResult(
+            root_cause=RootCause.SELECTOR_DRIFT,
+            confidence=0.90,
+            affected_fields=["name"],
+        )
     )
 
     mock_healing = MagicMock()
@@ -128,10 +156,21 @@ async def test_workflow_heals_broken_scrape_successfully():
     mock_healing.heal = AsyncMock(
         return_value=(
             True,
-            ExtractionSchema(strategy=ExtractionStrategyEnum.CSS, fields=[FieldRule(name="name", selector=".name")]),
+            ExtractionSchema(
+                strategy=ExtractionStrategyEnum.CSS,
+                fields=[FieldRule(name="name", selector=".name")],
+            ),
             evaluation,
             [{"name": "Phone"}],
-            [{"attempt": 1, "repair_type": "REPAIR_CSS_SELECTORS", "health_before": 0.30, "health_after": 0.95, "accepted": True}],
+            [
+                {
+                    "attempt": 1,
+                    "repair_type": "REPAIR_CSS_SELECTORS",
+                    "health_before": 0.30,
+                    "health_after": 0.95,
+                    "accepted": True,
+                }
+            ],
         )
     )
 

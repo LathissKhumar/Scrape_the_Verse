@@ -1,7 +1,6 @@
 """Google Maps scraping agent supporting autonomous delegation and geo-queries."""
 
 import re
-from typing import Optional
 from uuid import uuid4
 
 from leadfinder.config.logging import get_logger
@@ -40,9 +39,9 @@ class GoogleMapsAgent:
 
     def __init__(
         self,
-        service: Optional[GoogleMapsService] = None,
-        llm_client: Optional[LLMClient] = None,
-        settings: Optional[Settings] = None,
+        service: GoogleMapsService | None = None,
+        llm_client: LLMClient | None = None,
+        settings: Settings | None = None,
     ) -> None:
         self._settings = settings or get_settings()
         self.service = service or GoogleMapsService(settings=self._settings)
@@ -57,7 +56,7 @@ class GoogleMapsAgent:
             return True
         return False
 
-    def parse_query_and_location(self, query: str) -> tuple[str, Optional[str]]:
+    def parse_query_and_location(self, query: str) -> tuple[str, str | None]:
         """Extract search category and geographic location from query string."""
         clean_query = query.strip()
         clean_query = _PREFIX_CLEAN_PATTERN.sub("", clean_query).strip()
@@ -81,7 +80,9 @@ class GoogleMapsAgent:
         category, location = self.parse_query_and_location(task.objective)
         leads = await self.service.get_local_leads(query=category, location=location)
 
-        logger.info(f"task_id={task_id} GoogleMapsAgent harvested {len(leads)} local business leads")
+        logger.info(
+            f"task_id={task_id} GoogleMapsAgent harvested {len(leads)} local business leads"
+        )
 
         return ScrapingResult(
             task_id=task_id,
@@ -97,4 +98,3 @@ class GoogleMapsAgent:
                 "scraper_provider": "brightdata_gmaps",
             },
         )
-

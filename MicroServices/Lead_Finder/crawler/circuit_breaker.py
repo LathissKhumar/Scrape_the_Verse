@@ -1,8 +1,8 @@
 """Circuit breaker to avoid hammering domains that repeatedly return blocks or challenges."""
 
 import time
-from typing import Dict
 from urllib.parse import urlparse
+
 from leadfinder.crawler.result_models import BlockType
 
 
@@ -13,8 +13,8 @@ class DomainCircuitBreaker:
         self.failure_threshold = failure_threshold
         self.cooldown_seconds = cooldown_seconds
 
-        self._consecutive_failures: Dict[str, int] = {}
-        self._circuit_open_until: Dict[str, float] = {}
+        self._consecutive_failures: dict[str, int] = {}
+        self._circuit_open_until: dict[str, float] = {}
 
     def _get_domain(self, url: str) -> str:
         return urlparse(url).netloc.lower() or "default"

@@ -1,6 +1,7 @@
 """Multi-page canary validation engine for verifying repair candidates across multiple representative pages."""
 
-from typing import Any, Optional
+from typing import Any
+
 from leadfinder.config.logging import get_logger
 from leadfinder.config.settings import get_settings
 from leadfinder.extraction.engine import ExtractionEngine
@@ -17,8 +18,8 @@ class MultiPageRepairValidator:
 
     def __init__(
         self,
-        extraction_engine: Optional[ExtractionEngine] = None,
-        validation_engine: Optional[ValidationEngine] = None,
+        extraction_engine: ExtractionEngine | None = None,
+        validation_engine: ValidationEngine | None = None,
     ) -> None:
         self.settings = get_settings()
         self.extraction_engine = extraction_engine or ExtractionEngine()
@@ -29,7 +30,7 @@ class MultiPageRepairValidator:
         task: ScrapingTask,
         schema: ExtractionSchema,
         raw_pages: list[RawPage],
-    ) -> tuple[bool, float, list[dict[str, Any]], Optional[str]]:
+    ) -> tuple[bool, float, list[dict[str, Any]], str | None]:
         """Validate candidate schema across available representative pages.
 
         Returns:
@@ -40,7 +41,9 @@ class MultiPageRepairValidator:
 
         max_pages = min(len(raw_pages), self.settings.MAX_VALIDATION_PAGES)
         eval_pages = raw_pages[:max_pages]
-        logger.debug(f"Executing multi-page validation across {len(eval_pages)} representative pages...")
+        logger.debug(
+            f"Executing multi-page validation across {len(eval_pages)} representative pages..."
+        )
 
         per_page_metrics: list[dict[str, Any]] = []
         health_scores: list[float] = []
@@ -61,24 +64,36 @@ class MultiPageRepairValidator:
             )
 
             health_scores.append(val_res.health_score)
-            per_page_metrics.append({
-                "page_index": idx,
-                "url": page.url,
-                "records": len(ext_res.records),
-                "health_score": val_res.health_score,
-                "status": val_res.status,
-            })
+            per_page_metrics.append(
+                {
+                    "page_index": idx,
+                    "url": page.url,
+                    "records": len(ext_res.records),
+                    "health_score": val_res.health_score,
+                    "status": val_res.status,
+                }
+            )
 
             # If any individual page completely fails (< 0.40), reject multi-page validation
             if val_res.health_score < 0.40 and len(eval_pages) > 1:
                 reason = f"Multi-page inconsistency: Page #{idx} ({page.url}) failed with health={val_res.health_score:.2f}"
                 logger.warning(reason)
-                return False, sum(health_scores) / len(health_scores), per_page_metrics, reason
+                return (
+                    False,
+                    sum(health_scores) / len(health_scores),
+                    per_page_metrics,
+                    reason,
+                )
 
         avg_health = sum(health_scores) / len(health_scores)
         passed = avg_health >= 0.70
-        reason = None if passed else f"Aggregate multi-page health ({avg_health:.2f}) below threshold 0.70"
+        reason = (
+            None
+            if passed
+            else f"Aggregate multi-page health ({avg_health:.2f}) below threshold 0.70"
+        )
 
-        logger.debug(f"Multi-page validation completed: avg_health={avg_health:.2f}, passed={passed}")
+        logger.debug(
+            f"Multi-page validation completed: avg_health={avg_health:.2f}, passed={passed}"
+        )
         return passed, avg_health, per_page_metrics, reason
-

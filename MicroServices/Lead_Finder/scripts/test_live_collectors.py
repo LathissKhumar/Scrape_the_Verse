@@ -9,7 +9,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.registry import (
-    ScraperRegistry,
     compute_schema_hash,
     default_scraper_registry,
 )
@@ -50,13 +49,22 @@ async def main():
     # IndiaMART Discovery Collector
     indiamart_url = "https://dir.indiamart.com/search.mp"
     indiamart_fields = [
-        FieldDefinition(name="company_name", description="Name of the supplier or business"),
+        FieldDefinition(
+            name="company_name", description="Name of the supplier or business"
+        ),
         FieldDefinition(name="product_title", description="Title of the product"),
         FieldDefinition(name="price", description="Product price"),
-        FieldDefinition(name="contact_number", description="Supplier contact phone number"),
-        FieldDefinition(name="company_catalog_url", description="URL to company catalog"),
+        FieldDefinition(
+            name="contact_number", description="Supplier contact phone number"
+        ),
+        FieldDefinition(
+            name="company_catalog_url", description="URL to company catalog"
+        ),
     ]
-    im_norm = registry.find_compatible("https://dir.indiamart.com/search.mp", compute_schema_hash("https://dir.indiamart.com/search.mp", indiamart_fields))
+    im_norm = registry.find_compatible(
+        "https://dir.indiamart.com/search.mp",
+        compute_schema_hash("https://dir.indiamart.com/search.mp", indiamart_fields),
+    )
     if not im_norm or not im_norm.collector_id:
         im_rec = registry.create_record(
             target_url=indiamart_url,
@@ -68,9 +76,13 @@ async def main():
             status=CollectorStatus.READY,
             collector_id=settings.BRIGHTDATA_DISCOVERY_COLLECTOR_ID,
         )
-        print(f"[OK] Registered IndiaMART Collector: ID={im_rec.id} -> {settings.BRIGHTDATA_DISCOVERY_COLLECTOR_ID}")
+        print(
+            f"[OK] Registered IndiaMART Collector: ID={im_rec.id} -> {settings.BRIGHTDATA_DISCOVERY_COLLECTOR_ID}"
+        )
     else:
-        print(f"[OK] Existing IndiaMART Collector found in registry: {im_norm.collector_id}")
+        print(
+            f"[OK] Existing IndiaMART Collector found in registry: {im_norm.collector_id}"
+        )
 
     # Google Maps Collector
     gmaps_url = "https://www.google.com/maps/search/"
@@ -81,7 +93,10 @@ async def main():
         FieldDefinition(name="rating", description="Rating score"),
         FieldDefinition(name="category", description="Category or industry"),
     ]
-    gm_norm = registry.find_compatible("https://www.google.com/maps/search", compute_schema_hash("https://www.google.com/maps/search", gmaps_fields))
+    gm_norm = registry.find_compatible(
+        "https://www.google.com/maps/search",
+        compute_schema_hash("https://www.google.com/maps/search", gmaps_fields),
+    )
     if not gm_norm or not gm_norm.collector_id:
         gm_rec = registry.create_record(
             target_url=gmaps_url,
@@ -93,9 +108,13 @@ async def main():
             status=CollectorStatus.READY,
             collector_id=settings.BRIGHTDATA_GMAPS_COLLECTOR_ID,
         )
-        print(f"[OK] Registered Google Maps Collector: ID={gm_rec.id} -> {settings.BRIGHTDATA_GMAPS_COLLECTOR_ID}")
+        print(
+            f"[OK] Registered Google Maps Collector: ID={gm_rec.id} -> {settings.BRIGHTDATA_GMAPS_COLLECTOR_ID}"
+        )
     else:
-        print(f"[OK] Existing Google Maps Collector found in registry: {gm_norm.collector_id}")
+        print(
+            f"[OK] Existing Google Maps Collector found in registry: {gm_norm.collector_id}"
+        )
 
     # -------------------------------------------------------------
     # 2. Test Orchestrator Resolution (Verify Reuse)
@@ -107,8 +126,12 @@ async def main():
         fields=indiamart_fields,
     )
     resolve_res = await service.resolve_scraper(im_request)
-    print(f"Resolve IndiaMART Response: action={resolve_res.action}, status={resolve_res.status}, collector_id={resolve_res.collector_id}")
-    assert resolve_res.action == "reuse", "Expected action to be 'reuse' for existing collector!"
+    print(
+        f"Resolve IndiaMART Response: action={resolve_res.action}, status={resolve_res.status}, collector_id={resolve_res.collector_id}"
+    )
+    assert resolve_res.action == "reuse", (
+        "Expected action to be 'reuse' for existing collector!"
+    )
 
     # -------------------------------------------------------------
     # 3. Test Running IndiaMART Collector
@@ -122,7 +145,9 @@ async def main():
         im_start = time.time()
         im_records = await service.pipeline.run_discovery("solar panels")
         im_elapsed = round(time.time() - im_start, 2)
-        print(f"\n[OUTPUT] IndiaMART Scrape Result ({im_elapsed}s, records={len(im_records)}):")
+        print(
+            f"\n[OUTPUT] IndiaMART Scrape Result ({im_elapsed}s, records={len(im_records)}):"
+        )
         print(json.dumps(im_records[:3], indent=2))
     except Exception as e:
         print(f"IndiaMART run error: {e}")
@@ -131,14 +156,18 @@ async def main():
     # 4. Test Running Google Maps Collector
     # -------------------------------------------------------------
     print("\n[STEP 4] Running Google Maps Lead Discovery Collector...")
-    print(f"Query: 'plumbers in Chennai'")
+    print("Query: 'plumbers in Chennai'")
     print(f"Collector ID: {settings.BRIGHTDATA_GMAPS_COLLECTOR_ID}")
 
     try:
         gm_start = time.time()
-        gm_leads = await gmaps_service.get_local_leads(query="plumbers", location="Chennai")
+        gm_leads = await gmaps_service.get_local_leads(
+            query="plumbers", location="Chennai"
+        )
         gm_elapsed = round(time.time() - gm_start, 2)
-        print(f"\n[OUTPUT] Google Maps Scrape Result ({gm_elapsed}s, leads={len(gm_leads)}):")
+        print(
+            f"\n[OUTPUT] Google Maps Scrape Result ({gm_elapsed}s, leads={len(gm_leads)}):"
+        )
         print(json.dumps(gm_leads[:3], indent=2))
     except Exception as e:
         print(f"Google Maps run error: {e}")

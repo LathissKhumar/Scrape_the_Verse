@@ -1,7 +1,6 @@
-import pytest
-from unittest.mock import AsyncMock, patch, MagicMock
-from fastapi.testclient import TestClient
+from unittest.mock import AsyncMock, MagicMock, patch
 
+from fastapi.testclient import TestClient
 from leadfinder.agents.scraper import ScraperAgent
 from leadfinder.config.settings import Settings
 from leadfinder.main import app
@@ -57,7 +56,10 @@ def test_scrape_smart_routing_b2b_keyword():
     mock_gmaps = MagicMock()
     mock_gmaps.is_enabled = False
 
-    with patch("leadfinder.main.brightdata_service", mock_b2b), patch("leadfinder.main.gmaps_service", mock_gmaps):
+    with (
+        patch("leadfinder.main.brightdata_service", mock_b2b),
+        patch("leadfinder.main.gmaps_service", mock_gmaps),
+    ):
         client = TestClient(app)
         response = client.post(
             "/scrape",
@@ -94,7 +96,9 @@ def test_api_key_auth_enforcement():
         # 3. Valid X-API-Key -> 200
         mock_gmaps = MagicMock()
         mock_gmaps.is_enabled = True
-        mock_gmaps.get_local_leads = AsyncMock(return_value=[{"business_name": "Test Plumber"}])
+        mock_gmaps.get_local_leads = AsyncMock(
+            return_value=[{"business_name": "Test Plumber"}]
+        )
 
         with patch("leadfinder.main.gmaps_service", mock_gmaps):
             res_good_header = client.post(

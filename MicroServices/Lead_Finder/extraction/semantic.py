@@ -1,6 +1,5 @@
 """Lightweight relevance ranking and filtering of content chunks using cosine similarity."""
 
-from typing import Optional
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -22,12 +21,14 @@ class SemanticFilter:
         self,
         chunks: list[str],
         query: str,
-        top_k: Optional[int] = None,
-        threshold: Optional[float] = None,
+        top_k: int | None = None,
+        threshold: float | None = None,
     ) -> list[tuple[str, float]]:
         """Rank chunks by similarity to query, returning list of (chunk_text, similarity_score)."""
         effective_k = top_k or self.top_k
-        effective_threshold = threshold if threshold is not None else self.similarity_threshold
+        effective_threshold = (
+            threshold if threshold is not None else self.similarity_threshold
+        )
 
         if not chunks:
             return []
@@ -61,7 +62,9 @@ class SemanticFilter:
             scored_chunks.sort(key=lambda item: item[1], reverse=True)
 
             # Filter by threshold if matches exist above threshold
-            filtered = [item for item in scored_chunks if item[1] >= effective_threshold]
+            filtered = [
+                item for item in scored_chunks if item[1] >= effective_threshold
+            ]
             if filtered:
                 return filtered[:effective_k]
 
@@ -69,4 +72,3 @@ class SemanticFilter:
 
         except Exception:
             return [(c, 1.0) for c in valid_chunks[:effective_k]]
-

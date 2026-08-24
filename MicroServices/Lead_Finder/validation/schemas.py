@@ -1,5 +1,6 @@
 from enum import Enum
-from typing import Any, Literal, Optional
+from typing import Any, Literal
+
 from pydantic import BaseModel, Field
 
 ValidationStatus = Literal["healthy", "degraded", "unstable", "broken"]
@@ -30,11 +31,21 @@ class FailureItem(BaseModel):
 class FieldMetric(BaseModel):
     """Coverage and validity metrics for a specific requested field."""
 
-    coverage: float = Field(default=0.0, description="Ratio of non-empty, valid values to total records.")
-    valid_count: int = Field(default=0, description="Count of valid, non-empty, non-placeholder values.")
-    empty_count: int = Field(default=0, description="Count of null, empty string, or whitespace values.")
-    invalid_type_count: int = Field(default=0, description="Count of values failing type validation.")
-    placeholder_count: int = Field(default=0, description="Count of placeholder values (e.g. N/A, unknown).")
+    coverage: float = Field(
+        default=0.0, description="Ratio of non-empty, valid values to total records."
+    )
+    valid_count: int = Field(
+        default=0, description="Count of valid, non-empty, non-placeholder values."
+    )
+    empty_count: int = Field(
+        default=0, description="Count of null, empty string, or whitespace values."
+    )
+    invalid_type_count: int = Field(
+        default=0, description="Count of values failing type validation."
+    )
+    placeholder_count: int = Field(
+        default=0, description="Count of placeholder values (e.g. N/A, unknown)."
+    )
 
 
 class DuplicateMetric(BaseModel):
@@ -68,10 +79,14 @@ class ValidationResult(BaseModel):
     """Comprehensive diagnostic container produced by ValidationEngine."""
 
     status: ValidationStatus = "healthy"
-    health_score: float = Field(default=1.0, ge=0.0, le=1.0, description="Operational pipeline health score.")
-    quality_score: float = Field(default=1.0, ge=0.0, le=1.0, description="Intrinsic source data quality score.")
+    health_score: float = Field(
+        default=1.0, ge=0.0, le=1.0, description="Operational pipeline health score."
+    )
+    quality_score: float = Field(
+        default=1.0, ge=0.0, le=1.0, description="Intrinsic source data quality score."
+    )
     record_count: int = 0
-    expected_record_count: Optional[int] = None
+    expected_record_count: int | None = None
     field_metrics: dict[str, FieldMetric] = Field(default_factory=dict)
     duplicate_metrics: DuplicateMetric = Field(default_factory=DuplicateMetric)
     url_metrics: UrlMetric = Field(default_factory=UrlMetric)

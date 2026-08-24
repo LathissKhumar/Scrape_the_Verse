@@ -3,7 +3,9 @@ Unit tests for async SQLite repositories.
 """
 
 import os
+
 import pytest
+
 from MicroServices.Lead_Manager.domain.lead import Lead
 from MicroServices.Lead_Manager.domain.opportunity import Opportunity
 from MicroServices.Lead_Manager.domain.stage import LeadStage, TaskStatus, TaskType
@@ -72,7 +74,9 @@ async def test_lead_and_task_crud(db):
     assert updated_task.status == TaskStatus.COMPLETED
 
     # 5. Update Lead recommended_services
-    updated_lead = await lead_repo.update(created_lead.id, {"recommended_services": ["WEBSITE_REDESIGN", "LOCAL_SEO"]})
+    updated_lead = await lead_repo.update(
+        created_lead.id, {"recommended_services": ["WEBSITE_REDESIGN", "LOCAL_SEO"]}
+    )
     assert updated_lead is not None
     assert len(updated_lead.recommended_services) == 2
     assert "WEBSITE_REDESIGN" in updated_lead.recommended_services

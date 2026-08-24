@@ -1,13 +1,14 @@
 """Thread Correlator correlating messages into unified conversations."""
+
 import re
 import uuid
-from datetime import datetime, timezone
-from typing import Optional, List
+
 from app.persistence.models import EmailMessage, EmailThread
-from app.persistence.repository import Repository, repository as default_repo
+from app.persistence.repository import Repository
+from app.persistence.repository import repository as default_repo
 
 
-def normalize_subject(subject: Optional[str]) -> str:
+def normalize_subject(subject: str | None) -> str:
     """Removes Re:, Fwd:, Aw:, etc. prefixes from subject."""
     if not subject:
         return ""
@@ -19,7 +20,7 @@ def normalize_subject(subject: Optional[str]) -> str:
 
 
 class ThreadCorrelator:
-    def __init__(self, repo: Optional[Repository] = None):
+    def __init__(self, repo: Repository | None = None):
         self.repo = repo or default_repo
 
     async def correlate(self, message: EmailMessage) -> EmailThread:
@@ -31,7 +32,7 @@ class ThreadCorrelator:
         3. Check Message-ID against known threads.
         4. If not found, create a new thread.
         """
-        matched_thread: Optional[EmailThread] = None
+        matched_thread: EmailThread | None = None
 
         # 1. Check In-Reply-To
         if message.in_reply_to:
@@ -64,8 +65,9 @@ class ThreadCorrelator:
             for p in [message.sender_email] + message.to:
                 if p and p not in matched_thread.participants:
                     matched_thread.participants.append(p)
-            if message.received_at > matched_thread.last_message_at:
-                matched_thread.last_message_at = message.received_at
+            matched_thread.last_message_at = max(
+                matched_thread.last_message_at, message.received_at
+            )
             # Update subject if thread didn't have one
             if not matched_thread.subject and message.subject:
                 matched_thread.subject = message.subject

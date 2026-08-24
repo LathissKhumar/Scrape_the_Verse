@@ -1,3 +1,3 @@
-# Scrape-Verse Landing Page — Design Spec
+# Scrape-Verse Landing Page ï¿½ Design Spec
 
 See implementation plan for full details.

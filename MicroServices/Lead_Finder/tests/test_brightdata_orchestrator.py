@@ -3,9 +3,9 @@
 import asyncio
 import os
 import tempfile
-import pytest
 from unittest.mock import AsyncMock, patch
 
+import pytest
 from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.jobs import ScraperJobManager
 from leadfinder.brightdata.registry import ScraperRegistry
@@ -58,7 +58,9 @@ async def test_resolve_new_request_triggers_creation(temp_service):
         ],
     )
 
-    with patch.object(temp_service.client, "create_scraper", new_callable=AsyncMock) as mock_create:
+    with patch.object(
+        temp_service.client, "create_scraper", new_callable=AsyncMock
+    ) as mock_create:
         mock_create.return_value = "c_book_scraper_99"
 
         # 1. First resolve request: initiates creation
@@ -127,7 +129,9 @@ async def test_resolve_creation_failure_handling(temp_service):
         fields=[FieldDefinition(name="f1")],
     )
 
-    with patch.object(temp_service.client, "create_scraper", new_callable=AsyncMock) as mock_create:
+    with patch.object(
+        temp_service.client, "create_scraper", new_callable=AsyncMock
+    ) as mock_create:
         mock_create.side_effect = Exception("Bright Data CLI network timeout")
 
         res = await temp_service.resolve_scraper(request)
@@ -145,7 +149,9 @@ async def test_resolve_creation_failure_handling(temp_service):
 
 @pytest.mark.asyncio
 async def test_run_collector_execution(temp_service):
-    with patch.object(temp_service.client, "run_scraper", new_callable=AsyncMock) as mock_run:
+    with patch.object(
+        temp_service.client, "run_scraper", new_callable=AsyncMock
+    ) as mock_run:
         mock_run.return_value = [{"title": "Book A", "price": "$12.99"}]
 
         run_res = await temp_service.run_collector(
@@ -159,7 +165,9 @@ async def test_run_collector_execution(temp_service):
 
 @pytest.mark.asyncio
 async def test_heal_collector_execution(temp_service):
-    with patch.object(temp_service.client, "heal_scraper", new_callable=AsyncMock) as mock_heal:
+    with patch.object(
+        temp_service.client, "heal_scraper", new_callable=AsyncMock
+    ) as mock_heal:
         mock_heal.return_value = {"message": "Repaired layout"}
 
         heal_res = await temp_service.heal_collector(

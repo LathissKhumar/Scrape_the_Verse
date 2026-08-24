@@ -1,8 +1,9 @@
 """Memory usage monitoring for crawler instances"""
-import psutil
-import sys
+
 import threading
 from datetime import datetime
+
+import psutil
 
 
 class MemoryMonitor:
@@ -26,34 +27,32 @@ class MemoryMonitor:
         """Update current memory usage and track peak"""
         with self.monitor_lock:
             self.current_memory_mb = self._get_process_memory_mb()
-            if self.current_memory_mb > self.peak_memory_mb:
-                self.peak_memory_mb = self.current_memory_mb
+            self.peak_memory_mb = max(self.peak_memory_mb, self.current_memory_mb)
 
     def get_stats(self):
         """Get memory statistics"""
         with self.monitor_lock:
             # Update before returning stats
             self.current_memory_mb = self._get_process_memory_mb()
-            if self.current_memory_mb > self.peak_memory_mb:
-                self.peak_memory_mb = self.current_memory_mb
+            self.peak_memory_mb = max(self.peak_memory_mb, self.current_memory_mb)
 
             # System memory
             system_memory = psutil.virtual_memory()
 
             return {
-                'process': {
-                    'current_mb': round(self.current_memory_mb, 2),
-                    'peak_mb': round(self.peak_memory_mb, 2),
-                    'start_mb': round(self.start_memory_mb, 2),
-                    'delta_mb': round(self.current_memory_mb - self.start_memory_mb, 2)
+                "process": {
+                    "current_mb": round(self.current_memory_mb, 2),
+                    "peak_mb": round(self.peak_memory_mb, 2),
+                    "start_mb": round(self.start_memory_mb, 2),
+                    "delta_mb": round(self.current_memory_mb - self.start_memory_mb, 2),
                 },
-                'system': {
-                    'total_mb': round(system_memory.total / 1024 / 1024, 2),
-                    'available_mb': round(system_memory.available / 1024 / 1024, 2),
-                    'used_mb': round(system_memory.used / 1024 / 1024, 2),
-                    'percent': system_memory.percent
+                "system": {
+                    "total_mb": round(system_memory.total / 1024 / 1024, 2),
+                    "available_mb": round(system_memory.available / 1024 / 1024, 2),
+                    "used_mb": round(system_memory.used / 1024 / 1024, 2),
+                    "percent": system_memory.percent,
                 },
-                'timestamp': datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
 
     def _get_process_memory_mb(self):
@@ -85,12 +84,12 @@ class MemoryMonitor:
             estimated_mb = (num_urls * mb_per_url) * 1.2
 
             return {
-                'estimated_total_mb': round(estimated_mb, 2),
-                'mb_per_url': round(mb_per_url, 4),
-                'kb_per_url': round(mb_per_url * 1024, 2),
-                'estimated_for_1m_urls': round(mb_per_url * 1_000_000, 2),
-                'estimated_for_5m_urls': round(mb_per_url * 5_000_000, 2),
-                'estimated_for_10m_urls': round(mb_per_url * 10_000_000, 2)
+                "estimated_total_mb": round(estimated_mb, 2),
+                "mb_per_url": round(mb_per_url, 4),
+                "kb_per_url": round(mb_per_url * 1024, 2),
+                "estimated_for_1m_urls": round(mb_per_url * 1_000_000, 2),
+                "estimated_for_5m_urls": round(mb_per_url * 5_000_000, 2),
+                "estimated_for_10m_urls": round(mb_per_url * 10_000_000, 2),
             }
 
     def reset(self):

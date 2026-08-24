@@ -1,5 +1,5 @@
 from leadfinder.extraction.css import CSSExtractor
-from leadfinder.extraction.schema import ExtractionSchema, FieldRule, RawPage
+from leadfinder.extraction.schema import ExtractionSchema, FieldRule
 
 
 def test_css_extraction_with_base_selector():

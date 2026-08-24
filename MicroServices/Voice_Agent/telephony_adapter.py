@@ -3,14 +3,13 @@ Telephony Adapter & Call Management for Voice Agent (Layer 9).
 Handles both live Twilio PSTN calls and simulated call testing sessions with Lead Manager integration.
 """
 
-from typing import Any, Dict, List, Optional
 import httpx
+
 from .domain.call_session import (
     CallDisposition,
     CallSession,
     CallStatus,
     CallTurn,
-    utc_now_iso,
 )
 from .state_machine import VoiceConversationEngine
 
@@ -28,11 +27,11 @@ class TelephonyAdapter:
     async def simulate_call(
         self,
         company_name: str,
-        prospect_phone: Optional[str] = None,
-        contact_name: Optional[str] = None,
+        prospect_phone: str | None = None,
+        contact_name: str | None = None,
         has_website: bool = True,
-        lead_id: Optional[str] = None,
-        simulated_prospect_responses: Optional[List[str]] = None,
+        lead_id: str | None = None,
+        simulated_prospect_responses: list[str] | None = None,
     ) -> CallSession:
         """
         Runs an automated simulated call conversation across multiple turns.
@@ -63,10 +62,12 @@ class TelephonyAdapter:
 
         current_state = "OPENING"
         for user_speech in turns:
-            agent_resp, next_state, disp, score = VoiceConversationEngine.process_prospect_turn(
-                session=session,
-                user_speech=user_speech,
-                current_state=current_state,
+            agent_resp, next_state, disp, score = (
+                VoiceConversationEngine.process_prospect_turn(
+                    session=session,
+                    user_speech=user_speech,
+                    current_state=current_state,
+                )
             )
             current_state = next_state
             if session.status == CallStatus.COMPLETED:
@@ -96,14 +97,20 @@ class TelephonyAdapter:
             try:
                 # 1. Log call activity
                 event_payload = {
-                    "type": "email.intent_detected" if session.disposition == CallDisposition.MEETING_BOOKED else "lead.qualified",
+                    "type": "email.intent_detected"
+                    if session.disposition == CallDisposition.MEETING_BOOKED
+                    else "lead.qualified",
                     "lead_id": session.lead_id,
                     "actor": "VoiceAgent",
                     "payload": {
-                        "intent": "REQUEST_MEETING" if session.disposition == CallDisposition.MEETING_BOOKED else "INTERESTED",
+                        "intent": "REQUEST_MEETING"
+                        if session.disposition == CallDisposition.MEETING_BOOKED
+                        else "INTERESTED",
                         "summary": session.call_summary,
                         "interest_score": session.interest_score,
-                        "disposition": session.disposition.value if session.disposition else None,
+                        "disposition": session.disposition.value
+                        if session.disposition
+                        else None,
                         "transcript": [t.model_dump() for t in session.transcript],
                     },
                 }
@@ -117,7 +124,8 @@ class TelephonyAdapter:
                     meeting_payload = {
                         "lead_id": session.lead_id,
                         "title": f"Discovery Call with {session.company_name}",
-                        "scheduled_at": session.booked_meeting_time or "2026-08-27T14:00:00Z",
+                        "scheduled_at": session.booked_meeting_time
+                        or "2026-08-27T14:00:00Z",
                         "duration_minutes": 30,
                         "organizer_email": "sales@agencyos.local",
                         "attendee_email": "prospect@client.com",

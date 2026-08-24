@@ -1,14 +1,15 @@
-from typing import List, Any
+from typing import Any
+
 from pydantic import BaseModel
+
+from business_analysis.llm import get_structured_llm
 from business_analysis.schemas.models import (
-    Opportunity,
     AgencyService,
     NodeExecutionStatus,
     NodeStatusEnum,
+    Opportunity,
 )
-from business_analysis.llm import get_structured_llm
 from business_analysis.state import BusinessAnalysisState, get_relevant_evidence
-
 
 OPPORTUNITY_MAPPING_PROMPT = """ROLE: You are an expert Digital Agency Opportunity & Growth Strategist.
 OBJECTIVE: Map identified business problems to actionable digital agency opportunities and prioritized service recommendations.
@@ -51,7 +52,9 @@ RULES:
 """
 
 
-def map_problem_to_services(problem: Any, website_present: bool = True) -> List[AgencyService]:
+def map_problem_to_services(
+    problem: Any, website_present: bool = True
+) -> list[AgencyService]:
     # Accept either a BusinessProblem object or a raw string/enum
     if hasattr(problem, "problem"):
         text = problem.problem.upper()
@@ -62,38 +65,69 @@ def map_problem_to_services(problem: Any, website_present: bool = True) -> List[
     else:
         text = str(getattr(problem, "value", problem)).upper()
 
-    if "NO WEBSITE" in text or "WEBSITE_ABSENT" in text or "NO_WEBSITE" in text or not website_present:
+    if (
+        "NO WEBSITE" in text
+        or "WEBSITE_ABSENT" in text
+        or "NO_WEBSITE" in text
+        or not website_present
+    ):
         return [AgencyService.NEW_WEBSITE, AgencyService.DIGITAL_PRESENCE]
     if "WEAK LOCAL" in text or "LOCAL" in text or "DISCOVERY" in text:
-        return [AgencyService.LOCAL_SEO, AgencyService.CONTENT, AgencyService.DIGITAL_PRESENCE]
+        return [
+            AgencyService.LOCAL_SEO,
+            AgencyService.CONTENT,
+            AgencyService.DIGITAL_PRESENCE,
+        ]
     if "TECHNICAL SEO" in text or "TECHNICAL_SEO" in text:
         return [AgencyService.TECHNICAL_SEO, AgencyService.SEO]
-    if "CONTENT GAP" in text or "CONTENT_GAP" in text or "SERVICE_VISIBILITY" in text or "CONTENT" in text:
-        return [AgencyService.CONTENT, AgencyService.LANDING_PAGE, AgencyService.SERVICE_LANDING_PAGES, AgencyService.SEO]
+    if (
+        "CONTENT GAP" in text
+        or "CONTENT_GAP" in text
+        or "SERVICE_VISIBILITY" in text
+        or "CONTENT" in text
+    ):
+        return [
+            AgencyService.CONTENT,
+            AgencyService.LANDING_PAGE,
+            AgencyService.SERVICE_LANDING_PAGES,
+            AgencyService.SEO,
+        ]
     if "CONVERSION" in text or "UX" in text:
         return [AgencyService.CONVERSION_OPTIMIZATION, AgencyService.WEBSITE_REDESIGN]
-    
+
     return [AgencyService.LOCAL_SEO, AgencyService.CONTENT]
 
 
-
 class OpportunityContainer(BaseModel):
-    opportunities: List[Opportunity] = []
-
+    opportunities: list[Opportunity] = []
 
 
 def opportunity_agent(state: BusinessAnalysisState) -> BusinessAnalysisState:
     relevant_evidence = get_relevant_evidence(state, "opportunity")
     problems = state.get("business_problems", [])
 
-    problems_text = "\n".join([
-        f"- [{p.id}] {p.title} (Type: {p.type.value}, Impact: {p.business_impact}/10): {p.description}"
-        for p in problems
-    ]) if problems else "Specialized service visibility and local search discovery gap."
+    problems_text = (
+        "\n".join(
+            [
+                f"- [{p.id}] {p.title} (Type: {p.type.value}, Impact: {p.business_impact}/10): {p.description}"
+                for p in problems
+            ]
+        )
+        if problems
+        else "Specialized service visibility and local search discovery gap."
+    )
 
     profile = state.get("business_profile")
-    industry_val = profile.industry.value if profile and hasattr(profile.industry, 'value') else state["input_business"].industry
-    location_val = profile.geographic_market.value if profile and hasattr(profile.geographic_market, 'value') else state["input_business"].location
+    industry_val = (
+        profile.industry.value
+        if profile and hasattr(profile.industry, "value")
+        else state["input_business"].industry
+    )
+    location_val = (
+        profile.geographic_market.value
+        if profile and hasattr(profile.geographic_market, "value")
+        else state["input_business"].location
+    )
 
     prompt = OPPORTUNITY_MAPPING_PROMPT.format(
         problems_text=problems_text,
@@ -113,13 +147,17 @@ def opportunity_agent(state: BusinessAnalysisState) -> BusinessAnalysisState:
         else:
             opps = []
 
-
         if not opps:
             opps = [
                 Opportunity(
                     problem_reference="Specialized Service Acquisition & Visibility Gap",
                     opportunity="Create specialized local search acquisition funnels and dedicated anxiety-care landing pages",
-                    recommended_services=[AgencyService.LOCAL_SEO, AgencyService.CONTENT, AgencyService.SERVICE_LANDING_PAGES, AgencyService.CONVERSION_OPTIMIZATION],
+                    recommended_services=[
+                        AgencyService.LOCAL_SEO,
+                        AgencyService.CONTENT,
+                        AgencyService.SERVICE_LANDING_PAGES,
+                        AgencyService.CONVERSION_OPTIMIZATION,
+                    ],
                     expected_business_outcome="Improve non-branded local search discovery and conversion for high-value specialized dental treatment inquiries",
                     impact=8,
                     urgency=8,
@@ -132,7 +170,11 @@ def opportunity_agent(state: BusinessAnalysisState) -> BusinessAnalysisState:
                 Opportunity(
                     problem_reference="Non-Branded Local Search Discovery Deficit",
                     opportunity="Optimize local search presence and digital trust signals in Amsterdam",
-                    recommended_services=[AgencyService.LOCAL_SEO, AgencyService.CONTENT, AgencyService.DIGITAL_PRESENCE],
+                    recommended_services=[
+                        AgencyService.LOCAL_SEO,
+                        AgencyService.CONTENT,
+                        AgencyService.DIGITAL_PRESENCE,
+                    ],
                     expected_business_outcome="Strengthen Google Map Pack and local search visibility for general and specialist dental queries in Amsterdam",
                     impact=7,
                     urgency=7,
@@ -151,11 +193,27 @@ def opportunity_agent(state: BusinessAnalysisState) -> BusinessAnalysisState:
             conf = opp.confidence or 0.8
             urg = opp.urgency or 5
             s_fit = opp.service_fit or 5
-            calc_priority = int(round((imp * 0.30) + (bv * 0.25) + (conf * 10 * 0.20) + (urg * 0.15) + (s_fit * 10 * 0.10)))
+            calc_priority = int(
+                round(
+                    (imp * 0.30)
+                    + (bv * 0.25)
+                    + (conf * 10 * 0.20)
+                    + (urg * 0.15)
+                    + (s_fit * 10 * 0.10)
+                )
+            )
             opp.priority = max(1, min(10, calc_priority))
 
-        statuses["opportunity"] = NodeExecutionStatus(status=NodeStatusEnum.SUCCESS, confidence=0.88)
+        statuses["opportunity"] = NodeExecutionStatus(
+            status=NodeStatusEnum.SUCCESS, confidence=0.88
+        )
         return {**state, "opportunities": opps, "node_statuses": statuses}
     except Exception as e:
-        statuses["opportunity"] = NodeExecutionStatus(status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e))
-        return {**state, "errors": state.get("errors", []) + [f"OpportunityAgent error: {str(e)}"], "node_statuses": statuses}
+        statuses["opportunity"] = NodeExecutionStatus(
+            status=NodeStatusEnum.FAILED, confidence=0.0, error_message=str(e)
+        )
+        return {
+            **state,
+            "errors": state.get("errors", []) + [f"OpportunityAgent error: {e!s}"],
+            "node_statuses": statuses,
+        }

@@ -1,7 +1,8 @@
 """Data schemas and transfer models for extraction operations."""
 
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -20,12 +21,20 @@ class ExtractionStrategyEnum(str, Enum):
 class RawPage(BaseModel):
     """Container for raw scraped content retrieved from Bright Data or web transport."""
 
-    url: Optional[str] = Field(default=None, description="Target URL of the page.")
-    html: Optional[str] = Field(default=None, description="Raw HTML string if returned.")
-    markdown: Optional[str] = Field(default=None, description="Raw Markdown string if returned.")
-    text: Optional[str] = Field(default=None, description="Extracted plain text if returned.")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Page metadata (status, headers, etc.).")
-    raw_payload: Optional[Any] = Field(default=None, description="Raw underlying payload object.")
+    url: str | None = Field(default=None, description="Target URL of the page.")
+    html: str | None = Field(default=None, description="Raw HTML string if returned.")
+    markdown: str | None = Field(
+        default=None, description="Raw Markdown string if returned."
+    )
+    text: str | None = Field(
+        default=None, description="Extracted plain text if returned."
+    )
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Page metadata (status, headers, etc.)."
+    )
+    raw_payload: Any | None = Field(
+        default=None, description="Raw underlying payload object."
+    )
 
     def get_primary_content(self) -> str:
         """Return the richest available text representation."""
@@ -44,11 +53,21 @@ class FieldRule(BaseModel):
     """Rule defining how a single field should be extracted."""
 
     name: str = Field(..., description="Target field name.")
-    field_type: str = Field(default="string", description="Field type (string, number, url, email, etc.).")
-    selector: Optional[str] = Field(default=None, description="CSS selector or XPath expression.")
-    attribute: Optional[str] = Field(default=None, description="HTML attribute to extract (e.g. href, src, title).")
-    regex_pattern: Optional[str] = Field(default=None, description="Regular expression pattern if applicable.")
-    default_value: Optional[Any] = Field(default=None, description="Default value if extraction fails.")
+    field_type: str = Field(
+        default="string", description="Field type (string, number, url, email, etc.)."
+    )
+    selector: str | None = Field(
+        default=None, description="CSS selector or XPath expression."
+    )
+    attribute: str | None = Field(
+        default=None, description="HTML attribute to extract (e.g. href, src, title)."
+    )
+    regex_pattern: str | None = Field(
+        default=None, description="Regular expression pattern if applicable."
+    )
+    default_value: Any | None = Field(
+        default=None, description="Default value if extraction fails."
+    )
 
 
 class ExtractionSchema(BaseModel):
@@ -58,7 +77,7 @@ class ExtractionSchema(BaseModel):
         default=ExtractionStrategyEnum.LLM,
         description="Primary extraction strategy to attempt.",
     )
-    base_selector: Optional[str] = Field(
+    base_selector: str | None = Field(
         default=None,
         description="Container selector (CSS or XPath) for repeating records.",
     )
@@ -91,4 +110,3 @@ class ExtractionResult(BaseModel):
         default_factory=dict,
         description="Extraction diagnostics and statistics.",
     )
-

@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from leadfinder.config.logging import get_logger
 from leadfinder.models.schemas import ScrapingTask
@@ -25,12 +25,12 @@ class ValidationEngine:
 
     def __init__(
         self,
-        completeness_validator: Optional[CompletenessValidator] = None,
-        type_validator: Optional[TypeValidator] = None,
-        url_validator: Optional[URLValidator] = None,
-        duplicate_validator: Optional[DuplicateValidator] = None,
-        anomaly_detector: Optional[AnomalyDetector] = None,
-        health_scorer: Optional[HealthScorer] = None,
+        completeness_validator: CompletenessValidator | None = None,
+        type_validator: TypeValidator | None = None,
+        url_validator: URLValidator | None = None,
+        duplicate_validator: DuplicateValidator | None = None,
+        anomaly_detector: AnomalyDetector | None = None,
+        health_scorer: HealthScorer | None = None,
     ):
         self.completeness_validator = completeness_validator or CompletenessValidator()
         self.type_validator = type_validator or TypeValidator()
@@ -41,22 +41,30 @@ class ValidationEngine:
 
     def validate(
         self,
-        records: Optional[list[dict[str, Any]]] = None,
-        task: Optional[ScrapingTask] = None,
-        raw_results: Optional[Any] = None,
-        historical_baseline: Optional[HistoricalBaseline] = None,
-        extracted_results: Optional[list[dict[str, Any]]] = None,
+        records: list[dict[str, Any]] | None = None,
+        task: ScrapingTask | None = None,
+        raw_results: Any | None = None,
+        historical_baseline: HistoricalBaseline | None = None,
+        extracted_results: list[dict[str, Any]] | None = None,
     ) -> ValidationResult:
         """Perform comprehensive deterministic validation across extracted records and scraping task."""
         actual_records = records if records is not None else (extracted_results or [])
-        actual_task = task or ScrapingTask(task_id="unknown", objective="", target_urls=[])
+        actual_task = task or ScrapingTask(
+            task_id="unknown", objective="", target_urls=[]
+        )
         total_records = len(actual_records)
-        fields = actual_task.fields or (list(actual_records[0].keys()) if actual_records else [])
+        fields = actual_task.fields or (
+            list(actual_records[0].keys()) if actual_records else []
+        )
 
-        logger.debug(f"task_id={actual_task.task_id} Validating {total_records} record(s) across {len(fields)} field(s)")
+        logger.debug(
+            f"task_id={actual_task.task_id} Validating {total_records} record(s) across {len(fields)} field(s)"
+        )
 
         # 1. Evaluate Field Completeness & Placeholders
-        field_metrics: dict[str, FieldMetric] = self.completeness_validator.evaluate_all(actual_records, fields)
+        field_metrics: dict[str, FieldMetric] = (
+            self.completeness_validator.evaluate_all(actual_records, fields)
+        )
 
         # 2. Evaluate Schema & Types
         schema_metrics: SchemaMetric = self.type_validator.validate_records_schema(
@@ -72,19 +80,26 @@ class ValidationEngine:
                     invalid_types = 0
                     for r in actual_records:
                         v = r.get(f)
-                        if v is not None and not self.type_validator.validate_value(v, str(expected_t)):
+                        if v is not None and not self.type_validator.validate_value(
+                            v, str(expected_t)
+                        ):
                             invalid_types += 1
                     field_metrics[f].invalid_type_count = invalid_types
 
         # 3. Evaluate URLs
         url_fields = [
-            f for f, t in (actual_task.output_schema or {}).items()
+            f
+            for f, t in (actual_task.output_schema or {}).items()
             if str(t).lower() in ("url", "link", "uri")
         ]
-        url_metrics: UrlMetric = self.url_validator.evaluate_urls(actual_records, url_fields=url_fields)
+        url_metrics: UrlMetric = self.url_validator.evaluate_urls(
+            actual_records, url_fields=url_fields
+        )
 
         # 4. Evaluate Duplicates
-        duplicate_metrics: DuplicateMetric = self.duplicate_validator.evaluate_duplicates(actual_records)
+        duplicate_metrics: DuplicateMetric = (
+            self.duplicate_validator.evaluate_duplicates(actual_records)
+        )
 
         # 5. Detect Anomalies & Failures
         anomalies, failures = self.anomaly_detector.detect_anomalies(
@@ -104,7 +119,9 @@ class ValidationEngine:
                 field_metrics=field_metrics,
                 duplicate_metrics=duplicate_metrics,
             )
-            base_anomalies, base_failures = compare_with_baseline(temp_result, historical_baseline)
+            base_anomalies, base_failures = compare_with_baseline(
+                temp_result, historical_baseline
+            )
             anomalies.extend(base_anomalies)
             failures.extend(base_failures)
 

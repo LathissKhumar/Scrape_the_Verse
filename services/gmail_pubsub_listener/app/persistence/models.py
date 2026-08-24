@@ -1,6 +1,7 @@
 """Database and domain models for the persistence layer."""
+
 from datetime import datetime, timezone
-from typing import Optional, List
+
 from pydantic import BaseModel, Field
 
 
@@ -19,45 +20,47 @@ class GmailAccountRecord(BaseModel):
 class MailboxStateRecord(BaseModel):
     mailbox: str = "INBOX"
     last_uid: int = 0
-    last_sync_at: Optional[str] = None
+    last_sync_at: str | None = None
     status: str = "IDLE"
 
 
 class EmailMessage(BaseModel):
     id: str  # Generated unique internal ID or hash
-    thread_id: Optional[str] = None
+    thread_id: str | None = None
     mailbox: str = "INBOX"
     uid: int = 0
 
     sender_email: str
-    sender_name: Optional[str] = None
+    sender_name: str | None = None
 
-    to: List[str] = Field(default_factory=list)
-    cc: List[str] = Field(default_factory=list)
-    bcc: List[str] = Field(default_factory=list)
+    to: list[str] = Field(default_factory=list)
+    cc: list[str] = Field(default_factory=list)
+    bcc: list[str] = Field(default_factory=list)
 
-    subject: Optional[str] = None
-    text_body: Optional[str] = None
-    html_body: Optional[str] = None
+    subject: str | None = None
+    text_body: str | None = None
+    html_body: str | None = None
 
     received_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    message_id_header: Optional[str] = None
-    in_reply_to: Optional[str] = None
-    references: List[str] = Field(default_factory=list)
+    message_id_header: str | None = None
+    in_reply_to: str | None = None
+    references: list[str] = Field(default_factory=list)
 
-    labels: List[str] = Field(default_factory=list)
-    raw_hash: Optional[str] = None
+    labels: list[str] = Field(default_factory=list)
+    raw_hash: str | None = None
     created_at: str = Field(default_factory=utc_now_iso)
 
 
 class EmailThread(BaseModel):
     thread_id: str
-    lead_id: Optional[str] = None
-    subject: Optional[str] = None
-    participants: List[str] = Field(default_factory=list)
-    message_ids: List[str] = Field(default_factory=list)
-    last_message_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    lead_id: str | None = None
+    subject: str | None = None
+    participants: list[str] = Field(default_factory=list)
+    message_ids: list[str] = Field(default_factory=list)
+    last_message_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
     status: str = "ACTIVE"  # ACTIVE, WAITING_FOR_PROSPECT, WAITING_FOR_AGENCY, CLOSED
 
 
@@ -66,7 +69,7 @@ class ClassificationRecord(BaseModel):
     intent: str
     confidence: float
     reason: str
-    suggested_action: Optional[str] = None
+    suggested_action: str | None = None
     model: str = "rules"
     created_at: str = Field(default_factory=utc_now_iso)
 
@@ -74,22 +77,22 @@ class ClassificationRecord(BaseModel):
 class EventRecord(BaseModel):
     id: str
     event_type: str
-    aggregate_type: Optional[str] = None
-    aggregate_id: Optional[str] = None
+    aggregate_type: str | None = None
+    aggregate_id: str | None = None
     payload: str  # JSON-serialized string
     status: str = "PENDING"  # PENDING, PROCESSING, COMPLETED, FAILED
     created_at: str = Field(default_factory=utc_now_iso)
-    processed_at: Optional[str] = None
+    processed_at: str | None = None
 
 
 class OutboundMessageRecord(BaseModel):
     id: str
-    lead_id: Optional[str] = None
-    thread_id: Optional[str] = None
+    lead_id: str | None = None
+    thread_id: str | None = None
     to_address: str
     subject: str
-    body_text: Optional[str] = None
+    body_text: str | None = None
     status: str = "PENDING"  # PENDING, SENT, FAILED
-    provider_message_id: Optional[str] = None
-    error_message: Optional[str] = None
+    provider_message_id: str | None = None
+    error_message: str | None = None
     created_at: str = Field(default_factory=utc_now_iso)

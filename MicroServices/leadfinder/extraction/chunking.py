@@ -1,7 +1,6 @@
 """Content chunker for splitting large texts with sentence boundary preservation."""
 
 import re
-from typing import Optional
 
 _PARAGRAPH_SPLIT_PATTERN = re.compile(r"\n\s*\n")
 _SENTENCE_SPLIT_PATTERN = re.compile(r"(?<=[.!?])\s+")
@@ -23,7 +22,7 @@ class ContentChunker:
     def chunk_text(
         self,
         text: str,
-        preserve_context_prefix: Optional[str] = None,
+        preserve_context_prefix: str | None = None,
     ) -> list[str]:
         """Split plain or markdown text into chunks respecting sentence and paragraph boundaries."""
         cleaned = text.strip()
@@ -35,7 +34,9 @@ class ContentChunker:
                 return [f"{preserve_context_prefix.strip()}\n\n{cleaned}"]
             return [cleaned]
 
-        paragraphs = [p.strip() for p in _PARAGRAPH_SPLIT_PATTERN.split(cleaned) if p.strip()]
+        paragraphs = [
+            p.strip() for p in _PARAGRAPH_SPLIT_PATTERN.split(cleaned) if p.strip()
+        ]
         chunks: list[str] = []
         current_chunk: list[str] = []
         current_length = 0
@@ -48,7 +49,11 @@ class ContentChunker:
             else:
                 if current_chunk:
                     chunks.append("\n\n".join(current_chunk))
-                    overlap_para = current_chunk[-1] if len(current_chunk[-1]) <= self.chunk_overlap else ""
+                    overlap_para = (
+                        current_chunk[-1]
+                        if len(current_chunk[-1]) <= self.chunk_overlap
+                        else ""
+                    )
                     current_chunk = [overlap_para] if overlap_para else []
                     current_length = len(overlap_para)
 
@@ -77,5 +82,8 @@ class ContentChunker:
             prefix = preserve_context_prefix.strip()
             chunks = [f"{prefix}\n\n{c}" for c in chunks]
 
-        return [c for c in chunks if len(c.strip()) >= self.min_chunk_size or len(chunks) == 1]
-
+        return [
+            c
+            for c in chunks
+            if len(c.strip()) >= self.min_chunk_size or len(chunks) == 1
+        ]

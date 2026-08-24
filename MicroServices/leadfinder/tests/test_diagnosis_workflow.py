@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock
+
+import pytest
 
 from leadfinder.agents.diagnosis import DiagnosisAgent
 from leadfinder.agents.extraction import ExtractionAgent
@@ -59,7 +60,9 @@ async def test_workflow_healthy_bypasses_diagnosis():
     final_state = await workflow.ainvoke(state)
 
     assert final_state["validation_result"]["status"] == "healthy"
-    assert "diagnosis_result" not in final_state or final_state["diagnosis_result"] is None
+    assert (
+        "diagnosis_result" not in final_state or final_state["diagnosis_result"] is None
+    )
     mock_diagnostician.diagnose.assert_not_called()
 
 

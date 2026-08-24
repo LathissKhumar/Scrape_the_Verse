@@ -1,9 +1,9 @@
 """Browser executor coordinating URL validation, rate limiting, actions, and block detection."""
 
-import asyncio
 import logging
 import time
-from typing import Any, Dict, Optional
+from typing import Any
+
 from leadfinder.crawler.action_executor import ActionPlanExecutor
 from leadfinder.crawler.action_models import ActionPlan
 from leadfinder.crawler.block_detector import BlockDetector
@@ -21,12 +21,12 @@ class BrowserExecutor:
 
     def __init__(
         self,
-        browser_manager: Optional[BrowserManager] = None,
-        url_validator: Optional[UrlSecurityValidator] = None,
-        rate_limiter: Optional[DomainRateLimiter] = None,
-        circuit_breaker: Optional[DomainCircuitBreaker] = None,
-        block_detector: Optional[BlockDetector] = None,
-        action_executor: Optional[ActionPlanExecutor] = None,
+        browser_manager: BrowserManager | None = None,
+        url_validator: UrlSecurityValidator | None = None,
+        rate_limiter: DomainRateLimiter | None = None,
+        circuit_breaker: DomainCircuitBreaker | None = None,
+        block_detector: BlockDetector | None = None,
+        action_executor: ActionPlanExecutor | None = None,
     ):
         self.browser_manager = browser_manager or BrowserManager()
         self.url_validator = url_validator or UrlSecurityValidator(
@@ -44,7 +44,7 @@ class BrowserExecutor:
     async def crawl(
         self,
         url: str,
-        action_plan: Optional[ActionPlan] = None,
+        action_plan: ActionPlan | None = None,
     ) -> CrawlResult:
         """Crawl a URL using Playwright Chromium with SSRF checks, rate limits, and block detection."""
         start_time = time.time()
@@ -65,7 +65,9 @@ class BrowserExecutor:
 
         # 2. Circuit Breaker Check
         if not self.circuit_breaker.allow_request(validated_url):
-            logger.warning(f"Domain circuit breaker is OPEN for '{validated_url}'. Crawl aborted.")
+            logger.warning(
+                f"Domain circuit breaker is OPEN for '{validated_url}'. Crawl aborted."
+            )
             return CrawlResult(
                 url=validated_url,
                 status_code=429,
@@ -83,17 +85,25 @@ class BrowserExecutor:
         page = await context.new_page()
 
         status_code = 200
-        headers_dict: Dict[str, str] = {}
+        headers_dict: dict[str, str] = {}
         final_url = validated_url
         html_content = ""
-        extracted_data: Optional[Dict[str, Any]] = None
+        extracted_data: dict[str, Any] | None = None
 
         try:
             wait_until = action_plan.wait_until if action_plan else "domcontentloaded"
-            timeout = action_plan.timeout_ms if action_plan else self.browser_manager.config.timeout_ms
+            timeout = (
+                action_plan.timeout_ms
+                if action_plan
+                else self.browser_manager.config.timeout_ms
+            )
 
-            logger.debug(f"Navigating to '{validated_url}' (wait_until={wait_until}, timeout={timeout}ms)...")
-            response = await page.goto(validated_url, wait_until=wait_until, timeout=timeout)
+            logger.debug(
+                f"Navigating to '{validated_url}' (wait_until={wait_until}, timeout={timeout}ms)..."
+            )
+            response = await page.goto(
+                validated_url, wait_until=wait_until, timeout=timeout
+            )
 
             if response:
                 status_code = response.status
@@ -104,7 +114,9 @@ class BrowserExecutor:
 
             # Execute actions if plan provided
             if action_plan:
-                extracted_data = await self.action_executor.execute_plan(page, action_plan)
+                extracted_data = await self.action_executor.execute_plan(
+                    page, action_plan
+                )
 
             # Wait for lazy JS DOM rendering and client-side redirects
             try:
@@ -125,11 +137,13 @@ class BrowserExecutor:
                     await page.wait_for_timeout(1000)
 
             # 5. Check if page triggered an active challenge/CAPTCHA and attempt automated solve
-            initial_blocked, initial_type, initial_diag = self.block_detector.detect_block(
-                status_code=status_code,
-                headers=headers_dict,
-                html=html_content,
-                url=final_url,
+            initial_blocked, initial_type, initial_diag = (
+                self.block_detector.detect_block(
+                    status_code=status_code,
+                    headers=headers_dict,
+                    html=html_content,
+                    url=final_url,
+                )
             )
 
             if initial_blocked and initial_type in (
@@ -137,16 +151,25 @@ class BrowserExecutor:
                 BlockType.CAPTCHA,
                 BlockType.ACCESS_DENIED,
             ):
-                logger.info(f"Challenge detected on '{final_url}' ({initial_type.value}). Attempting automated interactive solver...")
+                logger.info(
+                    f"Challenge detected on '{final_url}' ({initial_type.value}). Attempting automated interactive solver..."
+                )
                 try:
                     from leadfinder.crawler.action_models import SolveCaptchaAction
+
                     solver_plan = ActionPlan(
                         url=final_url,
-                        actions=[SolveCaptchaAction(captcha_type="auto", timeout_ms=6000)],
+                        actions=[
+                            SolveCaptchaAction(captcha_type="auto", timeout_ms=6000)
+                        ],
                     )
-                    solve_res = await self.action_executor.execute_plan(page, solver_plan)
+                    solve_res = await self.action_executor.execute_plan(
+                        page, solver_plan
+                    )
                     if solve_res.get("_captcha_solved"):
-                        logger.info(f"Automated challenge solved for '{final_url}'. Refreshing page content...")
+                        logger.info(
+                            f"Automated challenge solved for '{final_url}'. Refreshing page content..."
+                        )
                         await page.wait_for_timeout(1500)
                         html_content = await page.content()
                         final_url = page.url
@@ -178,7 +201,9 @@ class BrowserExecutor:
         )
 
         # Record outcome in circuit breaker and rate limiter
-        self.circuit_breaker.record_result(final_url, blocked=blocked, block_type=block_type)
+        self.circuit_breaker.record_result(
+            final_url, blocked=blocked, block_type=block_type
+        )
         if block_type == BlockType.RATE_LIMITED:
             retry_after = diagnostics.get("retry_after")
             self.rate_limiter.record_429(
@@ -187,7 +212,9 @@ class BrowserExecutor:
             )
 
         if blocked:
-            logger.warning(f"Block detected on '{final_url}': {block_type.value} ({diagnostics})")
+            logger.warning(
+                f"Block detected on '{final_url}': {block_type.value} ({diagnostics})"
+            )
 
         return CrawlResult(
             url=validated_url,

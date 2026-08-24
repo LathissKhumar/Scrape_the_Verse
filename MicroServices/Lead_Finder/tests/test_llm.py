@@ -1,11 +1,10 @@
-import pytest
-import httpx
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
+import httpx
+import pytest
 from leadfinder.config.settings import Settings
 from leadfinder.llm.exceptions import (
     LLMConnectionError,
-    LLMInvocationError,
     LLMModelNotFoundError,
     LLMTimeoutError,
 )
@@ -14,11 +13,11 @@ from leadfinder.llm.ollama_client import OllamaClient, clean_markdown_fences
 
 def test_clean_markdown_fences():
     # JSON fence
-    fenced_json = "```json\n{\"key\": \"value\"}\n```"
+    fenced_json = '```json\n{"key": "value"}\n```'
     assert clean_markdown_fences(fenced_json) == '{"key": "value"}'
 
     # Generic fence
-    fenced_generic = "```\n{\"key\": \"value\"}\n```"
+    fenced_generic = '```\n{"key": "value"}\n```'
     assert clean_markdown_fences(fenced_generic) == '{"key": "value"}'
 
     # Plain text
@@ -32,7 +31,7 @@ async def test_ollama_client_invoke_success(monkeypatch):
 
     mock_response = httpx.Response(
         status_code=200,
-        json={"response": "```json\n{\"objective\": \"test\"}\n```"},
+        json={"response": '```json\n{"objective": "test"}\n```'},
         request=httpx.Request("POST", "http://localhost:11434/api/generate"),
     )
 
@@ -47,7 +46,7 @@ def test_ollama_client_invoke_sync_success():
 
     mock_response = httpx.Response(
         status_code=200,
-        json={"response": "{\"objective\": \"test_sync\"}"},
+        json={"response": '{"objective": "test_sync"}'},
         request=httpx.Request("POST", "http://localhost:11434/api/generate"),
     )
 
@@ -61,18 +60,27 @@ def test_ollama_client_invoke_sync_success():
 async def test_ollama_client_connection_error():
     client = OllamaClient(Settings(OLLAMA_MODEL="qwen3:8b"))
 
-    with patch("httpx.AsyncClient.post", side_effect=httpx.ConnectError("Connection refused")):
-        with pytest.raises(LLMConnectionError):
-            await client.invoke("Test prompt")
+    with (
+        patch(
+            "httpx.AsyncClient.post",
+            side_effect=httpx.ConnectError("Connection refused"),
+        ),
+        pytest.raises(LLMConnectionError),
+    ):
+        await client.invoke("Test prompt")
 
 
 @pytest.mark.asyncio
 async def test_ollama_client_timeout_error():
     client = OllamaClient(Settings(OLLAMA_MODEL="qwen3:8b"))
 
-    with patch("httpx.AsyncClient.post", side_effect=httpx.TimeoutException("Timed out")):
-        with pytest.raises(LLMTimeoutError):
-            await client.invoke("Test prompt")
+    with (
+        patch(
+            "httpx.AsyncClient.post", side_effect=httpx.TimeoutException("Timed out")
+        ),
+        pytest.raises(LLMTimeoutError),
+    ):
+        await client.invoke("Test prompt")
 
 
 @pytest.mark.asyncio

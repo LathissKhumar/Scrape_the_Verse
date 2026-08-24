@@ -4,11 +4,13 @@ Production Real-Time AI Telephony Server using Twilio Native Carrier Speech Reco
 """
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
+
+import sniffio
 from fastapi import FastAPI, HTTPException, Request, Response, WebSocket, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-import sniffio
+
 from .config.settings import get_voice_settings
 from .domain.call_session import CallSession, CallStatus
 from .media_stream import MediaStreamSession
@@ -54,31 +56,31 @@ adapter = TelephonyAdapter()
 twilio_controller = TwilioController()
 
 # Active In-Flight Call Session Engines
-active_call_engines: Dict[str, VoiceConversationEngine] = {}
-active_call_metadata: Dict[str, Dict[str, Any]] = {}
+active_call_engines: dict[str, VoiceConversationEngine] = {}
+active_call_metadata: dict[str, dict[str, Any]] = {}
 
 
 class OutboundCallRequest(BaseModel):
     to_phone: str
-    lead_id: Optional[str] = None
-    company_name: Optional[str] = "Valued Prospect"
-    contact_name: Optional[str] = None
+    lead_id: str | None = None
+    company_name: str | None = "Valued Prospect"
+    contact_name: str | None = None
     has_website: bool = True
 
 
 class SimulateCallRequest(BaseModel):
     company_name: str
-    prospect_phone: Optional[str] = None
-    contact_name: Optional[str] = None
+    prospect_phone: str | None = None
+    contact_name: str | None = None
     has_website: bool = True
-    lead_id: Optional[str] = None
-    simulated_prospect_responses: Optional[List[str]] = None
+    lead_id: str | None = None
+    simulated_prospect_responses: list[str] | None = None
 
 
 class A2AInvokeRequest(BaseModel):
     skill: str
-    parameters: Dict[str, Any] = Field(default_factory=dict)
-    caller_agent: Optional[str] = "unknown"
+    parameters: dict[str, Any] = Field(default_factory=dict)
+    caller_agent: str | None = "unknown"
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
@@ -199,7 +201,12 @@ async def initiate_test_call_endpoint(request: OutboundCallRequest):
             from_=settings.TWILIO_PHONE_NUMBER,
             url=twiml_url,
         )
-        return {"success": True, "call_sid": call.sid, "status": call.status, "type": "test_call"}
+        return {
+            "success": True,
+            "call_sid": call.sid,
+            "status": call.status,
+            "type": "test_call",
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail={"error": str(e)})
 
@@ -228,10 +235,20 @@ async def serve_twiml_endpoint(request: Request):
         except Exception:
             pass
 
-    cached = twilio_controller.get_pending_call(called_number) or {} if called_number else {}
+    cached = (
+        twilio_controller.get_pending_call(called_number) or {} if called_number else {}
+    )
     lead_id = request.query_params.get("lead_id") or cached.get("lead_id")
-    company_name = request.query_params.get("company_name") or cached.get("company_name") or "Apex Roofing Solutions"
-    contact_name = request.query_params.get("contact_name") or cached.get("contact_name") or "Lathiss"
+    company_name = (
+        request.query_params.get("company_name")
+        or cached.get("company_name")
+        or "Apex Roofing Solutions"
+    )
+    contact_name = (
+        request.query_params.get("contact_name")
+        or cached.get("contact_name")
+        or "Lathiss"
+    )
     has_website_val = request.query_params.get("has_website")
     if has_website_val is None:
         has_website_bool = cached.get("has_website", False)
@@ -289,10 +306,14 @@ async def handle_voice_turn_endpoint(request: Request):
 
     call_sid = form_data.get("CallSid") or request.query_params.get("CallSid") or ""
     called_number = form_data.get("Called") or form_data.get("To") or ""
-    speech_result = form_data.get("SpeechResult") or request.query_params.get("SpeechResult") or ""
+    speech_result = (
+        form_data.get("SpeechResult") or request.query_params.get("SpeechResult") or ""
+    )
     confidence = form_data.get("Confidence") or "1.0"
 
-    logger.info(f"Twilio Voice Turn: CallSid='{call_sid}', SpeechResult='{speech_result}', Confidence={confidence}")
+    logger.info(
+        f"Twilio Voice Turn: CallSid='{call_sid}', SpeechResult='{speech_result}', Confidence={confidence}"
+    )
 
     # Find conversation engine
     engine = active_call_engines.get(call_sid) or active_call_engines.get(called_number)
@@ -302,7 +323,11 @@ async def handle_voice_turn_endpoint(request: Request):
         company_name = meta.get("company_name", "Valued Business")
         contact_name = meta.get("contact_name")
         has_website = meta.get("has_website", False)
-        engine = VoiceConversationEngine(company_name=company_name, contact_name=contact_name, has_website=has_website)
+        engine = VoiceConversationEngine(
+            company_name=company_name,
+            contact_name=contact_name,
+            has_website=has_website,
+        )
         if call_sid:
             active_call_engines[call_sid] = engine
 
@@ -367,9 +392,14 @@ async def status_callback_endpoint(request: Request):
     call_sid = form_data.get("CallSid")
     call_status = form_data.get("CallStatus")
     duration = form_data.get("CallDuration")
-    logger.info(f"Twilio Status Callback: CallSid={call_sid}, Status={call_status}, Duration={duration}s")
+    logger.info(
+        f"Twilio Status Callback: CallSid={call_sid}, Status={call_status}, Duration={duration}s"
+    )
 
-    if call_status in ("completed", "canceled", "failed", "busy", "no-answer") and call_sid in active_call_engines:
+    if (
+        call_status in ("completed", "canceled", "failed", "busy", "no-answer")
+        and call_sid in active_call_engines
+    ):
         active_call_engines.pop(call_sid, None)
         active_call_metadata.pop(call_sid, None)
 

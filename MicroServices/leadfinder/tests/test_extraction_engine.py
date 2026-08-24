@@ -1,7 +1,12 @@
 import json
+
 import pytest
+
 from leadfinder.extraction.engine import ExtractionEngine
-from leadfinder.extraction.schema import ExtractionSchema, ExtractionStrategyEnum, FieldRule
+from leadfinder.extraction.schema import (
+    ExtractionSchema,
+    FieldRule,
+)
 from leadfinder.models.schemas import ScrapingTask
 from leadfinder.tests.conftest import MockLLMClient
 
@@ -76,7 +81,9 @@ async def test_engine_table_selection():
 
 @pytest.mark.asyncio
 async def test_engine_llm_fallback():
-    mock_llm = MockLLMClient(response_text=json.dumps([{"summary": "Extracted with LLM"}]))
+    mock_llm = MockLLMClient(
+        response_text=json.dumps([{"summary": "Extracted with LLM"}])
+    )
     engine = ExtractionEngine(llm_client=mock_llm)
     task = ScrapingTask(
         task_id="t4",
@@ -107,11 +114,10 @@ async def test_engine_filters_orphaned_records_without_primary_key():
         {"name": "iPhone 15", "price": "₹79,900", "rating": "4.6"},
         {"name": "Samsung S24", "price": "₹74,999", "rating": "4.5"},
         {"name": None, "price": "₹4,000", "rating": None},  # Orphaned carousel price
-        {"name": None, "price": "₹230", "rating": None},    # Orphaned footer price
+        {"name": None, "price": "₹230", "rating": None},  # Orphaned footer price
     ]
     result = await engine.extract_async(raw_records, task)
     # Orphaned records must be filtered out
     assert len(result.records) == 2
     assert result.records[0]["name"] == "iPhone 15"
     assert result.records[1]["name"] == "Samsung S24"
-

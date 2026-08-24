@@ -3,9 +3,11 @@ Task Domain Model.
 """
 
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+from typing import Any
 from uuid import uuid4
+
 from pydantic import BaseModel, Field
+
 from .stage import TaskStatus, TaskType
 
 
@@ -20,17 +22,17 @@ class LeadTask(BaseModel):
     type: str
     status: TaskStatus = TaskStatus.PENDING
 
-    due_at: Optional[str] = None
+    due_at: str | None = None
     assigned_to: str = "system"
 
-    title: Optional[str] = None
-    description: Optional[str] = None
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    title: str | None = None
+    description: str | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
     created_at: str = Field(default_factory=utc_now_iso)
     updated_at: str = Field(default_factory=utc_now_iso)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return self.model_dump()
 
 

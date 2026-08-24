@@ -323,6 +323,7 @@ from leadfinder.brightdata.client import BrightDataClient
 from leadfinder.brightdata.service import BrightDataService
 from leadfinder.brightdata.schemas import ScrapeTargetRequest, FieldDefinition
 
+
 async def main():
     settings = get_settings()
     client = BrightDataClient(settings=settings)
@@ -336,7 +337,7 @@ async def main():
             FieldDefinition(name="business_name", description="Restaurant Name"),
             FieldDefinition(name="phone_number", description="Phone Number"),
             FieldDefinition(name="rating", description="Star rating"),
-        ]
+        ],
     )
     resolution = await service.resolve_scraper(target)
     print(f"Action: {resolution.action}, Collector: {resolution.collector_id}")
@@ -344,10 +345,10 @@ async def main():
     # 2. Run Collector
     if resolution.collector_id:
         result = await service.run_collector(
-            collector_id=resolution.collector_id,
-            url=target.url
+            collector_id=resolution.collector_id, url=target.url
         )
         print("Scraped Data Records (JSON):", result.data)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -4,6 +4,7 @@ Tests for Layer 3: Search Client, CTA Detector, and Business Analyzer.
 
 import pytest
 import sniffio
+
 from MicroServices.SDR.business_analyzer import BusinessAnalyzer
 from MicroServices.SDR.cta_detector import CTADetector
 from MicroServices.SDR.search_client import DuckDuckGoSearchClient

@@ -1,6 +1,5 @@
 import asyncio
-from typing import Any, Optional
-import httpx
+from typing import Any
 
 from leadfinder.agents.base import BaseAgent
 from leadfinder.brightdata.adapter import build_collector_inputs
@@ -16,8 +15,8 @@ class ScraperAgent(BaseAgent):
 
     def __init__(
         self,
-        brightdata_client: Optional[BrightDataClient] = None,
-        browser_executor: Optional[BrowserExecutor] = None,
+        brightdata_client: BrightDataClient | None = None,
+        browser_executor: BrowserExecutor | None = None,
     ):
         super().__init__(name="SCRAPER")
         self.client = brightdata_client or BrightDataClient()
@@ -28,14 +27,25 @@ class ScraperAgent(BaseAgent):
         """Return True if Bright Data client is enabled and configured."""
         return bool(self.client and getattr(self.client, "is_configured", False))
 
-    async def _execute_browser_scrape(self, urls: list[str], max_concurrency: Optional[int] = None) -> list[dict[str, Any]]:
+    async def _execute_browser_scrape(
+        self, urls: list[str], max_concurrency: int | None = None
+    ) -> list[dict[str, Any]]:
         """Execute bounded parallel browser scraping using Playwright Chromium with SSRF and block detection."""
         settings = get_settings()
-        limit = max_concurrency or getattr(getattr(self.browser_executor, "config", None), "max_concurrency", None) or settings.CRAWLER_MAX_CONCURRENCY or 10
-        self.logger.debug(f"Executing bounded parallel browser scrape for {len(urls)} target URL(s) (concurrency_limit={limit}).")
-        
+        limit = (
+            max_concurrency
+            or getattr(
+                getattr(self.browser_executor, "config", None), "max_concurrency", None
+            )
+            or settings.CRAWLER_MAX_CONCURRENCY
+            or 10
+        )
+        self.logger.debug(
+            f"Executing bounded parallel browser scrape for {len(urls)} target URL(s) (concurrency_limit={limit})."
+        )
+
         semaphore = asyncio.Semaphore(limit)
-        
+
         async def _crawl_single(u: str) -> dict[str, Any]:
             async with semaphore:
                 try:
@@ -79,11 +89,17 @@ class ScraperAgent(BaseAgent):
     async def execute(self, task: ScrapingTask) -> list[dict[str, Any]]:
         """Collect raw web content for the given task target URLs."""
         if not task.target_urls:
-            self.logger.error(f"task_id={task.task_id} Execution aborted: No target URLs provided.")
-            raise ValueError("No target URL was supplied. URL discovery is not implemented.")
+            self.logger.error(
+                f"task_id={task.task_id} Execution aborted: No target URLs provided."
+            )
+            raise ValueError(
+                "No target URL was supplied. URL discovery is not implemented."
+            )
 
         settings = get_settings()
-        provider = (task.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto").lower()
+        provider = (
+            task.metadata.get("scraper_provider") or settings.SCRAPER_PROVIDER or "auto"
+        ).lower()
 
         # Check if Bright Data credentials are configured and provider is auto/brightdata
         is_configured = getattr(self.client, "is_configured", False)
@@ -100,10 +116,13 @@ class ScraperAgent(BaseAgent):
             results = await self._execute_browser_scrape(task.target_urls)
 
             # If native crawl gets blocked by anti-bot challenge and DCA is configured, fallback to DCA
-            any_blocked = any(r.get("blocked", False) or r.get("status_code") in (403, 429, 503) for r in results)
+            any_blocked = any(
+                r.get("blocked", False) or r.get("status_code") in (403, 429, 503)
+                for r in results
+            )
             if any_blocked and is_configured:
                 self.logger.warning(
-                    f"Bot challenge detected. Escalating to Bright Data DCA cloud scraper fallback..."
+                    "Bot challenge detected. Escalating to Bright Data DCA cloud scraper fallback..."
                 )
                 engine_name = "Bright Data DCA Fallback"
                 inputs = build_collector_inputs(task=task)

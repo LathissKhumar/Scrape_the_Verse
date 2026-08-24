@@ -1,37 +1,37 @@
-'use client'
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Search, Zap, ShieldCheck, BrainCircuit, Rocket } from 'lucide-react'
-import { GradientText } from '@/components/ui/GradientText'
-import { SectionLabel } from '@/components/ui/SectionLabel'
-import { PIPELINE_STAGES } from '@/lib/mock-data'
+"use client";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Search, Zap, ShieldCheck, BrainCircuit, Rocket } from "lucide-react";
+import { GradientText } from "@/components/ui/GradientText";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { PIPELINE_STAGES } from "@/lib/mock-data";
 
 const STAGE_ICONS: Record<string, React.ReactNode> = {
   search: <Search className="w-5 h-5 text-sky-400" />,
   zap: <Zap className="w-5 h-5 text-indigo-400" />,
-  'shield-check': <ShieldCheck className="w-5 h-5 text-emerald-400" />,
-  'brain-circuit': <BrainCircuit className="w-5 h-5 text-sky-400" />,
+  "shield-check": <ShieldCheck className="w-5 h-5 text-emerald-400" />,
+  "brain-circuit": <BrainCircuit className="w-5 h-5 text-sky-400" />,
   rocket: <Rocket className="w-5 h-5 text-indigo-400" />,
-}
+};
 
 export function Pipeline() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const lineSvgRef = useRef<SVGSVGElement>(null)
-  const linePathRef = useRef<SVGLineElement>(null)
-  const pulseDotRef = useRef<HTMLDivElement>(null)
-  const stagesContainerRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null);
+  const lineSvgRef = useRef<SVGSVGElement>(null);
+  const linePathRef = useRef<SVGLineElement>(null);
+  const pulseDotRef = useRef<HTMLDivElement>(null);
+  const stagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Register GSAP Plugins
-    gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(ScrollTrigger);
 
-    const section = sectionRef.current
-    const linePath = linePathRef.current
-    const pulseDot = pulseDotRef.current
-    const container = stagesContainerRef.current
+    const section = sectionRef.current;
+    const linePath = linePathRef.current;
+    const pulseDot = pulseDotRef.current;
+    const container = stagesContainerRef.current;
 
-    if (!section || !linePath || !pulseDot || !container) return
+    if (!section || !linePath || !pulseDot || !container) return;
 
     // Create GSAP Context for safe cleanup
     const ctx = gsap.context(() => {
@@ -39,67 +39,71 @@ export function Pipeline() {
       // 1. TIMELINE LINE ANIMATION (SVG stroke-dashoffset + Pulse Dot)
       // ─────────────────────────────────────────────────────────────
       // Use exact container offsetHeight so strokeDasharray covers the entire 7-agent timeline height
-      const pathLength = container.offsetHeight || 3500
-      
+      const pathLength = container.offsetHeight || 3500;
+
       // Initialize main vertical line
       gsap.set(linePath, {
         strokeDasharray: pathLength,
         strokeDashoffset: pathLength,
-      })
+      });
 
       // Initialize pulse dot at start
       gsap.set(pulseDot, {
         y: 0,
         opacity: 0,
         scale: 0,
-      })
+      });
 
       // Animate line drawing & moving pulse dot tied to scroll
       ScrollTrigger.create({
         trigger: container,
-        start: 'top 70%',
-        end: 'bottom 80%',
+        start: "top 70%",
+        end: "bottom 80%",
         scrub: 0.5,
         onUpdate: (self) => {
-          const progress = self.progress
-          const currentLength = container.offsetHeight || pathLength
+          const progress = self.progress;
+          const currentLength = container.offsetHeight || pathLength;
           // Animate stroke-dashoffset from currentLength down to 0
           gsap.to(linePath, {
             strokeDashoffset: currentLength * (1 - progress),
             duration: 0.1,
-            overwrite: 'auto',
-          })
+            overwrite: "auto",
+          });
 
           // Animate pulse dot down the vertical line
-          const currentY = progress * currentLength
+          const currentY = progress * currentLength;
           gsap.to(pulseDot, {
             y: currentY,
             opacity: progress > 0.01 && progress < 0.99 ? 1 : 0,
             scale: progress > 0.01 && progress < 0.99 ? 1 : 0,
             duration: 0.1,
-            overwrite: 'auto',
-          })
+            overwrite: "auto",
+          });
         },
-      })
+      });
 
       // ─────────────────────────────────────────────────────────────
       // 2. STAGE NODES & ALTERNATING CARDS SCROLLTRIGGERS
       // ─────────────────────────────────────────────────────────────
-      const stageRows = container.querySelectorAll<HTMLElement>('.timeline-stage-row')
+      const stageRows = container.querySelectorAll<HTMLElement>(
+        ".timeline-stage-row",
+      );
 
       stageRows.forEach((row, idx) => {
-        const isEven = idx % 2 === 0
-        const node = row.querySelector<HTMLElement>('.timeline-node')
-        const nodeIcon = row.querySelector<HTMLElement>('.node-icon')
-        const card = row.querySelector<HTMLElement>('.timeline-card')
-        const connector = row.querySelector<SVGLineElement>('.timeline-connector-line')
-        const subAgents = row.querySelectorAll<HTMLElement>('.sub-agent-item')
-        const compatibleBox = row.querySelector<HTMLElement>('.compatible-box')
-        const producesBox = row.querySelector<HTMLElement>('.produces-box')
-        const activeChars = row.querySelectorAll<HTMLElement>('.active-char')
-        const readyLabel = row.querySelector<HTMLElement>('.ready-label')
-        const stageHeading = row.querySelector<HTMLElement>('.stage-heading')
-        const stageTitle = row.querySelector<HTMLElement>('.card-title')
+        const isEven = idx % 2 === 0;
+        const node = row.querySelector<HTMLElement>(".timeline-node");
+        const nodeIcon = row.querySelector<HTMLElement>(".node-icon");
+        const card = row.querySelector<HTMLElement>(".timeline-card");
+        const connector = row.querySelector<SVGLineElement>(
+          ".timeline-connector-line",
+        );
+        const subAgents = row.querySelectorAll<HTMLElement>(".sub-agent-item");
+        const compatibleBox = row.querySelector<HTMLElement>(".compatible-box");
+        const producesBox = row.querySelector<HTMLElement>(".produces-box");
+        const activeChars = row.querySelectorAll<HTMLElement>(".active-char");
+        const readyLabel = row.querySelector<HTMLElement>(".ready-label");
+        const stageHeading = row.querySelector<HTMLElement>(".stage-heading");
+        const stageTitle = row.querySelector<HTMLElement>(".card-title");
 
         // ── Performance: initialize starting transforms ──
         if (node) {
@@ -107,8 +111,8 @@ export function Pipeline() {
             scale: 0,
             opacity: 0,
             rotation: -180,
-            willChange: 'transform, opacity',
-          })
+            willChange: "transform, opacity",
+          });
         }
 
         if (card) {
@@ -117,50 +121,50 @@ export function Pipeline() {
             opacity: 0,
             rotateY: isEven ? 15 : -15,
             transformPerspective: 1000,
-            willChange: 'transform, opacity',
-          })
+            willChange: "transform, opacity",
+          });
         }
 
         if (connector) {
-          const connLength = connector.getTotalLength() || 60
+          const connLength = connector.getTotalLength() || 60;
           gsap.set(connector, {
             strokeDasharray: connLength,
             strokeDashoffset: isEven ? connLength : -connLength,
-          })
+          });
         }
 
         if (subAgents.length) {
-          gsap.set(subAgents, { x: -15, opacity: 0 })
+          gsap.set(subAgents, { x: -15, opacity: 0 });
         }
 
         if (compatibleBox) {
-          gsap.set(compatibleBox, { y: 10, opacity: 0 })
+          gsap.set(compatibleBox, { y: 10, opacity: 0 });
         }
 
         if (producesBox) {
-          gsap.set(producesBox, { scale: 0.95, opacity: 0 })
+          gsap.set(producesBox, { scale: 0.95, opacity: 0 });
         }
 
         if (activeChars.length) {
-          gsap.set(activeChars, { opacity: 0 })
+          gsap.set(activeChars, { opacity: 0 });
         }
 
         if (readyLabel) {
-          gsap.set(readyLabel, { x: 20, opacity: 0 })
+          gsap.set(readyLabel, { x: 20, opacity: 0 });
         }
 
         if (stageHeading && stageTitle) {
-          gsap.set([stageHeading, stageTitle], { y: 20, opacity: 0 })
+          gsap.set([stageHeading, stageTitle], { y: 20, opacity: 0 });
         }
 
         // ── Timeline reveal for this stage (Node → Connector → Card → Micro-animations) ──
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: row,
-            start: 'top 78%',
-            toggleActions: 'play none none none',
+            start: "top 78%",
+            toggleActions: "play none none none",
           },
-        })
+        });
 
         // 1. Node Circle Overshoot Bounce Entrance
         if (node) {
@@ -169,11 +173,11 @@ export function Pipeline() {
             opacity: 1,
             rotation: 0,
             duration: 0.6,
-            ease: 'back.out(1.7)',
+            ease: "back.out(1.7)",
             onComplete: () => {
-              node.classList.add('timeline-node-active')
+              node.classList.add("timeline-node-active");
             },
-          })
+          });
         }
 
         // 2. Node Icon 360deg Rotation
@@ -183,10 +187,10 @@ export function Pipeline() {
             {
               rotation: 360,
               duration: 0.4,
-              ease: 'power2.out',
+              ease: "power2.out",
             },
-            '-=0.4'
-          )
+            "-=0.4",
+          );
         }
 
         // 3. Horizontal Connector Line Draw
@@ -196,10 +200,10 @@ export function Pipeline() {
             {
               strokeDashoffset: 0,
               duration: 0.35,
-              ease: 'power2.out',
+              ease: "power2.out",
             },
-            '-=0.2'
-          )
+            "-=0.2",
+          );
         }
 
         // 4. Alternating Liquid Glass Card Entry
@@ -211,25 +215,27 @@ export function Pipeline() {
               opacity: 1,
               rotateY: 0,
               duration: 0.8,
-              ease: 'expo.out',
+              ease: "expo.out",
             },
-            '-=0.15'
-          )
+            "-=0.15",
+          );
 
           // 5. Card Border Glow Flash
           tl.to(
             card,
             {
-              boxShadow: '0 0 30px rgba(0, 212, 255, 0.8), inset 0 1.5px 2px rgba(255, 255, 255, 0.6)',
+              boxShadow:
+                "0 0 30px rgba(0, 212, 255, 0.8), inset 0 1.5px 2px rgba(255, 255, 255, 0.6)",
               duration: 0.3,
-              ease: 'power2.out',
+              ease: "power2.out",
             },
-            '-=0.6'
+            "-=0.6",
           ).to(card, {
-            boxShadow: '0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)',
+            boxShadow:
+              "0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)",
             duration: 0.4,
-            ease: 'power2.inOut',
-          })
+            ease: "power2.inOut",
+          });
         }
 
         // 6. Card Interior: Stage Number and Title Slide-Up
@@ -241,10 +247,10 @@ export function Pipeline() {
               opacity: 1,
               duration: 0.5,
               stagger: 0.1,
-              ease: 'power2.out',
+              ease: "power2.out",
             },
-            '-=0.4'
-          )
+            "-=0.4",
+          );
         }
 
         // 7. Sub-agent chips stagger entrance
@@ -256,10 +262,10 @@ export function Pipeline() {
               opacity: 1,
               duration: 0.35,
               stagger: 0.07,
-              ease: 'power2.out',
+              ease: "power2.out",
             },
-            '-=0.3'
-          )
+            "-=0.3",
+          );
         }
 
         // 8. Compatible tools box entrance
@@ -270,10 +276,10 @@ export function Pipeline() {
               y: 0,
               opacity: 1,
               duration: 0.3,
-              ease: 'power2.out',
+              ease: "power2.out",
             },
-            '-=0.2'
-          )
+            "-=0.2",
+          );
         }
 
         // 9. Produces output box entrance
@@ -284,10 +290,10 @@ export function Pipeline() {
               scale: 1,
               opacity: 1,
               duration: 0.4,
-              ease: 'back.out(1.5)',
+              ease: "back.out(1.5)",
             },
-            '-=0.2'
-          )
+            "-=0.2",
+          );
         }
 
         // 10. Card Interior: "ACTIVE PIPELINE NODE" Letter Stagger
@@ -298,10 +304,10 @@ export function Pipeline() {
               opacity: 1,
               duration: 0.05,
               stagger: 0.03,
-              ease: 'power1.out',
+              ease: "power1.out",
             },
-            '-=0.2'
-          )
+            "-=0.2",
+          );
         }
 
         // 11. Card Interior: "READY →" Slide-in
@@ -312,21 +318,21 @@ export function Pipeline() {
               x: 0,
               opacity: 1,
               duration: 0.4,
-              ease: 'power2.out',
+              ease: "power2.out",
             },
-            '+=0.1'
-          )
+            "+=0.1",
+          );
         }
-      })
+      });
 
       // Sync trigger points
       setTimeout(() => {
-        ScrollTrigger.refresh()
-      }, 300)
-    }, section)
+        ScrollTrigger.refresh();
+      }, 300);
+    }, section);
 
-    return () => ctx.revert()
-  }, [])
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
@@ -343,7 +349,9 @@ export function Pipeline() {
             Meet the Agents <GradientText>Behind the Automation</GradientText>
           </h2>
           <p className="text-sm sm:text-base text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
-            Scrape-Verse is not one AI — it is a pipeline of specialized agents, each with a defined role, working in sequence to convert a raw business listing into a complete, evidence-backed sales opportunity.
+            Scrape-Verse is not one AI — it is a pipeline of specialized agents,
+            each with a defined role, working in sequence to convert a raw
+            business listing into a complete, evidence-backed sales opportunity.
           </p>
         </div>
 
@@ -357,7 +365,7 @@ export function Pipeline() {
             <svg
               ref={lineSvgRef}
               className="w-full h-full"
-              style={{ filter: 'drop-shadow(0 0 6px #00d4ff)' }}
+              style={{ filter: "drop-shadow(0 0 6px #00d4ff)" }}
             >
               {/* Background Ambient Line Track — Always visible connecting all agent nodes */}
               <line
@@ -390,37 +398,39 @@ export function Pipeline() {
             className="hidden lg:block absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#00d4ff] z-20 pointer-events-none timeline-pulse-dot"
             style={{
               top: 0,
-              boxShadow: '0 0 12px #00d4ff',
+              boxShadow: "0 0 12px #00d4ff",
             }}
           />
 
           {/* 3. Seven Vertical Timeline Agent Stages (Alternating Left & Right) */}
           <div className="flex flex-col gap-16 lg:gap-24 relative z-10">
             {PIPELINE_STAGES.map((stage, idx) => {
-              const isEven = idx % 2 === 0
-              const activeNodeText = 'ACTIVE PIPELINE NODE'
+              const isEven = idx % 2 === 0;
+              const activeNodeText = "ACTIVE PIPELINE NODE";
 
               return (
                 <div
                   key={stage.stage}
                   className={`timeline-stage-row flex flex-col lg:flex-row items-center gap-6 lg:gap-0 ${
-                    isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'
+                    isEven ? "lg:flex-row" : "lg:flex-row-reverse"
                   } relative w-full`}
-                  style={{ perspective: '1000px' }}
+                  style={{ perspective: "1000px" }}
                 >
                   {/* Stage Liquid Glass Card (Left on even, Right on odd) */}
                   <div
                     className={`flex-1 w-full ${
-                      isEven ? 'lg:pr-14 lg:text-right' : 'lg:pl-14 lg:text-left'
+                      isEven
+                        ? "lg:pr-14 lg:text-right"
+                        : "lg:pl-14 lg:text-left"
                     }`}
                   >
                     <div
                       className={`timeline-card ${
-                        isEven ? 'card-left' : 'card-right'
+                        isEven ? "card-left" : "card-right"
                       } glass-liquid p-6 sm:p-7 inline-block w-full max-w-lg text-left space-y-3.5 rounded-2xl border border-white/30 hover:border-sky-400/80 shadow-2xl backdrop-blur-2xl transition-all duration-300 group relative overflow-hidden`}
                       style={{
                         boxShadow:
-                          '0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)',
+                          "0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 1.5px rgba(255, 255, 255, 0.45)",
                       }}
                       data-cursor-hover
                     >
@@ -472,9 +482,14 @@ export function Pipeline() {
                                 key={sIdx}
                                 className="text-[11px] font-body bg-white/5 border border-white/10 rounded-lg p-1.5 text-slate-300 flex items-start gap-1.5"
                               >
-                                <span className="text-sky-400 font-mono">→</span>
+                                <span className="text-sky-400 font-mono">
+                                  →
+                                </span>
                                 <div>
-                                  <strong className="text-white font-semibold">{sub.name}</strong> — {sub.desc}
+                                  <strong className="text-white font-semibold">
+                                    {sub.name}
+                                  </strong>{" "}
+                                  — {sub.desc}
                                 </div>
                               </div>
                             ))}
@@ -485,8 +500,12 @@ export function Pipeline() {
                       {/* Compatible With list (if present) */}
                       {stage.compatibleWith && (
                         <div className="text-[11px] font-mono bg-white/5 border border-sky-400/20 rounded-lg p-2 text-cyan-300">
-                          <span className="text-slate-400">Compatible with: </span>
-                          <span className="font-semibold">{stage.compatibleWith}</span>
+                          <span className="text-slate-400">
+                            Compatible with:{" "}
+                          </span>
+                          <span className="font-semibold">
+                            {stage.compatibleWith}
+                          </span>
                         </div>
                       )}
 
@@ -505,12 +524,12 @@ export function Pipeline() {
                         <div className="active-label flex items-center gap-1 text-emerald-400 font-semibold">
                           <span className="timeline-bullet-active">●</span>
                           <span className="flex">
-                            {activeNodeText.split('').map((char, charIdx) => (
+                            {activeNodeText.split("").map((char, charIdx) => (
                               <span
                                 key={charIdx}
                                 className="active-char inline-block"
                               >
-                                {char === ' ' ? '\u00A0' : char}
+                                {char === " " ? "\u00A0" : char}
                               </span>
                             ))}
                           </span>
@@ -525,17 +544,17 @@ export function Pipeline() {
                   {/* Horizontal SVG Connector Line (From Node to Card) */}
                   <div
                     className={`hidden lg:flex items-center w-14 h-4 pointer-events-none ${
-                      isEven ? 'justify-end' : 'justify-start'
+                      isEven ? "justify-end" : "justify-start"
                     }`}
                   >
                     <svg
                       className="w-14 h-2 overflow-visible"
-                      style={{ filter: 'drop-shadow(0 0 5px #00d4ff)' }}
+                      style={{ filter: "drop-shadow(0 0 5px #00d4ff)" }}
                     >
                       <line
-                        x1={isEven ? '100%' : '0%'}
+                        x1={isEven ? "100%" : "0%"}
                         y1="50%"
-                        x2={isEven ? '0%' : '100%'}
+                        x2={isEven ? "0%" : "100%"}
                         y2="50%"
                         stroke="#00d4ff"
                         strokeWidth="1.5"
@@ -549,23 +568,22 @@ export function Pipeline() {
                   <div
                     className="timeline-node hidden lg:flex w-14 h-14 rounded-full border-2 border-sky-400 items-center justify-center text-xl shrink-0 z-20 shadow-lg shadow-sky-500/40 backdrop-blur-xl cursor-pointer bg-[#07090D]/80 hover:border-white transition-all relative group"
                     style={{
-                      boxShadow: '0 0 14px rgba(0, 212, 255, 0.5), inset 0 0 8px rgba(0, 212, 255, 0.4)',
+                      boxShadow:
+                        "0 0 14px rgba(0, 212, 255, 0.5), inset 0 0 8px rgba(0, 212, 255, 0.4)",
                     }}
                     data-cursor-hover
                   >
-                    <div className="node-icon">
-                      {STAGE_ICONS[stage.icon]}
-                    </div>
+                    <div className="node-icon">{STAGE_ICONS[stage.icon]}</div>
                   </div>
 
                   {/* Spacer for opposite column on desktop */}
                   <div className="flex-1 hidden lg:block" />
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

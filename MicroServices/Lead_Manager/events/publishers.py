@@ -3,7 +3,8 @@ Event Publisher for SSE & internal event distribution.
 """
 
 import asyncio
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Optional
+
 from ..config.logging import get_logger
 
 logger = get_logger("EventPublisher")
@@ -13,7 +14,7 @@ class EventPublisher:
     _instance: Optional["EventPublisher"] = None
 
     def __init__(self):
-        self._subscribers: List[asyncio.Queue] = []
+        self._subscribers: list[asyncio.Queue] = []
 
     @classmethod
     def get_instance(cls) -> "EventPublisher":
@@ -30,7 +31,7 @@ class EventPublisher:
         if queue in self._subscribers:
             self._subscribers.remove(queue)
 
-    async def publish(self, topic: str, data: Dict[str, Any]) -> None:
+    async def publish(self, topic: str, data: dict[str, Any]) -> None:
         payload = {"topic": topic, "data": data}
         for q in list(self._subscribers):
             try:

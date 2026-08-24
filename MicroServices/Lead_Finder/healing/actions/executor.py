@@ -2,6 +2,7 @@
 
 import asyncio
 from typing import Any
+
 from leadfinder.config.logging import get_logger
 from leadfinder.healing.actions.models import ActionPlan, ActionType
 
@@ -14,7 +15,9 @@ class ActionRepairExecutor:
     async def execute_plan(self, page: Any, plan: ActionPlan) -> dict[str, Any]:
         """Safely execute up to 5 actions sequentially with bounded timeouts and error containment."""
         actions_executed: list[dict[str, Any]] = []
-        logger.debug(f"Executing ActionPlan {plan.plan_id}: '{plan.description}' ({len(plan.actions)} actions)")
+        logger.debug(
+            f"Executing ActionPlan {plan.plan_id}: '{plan.description}' ({len(plan.actions)} actions)"
+        )
 
         # Enforce hard safety bound: maximum 5 actions per plan
         bounded_actions = plan.actions[:5]
@@ -27,7 +30,12 @@ class ActionRepairExecutor:
                 "status": "pending",
             }
             try:
-                if action.action_type in (ActionType.CLICK, ActionType.ACCEPT_COOKIE, ActionType.DISMISS_OVERLAY, ActionType.CLICK_LOAD_MORE):
+                if action.action_type in (
+                    ActionType.CLICK,
+                    ActionType.ACCEPT_COOKIE,
+                    ActionType.DISMISS_OVERLAY,
+                    ActionType.CLICK_LOAD_MORE,
+                ):
                     if action.selector:
                         # Safe click with timeout
                         btn = page.locator(action.selector).first
@@ -48,7 +56,9 @@ class ActionRepairExecutor:
 
                 elif action.action_type == ActionType.WAIT_FOR:
                     if action.selector:
-                        await page.wait_for_selector(action.selector, timeout=action.timeout_ms)
+                        await page.wait_for_selector(
+                            action.selector, timeout=action.timeout_ms
+                        )
                         act_record["status"] = "success"
 
                 elif action.action_type == ActionType.WAIT_MS:
@@ -62,7 +72,9 @@ class ActionRepairExecutor:
                         act_record["status"] = "success"
 
             except Exception as error:
-                logger.warning(f"Action step {idx} ({action.action_type.value} on {action.selector}) failed: {error}")
+                logger.warning(
+                    f"Action step {idx} ({action.action_type.value} on {action.selector}) failed: {error}"
+                )
                 act_record["status"] = "failed"
                 act_record["error"] = str(error)
                 if not action.optional:
@@ -88,4 +100,3 @@ class ActionRepairExecutor:
             "success": any(a["status"] == "success" for a in actions_executed),
             "updated_html": updated_html,
         }
-

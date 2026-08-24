@@ -1,10 +1,10 @@
 """Email header parsing and decoding utilities."""
+
 import email.utils
 from email.header import decode_header
-from typing import List, Optional, Tuple
 
 
-def decode_rfc2047(header_val: Optional[str]) -> Optional[str]:
+def decode_rfc2047(header_val: str | None) -> str | None:
     """Decodes internationalized RFC 2047 header values."""
     if not header_val:
         return None
@@ -12,7 +12,9 @@ def decode_rfc2047(header_val: Optional[str]) -> Optional[str]:
     try:
         for fragment, encoding in decode_header(header_val):
             if isinstance(fragment, bytes):
-                decoded_fragments.append(fragment.decode(encoding or "utf-8", errors="replace"))
+                decoded_fragments.append(
+                    fragment.decode(encoding or "utf-8", errors="replace")
+                )
             else:
                 decoded_fragments.append(str(fragment))
         return "".join(decoded_fragments).strip()
@@ -20,7 +22,7 @@ def decode_rfc2047(header_val: Optional[str]) -> Optional[str]:
         return str(header_val).strip()
 
 
-def parse_address_list(header_val: Optional[str]) -> List[str]:
+def parse_address_list(header_val: str | None) -> list[str]:
     """Parses a comma-separated list of email addresses into pure email addresses."""
     if not header_val:
         return []
@@ -31,7 +33,7 @@ def parse_address_list(header_val: Optional[str]) -> List[str]:
     return addresses
 
 
-def parse_sender(header_val: Optional[str]) -> Tuple[str, Optional[str]]:
+def parse_sender(header_val: str | None) -> tuple[str, str | None]:
     """Extracts (email_address, display_name) from From: header."""
     if not header_val:
         return ("", None)
@@ -40,7 +42,7 @@ def parse_sender(header_val: Optional[str]) -> Tuple[str, Optional[str]]:
     return (addr.strip().lower(), decoded_name)
 
 
-def parse_references(header_val: Optional[str]) -> List[str]:
+def parse_references(header_val: str | None) -> list[str]:
     """Parses References or In-Reply-To headers into a list of Message-IDs."""
     if not header_val:
         return []
@@ -54,7 +56,7 @@ def parse_references(header_val: Optional[str]) -> List[str]:
     return clean_refs
 
 
-def clean_message_id(header_val: Optional[str]) -> Optional[str]:
+def clean_message_id(header_val: str | None) -> str | None:
     """Cleans <message-id> string."""
     if not header_val:
         return None

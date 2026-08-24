@@ -1,9 +1,11 @@
 """Cross-domain semantic and structural repair memory matcher."""
 
-from collections import Counter
 import math
+from collections import Counter
 from typing import Any
+
 from bs4 import BeautifulSoup
+
 from leadfinder.config.logging import get_logger
 from leadfinder.healing.schemas import RepairMemoryRecord
 
@@ -27,8 +29,7 @@ class SemanticRepairMemory:
         soup = BeautifulSoup(html[:15000], "html.parser")
         # Collect tag distribution and nesting signatures
         tags = [
-            tag.name for tag in soup.find_all(True)
-            if tag.name not in _IGNORED_DOM_TAGS
+            tag.name for tag in soup.find_all(True) if tag.name not in _IGNORED_DOM_TAGS
         ]
         counts = Counter(tags)
         total = max(1, sum(counts.values()))
@@ -36,7 +37,19 @@ class SemanticRepairMemory:
         vector = {k: v / total for k, v in counts.items()}
 
         # Add repeated container indicators
-        has_cards = len(soup.find_all(class_=lambda c: c and any(k in str(c).lower() for k in _REPEATING_CONTAINER_KEYWORDS))) > 2
+        has_cards = (
+            len(
+                soup.find_all(
+                    class_=lambda c: (
+                        c
+                        and any(
+                            k in str(c).lower() for k in _REPEATING_CONTAINER_KEYWORDS
+                        )
+                    )
+                )
+            )
+            > 2
+        )
         has_table = len(soup.find_all("table")) > 0
 
         vector["__has_cards__"] = 1.0 if has_cards else 0.0
@@ -44,7 +57,9 @@ class SemanticRepairMemory:
 
         return vector
 
-    def compute_similarity(self, vec1: dict[str, float], vec2: dict[str, float]) -> float:
+    def compute_similarity(
+        self, vec1: dict[str, float], vec2: dict[str, float]
+    ) -> float:
         """Compute cosine similarity between two structural vectors."""
         all_keys = set(vec1.keys()).union(set(vec2.keys()))
         if not all_keys:
@@ -62,11 +77,15 @@ class SemanticRepairMemory:
     def register_record(self, record: RepairMemoryRecord, html: str) -> None:
         """Register a verified repair with its structural DOM skeleton."""
         skeleton = self.extract_structural_skeleton(html)
-        self._structural_records.append({
-            "record": record,
-            "skeleton": skeleton,
-        })
-        logger.debug(f"Registered semantic structural repair memory for {record.domain}")
+        self._structural_records.append(
+            {
+                "record": record,
+                "skeleton": skeleton,
+            }
+        )
+        logger.debug(
+            f"Registered semantic structural repair memory for {record.domain}"
+        )
 
     def find_cross_domain_candidates(
         self,
@@ -88,6 +107,7 @@ class SemanticRepairMemory:
         matches.sort(key=lambda x: x[0], reverse=True)
         results = [m[1] for m in matches[:3]]
         if results:
-            logger.debug(f"Discovered {len(results)} cross-domain semantic candidate priors (top similarity={matches[0][0]:.2f})")
+            logger.debug(
+                f"Discovered {len(results)} cross-domain semantic candidate priors (top similarity={matches[0][0]:.2f})"
+            )
         return results
-

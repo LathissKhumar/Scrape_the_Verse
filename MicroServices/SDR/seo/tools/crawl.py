@@ -4,18 +4,18 @@ LibreCrawl Execution Tool for LangGraph Agent
 
 import os
 import sys
-from typing import Dict, Any, Optional
+from typing import Any
 
 # Ensure workspace root (for LibreCrawl) and WebAuditAgent dir (for seo package) are in sys.path
-_tools_dir = os.path.dirname(os.path.abspath(__file__))         # .../WebAuditAgent/seo/tools
-_seo_dir = os.path.dirname(_tools_dir)                          # .../WebAuditAgent/seo
-_webaudit_dir = os.path.dirname(_seo_dir)                       # .../WebAuditAgent
-_workspace_root = os.path.dirname(_webaudit_dir)                # .../Scrape_the_Verse
+_tools_dir = os.path.dirname(os.path.abspath(__file__))  # .../WebAuditAgent/seo/tools
+_seo_dir = os.path.dirname(_tools_dir)  # .../WebAuditAgent/seo
+_webaudit_dir = os.path.dirname(_seo_dir)  # .../WebAuditAgent
+_workspace_root = os.path.dirname(_webaudit_dir)  # .../Scrape_the_Verse
 for _p in (_webaudit_dir, _workspace_root):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-from LibreCrawl.engine import crawl_website, validate_url, format_error_result
+from LibreCrawl.engine import crawl_website, format_error_result, validate_url
 
 
 def crawl_target_tool(
@@ -30,8 +30,8 @@ def crawl_target_tool(
     crawl_images: bool = False,
     delay: float = 0.05,
     concurrency: int = 5,
-    timeout: int = 30
-) -> Dict[str, Any]:
+    timeout: int = 30,
+) -> dict[str, Any]:
     """
     Executes a headless crawl using LibreCrawl and returns the normalized JSON result.
     """
@@ -51,5 +51,5 @@ def crawl_target_tool(
         crawl_images=crawl_images,
         delay=delay,
         concurrency=concurrency,
-        timeout=timeout
+        timeout=timeout,
     )

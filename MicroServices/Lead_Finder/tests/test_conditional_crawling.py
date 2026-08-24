@@ -1,6 +1,6 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
 
+import pytest
 from leadfinder.crawler.link_discovery import LinkDiscoveryEngine
 from leadfinder.crawler.result_models import CrawlResult
 from leadfinder.extraction.engine import ExtractionEngine
@@ -39,12 +39,14 @@ async def test_conditional_child_crawling_when_fields_missing():
     )
 
     mock_browser_executor = MagicMock()
-    mock_browser_executor.crawl = AsyncMock(return_value=CrawlResult(
-        url="https://example.com/specs/laptop-details",
-        final_url="https://example.com/specs/laptop-details",
-        html=child_html,
-        status_code=200,
-    ))
+    mock_browser_executor.crawl = AsyncMock(
+        return_value=CrawlResult(
+            url="https://example.com/specs/laptop-details",
+            final_url="https://example.com/specs/laptop-details",
+            html=child_html,
+            status_code=200,
+        )
+    )
 
     engine = ExtractionEngine(
         browser_executor=mock_browser_executor,
@@ -58,7 +60,9 @@ async def test_conditional_child_crawling_when_fields_missing():
     )
 
     # Verify that child link was discovered and crawled
-    mock_browser_executor.crawl.assert_called_once_with(url="https://example.com/specs/laptop-details")
+    mock_browser_executor.crawl.assert_called_once_with(
+        url="https://example.com/specs/laptop-details"
+    )
 
 
 @pytest.mark.asyncio

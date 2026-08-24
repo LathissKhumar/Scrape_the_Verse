@@ -1,4 +1,3 @@
-import pytest
 from leadfinder.healing.persistent_memory import PersistentRepairMemory
 from leadfinder.healing.schemas import RepairMemoryRecord, RepairType
 

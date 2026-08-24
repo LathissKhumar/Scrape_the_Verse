@@ -1,7 +1,8 @@
 """Navigation planner sub-agent determining navigation actions and search strategies."""
 
 import logging
-from typing import Any, Dict, Optional
+from typing import Any
+
 from leadfinder.models.schemas import ScrapingTask
 
 logger = logging.getLogger("NAVIGATION_PLANNER")
@@ -10,10 +11,10 @@ logger = logging.getLogger("NAVIGATION_PLANNER")
 class NavigationPlanner:
     """Plans on-site search interactions, filter applications, and link harvest limits."""
 
-    def plan_navigation(self, task: ScrapingTask) -> Dict[str, Any]:
+    def plan_navigation(self, task: ScrapingTask) -> dict[str, Any]:
         """Formulate a concrete navigation execution plan from a ScrapingTask."""
         root_url = task.target_urls[0] if task.target_urls else "https://www.google.com"
-        
+
         return {
             "root_url": root_url,
             "is_search": task.is_search,

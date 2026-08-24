@@ -1,12 +1,12 @@
 """Declarative, allowlisted action models for browser automation without arbitrary code execution."""
 
-from typing import Annotated, Any, Dict, List, Literal, Optional, Union
+from typing import Annotated, Any, Literal
+
 from pydantic import BaseModel, Field
 
 
 class BaseCrawlerAction(BaseModel):
     """Base class for all strictly allowlisted browser actions."""
-    pass
 
 
 class NavigateAction(BaseCrawlerAction):
@@ -17,7 +17,7 @@ class NavigateAction(BaseCrawlerAction):
 
 class WaitForAction(BaseCrawlerAction):
     action_type: Literal["wait_for"] = "wait_for"
-    selector: Optional[str] = None
+    selector: str | None = None
     state: Literal["attached", "detached", "visible", "hidden"] = "visible"
     timeout_ms: int = Field(default=10000, ge=100, le=60000)
 
@@ -51,35 +51,38 @@ class ScrollAction(BaseCrawlerAction):
 
 class ExtractAction(BaseCrawlerAction):
     action_type: Literal["extract"] = "extract"
-    fields: Dict[str, str] = Field(description="Map of field name to CSS selector")
+    fields: dict[str, str] = Field(description="Map of field name to CSS selector")
 
 
 class SolveCaptchaAction(BaseCrawlerAction):
     action_type: Literal["solve_captcha"] = "solve_captcha"
-    captcha_type: Literal["turnstile", "recaptcha", "hcaptcha", "image", "auto"] = "auto"
-    selector: Optional[str] = None
+    captcha_type: Literal["turnstile", "recaptcha", "hcaptcha", "image", "auto"] = (
+        "auto"
+    )
+    selector: str | None = None
     timeout_ms: int = Field(default=15000, ge=1000, le=60000)
-    solver_config: Dict[str, Any] = Field(default_factory=dict)
+    solver_config: dict[str, Any] = Field(default_factory=dict)
 
 
 CrawlerAction = Annotated[
-    Union[
-        NavigateAction,
-        WaitForAction,
-        ClickAction,
-        FillAction,
-        SelectAction,
-        ScrollAction,
-        ExtractAction,
-        SolveCaptchaAction,
-    ],
+    NavigateAction
+    | WaitForAction
+    | ClickAction
+    | FillAction
+    | SelectAction
+    | ScrollAction
+    | ExtractAction
+    | SolveCaptchaAction,
     Field(discriminator="action_type"),
 ]
 
 
 class ActionPlan(BaseModel):
     """Declarative action sequence for a web crawl."""
+
     url: str
-    actions: List[CrawlerAction] = Field(default_factory=list)
-    wait_until: Literal["load", "domcontentloaded", "networkidle", "commit"] = "domcontentloaded"
+    actions: list[CrawlerAction] = Field(default_factory=list)
+    wait_until: Literal["load", "domcontentloaded", "networkidle", "commit"] = (
+        "domcontentloaded"
+    )
     timeout_ms: int = Field(default=30000, ge=1000, le=120000)
